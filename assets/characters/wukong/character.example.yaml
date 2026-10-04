@@ -1,0 +1,32 @@
+character_id: WUKONG
+canonical_name: 孙悟空
+design_type: original_literary_adaptation
+
+visual_traits:
+  fur: "warm golden-brown"
+  face: "clearly simian, pronounced brow and muzzle"
+  eyes: "human-readable expression"
+  ears: "stable pointed external ears"
+  body: "athletic humanoid"
+
+performance:
+  - playful
+  - alert
+  - stubborn
+  - protective
+  - clumsy domestic help
+  - soft gaze around Daiyu
+
+forbidden_drift:
+  - ordinary human face
+  - major fur-color change
+  - random ear shape
+  - copying a specific film/TV monkey makeup
+
+identity:
+  approved_refs: []
+  lora_model: null
+  reference_model: null
+
+voice:
+  voice_id: null

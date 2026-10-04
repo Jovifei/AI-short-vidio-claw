@@ -1,0 +1,59 @@
+# secrets
+.env
+.env.*
+!.env.example
+*.key
+*.pem
+
+# Python
+.venv/
+venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Node
+node_modules/
+
+# local runtime and models
+local/
+models/**/*.safetensors
+models/**/*.ckpt
+models/**/*.pt
+models/**/*.pth
+models/**/*.bin
+models/**/*.gguf
+models/**/*.onnx
+models/**/*.engine
+
+# generated media
+outputs/*
+!outputs/README.md
+episodes/**/generated/
+episodes/**/frames/raw/
+episodes/**/video/raw/
+episodes/**/audio/generated/
+*.mp4
+*.mov
+*.mkv
+*.webm
+*.wav
+*.flac
+
+# caches/downloads
+cache/
+downloads/
+tmp/
+temp/
+
+# build
+build/
+dist/
+
+# OS/IDE
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

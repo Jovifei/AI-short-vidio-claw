@@ -1,0 +1,18 @@
+episode_id: EPXXX
+title: ""
+status: DRAFT
+target_duration_sec: 60
+aspect_ratio: "9:16"
+
+characters: []
+stages: {}
+
+theme: ""
+hook: ""
+
+production:
+  frozen_keyframes_required: true
+  human_keyframe_approval: true
+  human_final_approval: true
+
+shots: []

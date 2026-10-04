@@ -1,0 +1,37 @@
+image:
+  primary: TBD
+  identity_human:
+    preferred:
+      - PuLID
+      - IPAdapter FaceID
+    future:
+      - character_lora
+  identity_nonhuman:
+    preferred:
+      - character_lora
+      - reference_conditioning
+
+video:
+  primary:
+    engine: comfyui-native
+    model: Wan2.2
+  low_vram_experimental:
+    engine: comfyui-wanvideowrapper
+    precision:
+      - fp8
+      - gguf
+    features:
+      - cpu_offload
+      - block_swap
+  fallback_long_low_motion:
+    engine: FramePack
+
+speech:
+  tts: GPT-SoVITS
+  lipsync_human: MuseTalk
+  lipsync_wukong: TBD
+
+post:
+  editor: ffmpeg
+  upscale: TBD
+  interpolation: TBD

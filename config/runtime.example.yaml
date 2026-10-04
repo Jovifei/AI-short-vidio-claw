@@ -1,0 +1,32 @@
+hardware:
+  os: Windows
+  gpu: "RTX 4070 Super"
+  vram_gb: 12
+  ram_gb: null
+  data_disk: null
+
+ports:
+  comfyui_image: 8188
+  comfyui_video: 8189
+  gpt_sovits: 9880
+  musetalk: 9881
+
+render:
+  working_portrait_sizes:
+    - [480, 832]
+    - [576, 1024]
+  shot_duration_sec: [3, 5]
+  frame_count_candidates:
+    - 49
+    - 65
+    - 81
+  source_fps_candidates:
+    - 16
+    - 24
+  concurrency_gpu: 1
+
+storage:
+  local_root: "./local"
+  models: "./local/models"
+  cache: "./local/cache"
+  temp: "./local/temp"

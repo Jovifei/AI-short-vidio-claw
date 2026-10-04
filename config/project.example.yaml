@@ -1,0 +1,24 @@
+project:
+  id: ai-short-vidio-claw
+  language: zh-CN
+  aspect_ratio: "9:16"
+  target_duration_sec: [45, 90]
+  target_shots: [10, 20]
+  fps_delivery: 24
+  delivery_resolution: [1080, 1920]
+
+creative:
+  pilot_series: "林黛玉 × 孙悟空：人间生活"
+  tone:
+    - 生活感
+    - 温馨
+    - 克制
+    - 轻喜剧
+    - 偶尔宿命感
+  rule: "先让观众相信他们一起生活，再慢慢揭示世界观"
+
+production:
+  image_first: true
+  frozen_keyframe_required: true
+  human_approval_gates: true
+  gpu_heavy_jobs_serial: true

@@ -1,0 +1,26 @@
+model_id: ""
+type: ""
+purpose: ""
+
+source:
+  url: ""
+  release_or_commit: ""
+
+files:
+  - filename: ""
+    sha256: ""
+    size_bytes: null
+
+license:
+  code: ""
+  weights: ""
+  commercial_use_verified: false
+  notes: ""
+
+validation:
+  date: null
+  gpu: "RTX 4070 Super 12GB"
+  workflow_id: ""
+  peak_vram_gb: null
+  elapsed_sec: null
+  result: untested

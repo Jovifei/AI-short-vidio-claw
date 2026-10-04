@@ -1,0 +1,35 @@
+character_id: DAIYU
+canonical_name: 林黛玉
+design_type: original_literary_adaptation
+
+visual_traits:
+  face_shape: "rounded oval; natural jaw; non-pointed chin"
+  eyes: "narrow almond; subtle single/inner eyelid impression"
+  brows: "fine, slightly arched, capable of faint frown"
+  nose: "small and natural"
+  lips: "small, restrained"
+  body: "slender, natural"
+
+performance:
+  - calm focus
+  - subtle irony
+  - restrained smile
+  - attentive care
+  - stubbornness
+  - quiet fatigue
+
+forbidden_drift:
+  - sharp V chin
+  - exaggerated double eyelid
+  - influencer makeup
+  - perpetual tilted head
+  - copying a specific modern actress
+
+identity:
+  approved_refs: []
+  pulid_model: null
+  ipadapter_model: null
+  lora_model: null
+
+voice:
+  voice_id: null
