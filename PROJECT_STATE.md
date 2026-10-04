@@ -131,3 +131,4 @@ L4：576×1024 / 81 frames（可选，不是 P1A 必须）。
 - VLM QC
 - 孙悟空口音
 - 是否引入 WanGP 作为第二 executor
+- 个人 ConfyUI 工作流可借用点（不改 P1A）：见 docs/workflows/BORROW_FROM_CONFYUI.md
