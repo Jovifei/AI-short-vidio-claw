@@ -1,7 +1,7 @@
 # PROJECT_STATE
 
-更新时间：2026-10-04
-状态：**Strategic GO / Current Production NO-GO / P0R→P1A**
+更新时间：2026-10-04 17:45 Asia/Shanghai
+状态：**Strategic GO / Current Production NO-GO / P0R PASS → P1A 下载中**
 
 ## 1. 二次复核结论
 
@@ -11,33 +11,32 @@
 - 连续性锁
 - GPU 串行
 - adapter 化
-- 每镜可重跑
+- 每镜可重做
 - 两道人类 Gate
 
 但原文档对“这台 4070S 机器今天能直接生产”的表达过于乐观，已修正。
 
-## 2. 已知本机现状（来自本地 Agent 审核，待 P0R 重新探测落盘）
+## 2. 本机实测现状（P0R 落盘，见 docs/benchmarks/P1_ENVIRONMENT.md）
 
-- Windows
-- RTX 4070 Super 12GB
-- 系统 RAM 约 32GB
-- 本机已有 ComfyUI Desktop
-- 过去记录的 Desktop 端口可能为 8000，不能假设当前仍相同
-- 当前未确认 Wan2.2 权重已安装
-- 当前未确认 Wan2.2 workflow 可运行
-- 已有部分 SDXL / SD1.5
-- FaceID 相关文件存在，但 InsightFace 模型目录报告为空
-- PuLID 未作为可运行路径验证
-- 当前仓库无生产客户端、无 API workflow、无 EP001 实体生产目录
-- FFmpeg 可用（仍需 P0R 复测）
-- GPT-SoVITS / MuseTalk 不进入 P1A
+- Windows 11 Pro Build 22631
+- RTX 4070 SUPER / 12282 MiB VRAM / Driver 595.97 / nvidia-smi CUDA 13.2（无 nvcc）
+- System RAM 34164097024 bytes ≈ 31.82 GB；pagefile `D:\pagefile.sys` Allocated 66929 MB
+- Disk free: C 489.06 GB / D 134.33 GB / E 249.24 GB / F **334.79 GB**
+- FFmpeg 8.1.1 可用（WinGet Gyan.FFmpeg）
+- **实际 ComfyUI URL：`http://127.0.0.1:8188`**（项目 image 实例 ComfyUI v0.38.0，torch 2.14.1+cu130）
+- Desktop：`F:\ComfyUI` basePath；ProductVersion 0.8.35.0；历史端口曾用 8000，**当前勿假设 8000**
+- 模型库：`F:\ComfyUI\models` ≈ 18.50 GB；已有 SDXL/SD1.5/VAE/FaceID adapter/clip_vision
+- **Wan2.2-TI2V-5B 三文件全部缺失**（diffusion / vae / umt5）
+- custom_nodes：comfyui_ipadapter_plus、glm_prompt（后者曾 IMPORT FAILED）
+- 仓库仍无生产客户端完成件、无 API workflow、无 EP001 实体生产目录
+- GPT-SoVITS / MuseTalk / 14B / LTX / FramePack / WanGP **不进 P1A**
 
 ## 3. 立即路线
 
-### P0R：本地再基线
-只做环境探测、路径/端口/磁盘/现有模型盘点。
+### P0R：本地再基线 — **PASS（文档已提交）**
+环境探测、路径/端口/磁盘/现有模型盘点完成。
 
-### P1A：最窄视频基线
+### P1A：最窄视频基线 — **进行中：仅下载官方 5B 三文件**
 仅：
 - 一个 ComfyUI GPU 进程
 - 官方原生 Wan2.2 5B 模板
@@ -48,9 +47,7 @@
 - 一个最小提交/轮询脚本
 
 不做：
-- 14B
-- GGUF 14B
-- Wrapper 14B
+- 14B / GGUF 14B / Wrapper 14B
 - PuLID/FaceID
 - TTS/LipSync
 - EP001 批量生产
@@ -59,19 +56,19 @@
 
 不把任何一级写成“必然稳定”。
 
-L0：只完成模型加载与最小 workflow dry-run。
-L1：480×832，49 frames。
-L2：480×832，81 frames。
-L3：576×1024，49 frames（只有 L1/L2 健康才试）。
-L4：576×1024，81 frames（可选，不是 P1A 必须）。
+L0：只完成模型加载与最小 workflow dry-run；
+L1：480×832 / 49 frames；
+L2：480×832 / 81 frames；
+L3：576×1024 / 49 frames（只在 L1/L2 健康才试）；
+L4：576×1024 / 81 frames（可选，不是 P1A 必须）。
 
-如实际 workflow 对尺寸/帧数有约束，以官方模板和日志为准，修改必须记录。
+若实测 workflow 对尺寸/帧数有约束，以官方模板和日志为准，修改必须记录。
 
 ## 5. P1A 通过条件
 
 全部满足：
-1. 至少一个 I2V 配置在本机连续成功 10 次；
-2. OOM = 0 或仅 1 次且能解释/复现；
+1. 至少一组 I2V 配置在本机连续成功 10 次；
+2. OOM = 0 或仅 1 次且能解释可复现；
 3. 每次输出可由 workflow + seed + input + model version 追溯；
 4. peak VRAM、peak RAM、elapsed 都被记录；
 5. 单 ComfyUI 进程稳定，无需同时常驻第二 GPU 服务；
@@ -101,7 +98,7 @@ L4：576×1024，81 frames（可选，不是 P1A 必须）。
 真正 Gate 是：
 - 两人同框
 - 两边 identity 都守住
-- 服装/身高差/手部关系合理
+- 服装/身高/手部关系合理
 - 10 个固定生活场景 ≥80% approved
 
 高风险镜头允许 Hero Lane。
@@ -111,7 +108,7 @@ L4：576×1024，81 frames（可选，不是 P1A 必须）。
 先完成：
 - 20 张 approved story keyframe
 - 其中 6 个低风险镜头 I2V
-- 其余静态/缓慢推拉/轻环境动画
+- 其余静态/缓慢推拉/轻环境动效
 - 三句台词先画外音
 - 不做 lip sync
 
@@ -122,7 +119,7 @@ L4：576×1024，81 frames（可选，不是 P1A 必须）。
 - 本地图像基座
 - 双身份本地 workflow
 - 林黛玉/悟空 LoRA 训练方案
-- 最终插帧/放大链
+- 最终插帧/放大器
 - VLM QC
-- 孙悟空口型
+- 孙悟空口音
 - 是否引入 WanGP 作为第二 executor

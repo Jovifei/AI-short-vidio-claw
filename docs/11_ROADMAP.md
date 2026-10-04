@@ -19,6 +19,8 @@ P0R 本机重新基线
 
 ## P0R 本机重新基线
 
+状态：**PASS（2026-10-04）** — 产出 `docs/benchmarks/P1_ENVIRONMENT.md`；实际 URL `http://127.0.0.1:8188`；Wan2.2 5B 三文件均缺失，已进入下载。
+
 执行文档：
 docs/stages/P0R_REBASE_EXECUTION.md
 

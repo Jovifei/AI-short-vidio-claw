@@ -100,3 +100,12 @@ WanGP 面向低显存并持续更新，但属于第二执行栈。
 
 高风险手部/接触镜头：
 消毒、缠绷带、按手、点泡沫等，在 v0.1 可以使用静态 keyframe + 轻运动，不作为视频 baseline Gate。
+
+## ADR-019 P0R 本机实测 PASS
+状态：Accepted 2026-10-04
+
+实测落盘：`docs/benchmarks/P1_ENVIRONMENT.md`
+- COMFYUI_URL=`http://127.0.0.1:8188`（项目 image 实例 v0.38.0）
+- Desktop 历史 8000 不再作为默认假设
+- F: 空闲 334.79 GB；P1A 仅缺官方 5B 三文件合计 ≈16.89 GB
+- 授权下一步：只下载 Wan2.2-TI2V-5B 官方三文件到 `F:\ComfyUI\models\...`
