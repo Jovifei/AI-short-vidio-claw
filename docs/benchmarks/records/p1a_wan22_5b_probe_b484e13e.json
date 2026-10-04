@@ -1,0 +1,128 @@
+{
+  "tool": "scripts/p1_comfy_probe.py",
+  "started_at": "2026-10-04T19:06:20.376+08:00",
+  "url": "http://127.0.0.1:8188",
+  "workflow": "workflows\\video\\lab\\VID_wan22_5b_p1a_v001.json",
+  "args": {
+    "image": null,
+    "positive": null,
+    "negative": null,
+    "seed": null,
+    "width": null,
+    "height": null,
+    "frames": null,
+    "from_prompt_id": "b484e13e-b779-4283-930b-9460122b2c6e"
+  },
+  "mode": "record_existing_prompt",
+  "queued_new_job": false,
+  "result": "success",
+  "error": null,
+  "health": {
+    "http_status": 200,
+    "comfyui_version": "0.38.0",
+    "pytorch_version": "2.14.1+cu130",
+    "python_version": "3.12.9 (main, Feb 12 2025, 14:52:31) [MSC v.1942 64 bit (AMD64)]",
+    "ram_total": 34164097024,
+    "ram_free": 68603904,
+    "devices": [
+      {
+        "name": "cuda:0 NVIDIA GeForce RTX 4070 SUPER : cudaMallocAsync",
+        "type": "cuda",
+        "index": 0,
+        "vram_total": 12878086144,
+        "vram_free": 9343027388,
+        "torch_vram_total": 67108864,
+        "torch_vram_free": 55789756
+      }
+    ]
+  },
+  "queue_before": {
+    "running": 0,
+    "pending": 0
+  },
+  "workflow_sha256": "c000f3731824a504ab50c123485ecc97e186d6bab55615bf08e6409a490f5fcb",
+  "workflow_bytes": 2937,
+  "prompt_id": "b484e13e-b779-4283-930b-9460122b2c6e",
+  "history_wait": "history already terminal on the first GET; no new submit; wait loop not used",
+  "workflow_matches_history_prompt": true,
+  "history_client_id": "4ee2dc01-94c7-4d9d-b845-c799766575b5",
+  "history_create_time_ms": 1791111034295,
+  "history_status": {
+    "status_str": "success",
+    "completed": true,
+    "messages": [
+      [
+        "execution_start",
+        {
+          "prompt_id": "b484e13e-b779-4283-930b-9460122b2c6e",
+          "timestamp": 1791111034299
+        }
+      ],
+      [
+        "execution_cached",
+        {
+          "nodes": [
+            "37",
+            "38",
+            "39",
+            "48"
+          ],
+          "prompt_id": "b484e13e-b779-4283-930b-9460122b2c6e",
+          "timestamp": 1791111034303
+        }
+      ],
+      [
+        "execution_success",
+        {
+          "prompt_id": "b484e13e-b779-4283-930b-9460122b2c6e",
+          "timestamp": 1791111469583
+        }
+      ]
+    ]
+  },
+  "comfy_execution_start_ms": 1791111034299,
+  "comfy_execution_end_ms": 1791111469583,
+  "comfy_elapsed_seconds": 435.284,
+  "comfy_execution_start": "2026-10-04T18:50:34.299+08:00",
+  "comfy_execution_end": "2026-10-04T18:57:49.583+08:00",
+  "execution_cached_nodes": [
+    "37",
+    "38",
+    "39",
+    "48"
+  ],
+  "outputs": [
+    {
+      "node": "58",
+      "filename": "p1a_wan22_5b_smoke_00002_.mp4",
+      "subfolder": "video",
+      "type": "output",
+      "saved_path": "E:\\project\\AI-short-vidio-claw\\local\\p1_probe_media\\p1a_wan22_5b_probe_b484e13e\\p1a_wan22_5b_smoke_00002_.mp4",
+      "bytes": 200534,
+      "sha256": "7256d7908fa095b63577b4b66972d15804a42dacdef64d0583eadd36a07266e7"
+    }
+  ],
+  "resources": {
+    "sample_kind": "post_run_snapshot",
+    "sample_count": 1,
+    "sample_interval_seconds": null,
+    "nvidia_smi_memory_used_mib": 4304,
+    "nvidia_smi_memory_used_mib_peak": null,
+    "note": "Single nvidia-smi and Win32 memory sample taken after the prompt had already finished. Not a peak and not a during-run series.",
+    "sample": {
+      "at": "2026-10-04T19:06:20.494+08:00",
+      "gpu_name": "NVIDIA GeForce RTX 4070 SUPER",
+      "gpu_memory_used_mib": 4304,
+      "gpu_memory_total_mib": 12282,
+      "driver_version": "595.97",
+      "gpu_utilization_percent": 41,
+      "ram_load_percent": 99,
+      "ram_total_bytes": 34164097024,
+      "ram_avail_bytes": 56532992,
+      "pagefile_total_bytes": 109774209024,
+      "pagefile_avail_bytes": 20216377344,
+      "label": "post_run_snapshot"
+    }
+  },
+  "finished_at": "2026-10-04T19:06:20.607+08:00"
+}

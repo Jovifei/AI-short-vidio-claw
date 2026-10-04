@@ -2,7 +2,8 @@
 
 > measured_at: 2026-10-04 18:36–18:41 Asia/Shanghai
 > git_main at run time: b38c235946623708cb807f26e80d803d94932f6c
-> This file records one measured run. It is not a P1A PASS (no 10-run stability, no probe script).
+> This file records the first smoke plus a second same-graph run. It is not a P1A PASS (no 10-run stability, no I2V).
+> step3_recorded_at: 2026-10-04 19:06 Asia/Shanghai
 
 ## Run
 
@@ -20,7 +21,7 @@
 - Template id: `91f6bbe2-ed41-4fd6-bac7-71d5b5864ecb`
 - SHA256: `8c13b61fdb42562052b2d5d867b354f7cf4d5ef528c98ed6847bdddc3ddb3d16`
 - Size: 15015 bytes
-- Submitted as API prompt converted from that graph. Not a GUI Template Library click. At run time it was not yet saved under `workflows/video/lab/`. The later Step 2 export is recorded below. `scripts/p1_comfy_probe.py` was not written.
+- Submitted as API prompt converted from that graph. Not a GUI Template Library click. At run time it was not yet saved under `workflows/video/lab/`. The later Step 2 export is recorded below. `scripts/p1_comfy_probe.py` was not written yet (see Step 3 below).
 
 ## Graph actually executed
 
@@ -82,11 +83,51 @@ Changed from the template widgets, for this one small run:
 - Same graph as this smoke, including 480x832x33, seed 898471028164125, and filename_prefix `video/p1a_wan22_5b_smoke`. LoadImage node 56 is absent.
 - Sibling metadata required by `workflows/README.md`: `workflows/video/lab/VID_wan22_5b_p1a_v001.yaml`
 
+## Second run (same API graph)
+
+- Result: **success**
+- prompt_id: `b484e13e-b779-4283-930b-9460122b2c6e`
+- This job had already finished before the Step 3 probe invocation below. That invocation did not POST `/prompt`.
+- Server: `http://127.0.0.1:8188`, still PID 333664 (python, started 2026-10-04 17:22:43 Asia/Shanghai). No second ComfyUI.
+- history `prompt[2]` equals `workflows/video/lab/VID_wan22_5b_p1a_v001.json` (SHA256 `c000f3731824a504ab50c123485ecc97e186d6bab55615bf08e6409a490f5fcb`, 2937 bytes)
+- Same executed graph as the first smoke, including 480x832x33, seed 898471028164125, fps 24, filename_prefix `video/p1a_wan22_5b_smoke`
+- `execution_cached` nodes: 37, 38, 39, 48
+- Comfy `execution_start`: 2026-10-04 18:50:34.299 Asia/Shanghai (timestamp 1791111034299)
+- Comfy `execution_success`: 2026-10-04 18:57:49.583 Asia/Shanghai (timestamp 1791111469583)
+- Elapsed execution: **435.284 s**
+- Output: `E:\project\AI-short-vidio-claw\local\comfyui\image\ComfyUI\output\video\p1a_wan22_5b_smoke_00002_.mp4`
+- Size: 200534 bytes
+- SHA256: `7256d7908fa095b63577b4b66972d15804a42dacdef64d0583eadd36a07266e7`
+- ffprobe: h264, 480x832, 33 frames, 24/1 fps, duration 1.375 s
+- mtime: 2026-10-04 18:57:49 Asia/Shanghai
+
+### VRAM / RAM for the second run
+
+- No during-run nvidia-smi series was kept, so there is no sampled peak
+- 11652 MiB was a single manual sample, not a peak. It is not used as peak VRAM
+- The Step 3 record's only GPU reading is a post-run snapshot (next section), not a peak
+
+## Step 3 probe record
+
+- Script: `scripts/p1_comfy_probe.py`
+- Verified invocation: 2026-10-04 19:06:20.376–19:06:20.607 Asia/Shanghai
+- Mode: `--from-prompt-id b484e13e-b779-4283-930b-9460122b2c6e` against `workflows/video/lab/VID_wan22_5b_p1a_v001.json`
+- Record: `docs/benchmarks/records/p1a_wan22_5b_probe_b484e13e.json`
+- Exit code: **0**
+- `queued_new_job`: false. Queue at call time: running 0, pending 0. No new job was submitted
+- History was already terminal on the first GET. The wait loop was not used. This invocation does not by itself prove submit-and-wait; the submit path remains in the script and was not re-run here
+- `workflow_matches_history_prompt`: true
+- Download: GET `/view` copy at `local/p1_probe_media/p1a_wan22_5b_probe_b484e13e/p1a_wan22_5b_smoke_00002_.mp4` (gitignored). 200534 bytes, SHA256 matches the Comfy output above
+- Post-run snapshot at 2026-10-04 19:06:20.494 Asia/Shanghai, labeled `post_run_snapshot`: NVIDIA GeForce RTX 4070 SUPER, driver 595.97, nvidia-smi `memory.used` **4304 MiB** / 12282 MiB, GPU utilization 41%. `nvidia_smi_memory_used_mib_peak` is null
+- Same snapshot, Win32 GlobalMemoryStatusEx: memory load 99%, `ram_total_bytes` 34164097024, `ram_avail_bytes` 56532992. This is after the job, not a during-run minimum and not a peak
+- Server `/system_stats` at that call: comfyui 0.38.0, pytorch 2.14.1+cu130, python 3.12.9
+- Sampler change in the script (nvidia-smi + Win32 memory, sample errors non-fatal) was exercised only by this one post-run sample, not across a live generation
+
 ## Not done
 
-- No second job
+- No third job from the verified probe invocation
 - No 14B, GGUF, or WanGP
 - No I2V (`start_image` not connected; LoadImage was not added back)
-- No `scripts/p1_comfy_probe.py` (stage Step 3; not started)
 - No L1-L4 ladder and no 10-run stability
-- P1A PASS conditions (10 serial runs, p50/p95) are not met
+- The fixed script's submit → wait path was not re-run after the sampler patch
+- P1A PASS conditions (10 serial runs, p50/p95, recommended baseline) are not met

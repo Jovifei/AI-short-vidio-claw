@@ -25,6 +25,6 @@ fixed_run:
   scheduler: simple
 benchmark: docs/benchmarks/P1_4070S_BASELINE.md
 known_issues:
-  - One successful T2V smoke only. Not I2V.
-  - Not the 10-run stability ladder.
-  - scripts/p1_comfy_probe.py does not exist yet.
+  - Two successful T2V smokes of this graph. Not I2V.
+  - Not the 10-run stability ladder. Not a P1A PASS.
+  - scripts/p1_comfy_probe.py exists. The verified Step 3 call recorded prompt b484e13e and did not submit a new job.
