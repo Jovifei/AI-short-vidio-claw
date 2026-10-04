@@ -1,7 +1,11 @@
 # PROJECT_STATE
 
-更新时间：2026-10-05 00:45 Asia/Shanghai
-状态：**Strategic GO / Current Production NO-GO / P0R PASS / P1A L1 T2V 480x832x49 已串行成功 10/10（p50 187.7095 s，p95 264.101 s，采样峰值 10912–11733 MiB）；L2/L3/L4 仍各一次。不是 I2V，不是 PASS**
+更新时间：2026-10-05 00:57 Asia/Shanghai
+状态：**Strategic GO / Current Production NO-GO / P0R PASS / P1A L1 T2V 480x832x49 已串行成功 10/10（p50 187.7095 s，p95 264.101 s，采样峰值 10912–11733 MiB）；L2/L3/L4 仍各一次。另有一次 5B I2V 成功（见下），仍不是 PASS**
+
+## 一次 I2V（未批准静帧，不是 PASS）
+
+2026-10-05 00:52:18–00:56:33 Asia/Shanghai，同一 ComfyUI（`http://127.0.0.1:8188`，PID 333664，没有第二进程）先用 SDXL `sd_xl_base_1.0` txt2img 生成一张未批准静帧：prompt_id `bc7ce941-c672-41f4-91c1-6cb07542591e`，480×832，seed `20261005005201`，执行 **10.251 s**，nvidia-smi 采样峰值 **8106 MiB**，文件 `docs/benchmarks/records/p1a_sdxl_wukong_unapproved_still_480x832_media/p1a_wukong_sdxl_i2v_still_00001_.png`（不是 approved character ref，未写入 assets/characters）。随后一条 Wan2.2 5B I2V：新 lab 图 `workflows/video/lab/VID_wan22_5b_i2v_v001.json`（未改 `VID_wan22_5b_p1a_v001.json`），history 里 LoadImage 节点 56 接到 Wan22ImageToVideoLatent 节点 55 的 `start_image`。prompt_id `0bbaa4e3-56c2-4c75-98b7-bc08bc6b5e45`，480×832 / 49 frames，seed `20261005005149`，执行 **208.639 s**，采样峰值 **11719 MiB** / 12282 MiB。输出 `docs/benchmarks/records/p1a_wan22_5b_i2v_v001_media/p1a_wan22_5b_i2v_unapproved_00001_.mp4`（h264 480x832，49 frames，24 fps）。没有 OOM，没有 14B。这不是 10 次 I2V，不是 P1A PASS。
 
 ## L1 十次稳定性（Step 5，T2V）
 
@@ -48,7 +52,7 @@
 ### P0R：本地再基线 — **PASS（文档已提交）**
 环境探测、路径/端口/磁盘/现有模型盘点完成。
 
-### P1A：最窄视频基线 — **L1 480×832 / 49 frames T2V 已串行 10/10（2026-10-05 00:07–00:42 Asia/Shanghai，p50 187.7095 s，p95 264.101 s，单次采样峰值 10912–11733 MiB，全部样本 3261–11733 MiB）。L2/L3/L4 仍各一次。不是 PASS。I2V 未做**
+### P1A：最窄视频基线 — **L1 480×832 / 49 frames T2V 已串行 10/10（2026-10-05 00:07–00:42 Asia/Shanghai，p50 187.7095 s，p95 264.101 s，单次采样峰值 10912–11733 MiB，全部样本 3261–11733 MiB）。L2/L3/L4 仍各一次。不是 PASS。一次 5B I2V 已成功（见文首），10 次 I2V 未做**
 仅：
 - 一个 ComfyUI GPU 进程
 - 官方原生 Wan2.2 5B 模板

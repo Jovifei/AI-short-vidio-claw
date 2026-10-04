@@ -1,0 +1,170 @@
+{
+  "tool": "scripts/p1_comfy_probe.py",
+  "started_at": "2026-10-05T00:52:18.045+08:00",
+  "url": "http://127.0.0.1:8188",
+  "workflow": "tmp\\sdxl_unapproved_still_api.json",
+  "args": {
+    "image": null,
+    "positive": null,
+    "negative": null,
+    "seed": 20261005005201,
+    "width": null,
+    "height": null,
+    "frames": null,
+    "from_prompt_id": null
+  },
+  "mode": "submit",
+  "queued_new_job": true,
+  "result": "success",
+  "error": null,
+  "health": {
+    "http_status": 200,
+    "comfyui_version": "0.38.0",
+    "pytorch_version": "2.14.1+cu130",
+    "python_version": "3.12.9 (main, Feb 12 2025, 14:52:31) [MSC v.1942 64 bit (AMD64)]",
+    "ram_total": 34164097024,
+    "ram_free": 441765888,
+    "devices": [
+      {
+        "name": "cuda:0 NVIDIA GeForce RTX 4070 SUPER : cudaMallocAsync",
+        "type": "cuda",
+        "index": 0,
+        "vram_total": 12878086144,
+        "vram_free": 11493310464,
+        "torch_vram_total": 33554432,
+        "torch_vram_free": 25034752
+      }
+    ]
+  },
+  "queue_before": {
+    "running": 0,
+    "pending": 0
+  },
+  "workflow_sha256": "1b8911a0f05f43691a504c2f76e1d88c798a989e0e79cf5e92b8ebf73c9c37d0",
+  "workflow_bytes": 2126,
+  "injection": [
+    {
+      "nodes": [
+        "5"
+      ],
+      "field": "seed"
+    }
+  ],
+  "submitted_graph_sha256": "cb858e4c8e44662ec985605f0cdce416a315310249b3586630b41ce8ed62afb7",
+  "client_id": "ce5fd6fd-10a8-46cd-9740-5b558cd17153",
+  "submit_started_at": "2026-10-05T00:52:18.203+08:00",
+  "prompt_response": {
+    "prompt_id": "bc7ce941-c672-41f4-91c1-6cb07542591e",
+    "number": 17,
+    "node_errors": {}
+  },
+  "prompt_id": "bc7ce941-c672-41f4-91c1-6cb07542591e",
+  "history_status": {
+    "status_str": "success",
+    "completed": true,
+    "messages": [
+      [
+        "execution_start",
+        {
+          "prompt_id": "bc7ce941-c672-41f4-91c1-6cb07542591e",
+          "timestamp": 1791132738207
+        }
+      ],
+      [
+        "execution_cached",
+        {
+          "nodes": [],
+          "prompt_id": "bc7ce941-c672-41f4-91c1-6cb07542591e",
+          "timestamp": 1791132738208
+        }
+      ],
+      [
+        "execution_success",
+        {
+          "prompt_id": "bc7ce941-c672-41f4-91c1-6cb07542591e",
+          "timestamp": 1791132748458
+        }
+      ]
+    ]
+  },
+  "comfy_execution_start_ms": 1791132738207,
+  "comfy_execution_end_ms": 1791132748458,
+  "comfy_elapsed_seconds": 10.251,
+  "outputs": [
+    {
+      "node": "7",
+      "filename": "p1a_wukong_sdxl_i2v_still_00001_.png",
+      "subfolder": "unapproved_not_character_ref",
+      "type": "output",
+      "saved_path": "docs\\benchmarks\\records\\p1a_sdxl_wukong_unapproved_still_480x832_media\\p1a_wukong_sdxl_i2v_still_00001_.png",
+      "bytes": 638448,
+      "sha256": "bfd42b36004133544ffc80ab12671c70082f9de37cdf234bf19d14a310cda1b3"
+    }
+  ],
+  "samples": [
+    {
+      "at": "2026-10-05T00:52:18.126+08:00",
+      "gpu_name": "NVIDIA GeForce RTX 4070 SUPER",
+      "gpu_memory_used_mib": 1448,
+      "gpu_memory_total_mib": 12282,
+      "driver_version": "595.97",
+      "gpu_utilization_percent": 37,
+      "ram_load_percent": 98,
+      "ram_total_bytes": 34164097024,
+      "ram_avail_bytes": 436649984,
+      "pagefile_total_bytes": 104340910080,
+      "pagefile_avail_bytes": 21026627584
+    },
+    {
+      "at": "2026-10-05T00:52:23.204+08:00",
+      "gpu_name": "NVIDIA GeForce RTX 4070 SUPER",
+      "gpu_memory_used_mib": 6991,
+      "gpu_memory_total_mib": 12282,
+      "driver_version": "595.97",
+      "gpu_utilization_percent": 34,
+      "ram_load_percent": 99,
+      "ram_total_bytes": 34164097024,
+      "ram_avail_bytes": 172728320,
+      "pagefile_total_bytes": 104340910080,
+      "pagefile_avail_bytes": 14888116224
+    },
+    {
+      "at": "2026-10-05T00:52:28.311+08:00",
+      "gpu_name": "NVIDIA GeForce RTX 4070 SUPER",
+      "gpu_memory_used_mib": 8106,
+      "gpu_memory_total_mib": 12282,
+      "driver_version": "595.97",
+      "gpu_utilization_percent": 5,
+      "ram_load_percent": 99,
+      "ram_total_bytes": 34164097024,
+      "ram_avail_bytes": 319787008,
+      "pagefile_total_bytes": 104340910080,
+      "pagefile_avail_bytes": 13570314240
+    },
+    {
+      "at": "2026-10-05T00:52:30.463+08:00",
+      "gpu_name": "NVIDIA GeForce RTX 4070 SUPER",
+      "gpu_memory_used_mib": 8106,
+      "gpu_memory_total_mib": 12282,
+      "driver_version": "595.97",
+      "gpu_utilization_percent": 15,
+      "ram_load_percent": 99,
+      "ram_total_bytes": 34164097024,
+      "ram_avail_bytes": 299544576,
+      "pagefile_total_bytes": 104340910080,
+      "pagefile_avail_bytes": 13567717376
+    }
+  ],
+  "resources": {
+    "sample_count": 4,
+    "sample_interval_seconds": 5.0,
+    "nvidia_smi_memory_used_mib_first": 1448,
+    "nvidia_smi_memory_used_mib_peak": 8106,
+    "nvidia_smi_memory_used_mib_last": 8106,
+    "ram_avail_bytes_min": 172728320,
+    "ram_total_bytes": 34164097024,
+    "comfy_vram_free_bytes_min": null,
+    "note": "nvidia-smi memory.used is a sample peak, not a continuous hardware maximum"
+  },
+  "finished_at": "2026-10-05T00:52:30.507+08:00"
+}

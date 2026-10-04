@@ -1,0 +1,694 @@
+{
+  "tool": "scripts/p1_comfy_probe.py",
+  "started_at": "2026-10-05T00:53:03.439+08:00",
+  "url": "http://127.0.0.1:8188",
+  "workflow": "workflows\\video\\lab\\VID_wan22_5b_i2v_v001.json",
+  "args": {
+    "image": "docs\\benchmarks\\records\\p1a_sdxl_wukong_unapproved_still_480x832_media\\p1a_wukong_sdxl_i2v_still_00001_.png",
+    "positive": "金褐色毛发的人形猿孙悟空，清晰猿面，缓步走向自家门口，略微护着受伤的左手，一个人",
+    "negative": null,
+    "seed": 20261005005149,
+    "width": 480,
+    "height": 832,
+    "frames": 49,
+    "from_prompt_id": null
+  },
+  "mode": "submit",
+  "queued_new_job": true,
+  "result": "success",
+  "error": null,
+  "health": {
+    "http_status": 200,
+    "comfyui_version": "0.38.0",
+    "pytorch_version": "2.14.1+cu130",
+    "python_version": "3.12.9 (main, Feb 12 2025, 14:52:31) [MSC v.1942 64 bit (AMD64)]",
+    "ram_total": 34164097024,
+    "ram_free": 757874688,
+    "devices": [
+      {
+        "name": "cuda:0 NVIDIA GeForce RTX 4070 SUPER : cudaMallocAsync",
+        "type": "cuda",
+        "index": 0,
+        "vram_total": 12878086144,
+        "vram_free": 11491213312,
+        "torch_vram_total": 33554432,
+        "torch_vram_free": 25034752
+      }
+    ]
+  },
+  "queue_before": {
+    "running": 0,
+    "pending": 0
+  },
+  "workflow_sha256": "642d2a3b8c997937a767ba4800dfac030fdfbcd29a001861dd5ee8212cd995b9",
+  "workflow_bytes": 3144,
+  "injection": [
+    {
+      "node": "6",
+      "field": "text",
+      "role": "positive"
+    },
+    {
+      "nodes": [
+        "3"
+      ],
+      "field": "seed"
+    },
+    {
+      "node": "55",
+      "class_type": "Wan22ImageToVideoLatent",
+      "field": "width/height/frames"
+    },
+    {
+      "nodes": [
+        "56"
+      ],
+      "field": "image",
+      "uploaded_name": "p1a_wukong_sdxl_i2v_still_00001_.png"
+    }
+  ],
+  "submitted_graph_sha256": "081fbdab9ca542202787c7c81473a02e8efd42ec5ea2f943d4268e95cadfa680",
+  "client_id": "9dee8d56-a5e3-4f5c-bf29-7fefd6ef5b80",
+  "submit_started_at": "2026-10-05T00:53:03.606+08:00",
+  "prompt_response": {
+    "prompt_id": "0bbaa4e3-56c2-4c75-98b7-bc08bc6b5e45",
+    "number": 18,
+    "node_errors": {}
+  },
+  "prompt_id": "0bbaa4e3-56c2-4c75-98b7-bc08bc6b5e45",
+  "history_status": {
+    "status_str": "success",
+    "completed": true,
+    "messages": [
+      [
+        "execution_start",
+        {
+          "prompt_id": "0bbaa4e3-56c2-4c75-98b7-bc08bc6b5e45",
+          "timestamp": 1791132783614
+        }
+      ],
+      [
+        "execution_cached",
+        {
+          "nodes": [],
+          "prompt_id": "0bbaa4e3-56c2-4c75-98b7-bc08bc6b5e45",
+          "timestamp": 1791132783622
+        }
+      ],
+      [
+        "execution_success",
+        {
+          "prompt_id": "0bbaa4e3-56c2-4c75-98b7-bc08bc6b5e45",
+          "timestamp": 1791132992253
+        }
+      ]
+    ]
+  },
+  "comfy_execution_start_ms": 1791132783614,
+  "comfy_execution_end_ms": 1791132992253,
+  "comfy_elapsed_seconds": 208.639,
+  "outputs": [
+    {
+      "node": "58",
+      "filename": "p1a_wan22_5b_i2v_unapproved_00001_.mp4",
+      "subfolder": "video",
+      "type": "output",
+      "saved_path": "docs\\benchmarks\\records\\p1a_wan22_5b_i2v_v001_media\\p1a_wan22_5b_i2v_unapproved_00001_.mp4",
+      "bytes": 532693,
+      "sha256": "ffc1bd51b6445b89fd48dc16887777486f12eb4bc9170b8b49b75ac4ba61aeeb"
+    }
+  ],
+  "samples": [
+    {
+      "at": "2026-10-05T00:53:03.558+08:00",
+      "gpu_name": "NVIDIA GeForce RTX 4070 SUPER",
+      "gpu_memory_used_mib": 1450,
+      "gpu_memory_total_mib": 12282,
+      "driver_version": "595.97",
+      "gpu_utilization_percent": 25,
+      "ram_load_percent": 97,
+      "ram_total_bytes": 34164097024,
+      "ram_avail_bytes": 745865216,
+      "pagefile_total_bytes": 104340910080,
+      "pagefile_avail_bytes": 21080633344
+    },
+    {
+      "at": "2026-10-05T00:53:08.614+08:00",
+      "gpu_name": "NVIDIA GeForce RTX 4070 SUPER",
+      "gpu_memory_used_mib": 8305,
+      "gpu_memory_total_mib": 12282,
+      "driver_version": "595.97",
+      "gpu_utilization_percent": 56,
+      "ram_load_percent": 96,
+      "ram_total_bytes": 34164097024,
+      "ram_avail_bytes": 1053696000,
+      "pagefile_total_bytes": 104340910080,
+      "pagefile_avail_bytes": 13481701376
+    },
+    {
+      "at": "2026-10-05T00:53:13.706+08:00",
+      "gpu_name": "NVIDIA GeForce RTX 4070 SUPER",
+      "gpu_memory_used_mib": 11114,
+      "gpu_memory_total_mib": 12282,
+      "driver_version": "595.97",
+      "gpu_utilization_percent": 6,
+      "ram_load_percent": 97,
+      "ram_total_bytes": 34164097024,
+      "ram_avail_bytes": 830824448,
+      "pagefile_total_bytes": 105424052224,
+      "pagefile_avail_bytes": 11633565696
+    },
+    {
+      "at": "2026-10-05T00:53:18.786+08:00",
+      "gpu_name": "NVIDIA GeForce RTX 4070 SUPER",
+      "gpu_memory_used_mib": 10927,
+      "gpu_memory_total_mib": 12282,
+      "driver_version": "595.97",
+      "gpu_utilization_percent": 12,
+      "ram_load_percent": 97,
+      "ram_total_bytes": 34164097024,
+      "ram_avail_bytes": 770068480,
+      "pagefile_total_bytes": 105424052224,
+      "pagefile_avail_bytes": 12028051456
+    },
+    {
+      "at": "2026-10-05T00:53:23.857+08:00",
+      "gpu_name": "NVIDIA GeForce RTX 4070 SUPER",
+      "gpu_memory_used_mib": 10894,
+      "gpu_memory_total_mib": 12282,
+      "driver_version": "595.97",
+      "gpu_utilization_percent": 10,
+      "ram_load_percent": 97,
+      "ram_total_bytes": 34164097024,
+      "ram_avail_bytes": 745840640,
+      "pagefile_total_bytes": 105424052224,
+      "pagefile_avail_bytes": 12045508608
+    },
+    {
+      "at": "2026-10-05T00:53:28.933+08:00",
+      "gpu_name": "NVIDIA GeForce RTX 4070 SUPER",
+      "gpu_memory_used_mib": 10863,
+      "gpu_memory_total_mib": 12282,
+      "driver_version": "595.97",
+      "gpu_utilization_percent": 6,
+      "ram_load_percent": 98,
+      "ram_total_bytes": 34164097024,
+      "ram_avail_bytes": 672624640,
+      "pagefile_total_bytes": 105424052224,
+      "pagefile_avail_bytes": 12102512640
+    },
+    {
+      "at": "2026-10-05T00:53:34.016+08:00",
+      "gpu_name": "NVIDIA GeForce RTX 4070 SUPER",
+      "gpu_memory_used_mib": 10797,
+      "gpu_memory_total_mib": 12282,
+      "driver_version": "595.97",
+      "gpu_utilization_percent": 52,
+      "ram_load_percent": 98,
+      "ram_total_bytes": 34164097024,
+      "ram_avail_bytes": 525537280,
+      "pagefile_total_bytes": 105424052224,
+      "pagefile_avail_bytes": 12066529280
+    },
+    {
+      "at": "2026-10-05T00:53:39.092+08:00",
+      "gpu_name": "NVIDIA GeForce RTX 4070 SUPER",
+      "gpu_memory_used_mib": 10796,
+      "gpu_memory_total_mib": 12282,
+      "driver_version": "595.97",
+      "gpu_utilization_percent": 46,
+      "ram_load_percent": 98,
+      "ram_total_bytes": 34164097024,
+      "ram_avail_bytes": 542851072,
+      "pagefile_total_bytes": 105424052224,
+      "pagefile_avail_bytes": 12147929088
+    },
+    {
+      "at": "2026-10-05T00:53:44.186+08:00",
+      "gpu_name": "NVIDIA GeForce RTX 4070 SUPER",
+      "gpu_memory_used_mib": 10795,
+      "gpu_memory_total_mib": 12282,
+      "driver_version": "595.97",
+      "gpu_utilization_percent": 15,
+      "ram_load_percent": 98,
+      "ram_total_bytes": 34164097024,
+      "ram_avail_bytes": 517824512,
+      "pagefile_total_bytes": 105424052224,
+      "pagefile_avail_bytes": 12132802560
+    },
+    {
+      "at": "2026-10-05T00:53:49.266+08:00",
+      "gpu_name": "NVIDIA GeForce RTX 4070 SUPER",
+      "gpu_memory_used_mib": 10795,
+      "gpu_memory_total_mib": 12282,
+      "driver_version": "595.97",
+      "gpu_utilization_percent": 31,
+      "ram_load_percent": 98,
+      "ram_total_bytes": 34164097024,
+      "ram_avail_bytes": 507957248,
+      "pagefile_total_bytes": 105424052224,
+      "pagefile_avail_bytes": 12147798016
+    },
+    {
+      "at": "2026-10-05T00:53:54.350+08:00",
+      "gpu_name": "NVIDIA GeForce RTX 4070 SUPER",
+      "gpu_memory_used_mib": 10795,
+      "gpu_memory_total_mib": 12282,
+      "driver_version": "595.97",
+      "gpu_utilization_percent": 100,
+      "ram_load_percent": 98,
+      "ram_total_bytes": 34164097024,
+      "ram_avail_bytes": 485269504,
+      "pagefile_total_bytes": 105424052224,
+      "pagefile_avail_bytes": 12141854720
+    },
+    {
+      "at": "2026-10-05T00:53:59.437+08:00",
+      "gpu_name": "NVIDIA GeForce RTX 4070 SUPER",
+      "gpu_memory_used_mib": 10795,
+      "gpu_memory_total_mib": 12282,
+      "driver_version": "595.97",
+      "gpu_utilization_percent": 65,
+      "ram_load_percent": 98,
+      "ram_total_bytes": 34164097024,
+      "ram_avail_bytes": 518111232,
+      "pagefile_total_bytes": 105424052224,
+      "pagefile_avail_bytes": 12164448256
+    },
+    {
+      "at": "2026-10-05T00:54:04.526+08:00",
+      "gpu_name": "NVIDIA GeForce RTX 4070 SUPER",
+      "gpu_memory_used_mib": 10801,
+      "gpu_memory_total_mib": 12282,
+      "driver_version": "595.97",
+      "gpu_utilization_percent": 15,
+      "ram_load_percent": 98,
+      "ram_total_bytes": 34164097024,
+      "ram_avail_bytes": 449454080,
+      "pagefile_total_bytes": 105424052224,
+      "pagefile_avail_bytes": 12172042240
+    },
+    {
+      "at": "2026-10-05T00:54:09.611+08:00",
+      "gpu_name": "NVIDIA GeForce RTX 4070 SUPER",
+      "gpu_memory_used_mib": 10801,
+      "gpu_memory_total_mib": 12282,
+      "driver_version": "595.97",
+      "gpu_utilization_percent": 65,
+      "ram_load_percent": 98,
+      "ram_total_bytes": 34164097024,
+      "ram_avail_bytes": 425529344,
+      "pagefile_total_bytes": 105424052224,
+      "pagefile_avail_bytes": 12182904832
+    },
+    {
+      "at": "2026-10-05T00:54:14.700+08:00",
+      "gpu_name": "NVIDIA GeForce RTX 4070 SUPER",
+      "gpu_memory_used_mib": 10794,
+      "gpu_memory_total_mib": 12282,
+      "driver_version": "595.97",
+      "gpu_utilization_percent": 15,
+      "ram_load_percent": 98,
+      "ram_total_bytes": 34164097024,
+      "ram_avail_bytes": 405016576,
+      "pagefile_total_bytes": 105424052224,
+      "pagefile_avail_bytes": 12197314560
+    },
+    {
+      "at": "2026-10-05T00:54:19.784+08:00",
+      "gpu_name": "NVIDIA GeForce RTX 4070 SUPER",
+      "gpu_memory_used_mib": 10794,
+      "gpu_memory_total_mib": 12282,
+      "driver_version": "595.97",
+      "gpu_utilization_percent": 16,
+      "ram_load_percent": 98,
+      "ram_total_bytes": 34164097024,
+      "ram_avail_bytes": 408985600,
+      "pagefile_total_bytes": 105424052224,
+      "pagefile_avail_bytes": 12199362560
+    },
+    {
+      "at": "2026-10-05T00:54:24.866+08:00",
+      "gpu_name": "NVIDIA GeForce RTX 4070 SUPER",
+      "gpu_memory_used_mib": 10794,
+      "gpu_memory_total_mib": 12282,
+      "driver_version": "595.97",
+      "gpu_utilization_percent": 29,
+      "ram_load_percent": 98,
+      "ram_total_bytes": 34164097024,
+      "ram_avail_bytes": 421040128,
+      "pagefile_total_bytes": 105424052224,
+      "pagefile_avail_bytes": 12198920192
+    },
+    {
+      "at": "2026-10-05T00:54:29.946+08:00",
+      "gpu_name": "NVIDIA GeForce RTX 4070 SUPER",
+      "gpu_memory_used_mib": 10799,
+      "gpu_memory_total_mib": 12282,
+      "driver_version": "595.97",
+      "gpu_utilization_percent": 100,
+      "ram_load_percent": 98,
+      "ram_total_bytes": 34164097024,
+      "ram_avail_bytes": 399790080,
+      "pagefile_total_bytes": 105424052224,
+      "pagefile_avail_bytes": 12179345408
+    },
+    {
+      "at": "2026-10-05T00:54:35.022+08:00",
+      "gpu_name": "NVIDIA GeForce RTX 4070 SUPER",
+      "gpu_memory_used_mib": 10672,
+      "gpu_memory_total_mib": 12282,
+      "driver_version": "595.97",
+      "gpu_utilization_percent": 9,
+      "ram_load_percent": 98,
+      "ram_total_bytes": 34164097024,
+      "ram_avail_bytes": 390627328,
+      "pagefile_total_bytes": 105424052224,
+      "pagefile_avail_bytes": 12164710400
+    },
+    {
+      "at": "2026-10-05T00:54:40.111+08:00",
+      "gpu_name": "NVIDIA GeForce RTX 4070 SUPER",
+      "gpu_memory_used_mib": 10667,
+      "gpu_memory_total_mib": 12282,
+      "driver_version": "595.97",
+      "gpu_utilization_percent": 7,
+      "ram_load_percent": 98,
+      "ram_total_bytes": 34164097024,
+      "ram_avail_bytes": 400158720,
+      "pagefile_total_bytes": 105424052224,
+      "pagefile_avail_bytes": 12316127232
+    },
+    {
+      "at": "2026-10-05T00:54:45.193+08:00",
+      "gpu_name": "NVIDIA GeForce RTX 4070 SUPER",
+      "gpu_memory_used_mib": 10667,
+      "gpu_memory_total_mib": 12282,
+      "driver_version": "595.97",
+      "gpu_utilization_percent": 23,
+      "ram_load_percent": 98,
+      "ram_total_bytes": 34164097024,
+      "ram_avail_bytes": 386781184,
+      "pagefile_total_bytes": 105424052224,
+      "pagefile_avail_bytes": 12296273920
+    },
+    {
+      "at": "2026-10-05T00:54:50.269+08:00",
+      "gpu_name": "NVIDIA GeForce RTX 4070 SUPER",
+      "gpu_memory_used_mib": 10667,
+      "gpu_memory_total_mib": 12282,
+      "driver_version": "595.97",
+      "gpu_utilization_percent": 12,
+      "ram_load_percent": 98,
+      "ram_total_bytes": 34164097024,
+      "ram_avail_bytes": 388571136,
+      "pagefile_total_bytes": 105424052224,
+      "pagefile_avail_bytes": 12302278656
+    },
+    {
+      "at": "2026-10-05T00:54:55.355+08:00",
+      "gpu_name": "NVIDIA GeForce RTX 4070 SUPER",
+      "gpu_memory_used_mib": 10571,
+      "gpu_memory_total_mib": 12282,
+      "driver_version": "595.97",
+      "gpu_utilization_percent": 15,
+      "ram_load_percent": 98,
+      "ram_total_bytes": 34164097024,
+      "ram_avail_bytes": 396136448,
+      "pagefile_total_bytes": 105424052224,
+      "pagefile_avail_bytes": 12402995200
+    },
+    {
+      "at": "2026-10-05T00:55:00.437+08:00",
+      "gpu_name": "NVIDIA GeForce RTX 4070 SUPER",
+      "gpu_memory_used_mib": 10571,
+      "gpu_memory_total_mib": 12282,
+      "driver_version": "595.97",
+      "gpu_utilization_percent": 9,
+      "ram_load_percent": 98,
+      "ram_total_bytes": 34164097024,
+      "ram_avail_bytes": 378404864,
+      "pagefile_total_bytes": 105424052224,
+      "pagefile_avail_bytes": 12398612480
+    },
+    {
+      "at": "2026-10-05T00:55:05.511+08:00",
+      "gpu_name": "NVIDIA GeForce RTX 4070 SUPER",
+      "gpu_memory_used_mib": 10577,
+      "gpu_memory_total_mib": 12282,
+      "driver_version": "595.97",
+      "gpu_utilization_percent": 22,
+      "ram_load_percent": 98,
+      "ram_total_bytes": 34164097024,
+      "ram_avail_bytes": 383946752,
+      "pagefile_total_bytes": 105424052224,
+      "pagefile_avail_bytes": 12412776448
+    },
+    {
+      "at": "2026-10-05T00:55:10.599+08:00",
+      "gpu_name": "NVIDIA GeForce RTX 4070 SUPER",
+      "gpu_memory_used_mib": 10572,
+      "gpu_memory_total_mib": 12282,
+      "driver_version": "595.97",
+      "gpu_utilization_percent": 9,
+      "ram_load_percent": 98,
+      "ram_total_bytes": 34164097024,
+      "ram_avail_bytes": 354652160,
+      "pagefile_total_bytes": 105424052224,
+      "pagefile_avail_bytes": 12411965440
+    },
+    {
+      "at": "2026-10-05T00:55:15.681+08:00",
+      "gpu_name": "NVIDIA GeForce RTX 4070 SUPER",
+      "gpu_memory_used_mib": 10570,
+      "gpu_memory_total_mib": 12282,
+      "driver_version": "595.97",
+      "gpu_utilization_percent": 16,
+      "ram_load_percent": 98,
+      "ram_total_bytes": 34164097024,
+      "ram_avail_bytes": 358436864,
+      "pagefile_total_bytes": 105424052224,
+      "pagefile_avail_bytes": 12419899392
+    },
+    {
+      "at": "2026-10-05T00:55:20.764+08:00",
+      "gpu_name": "NVIDIA GeForce RTX 4070 SUPER",
+      "gpu_memory_used_mib": 10575,
+      "gpu_memory_total_mib": 12282,
+      "driver_version": "595.97",
+      "gpu_utilization_percent": 29,
+      "ram_load_percent": 99,
+      "ram_total_bytes": 34164097024,
+      "ram_avail_bytes": 320430080,
+      "pagefile_total_bytes": 105424052224,
+      "pagefile_avail_bytes": 12390522880
+    },
+    {
+      "at": "2026-10-05T00:55:25.839+08:00",
+      "gpu_name": "NVIDIA GeForce RTX 4070 SUPER",
+      "gpu_memory_used_mib": 10575,
+      "gpu_memory_total_mib": 12282,
+      "driver_version": "595.97",
+      "gpu_utilization_percent": 14,
+      "ram_load_percent": 99,
+      "ram_total_bytes": 34164097024,
+      "ram_avail_bytes": 297873408,
+      "pagefile_total_bytes": 105424052224,
+      "pagefile_avail_bytes": 12378787840
+    },
+    {
+      "at": "2026-10-05T00:55:30.914+08:00",
+      "gpu_name": "NVIDIA GeForce RTX 4070 SUPER",
+      "gpu_memory_used_mib": 10571,
+      "gpu_memory_total_mib": 12282,
+      "driver_version": "595.97",
+      "gpu_utilization_percent": 15,
+      "ram_load_percent": 99,
+      "ram_total_bytes": 34164097024,
+      "ram_avail_bytes": 264933376,
+      "pagefile_total_bytes": 105424052224,
+      "pagefile_avail_bytes": 12367224832
+    },
+    {
+      "at": "2026-10-05T00:55:35.992+08:00",
+      "gpu_name": "NVIDIA GeForce RTX 4070 SUPER",
+      "gpu_memory_used_mib": 10572,
+      "gpu_memory_total_mib": 12282,
+      "driver_version": "595.97",
+      "gpu_utilization_percent": 14,
+      "ram_load_percent": 99,
+      "ram_total_bytes": 34164097024,
+      "ram_avail_bytes": 218025984,
+      "pagefile_total_bytes": 105424052224,
+      "pagefile_avail_bytes": 12333371392
+    },
+    {
+      "at": "2026-10-05T00:55:41.074+08:00",
+      "gpu_name": "NVIDIA GeForce RTX 4070 SUPER",
+      "gpu_memory_used_mib": 10572,
+      "gpu_memory_total_mib": 12282,
+      "driver_version": "595.97",
+      "gpu_utilization_percent": 39,
+      "ram_load_percent": 99,
+      "ram_total_bytes": 34164097024,
+      "ram_avail_bytes": 256344064,
+      "pagefile_total_bytes": 105424052224,
+      "pagefile_avail_bytes": 12358049792
+    },
+    {
+      "at": "2026-10-05T00:55:46.162+08:00",
+      "gpu_name": "NVIDIA GeForce RTX 4070 SUPER",
+      "gpu_memory_used_mib": 10572,
+      "gpu_memory_total_mib": 12282,
+      "driver_version": "595.97",
+      "gpu_utilization_percent": 30,
+      "ram_load_percent": 99,
+      "ram_total_bytes": 34164097024,
+      "ram_avail_bytes": 288825344,
+      "pagefile_total_bytes": 105424052224,
+      "pagefile_avail_bytes": 12363014144
+    },
+    {
+      "at": "2026-10-05T00:55:51.249+08:00",
+      "gpu_name": "NVIDIA GeForce RTX 4070 SUPER",
+      "gpu_memory_used_mib": 10572,
+      "gpu_memory_total_mib": 12282,
+      "driver_version": "595.97",
+      "gpu_utilization_percent": 14,
+      "ram_load_percent": 99,
+      "ram_total_bytes": 34164097024,
+      "ram_avail_bytes": 299335680,
+      "pagefile_total_bytes": 105424052224,
+      "pagefile_avail_bytes": 12392816640
+    },
+    {
+      "at": "2026-10-05T00:55:56.333+08:00",
+      "gpu_name": "NVIDIA GeForce RTX 4070 SUPER",
+      "gpu_memory_used_mib": 10572,
+      "gpu_memory_total_mib": 12282,
+      "driver_version": "595.97",
+      "gpu_utilization_percent": 9,
+      "ram_load_percent": 99,
+      "ram_total_bytes": 34164097024,
+      "ram_avail_bytes": 272662528,
+      "pagefile_total_bytes": 105424052224,
+      "pagefile_avail_bytes": 12375441408
+    },
+    {
+      "at": "2026-10-05T00:56:01.410+08:00",
+      "gpu_name": "NVIDIA GeForce RTX 4070 SUPER",
+      "gpu_memory_used_mib": 10576,
+      "gpu_memory_total_mib": 12282,
+      "driver_version": "595.97",
+      "gpu_utilization_percent": 25,
+      "ram_load_percent": 99,
+      "ram_total_bytes": 34164097024,
+      "ram_avail_bytes": 268152832,
+      "pagefile_total_bytes": 105424052224,
+      "pagefile_avail_bytes": 12372783104
+    },
+    {
+      "at": "2026-10-05T00:56:06.486+08:00",
+      "gpu_name": "NVIDIA GeForce RTX 4070 SUPER",
+      "gpu_memory_used_mib": 10578,
+      "gpu_memory_total_mib": 12282,
+      "driver_version": "595.97",
+      "gpu_utilization_percent": 86,
+      "ram_load_percent": 99,
+      "ram_total_bytes": 34164097024,
+      "ram_avail_bytes": 272564224,
+      "pagefile_total_bytes": 105424052224,
+      "pagefile_avail_bytes": 12388171776
+    },
+    {
+      "at": "2026-10-05T00:56:11.564+08:00",
+      "gpu_name": "NVIDIA GeForce RTX 4070 SUPER",
+      "gpu_memory_used_mib": 11719,
+      "gpu_memory_total_mib": 12282,
+      "driver_version": "595.97",
+      "gpu_utilization_percent": 15,
+      "ram_load_percent": 99,
+      "ram_total_bytes": 34164097024,
+      "ram_avail_bytes": 8548352,
+      "pagefile_total_bytes": 105424052224,
+      "pagefile_avail_bytes": 10733404160
+    },
+    {
+      "at": "2026-10-05T00:56:16.672+08:00",
+      "gpu_name": "NVIDIA GeForce RTX 4070 SUPER",
+      "gpu_memory_used_mib": 11579,
+      "gpu_memory_total_mib": 12282,
+      "driver_version": "595.97",
+      "gpu_utilization_percent": 100,
+      "ram_load_percent": 98,
+      "ram_total_bytes": 34164097024,
+      "ram_avail_bytes": 481497088,
+      "pagefile_total_bytes": 106507845632,
+      "pagefile_avail_bytes": 11643621376
+    },
+    {
+      "at": "2026-10-05T00:56:21.754+08:00",
+      "gpu_name": "NVIDIA GeForce RTX 4070 SUPER",
+      "gpu_memory_used_mib": 10855,
+      "gpu_memory_total_mib": 12282,
+      "driver_version": "595.97",
+      "gpu_utilization_percent": 100,
+      "ram_load_percent": 98,
+      "ram_total_bytes": 34164097024,
+      "ram_avail_bytes": 478834688,
+      "pagefile_total_bytes": 106507845632,
+      "pagefile_avail_bytes": 12477440000
+    },
+    {
+      "at": "2026-10-05T00:56:26.793+08:00",
+      "gpu_name": "NVIDIA GeForce RTX 4070 SUPER",
+      "gpu_memory_used_mib": 9319,
+      "gpu_memory_total_mib": 12282,
+      "driver_version": "595.97",
+      "gpu_utilization_percent": 100,
+      "ram_load_percent": 98,
+      "ram_total_bytes": 34164097024,
+      "ram_avail_bytes": 520916992,
+      "pagefile_total_bytes": 106507845632,
+      "pagefile_avail_bytes": 14181048320
+    },
+    {
+      "at": "2026-10-05T00:56:31.845+08:00",
+      "gpu_name": "NVIDIA GeForce RTX 4070 SUPER",
+      "gpu_memory_used_mib": 3751,
+      "gpu_memory_total_mib": 12282,
+      "driver_version": "595.97",
+      "gpu_utilization_percent": 6,
+      "ram_load_percent": 98,
+      "ram_total_bytes": 34164097024,
+      "ram_avail_bytes": 671207424,
+      "pagefile_total_bytes": 106507845632,
+      "pagefile_avail_bytes": 20095889408
+    },
+    {
+      "at": "2026-10-05T00:56:33.799+08:00",
+      "gpu_name": "NVIDIA GeForce RTX 4070 SUPER",
+      "gpu_memory_used_mib": 3755,
+      "gpu_memory_total_mib": 12282,
+      "driver_version": "595.97",
+      "gpu_utilization_percent": 14,
+      "ram_load_percent": 97,
+      "ram_total_bytes": 34164097024,
+      "ram_avail_bytes": 959987712,
+      "pagefile_total_bytes": 106507845632,
+      "pagefile_avail_bytes": 20450398208
+    }
+  ],
+  "resources": {
+    "sample_count": 43,
+    "sample_interval_seconds": 5.0,
+    "nvidia_smi_memory_used_mib_first": 1450,
+    "nvidia_smi_memory_used_mib_peak": 11719,
+    "nvidia_smi_memory_used_mib_last": 3755,
+    "ram_avail_bytes_min": 8548352,
+    "ram_total_bytes": 34164097024,
+    "comfy_vram_free_bytes_min": null,
+    "note": "nvidia-smi memory.used is a sample peak, not a continuous hardware maximum"
+  },
+  "finished_at": "2026-10-05T00:56:33.834+08:00"
+}
