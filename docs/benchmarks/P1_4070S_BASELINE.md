@@ -20,7 +20,7 @@
 - Template id: `91f6bbe2-ed41-4fd6-bac7-71d5b5864ecb`
 - SHA256: `8c13b61fdb42562052b2d5d867b354f7cf4d5ef528c98ed6847bdddc3ddb3d16`
 - Size: 15015 bytes
-- Submitted as API prompt converted from that graph. Not a GUI Template Library click. Not saved to `workflows/video/lab/` (stage Step 2 still not done). `scripts/p1_comfy_probe.py` was not written.
+- Submitted as API prompt converted from that graph. Not a GUI Template Library click. At run time it was not yet saved under `workflows/video/lab/`. The later Step 2 export is recorded below. `scripts/p1_comfy_probe.py` was not written.
 
 ## Graph actually executed
 
@@ -71,11 +71,22 @@ Changed from the template widgets, for this one small run:
 - Peak system RAM was not measured as a counter; only minimum available physical memory was sampled
 - No OOM, no GPU reset, process PID stayed 333664
 
+## API workflow export (stage Step 2)
+
+- exported_at: 2026-10-04 18:45 Asia/Shanghai
+- Method: `GET /history/d0d5c325-9e52-4a49-9f89-7d7fd9095b6c`, saved `prompt[2]` (the API graph). Parsed JSON equals the live history object. Not a GUI Save (API Format) click. Not hand-rebuilt. No second job submitted. Listener stayed PID 333664; no second ComfyUI.
+- Path: `workflows/video/lab/VID_wan22_5b_p1a_v001.json`
+- SHA256: `c000f3731824a504ab50c123485ecc97e186d6bab55615bf08e6409a490f5fcb`
+- Size: 2937 bytes
+- Nodes: 37 UNETLoader, 38 CLIPLoader, 39 VAELoader, 48 ModelSamplingSD3, 6 CLIPTextEncode, 7 CLIPTextEncode, 55 Wan22ImageToVideoLatent, 3 KSampler, 8 VAEDecode, 57 CreateVideo, 58 SaveVideo
+- Same graph as this smoke, including 480x832x33, seed 898471028164125, and filename_prefix `video/p1a_wan22_5b_smoke`. LoadImage node 56 is absent.
+- Sibling metadata required by `workflows/README.md`: `workflows/video/lab/VID_wan22_5b_p1a_v001.yaml`
+
 ## Not done
 
 - No second job
 - No 14B, GGUF, or WanGP
-- No I2V (`start_image` not connected)
-- No `scripts/p1_comfy_probe.py`
-- No exported `workflows/video/lab/VID_wan22_5b_p1a_v001.json`
+- No I2V (`start_image` not connected; LoadImage was not added back)
+- No `scripts/p1_comfy_probe.py` (stage Step 3; not started)
+- No L1-L4 ladder and no 10-run stability
 - P1A PASS conditions (10 serial runs, p50/p95) are not met

@@ -1,0 +1,30 @@
+workflow_id: VID_wan22_5b_p1a_v001
+version: v001
+kind: lab
+api_format: comfy_prompt_dict
+source: GET /history/d0d5c325-9e52-4a49-9f89-7d7fd9095b6c prompt[2]
+source_note: exported from the running ComfyUI history of the successful smoke. Not a GUI Save dialog. Not hand-rebuilt.
+sha256: c000f3731824a504ab50c123485ecc97e186d6bab55615bf08e6409a490f5fcb
+bytes: 2937
+comfyui_version: 0.38.0
+required_custom_nodes: []
+required_models:
+  - wan2.2_ti2v_5B_fp16.safetensors
+  - wan2.2_vae.safetensors
+  - umt5_xxl_fp8_e4m3fn_scaled.safetensors
+input_contract: API prompt dict. No image input. Template LoadImage node 56 was bypassed and is absent, so this graph is text-to-video.
+output_contract: SaveVideo mp4 under filename_prefix video/p1a_wan22_5b_smoke
+fixed_run:
+  width: 480
+  height: 832
+  length: 33
+  seed: 898471028164125
+  steps: 20
+  cfg: 5
+  sampler_name: uni_pc
+  scheduler: simple
+benchmark: docs/benchmarks/P1_4070S_BASELINE.md
+known_issues:
+  - One successful T2V smoke only. Not I2V.
+  - Not the 10-run stability ladder.
+  - scripts/p1_comfy_probe.py does not exist yet.
