@@ -1,164 +1,184 @@
-# 13 Codex 执行手册
+# 13 Codex 执行手册（P0R/P1A 优先）
 
-## 1. Codex 的角色
+## 1. 当前命令
 
-Codex 是：
-- 工程负责人
-- 自动化调度器
-- benchmark 执行者
-- 文档维护者
+本地 Codex 第一轮不要“继续实现所有规划”。
 
-Codex 不是：
-- 无监督艺术总监
-- 无条件升级最新模型的机器人
-- 自动发布账号运营机器人
+只执行：
+1. P0R
+2. P1A
 
-## 2. 本地首次接收仓库
+详细步骤见 docs/stages。
 
-第一轮只做 inventory，不改技术路线。
+## 2. P0R
 
-建议任务：
-1. git pull
-2. 阅读 AGENTS.md 与 PROJECT_STATE.md
-3. 找出本机 ComfyUI 路径
-4. 找出 Python 环境
-5. 记录 GPU/RAM/driver
-6. 扫描已有 custom_nodes
-7. 扫描已有模型文件名和大小
-8. 不移动模型
-9. 生成 local/inventory.json
-10. 写 docs/benchmarks/P1_ENVIRONMENT.md
-
-## 3. 不要直接下载一堆模型
-
-先回答：
-- 已有什么；
-- 缺什么；
-- 为什么缺；
-- 需要多少空间；
-- 哪个 workflow 需要它；
-再下载。
-
-## 4. P1 推荐执行顺序
-
-### Task A: env_probe
-实现 scripts/env_probe.py。
-
-输出：
-- Windows
-- GPU
-- VRAM
+必须重新探测：
+- GPU/VRAM
 - RAM
 - driver
-- torch
-- CUDA
-- ComfyUI path/commit
+- CUDA runtime
+- Python
+- PyTorch
+- FFmpeg
+- ComfyUI 路径
+- ComfyUI commit/version
+- 实际监听端口
+- custom_nodes
+- models
 - disk free
+- pagefile（能读则记录）
 
-### Task B: ComfyUI health
-确认 8188/8189 或实际端口。
+禁止：
+- 下载 Wan
+- 下载 LTX
+- 安装 Wrapper
+- 装 PuLID
+- 修 FaceID
+- 建第二 ComfyUI
 
-### Task C: workflow baseline
-从 ComfyUI 手工保存一个最小 API workflow。
-Codex 不要一开始自动拼复杂 graph。
+产出：
+docs/benchmarks/P1_ENVIRONMENT.md
 
-### Task D: fixed benchmark assets
-必须固定同一 keyframe/seed 参数组，否则模型比较无意义。
+然后停下，确认 P1A 下载清单。
 
-### Task E: benchmark runner
-同一个任务跑：
-- native Wan
-- wrapper low-vram
-- FramePack
+## 3. P1A 下载前清单
 
-结果 CSV/JSON + Markdown。
+Codex 必须先报告：
+- 需要哪些 5B 文件
+- 每个文件来源
+- 每个文件大小
+- 预计总下载
+- 目标存储路径
+- 磁盘剩余
+- ComfyUI 版本是否包含 Wan2.2 官方 template
 
-## 5. 建议未来 CLI
+只下载官方 5B baseline 所需文件。
 
-~~~text
-claw doctor
-claw models list
-claw workflows validate
-claw episode init EP001
-claw episode validate EP001
-claw shot keyframe EP001 SH001
-claw shot render EP001 SH001
-claw shot qc EP001 SH001
-claw shot reroll EP001 SH001
-claw episode edit EP001
-claw episode final-qc EP001
-claw episode status EP001
-~~~
+## 4. P1A workflow
 
-## 6. 任务提交安全
+优先从 ComfyUI 官方 Template Library 获取 Wan2.2 5B。
+不得手写复杂 workflow。
 
-在调用 ComfyUI 前检查：
-- endpoint 在线；
-- workflow hash；
-- input file 存在；
-- model manifest 存在；
-- output dir 可写；
-- disk free 足够。
+操作：
+1. GUI 手工成功加载一次；
+2. 导出 API workflow JSON；
+3. 固定副本进入 workflows/video/lab；
+4. 记录 hash；
+5. 再写自动提交脚本。
 
-运行后写：
-- job id；
-- start/end；
-- duration；
-- output；
-- error；
-- peak VRAM（benchmark mode）。
+## 5. P1 最小脚本
 
-## 7. 重试策略
+文件：
+scripts/p1_comfy_probe.py
 
-OOM：
-1. unload/restart clean；
-2. 重试同配置一次确认是否碎片；
-3. 降 frames；
-4. 降 resolution；
-5. 开/增加 offload/block swap；
-6. 换量化；
-7. fallback engine。
+功能：
+- --url
+- --workflow
+- --image
+- --prompt
+- --seed
+- --width
+- --height
+- --frames
+- --output-record
 
-Identity drift：
-1. 不先换视频模型；
-2. 检查 keyframe；
-3. 检查 reference；
-4. 降动作；
-5. 修改 motion prompt；
-6. 重抽；
-7. 才考虑模型/LoRA。
+执行：
+health
+→ validate input
+→ submit
+→ wait
+→ collect output
+→ record time
+→ record NVML peak VRAM（如可）
+→ record process/system RAM（如可）
+→ write JSON
 
-## 8. 文档职责
+脚本不做 episode 业务。
 
-每完成阶段：
-- 更新 PROJECT_STATE.md；
-- 勾 ROADMAP；
-- 把关键技术决策写入 DECISION_LOG；
-- benchmark 放 docs/benchmarks；
-- 新依赖加 REFERENCE_SOURCES 和 model manifest。
+## 6. 参数测试规则
 
-## 9. 本项目最重要的测试思维
+固定：
+- input
+- prompt
+- seed（稳定性测试可另用 seed set）
+- workflow version
 
-不要问“能不能跑”。
+每次只改变：
+- frames 或
+- resolution
 
-要问：
-- 在什么参数下跑？
-- 多少显存？
-- 多久？
-- 10 次成功几次？
-- 身份评分多少？
-- 哪种镜头适合？
-- 如何回退？
+推荐 ladder：
+480×832 / 49
+→ 480×832 / 81
+→ 576×1024 / 49
+→ optional 576×1024 / 81
 
-## 10. 提交规范
+如果 480×832 本身不符合官方 node constraint：
+记录事实，选择最近合法 9:16 尺寸。
 
-建议 commit：
-- docs:
-- feat:
-- fix:
-- perf:
-- test:
-- chore:
-- benchmark:
+## 7. 10 次稳定性
 
-每个 PR/commit 不混入无关的大范围重构。
+选出首个成功配置后：
+- clean start
+- 10 次串行
+- 不并发
+- 每次记录峰值/时间/错误
+
+不能只跑一次就写“稳定”。
+
+## 8. P1A-Q
+
+基础运行稳定后才换成真实 keyframe。
+
+三类：
+A. 单人微动作
+B. 双人同框无接触
+C. 双人低接触但避开复杂手
+
+每类 3 takes。
+
+如果 C 很差：
+不推翻视频引擎；
+先把高风险镜头转静态。
+
+## 9. P1B 决策
+
+P1A 后向用户汇报：
+- 5B quality
+- speed
+- VRAM/RAM
+- storage
+- EP001 预计时间
+
+只有明确问题需要解决才进 P1B。
+
+## 10. P2
+
+先不要安装所有 identity tools。
+按“双身份同框”实验设计一个最小矩阵。
+
+林黛玉 FaceID 如果要用：
+- 先补 InsightFace
+- 仅静帧
+- 验证五官不被现代化
+
+悟空：
+- 禁止 FaceID 作为唯一锁定。
+
+## 11. P3
+
+20 keyframes first。
+6 low-risk motion first。
+voice-over only。
+No lip sync。
+
+## 12. 文档更新
+
+每个阶段结束：
+- PROJECT_STATE
+- ROADMAP
+- DECISION_LOG
+- benchmark
+- manifests
+
+只有本机实测可以写“verified on 4070S”。

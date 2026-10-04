@@ -1,106 +1,140 @@
 # AI-short-vidio-claw
 
-> 本地优先、角色一致、可复现的 AI 竖屏短剧生产线。当前首个样片方向：**“林黛玉 × 孙悟空”生活感 CP 短剧**。
+> 本地优先、角色一致、可复现的 AI 竖屏短剧生产线。目标硬件：Windows + RTX 4070 Super 12GB + 约 32GB RAM + ComfyUI + Codex。
 
-## 1. 项目最终要实现什么
+## 当前技术状态
 
-把“一个故事想法”稳定地变成一条 **45–90 秒、9:16、10–20 镜头**的 AI 小短剧，并且做到：
+**战略结论：GO。当前机器生产就绪度：NO-GO，先完成 P0R/P1A。**
 
-- 角色跨镜一致：脸、体型、发型、毛发、服装、道具状态不随镜头随机漂移。
-- 生活感优先：包扎、打伞、浇花、翻冰箱、刷牙、做饭、坐公交、逛菜场等真实情侣动作，而不是连续摆拍。
-- 先图后视频：先冻结每个镜头的关键帧，再做图生视频，降低双人镜头失控概率。
-- 本地优先：RTX 4070 Super 12GB + ComfyUI 为主，本地完成大部分视频、语音、口型和合成。
-- 可替换模型：Wan、FramePack、PuLID、IPAdapter、MuseTalk、GPT-SoVITS 都通过 adapter/workflow 层接入，不把项目绑死在某一个模型。
-- 可由 Codex 接管：项目事实、阶段、SOP、目录、验收标准、参考来源全部写进仓库，后续 AI 不需要重新猜项目来龙去脉。
-- 可追溯：每集从剧本、视觉设定、分镜、关键帧、视频、音频到成片都有对应文件和版本记录。
+本项目核心方法仍成立：
+- Image First → Video Second；
+- 角色/造型/道具连续性先冻结，再生成视频；
+- GPU 重任务串行；
+- 每镜可追溯、可重跑；
+- 两道人类 Gate：Keyframe Approval / Final Approval。
 
-## 2. 当前技术决策
+但 2026-10-04 二次复核后，立即执行路线已收窄：
 
-主路线：
+> **P1A 只验证：单 ComfyUI 进程 + Wan2.2-TI2V-5B + 官方原生 workflow + native offload。**
+
+暂不把以下内容放进 P1A：
+- Wan2.2 14B；
+- GGUF 14B；
+- WanVideoWrapper 14B/block-swap；
+- LTX-2.x 原生 ComfyUI；
+- PuLID / FaceID；
+- GPT-SoVITS / MuseTalk；
+- 两个同时常驻的 ComfyUI 服务。
+
+原因不是这些路线“永远不能用”，而是当前机器为 12GB VRAM + ~32GB RAM，且本地尚未安装 Wan 权重/完成 API workflow 基线。先把变量收窄，拿到本机证据，再扩展。
+
+## 第一阶段目标
+
+把一张已人工确认的关键帧，用 Wan2.2-TI2V-5B 在本机生成第一条可复现的短视频，并记录：
+
+- 模型文件名与 hash
+- ComfyUI commit
+- workflow hash
+- 实际端口
+- 输入 keyframe
+- prompt
+- seed
+- 分辨率
+- 帧数
+- 实际 fps
+- 峰值显存
+- 系统 RAM 峰值
+- 运行耗时
+- 输出路径
+- 成功/失败原因
+
+**P1 Gate 不再预设“576×1024 一定稳定”。** 分辨率和帧数必须通过阶梯实测得到。
+
+## 当前生产架构
 
 ```text
-故事/选题
+故事/剧本
   ↓
-剧本与角色连续性锁
+视觉设定 + 连续性锁
   ↓
-分镜 + 冻结关键帧
+正式分镜
   ↓
-关键帧生成（ChatGPT 人工精修 / 本地 ComfyUI 批量）
+冻结关键帧
+  ├─ Hero Lane：ChatGPT/人工精修
+  └─ Local Lane：ComfyUI（P2 以后）
   ↓
-图像 QC
+Approved Keyframe
   ↓
-ComfyUI 图生视频
-  ├─ 主：原生 ComfyUI + Wan2.2
-  ├─ 低显存/实验：ComfyUI-WanVideoWrapper
-  └─ 长镜头/低动作回退：FramePack
+P1A 视频基线
+  └─ 单 ComfyUI + Native Wan2.2-TI2V-5B
   ↓
-TTS（GPT-SoVITS）
+P1B 可选对照（仅 P1A 通过后）
+  ├─ FramePack
+  └─ WanGP / 其他低显存 runner
   ↓
-口型（MuseTalk，适用于人脸对白镜头）
+P2 双身份同框 keyframe
   ↓
-BGM/SFX/环境音
+P3 EP001 First Cut
   ↓
-FFmpeg 剪辑、字幕、响度、导出
+P4 完整控制平面
   ↓
-VLM/规则 QC
+P5 TTS / Lip Sync / 后期
   ↓
-最终短剧
+P6 一键单集
+  ↓
+P7 系列化
 ```
 
-**重要优化：原生 ComfyUI 能完成的功能优先原生实现。** WanVideoWrapper 作者本人也建议：当功能已经进入 ComfyUI 原生实现时优先原生，Wrapper 主要用于实验能力、特殊模型和显存优化。
+## 重要事实边界
 
-## 3. 4070S 的定位
+- Wan2.2 官方仓库的 5B 720P 独立推理示例写的是至少 24GB VRAM；但 ComfyUI 官方 Wan2.2 页面明确写“5B version should fit well on 8GB vram with the ComfyUI native offloading”。因此本项目不拿任何一边的数字直接当 4070S 实测结果，而是以本机 benchmark 为准。
+- Wan2.2 I2V-A14B 官方独立推理示例要求至少 80GB VRAM。12GB 上的 14B 必须依赖量化/强 offload/第三方实现，故退出 P1A。
+- LTX-2.x 官方 ComfyUI-LTXVideo 当前 README 推荐 32GB+ VRAM，因此不作为本机 P1A/P1B 原生 ComfyUI 首选。
+- MuseTalk 官方 Gradio 默认端口是 7860；GPT-SoVITS API v2 默认 9880；ComfyUI 上游默认 8188，但本项目必须发现实际本机端口，不允许硬编码。
 
-RTX 4070 Super 12GB **足够做本项目的 MVP 和持续生产**，但生产设计必须围绕 12GB 显存：
+## 文档阅读顺序
 
-- GPU 重任务串行，不让多个大模型同时常驻显存。
-- 原生工作分辨率优先 480×832 / 576×1024，最终再插帧与放大。
-- 单镜头优先 3–5 秒、49–81 帧。
-- Wan 使用 FP8 / GGUF / offload / block swap 等低显存策略（仅在需要时启用）。
-- FramePack 作为长镜头或低显存回退。
-- 角色一致性比原始分辨率优先级更高。
+新接手 AI/Codex：
+1. AGENTS.md
+2. PROJECT_STATE.md
+3. docs/17_TECH_ROUTE_REVALIDATION.md
+4. docs/00_PROJECT_CHARTER.md
+5. docs/01_PRD.md
+6. docs/02_FEASIBILITY.md
+7. docs/03_TECHNICAL_ARCHITECTURE.md
+8. docs/04_SOP.md
+9. docs/05_DIRECTORY_STANDARD.md
+10. docs/06_CHARACTER_SYSTEM.md
+11. docs/08_MODEL_AND_WORKFLOW_MATRIX.md
+12. docs/10_QA_ACCEPTANCE.md
+13. docs/11_ROADMAP.md
+14. docs/13_CODEX_RUNBOOK.md
+15. docs/14_DECISION_LOG.md
+16. docs/15_EP001_PILOT_PLAN.md
+17. docs/stages/ 下对应阶段执行报告
 
-## 4. 文档阅读顺序
+## 本地数据原则
 
-新接手本项目的 AI / Codex 应按以下顺序阅读：
-
-1. [AGENTS.md](AGENTS.md)
-2. [PROJECT_STATE.md](PROJECT_STATE.md)
-3. [项目章程](docs/00_PROJECT_CHARTER.md)
-4. [产品需求 PRD](docs/01_PRD.md)
-5. [可行性研究](docs/02_FEASIBILITY.md)
-6. [技术架构](docs/03_TECHNICAL_ARCHITECTURE.md)
-7. [生产 SOP](docs/04_SOP.md)
-8. [目录规范](docs/05_DIRECTORY_STANDARD.md)
-9. [角色一致性系统](docs/06_CHARACTER_SYSTEM.md)
-10. [单集工程规范](docs/07_EPISODE_STANDARD.md)
-11. [模型与工作流矩阵](docs/08_MODEL_AND_WORKFLOW_MATRIX.md)
-12. [技术来源与参考](docs/09_REFERENCE_SOURCES.md)
-13. [质量验收](docs/10_QA_ACCEPTANCE.md)
-14. [阶段路线图](docs/11_ROADMAP.md)
-15. [风险与合规](docs/12_RISK_AND_COMPLIANCE.md)
-16. [Codex 执行手册](docs/13_CODEX_RUNBOOK.md)
-17. [架构决策记录](docs/14_DECISION_LOG.md)
-18. [EP001 试播集计划](docs/15_EP001_PILOT_PLAN.md)
-
-## 5. 仓库不是“模型仓库”
-
-GitHub 只保存：
-
+Git 只保存：
 - 代码
-- 配置模板
-- ComfyUI workflow JSON
-- 提示词
-- 剧本/分镜/质量报告
-- 模型清单与哈希
-- 少量经授权的参考素材
+- 配置
+- workflow
+- 剧本/分镜/提示词
+- model manifest
+- benchmark
+- QA
 
-**不提交**大模型权重、LoRA 大文件、缓存、原始批量帧、成片和密钥。它们放在 `local/` 或外部数据盘，由 manifest 记录版本。
+不提交：
+- 大模型
+- LoRA 权重
+- cache
+- 批量帧
+- 大视频
+- API key
 
-## 6. 当前阶段
+## 当前下一步
 
-当前为 **P0：产品与工程基线建立**。
+本地 Agent 只执行：
+**docs/stages/P0R_REBASE_EXECUTION.md → docs/stages/P1A_WAN22_5B_BASELINE.md**
 
-下一阶段是 **P1：4070S 基准验证**：用同一组冻结角色参考图，实测 Wan2.2 原生、WanVideoWrapper 低显存配置、FramePack 的显存、耗时、身份漂移和动作质量，形成可量化选型结论。
-
-详细状态见 [PROJECT_STATE.md](PROJECT_STATE.md)。
+在 P1A prerequisites 未通过前，**不提交任何图生视频任务**。

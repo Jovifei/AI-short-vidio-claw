@@ -2,31 +2,36 @@ hardware:
   os: Windows
   gpu: "RTX 4070 Super"
   vram_gb: 12
-  ram_gb: null
-  data_disk: null
+  ram_gb: 32
 
-ports:
-  comfyui_image: 8188
-  comfyui_video: 8189
-  gpt_sovits: 9880
-  musetalk: 9881
+services:
+  comfyui:
+    url: null   # P0R discover; do not assume 8188/8000.
+    gpu_active_instances_max: 1
+  gpt_sovits:
+    enabled_stage: P5
+    default_upstream_url: "http://127.0.0.1:9880"
+  musetalk:
+    enabled_stage: P5
+    upstream_gradio_default_url: "http://127.0.0.1:7860"
 
-render:
-  working_portrait_sizes:
+p1a:
+  model: "Wan2.2-TI2V-5B"
+  engine: "ComfyUI native"
+  resolution_ladder:
     - [480, 832]
     - [576, 1024]
-  shot_duration_sec: [3, 5]
-  frame_count_candidates:
+  frame_ladder:
     - 49
-    - 65
     - 81
-  source_fps_candidates:
-    - 16
-    - 24
-  concurrency_gpu: 1
+  concurrent_gpu_jobs: 1
+  no_lipsync: true
+  no_tts: true
+  no_identity_models: true
 
 storage:
   local_root: "./local"
   models: "./local/models"
   cache: "./local/cache"
   temp: "./local/temp"
+  minimum_free_gb_before_download: null # P0R measures first.

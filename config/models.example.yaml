@@ -1,37 +1,41 @@
 image:
-  primary: TBD
-  identity_human:
-    preferred:
+  p1: "manual-approved-keyframe-only"
+  p2_identity_human:
+    candidates:
       - PuLID
       - IPAdapter FaceID
-    future:
       - character_lora
-  identity_nonhuman:
-    preferred:
+    status: benchmark_required
+  p2_identity_nonhuman:
+    candidates:
       - character_lora
       - reference_conditioning
+    status: benchmark_required
 
 video:
-  primary:
+  p1a_baseline:
     engine: comfyui-native
-    model: Wan2.2
-  low_vram_experimental:
-    engine: comfyui-wanvideowrapper
-    precision:
-      - fp8
-      - gguf
-    features:
-      - cpu_offload
-      - block_swap
-  fallback_long_low_motion:
-    engine: FramePack
+    model: Wan2.2-TI2V-5B
+    offload: native
+    status: required_first
+  p1b_optional:
+    - engine: FramePack
+      status: only_after_p1a
+    - engine: WanGP
+      status: only_after_p1a_and_user_approval
+  deferred:
+    - Wan2.2-I2V-A14B-native
+    - Wan2.2-A14B-GGUF
+    - WanVideoWrapper-14B
+    - LTX-2.x-native-ComfyUI
 
 speech:
-  tts: GPT-SoVITS
-  lipsync_human: MuseTalk
-  lipsync_wukong: TBD
+  p1a: disabled
+  later_tts: GPT-SoVITS
+  later_lipsync_human: MuseTalk
+  later_lipsync_wukong: TBD
 
 post:
-  editor: ffmpeg
-  upscale: TBD
-  interpolation: TBD
+  p3_first_cut: ffmpeg
+  upscale: TBD_after_benchmark
+  interpolation: TBD_after_benchmark

@@ -1,160 +1,159 @@
-# 06 角色一致性与人物系统
+# 06 角色一致性与双身份系统
 
 ## 1. 目标
 
-“同一个角色”不是只锁脸，而是锁定一组可见事实：
-
+“同一个角色”不只是锁脸，而是锁：
 - 头脸比例
-- 眼型/眉形
-- 鼻口比例
+- 眼眉鼻口
 - 下颌
-- 年龄观感
+- 年龄感
 - 体型
-- 发型
-- 发饰
-- 肤色/毛发
+- 发型/毛发
 - 身高差
 - 服装 stage
-- 标志道具
+- 道具状态
 - 表演习惯
 
-## 2. 林黛玉：原创原著型视觉方向
+**项目真正的 P2 Gate 是两位主角在同一关键帧中同时稳定。**
 
-项目使用的是“古典文学人物林黛玉的原创视觉设计”，而不是对任何一位现代演员的复制。
+## 2. 林黛玉原创视觉方向
 
-目标观感：
-- 清秀、灵动、敏锐；
-- 面部偏圆润鹅蛋，不做网红 V 脸和过尖下巴；
-- 下颌线自然收窄，但有真实颏部体积；
-- 眼睛偏细长、含蓄，单眼皮/内双视觉均可，但不做夸张欧式双眼皮；
-- 眉细而有轻蹙感，不能画成强势现代平眉；
-- 鼻梁与鼻头小巧、自然；
-- 唇形小而薄厚适中；
-- 表情不应长期“歪头忧郁”，她应有冷眼、含笑、专注、讥诮、好奇、倔强、放松等丰富状态；
-- 体态纤细，但不是病弱摆拍；
-- 发式可保留古典气质，进入现代生活场景时服装可做“古典元素 × 现实生活”混搭。
+不是复制任何具体现代演员。
 
-禁止漂移：
-- 尖下巴；
-- 明显网红妆；
-- 大开扇双眼皮；
-- 高饱和韩式妆感；
-- 过度幼态娃娃脸；
-- 每镜都低头/歪头；
-- 直接复刻特定影视演员五官和服饰。
+固定方向：
+- 圆润偏鹅蛋脸
+- 自然收窄的下颌，非 V 脸/尖下巴
+- 细长眼型
+- 单眼皮/内双视觉均可
+- 眉细、略带轻蹙
+- 鼻口小巧自然
+- 纤细但不是“病弱摆拍”
+- 古典气质进入现实生活场景
 
-## 3. 孙悟空：原创人形猿猴视觉方向
+表情库：
+- 专注
+- 轻微嫌弃
+- 侧眼
+- 克制笑
+- 讥诮
+- 好奇
+- 倔强
+- 照顾
+- 疲倦
+
+禁止：
+- 网红尖下巴
+- 夸张大双
+- 韩式高饱和妆
+- 每镜歪头
+- 复制具体演员五官/服饰
+
+## 3. 孙悟空原创视觉方向
 
 固定：
-- 暖金/棕金毛发；
-- 人形体态；
-- 清晰猿猴面部结构；
-- 鼻口不是普通人类脸加毛；
-- 耳朵、眉骨、毛发方向稳定；
-- 四肢毛发和手掌比例稳定；
-- 日常服装偏旧、实用、易活动；
-- 性格外放、顽皮、警觉，但在黛玉面前常有克制的温柔。
+- 暖金棕毛
+- 清晰猿猴眉骨/口鼻
+- 稳定耳形
+- 人形体态
+- 毛发方向一致
+- 日常服装实用、旧、易活动
 
-禁止漂移：
-- 下一镜突然普通人脸；
-- 毛色大幅改变；
-- 耳朵形状随机；
-- 身高和体格显著变化；
-- 直接复制特定影视版孙悟空妆造。
+禁止：
+- 普通人脸加毛
+- 毛色乱变
+- 耳形随机
+- 身高体型漂移
+- 复制特定影视版猴妆
 
-## 4. 角色 Reference Pack
+## 4. Reference Pack
 
-每个主角至少准备：
-- 正脸
-- 左 3/4
-- 右 3/4
-- 侧脸
-- 半身
-- 全身
-- 中性表情
-- 笑
-- 生气/不耐烦
-- 当前主 stage 服装
+每人 20–30 张 approved：
+- front
+- 3/4 left/right
+- profile
+- half body
+- full body
+- neutral
+- smile
+- annoyed
+- caring
+- tired
+- 主 stage
 
-建议形成 20–30 张“已确认且彼此一致”的图，再考虑训练角色 LoRA。
+Reference 未稳定前不训练 LoRA。
 
-## 5. 技术路线
+## 5. 单人 identity 候选
 
-### 人类角色
-阶段 A：
-approved reference + PuLID / IPAdapter。
+DAIYU：
+- PuLID
+- IPAdapter FaceID
+- Character LoRA
 
-阶段 B：
-角色视觉稳定后训练 LoRA。
+WUKONG：
+- Character LoRA
+- reference conditioning
 
-阶段 C：
-LoRA + reference conditioning + pose/depth 控制。
+P1 不测试这些。
+P2 本机 benchmark 后才能选。
 
-### 孙悟空
-阶段 A：
-reference conditioning + 统一提示词模板。
+## 6. 双身份同框专项
 
-阶段 B：
-优先训练角色 LoRA。
+原路线最大缺口不是“PuLID 能不能锁黛玉”，而是：
+**同一张图里能不能同时守住黛玉和悟空。**
 
-阶段 C：
-LoRA + reference + mask/pose 组合。
+候选：
+A. Hero Lane：ChatGPT/人工关键帧
+B. DAIYU identity ref + WUKONG LoRA/ref
+C. two-pass regional inpaint/composite
+D. regional mask/conditioning
 
-不建议把 InsightFace 相似度当孙悟空唯一判据，因为其脸不是标准人脸分布。
+选择原则：
+- 少节点
+- 可重复
+- 人物关系自然
+- 不为自动化牺牲最终图
 
-## 6. Stage 机制
+## 7. 双身份 10 场景回归集
 
-角色外观随剧情变化时不覆盖 base，而是新增 stage。
+固定：
+1. 冰箱
+2. 同桌
+3. 阳台
+4. 公交
+5. 雨伞
+6. 洗碗
+7. 开门
+8. 买菜
+9. 沙发/看书
+10. 夜灯床边
 
-例：
-DAIYU_BASE
-DAIYU_HOME
-DAIYU_RAIN
-DAIYU_SLEEP
-DAIYU_OUTDOOR
+Gate：
+至少 8/10 同时满足两边 identity ≥4/5。
 
-WUKONG_BASE
-WUKONG_HOME
-WUKONG_RAIN
-WUKONG_INJURED
-WUKONG_OUTDOOR
+## 8. Stage
 
-stage 只记录发生变化的可见项。未写的仍继承 base。
+不覆盖 base：
+DAIYU_BASE / HOME / RAIN / SLEEP / OUTDOOR
+WUKONG_BASE / HOME / RAIN / INJURED / OUTDOOR
 
-## 7. 连续性锁
+只记录变化项。
 
-每个镜头复制最小必要锁面，不把整份人物简介塞进提示词。
+## 9. 连续性锁示例
 
-例：
 DAIYU_LOCK_FACE：
-rounded oval face, natural soft jawline, non-pointed chin, narrow almond eyes, subtle single/inner eyelid, fine slightly arched brows
+rounded oval face, natural soft jawline, non-pointed chin, narrow almond eyes, subtle single/inner eyelid impression, fine slightly arched brows
 
 WUKONG_LOCK_FACE：
-warm golden-brown fur, pronounced simian brow and muzzle, human-like expressive eyes, pointed external ears, consistent cheek fur pattern
+warm golden-brown fur, pronounced simian brow and muzzle, expressive human-readable eyes, stable pointed ears, consistent cheek fur
 
 锁面要短、具体、可复制。
 
-## 8. 表演连续性
+## 10. 表演一致性
 
-人物一致不等于静态复制。
+CP 感来自生活动作，不来自每镜拥抱。
 
-黛玉的行为库：
-- 认真做事
-- 轻微嫌弃
-- 侧眼观察
-- 克制笑
-- 轻声讽刺
-- 专注照顾
-- 安静阅读
-- 疲倦靠肩
+DAIYU：
+专注、嫌弃、轻讽、照顾、安静、疲倦。
 
-悟空行为库：
-- 偷看
-- 抢食物
-- 护着伞
-- 帮忙但笨手笨脚
-- 假装不疼
-- 做错后看反应
-- 对外警惕、对内放松
-
-短剧的 CP 感来自动作关系，不来自每镜拥抱。
+WUKONG：
+偷看、护伞、抢食、笨拙帮忙、装不疼、看她反应、对外警惕对内放松。

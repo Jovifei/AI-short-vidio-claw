@@ -1,70 +1,93 @@
-# 08 模型与工作流选型矩阵
+# 08 模型与工作流选型矩阵（2026-10-04 复核版）
 
-本文件记录“当前推荐”，不是永恒真理。新模型进入前必须跑本项目 benchmark。
+## 状态定义
 
-## 1. 图像/身份
+- REQUIRED：当前阶段必测
+- OPTIONAL：当前主线通过后可测
+- DEFERRED：暂不进入本机主线
+- REJECTED：当前阶段明确不做
 
-| 能力 | 当前候选 | 本项目定位 | 注意 |
-|---|---|---|---|
-| 人脸身份 | PuLID | 林黛玉 reference identity | 官方说明 FLUX 本地 demo 可支持 12GB |
-| 图像参考 | IPAdapter | 风格/主体/脸参考 | ComfyUI_IPAdapter_plus 已 maintenance-only |
-| 长期角色 | Character LoRA | 两位主角最终稳定方案 | 定妆未稳定前不要训练 |
-| Pose/Depth | ControlNet 类 | 动作和构图控制 | 按实际图像基座选择 |
+## 1. P1 视频
 
-## 2. 视频
-
-| 路线 | 优先级 | 场景 | 12GB 策略 |
-|---|---|---|---|
-| Native ComfyUI + Wan2.2 | P0 主线 | 3–5 秒 I2V | 低分辨率、短帧、必要时量化/offload |
-| ComfyUI-WanVideoWrapper | P0 实验/低显存 | 原生缺失功能、新模型、FP8/GGUF/block swap | 只保留经过 benchmark 的 production workflow |
-| FramePack | P1 回退 | 长镜头、低动作、渐进生成 | 官方最低 6GB，速度换显存 |
-| Wan2.2 Animate | Future | 动作复制/角色动画 | 14B，先验证再决定 |
-| Wan2.2 S2V | Future | 音频驱动视频 | 14B，12GB 上不是 MVP 依赖 |
-
-## 3. 语音/口型
-
-| 能力 | 主线 | 说明 |
+| 路线 | 状态 | 原因 |
 |---|---|---|
-| TTS | GPT-SoVITS | 中文、few-shot、角色 voice map |
-| 人脸 lip sync | MuseTalk 1.5 | 林黛玉等标准人脸 |
-| 孙悟空 lip sync | TBD | 非标准脸需专项验证，不能直接承诺 |
+| Native ComfyUI + Wan2.2-TI2V-5B | REQUIRED / P1A | ComfyUI 官方写 5B + native offload 可适配 8GB 级 VRAM；必须本机验证 |
+| FramePack | OPTIONAL / P1B | 官方最低 6GB，适合长/低动作；先不增加变量 |
+| WanGP | OPTIONAL / P1B/P1C | 低显存 runner，2026 持续更新；但另起执行栈且 32GB RAM 需实测 |
+| WanVideoWrapper | OPTIONAL LAB | FP8/GGUF/block swap 强；原生可用时不优先 |
+| Wan2.2 A14B FP16 native | REJECTED for P1 | 官方独立 I2V 至少 80GB |
+| A14B GGUF / 强 offload | DEFERRED | 12GB VRAM 可有社区路径，但 32GB RAM 与稳定性未证 |
+| LTX-2.x official ComfyUI | DEFERRED | 官方 ComfyUI-LTXVideo 当前推荐 32GB+ VRAM |
+| Wan2.2 Animate/S2V 14B | DEFERRED | 不是 MVP 依赖 |
 
-## 4. 后期
+## 2. P2 图像身份
 
-| 能力 | 当前策略 |
-|---|---|
-| 剪辑/拼接 | FFmpeg |
-| 探测 | ffprobe |
-| 插帧 | P1/P2 benchmark 决定 |
-| 放大 | P1/P2 benchmark 决定 |
-| 字幕 | ASS/SRT + FFmpeg |
-| 音频响度 | FFmpeg loudnorm |
-| QC | 规则 + VLM + 人工 |
+| 能力 | 候选 | 状态 |
+|---|---|---|
+| 林黛玉单人 identity | PuLID / IPAdapter FaceID / LoRA | P2 benchmark |
+| 孙悟空单人 identity | LoRA / reference conditioning | P2 benchmark |
+| 双身份同框 | regional/two-pass/LoRA+ref/Hero Lane | P2 highest priority |
+| Pose/Depth | ControlNet 类 | 根据图像基座决定 |
 
-## 5. 为什么不把一个“一键短剧仓库”直接当核心
+FaceID 当前不进入 P1：
+本机报告 InsightFace 模型目录为空，且悟空本来就不使用 FaceID。
 
-Story Claw、Drama Skills 非常值得借鉴，但本项目目标硬件和创作方式不同：
+## 3. P3 First Cut
 
-- 我们要保留 ChatGPT 人工精修关键帧通道；
-- 我们首要问题是双角色身份与生活互动；
-- 12GB 显存必须更严格调度；
-- 我们需要可替换视频模型；
-- 我们不希望一体化工具升级困难。
+- keyframe：20 张 approved
+- animated shots：先 6 个
+- static motion：Ken Burns / subtle zoom / rain / light / steam
+- dialogue：voice-over
+- lip sync：disabled
 
-因此参考它们的“生产思想和数据结构”，自行做轻量控制平面。
+## 4. P5 音频
 
-## 6. Production / Lab 双轨
+| 能力 | 方案 | 备注 |
+|---|---|---|
+| TTS | GPT-SoVITS | 上游 API v2 默认 9880，进入 P5 才部署 |
+| 人脸 LipSync | MuseTalk 1.5 | Gradio 默认 7860；需要单独 adapter，不能把 UI 端口当 production API |
+| Wukong LipSync | TBD | 专项 benchmark |
 
-Production workflow：
-- 版本固定；
-- 可复现；
-- 通过 benchmark；
-- 不自动追最新。
+## 5. 后期
 
-Lab workflow：
-- 尝试新模型；
-- 新 custom node；
-- 新量化；
-- 新加速。
+FFmpeg/ffprobe 继续作为确定项。
 
-只有 Lab 明显胜出并通过回归，才升级 Production。
+插帧、放大：
+- 不在 P1A 之前决定；
+- P1A 结束先确定实际 source fps；
+- P3 前完成“原始片 → final delivery”的一条可测链。
+
+## 6. Production/Lab
+
+Production：
+- 固定版本
+- 固定 workflow
+- 有本机 benchmark
+- 有 rollback
+
+Lab：
+- 新模型
+- 新节点
+- 新 runner
+- 新量化
+
+Lab 不因“能启动”就升级 Production。
+
+## 7. 当前官方来源
+
+- Wan2.2：
+  https://github.com/Wan-Video/Wan2.2
+- ComfyUI Wan2.2：
+  https://docs.comfy.org/tutorials/video/wan/wan2_2
+- WanVideoWrapper：
+  https://github.com/kijai/ComfyUI-WanVideoWrapper
+- FramePack：
+  https://github.com/lllyasviel/FramePack
+- WanGP：
+  https://github.com/deepbeepmeep/Wan2GP
+- LTX ComfyUI：
+  https://github.com/Lightricks/ComfyUI-LTXVideo
+- MuseTalk：
+  https://github.com/TMElyralab/MuseTalk
+- GPT-SoVITS：
+  https://github.com/RVC-Boss/GPT-SoVITS

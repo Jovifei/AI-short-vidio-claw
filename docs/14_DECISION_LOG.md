@@ -1,137 +1,102 @@
 # 14 架构决策记录 ADR
 
-## ADR-001：采用 Image First → Video Second
+## ADR-001 Image First → Video Second
+状态：Accepted。
+原因：角色和构图先冻结，视频只负责动作。
 
-状态：Accepted
+## ADR-002 Wan2.2 主线边界
+状态：Amended 2026-10-04。
 
-原因：
-- 双人连续性比文生视频更难；
-- 角色脸是本项目核心资产；
-- 冻结 keyframe 能把“人物设计”和“动作生成”解耦；
-- 失败镜头可局部返工。
+原定义“Native ComfyUI + Wan2.2”过宽。
 
-替代：
-纯 T2V。
-
-不选原因：
-人物和构图不够可控，不适合作为系列主线。
-
----
-
-## ADR-002：原生 ComfyUI + Wan2.2 为主视频路线
-
-状态：Accepted for Benchmark
-
-原因：
-- Wan2.2 官方已进入 ComfyUI 生态；
-- 降低自定义插件耦合；
-- 更适合长期 workflow 维护。
-
-备注：
-必须经过 P1 12GB 实测才升级为 Production Frozen。
-
----
-
-## ADR-003：WanVideoWrapper 为 Lab/Low-VRAM 层
-
-状态：Accepted
-
-原因：
-- 支持 FP8/GGUF/block swap/offload 与大量新模型；
-- 适合 12GB；
-- 更新快。
-
-为什么不做唯一主线：
-其作者 README 明确建议 native 可用时优先 native，且项目长期 WIP。
-
----
-
-## ADR-004：FramePack 做长镜/低动作回退
-
-状态：Accepted for Benchmark
+新定义：
+- P1A 只认 Native ComfyUI + Wan2.2-TI2V-5B。
+- A14B 不属于 P1A。
+- 14B 的 GGUF/强 offload 属 Lab，必须单独 benchmark。
 
 依据：
-官方声明 RTX 30/40/50、最低 6GB 显存可运行，长视频上下文设计对消费卡友好。
+Wan2.2 官方 5B 720P standalone 至少 24GB；I2V-A14B standalone 至少 80GB。
+ComfyUI 官方则说明 5B + native offload 可适配约 8GB VRAM。
+因此本机以实测为准。
 
-不作为默认：
-生活短剧仍需要镜头级导演和角色连续性，长生成不是核心 KPI。
+## ADR-003 WanVideoWrapper
+状态：Accepted as Lab only。
+原生可用时优先 native；低显存/新能力再评估 Wrapper。
 
----
+## ADR-004 FramePack
+状态：Accepted as P1B optional。
+不先安装；P1A 质量/速度有明确问题再对照。
 
-## ADR-005：人类和非人角色使用不同 identity 策略
+## ADR-005 人类/非人 identity 分离
+状态：Accepted。
+DAIYU 与 WUKONG 不用同一个 FaceID 逻辑。
 
-状态：Accepted
+## ADR-006 原创林黛玉
+状态：Accepted。
+不复刻具体影视演员。
 
-林黛玉：
-PuLID/IPAdapter → 稳定后 LoRA。
+## ADR-007 两道人类 Gate
+状态：Accepted。
+Keyframe / Final。
 
-孙悟空：
-角色 LoRA + reference conditioning 优先。
+## ADR-008 Git 不存大模型/大媒体
+状态：Accepted。
 
-原因：
-FaceID/InsightFace 对标准人脸更可靠，不应假设同样适用于猿猴角色。
+## ADR-009 CLI before UI
+状态：Accepted。
 
----
+## ADR-010 借鉴而非 fork Story Claw/Drama Skills
+状态：Accepted。
 
-## ADR-006：不把影视版林黛玉演员作为目标 identity
+## ADR-011 P1 Gate 必须后验
+状态：Accepted 2026-10-04。
 
-状态：Accepted
+撤销：
+“576×1024 或接近尺寸一定要在 12GB 稳定”作为先验。
 
-只提取非独占的抽象视觉方向：
-圆润鹅蛋脸、非尖下巴、古典眼眉、灵秀气质。
+改为：
+用阶梯实测找本机 production baseline。
+分辨率只是结果字段，不是 P1 成功定义。
 
-实际资产需要独立原创，避免系列永远依赖某现代演员 likeness。
+## ADR-012 单 GPU 服务
+状态：Accepted 2026-10-04。
 
----
+P1/P2/P3 默认只有一个 GPU-heavy process active。
+不要求 8188/8189 双 ComfyUI。
+实际 ComfyUI URL 由 P0R 发现。
 
-## ADR-007：两道永久人工 Gate
+## ADR-013 首个 First Cut 不做 LipSync
+状态：Accepted 2026-10-04。
 
-状态：Accepted
+EP001 v0.1 三句台词先 voice-over。
+口型推迟 P5。
 
-1. Keyframe Approval
-2. Final Approval
+## ADR-014 双身份同框为 P2 首要 Gate
+状态：Accepted 2026-10-04。
 
-即使未来一键化，也不删除。
+单人 identity 成功不代表 CP 短剧可生产。
+必须在 10 个固定双人生活场景中验证。
 
-原因：
-创作质量、版权风险和 AI 异常不能完全由自动评分替代。
+## ADR-015 Strategic GO 与 Production Ready 分开
+状态：Accepted 2026-10-04。
 
----
+项目方向可行 ≠ 当前机器今天可提交生产任务。
+当前只有 P0R/P1A 获准执行。
 
-## ADR-008：Git 只存创作事实，不存大媒体/大模型
+## ADR-016 LTX-2.x 不进入 P1A
+状态：Accepted 2026-10-04。
 
-状态：Accepted
+Lightricks ComfyUI-LTXVideo 官方当前推荐 32GB+ VRAM。
+其他低显存 runner 的 LTX 结果未来单独作为 Lab，不混淆为原生 ComfyUI 路线。
 
-原因：
-- clone 可控；
-- 模型可替换；
-- 媒体由 manifest 关联；
-- GitHub 不适合大模型与批量视频。
+## ADR-017 WanGP 可作为 P1B/P1C runner
+状态：Accepted for optional benchmark。
 
----
+WanGP 面向低显存并持续更新，但属于第二执行栈。
+只有 P1A 后出现明确需求才安装。
 
-## ADR-009：先 CLI 后 UI
+## ADR-018 First Cut 动画镜头降风险
+状态：Accepted。
 
-状态：Accepted
-
-原因：
-当前价值在生产闭环、benchmark 和可复现，不在界面。
-
-UI 只有在 P6 后 pipeline 稳定才值得做。
-
----
-
-## ADR-010：借鉴 Story Claw 与 Drama Skills 的理念，不 fork 为核心
-
-状态：Accepted
-
-借鉴：
-- stage-aware assets
-- voice map
-- VLM QC
-- continuity lock
-- frozen keyframe
-- text-first production facts
-
-不直接 fork：
-本项目硬件、ChatGPT Hero Lane、视频引擎和角色问题不同，需要更轻、更可替换的控制平面。
+高风险手部/接触镜头：
+消毒、缠绷带、按手、点泡沫等，在 v0.1 可以使用静态 keyframe + 轻运动，不作为视频 baseline Gate。

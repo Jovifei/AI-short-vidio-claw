@@ -1,197 +1,184 @@
-# 03 技术架构
+# 03 技术架构（收窄执行版）
 
-## 1. 架构目标
+## 1. 架构原则
 
-把“创作事实”“调度逻辑”“GPU 工作流”“媒体文件”四件事分开。
+继续保持四层：
 
-### A. Creative Truth
-Markdown/YAML/JSON。
-决定故事是什么、角色长什么样、镜头发生什么。
+### Creative Truth
+Markdown/YAML/JSON：
+剧本、角色、stage、continuity、shot。
 
-### B. Control Plane
-Codex + Python CLI。
-负责拆任务、调用 adapter、队列、状态、manifest、QC、重试。
+### Control Plane
+P1 只有最小脚本；
+P4 才升级为完整 CLI。
 
-### C. Media Plane
-ComfyUI / GPT-SoVITS / MuseTalk / FFmpeg。
-负责真正生成像素、声音和成片。
+### Media Plane
+P1A：单 ComfyUI + Wan2.2-TI2V-5B。
+以后通过 adapter 接：
+FramePack / WanGP / TTS / LipSync。
 
-### D. Storage Plane
-local/ + episodes/ + outputs/。
-区分可版本控制事实与不可版本控制大文件。
+### Storage Plane
+Git 保存事实；local 保存模型和大媒体。
 
-## 2. 总体数据流
+## 2. 当前有效数据流
 
-~~~text
-Episode Brief
-   │
-   ▼
-Script
-   │
-   ▼
-Visual Design + Continuity Locks
-   │
-   ├── Character Assets
-   ├── Location Assets
-   └── Prop Assets
-   │
-   ▼
-Storyboard
-   │
-   ▼
-Frozen Keyframe Prompts
-   │
-   ├── Hero Lane: ChatGPT/manual
-   └── Local Lane: ComfyUI
-   │
-   ▼
-Approved Keyframes
-   │
-   ▼
-Video Adapter
-   ├── Native ComfyUI + Wan2.2 (default)
-   ├── WanVideoWrapper (low VRAM / experimental)
-   └── FramePack (long low-motion fallback)
-   │
-   ▼
-Accepted Shot Clips
-   │
-   ├── TTS: GPT-SoVITS
-   ├── LipSync: MuseTalk when eligible
-   └── SFX/BGM/Ambience
-   │
-   ▼
-FFmpeg Edit
-   │
-   ▼
-Automated QC
-   │
-   ▼
-Human Approval
-   │
-   ▼
-Final Episode + Manifest
-~~~
+```text
+Episode/Shot 文本事实
+  ↓
+Approved Keyframe
+  ↓
+单一 ComfyUI 服务（实际端口 P0R 探测）
+  ↓
+Wan2.2-TI2V-5B Native Workflow
+  ↓
+短视频输出
+  ↓
+P1 metadata / benchmark
+```
 
-## 3. 为什么改成“原生 ComfyUI 优先”
+P1A 到此为止。
 
-早期方案容易把 WanVideoWrapper 当成主引擎。复核其当前 README 后做出优化：
+P2/P3 才扩展：
 
-- Wrapper 作者明确写明：如果某能力已经在 ComfyUI native 中可用，优先 native。
-- Wrapper 永久处于 WIP，更适合快速跟进新模型。
-- 原生节点更利于长期维护、workflow 兼容和升级。
+```text
+Character Assets
+  ↓
+Dual-identity Keyframe
+  ↓
+Approved Keyframe
+  ↓
+Video
+  ↓
+First Cut
+```
 
-因此：
-- Production：native first。
-- Lab：wrapper first for new features。
-- 一旦实验功能进入 native 并通过 benchmark，迁回 native。
+P5 才进入：
 
-## 4. 两个 ComfyUI 实例
+```text
+TTS → LipSync → SFX/BGM → FFmpeg
+```
 
-建议支持但不强制：
+## 3. 单 ComfyUI 进程原则
 
-- 8188：image / identity / utility；
-- 8189：video。
+原“8188 image + 8189 video”只是一种未来部署模式，不再是当前架构要求。
 
-原因：
-- Python 依赖容易冲突；
-- 视频模型占显存大；
-- 可以独立重启视频实例；
-- Codex 能按任务启动/停止实例。
+目标硬件只有 12GB VRAM，因此当前规定：
+- GPU-heavy active process = 1；
+- ComfyUI 实际 URL 由 P0R 探测；
+- 不因上游默认端口就覆盖 Desktop 配置；
+- 需要切环境时显式 stop → verify GPU memory released → start next。
 
-12GB 显存下仍保持 GPU heavy concurrency = 1。
+未来如果验证“同一个 ComfyUI 环境能完成 image/video”，优先一个实例完成。
 
-## 5. Adapter 接口
+## 4. P1A API 边界
 
-未来代码层只认抽象任务：
+只需要一个脚本：
+`scripts/p1_comfy_probe.py`
 
-ImageTask:
-- prompt
-- references
-- width/height
-- seed
-- workflow_id
+职责：
+1. 读取 COMFYUI_URL；
+2. health check；
+3. 读取已导出的 API workflow JSON；
+4. 注入：
+   - input image
+   - prompt
+   - seed
+   - width/height
+   - frames
+5. 提交任务；
+6. 轮询/监听；
+7. 找到输出；
+8. 写 benchmark JSON。
 
-VideoTask:
-- keyframe
-- prompt
-- duration
-- frames
-- fps
-- seed
-- workflow_id
+不实现：
+- episode state machine
+- adapters framework
+- TTS
+- lipsync
+- scheduler
+- multi-worker
+- UI
 
-SpeechTask:
-- character_id
-- voice_id
-- text
-- emotion
+这些留到 P4。
 
-LipSyncTask:
-- video
-- audio
-- face_policy
+## 5. P1A 模型边界
 
-EditTask:
-- shot_order
-- in/out
-- subtitle
-- audio_tracks
+Production Candidate A：
+Wan2.2-TI2V-5B only。
 
-具体模型参数放 config，不放剧情层。
+明确排除 P1A：
+- A14B
+- GGUF 14B
+- Wrapper 14B
+- LTX-2.x
+- Animate
+- S2V
 
-## 6. Shot Manifest
+## 6. 参数阶梯
 
-每镜必须生成机器可读 manifest：
+一次只改一个变量。
 
-- episode_id
-- shot_id
-- input hashes
-- character stages
-- prompt revision
-- reference files
-- workflow version/hash
-- model versions
-- seed
-- render settings
-- output files
-- QC score
-- status
-- retry count
-- notes
+Baseline:
+- 480×832
+- 49 frames
+- 官方模板默认其他参数
 
-这是未来可复现和自动返工的核心。
+然后：
+A. 同尺寸 → 81 frames
+B. 回到 49 frames → 576×1024
+C. 只有 A/B 都稳定才试更高组合
 
-## 7. 状态机
+如果官方 template 约束不同，以实际工作流为准并记录。
 
-DRAFT
-→ KEYFRAME_PENDING
-→ KEYFRAME_REVIEW
-→ KEYFRAME_APPROVED
-→ VIDEO_PENDING
-→ VIDEO_REVIEW
-→ VIDEO_ACCEPTED
-→ AUDIO_READY
-→ EDIT_READY
-→ FINAL_QC
-→ DONE
+## 7. P1A-Q 视觉质量
 
-失败可进入：
-- REROLL_KEYFRAME
-- REROLL_VIDEO
-- MANUAL_FIX
-- BLOCKED
+基础运行通过后，固定 3 个 approved keyframe：
+- 单人微动作
+- 双人无接触
+- 双人低接触但不涉及手部特写
 
-不得用“文件存在”代替状态事实。
+每个 3 takes。
 
-## 8. 12GB 显存策略
+评分：
+- identity preservation
+- anatomy
+- motion readability
+- background stability
+- camera stability
 
-默认：
-- 串行；
-- 480×832 / 576×1024；
-- 49/65/81 frames；
-- 3–5 秒；
-- 先 baseline，不先开所有加速；
-- OOM 后按顺序：减分辨率 → 减帧 → offload → block swap → FP8/GGUF → fallback。
+高风险手部交互不用于决定 5B 能否作为基础引擎。
 
-不要同时改变多个参数，否则 benchmark 无法解释。
+## 8. P2 双身份架构
+
+P2 要解决的是同一张关键帧内同时锁：
+- DAIYU
+- WUKONG
+
+候选方法作为实验，不预先批准：
+- dual reference conditioning
+- regional mask / regional conditioning
+- two-pass inpaint/composite
+- character LoRA + human identity reference
+- Hero Lane manual generation
+
+Gate 看最终图，不看“用了多少模型”。
+
+## 9. Executor 扩展
+
+P1A 后如果需要：
+- FramePackAdapter
+- WanGPAdapter
+- WanVideoWrapperAdapter
+
+只有 benchmark 胜出才加入 production registry。
+
+## 10. 视频与音频串行
+
+P5 以后：
+video model unload
+→ verify VRAM release
+→ TTS/lipsync
+→ unload
+→ next GPU stage
+
+32GB RAM 下避免同时把大模型留在内存。

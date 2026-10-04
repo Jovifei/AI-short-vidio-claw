@@ -1,215 +1,182 @@
-# 09 技术来源、参考仓库与借鉴方法
+# 09 技术来源、参考仓库与使用边界
 
 更新时间：2026-10-04
 
-本项目不凭空发明流程。下面列出已核验的主要公开来源，并明确“参考什么、不要照搬什么”。
+原则：
+**官方文档负责“候选资格”，本机 benchmark 负责“生产资格”。**
 
-## 1. Drama Skills
+## 1. ComfyUI Wan2.2 官方教程
 
-仓库：
-https://github.com/zenstory-ai/drama-skills
+https://docs.comfy.org/tutorials/video/wan/wan2_2
 
-专题：
-https://github.com/zenstory-ai/drama-skills/blob/main/docs/open-source-short-drama-pipeline.md
+已核验：
+- 官方提供 Wan2.2 5B/14B native workflow；
+- 5B 页面写明 native offloading 下“should fit well on 8GB vram”；
+- 5B template 使用 `wan2.2_ti2v_5B_fp16.safetensors`、Wan2.2 VAE、FP8 UMT5 encoder；
+- 可以在节点中调 size 和 length。
 
-许可证：MIT。
+本项目：
+P1A 唯一首测来源。
 
-重点参考：
-- 文本优先的短剧生产事实；
-- 剧本 → 视觉设定 → 图片提示词/分镜 → 视频提示词；
-- continuity locks；
-- IMG / PLAN / REF 三层 reference 状态；
-- frozen keyframe；
-- preview → explicit confirmation → production；
-- review 与 production 分离。
+## 2. Wan2.2 官方仓库
 
-本项目如何用：
-- 借鉴生产事实和 gate 思路；
-- 不把五份 Markdown 的具体格式当不可变标准；
-- 增加机器 manifest、GPU benchmark、ComfyUI adapter 和本地大文件目录。
-
-## 2. Story Claw
-
-仓库：
-https://github.com/ZC89757/story-claw
-
-许可证：MIT。
-
-重点参考：
-- stage-aware character/scene assets；
-- 跨集 voice map；
-- 每镜生成后 VLM 质量检查；
-- 失败 clip 自动重跑；
-- workspace 分集归档；
-- 本地 ComfyUI 视频后端；
-- 脚本、资产、分镜、渲染分阶段。
-
-本项目如何用：
-- 学习“长系列资产如何演进”和“自动 QC”；
-- 不直接绑定其 LTX backend；
-- 不采用其完整 Electron 产品作为当前工程核心；
-- 先做轻量 CLI + Codex。
-
-## 3. Wan2.2
-
-官方仓库：
 https://github.com/Wan-Video/Wan2.2
 
-许可证：Apache-2.0（代码仓库；权重仍需单独核对对应模型条款）。
+已核验：
+- TI2V-5B
+- I2V/T2V A14B
+- standalone 5B 720P offload 示例至少 24GB VRAM
+- I2V-A14B standalone 至少 80GB VRAM
 
-已核验能力：
-- T2V / I2V / TI2V；
-- 5B TI2V；
-- ComfyUI 集成；
-- Animate 14B；
-- S2V 14B。
+结论：
+不同 runtime/offload 的硬件数字不能互相替代。
+14B 不进入 P1A。
 
-本项目如何用：
-- 当前主视频族；
-- MVP 只要求短镜 I2V；
-- Animate/S2V 作为未来可选，不写死。
+## 3. ComfyUI-WanVideoWrapper
 
-## 4. ComfyUI-WanVideoWrapper
-
-仓库：
 https://github.com/kijai/ComfyUI-WanVideoWrapper
 
-重点参考：
-- FP8 scaled；
-- GGUF；
-- block swapping / offload；
-- 新 Wan 生态模型快速支持；
-- 12GB/低显存实验路线。
+参考：
+- FP8
+- GGUF
+- block swap
+- offload
+- 新 Wan 生态快速支持
 
-关键原则：
-其 README 明确建议“native ComfyUI 已支持时优先 native”。因此本项目把 Wrapper 放 Lab/low-VRAM 通道，不把它变成唯一 production 依赖。
+作者明确说明：
+native 已支持时不应默认使用 Wrapper。
 
-## 5. FramePack
+定位：
+Lab only，除非 P1A 出现明确问题。
 
-仓库：
+## 4. FramePack
+
 https://github.com/lllyasviel/FramePack
 
-许可证：Apache-2.0。
+官方：
+- RTX 30/40/50
+- 至少 6GB GPU memory
 
-官方 README 说明：
-- next-frame-section progressive generation；
-- 上下文计算量不随视频长度线性增长；
-- RTX 30/40/50 系列；
-- 最低 6GB GPU memory；
-- 可做长视频。
+但社区亦有低 VRAM + 大量 shared/system RAM 后失败的报告：
+https://github.com/lllyasviel/FramePack/issues/774
 
-本项目如何用：
-- 长镜头和低动作回退；
-- 不是所有镜头默认使用；
-- 重点 benchmark 漂移和速度。
+定位：
+P1B optional；必须记录 VRAM + RAM。
 
-## 6. PuLID
+## 5. WanGP
 
-仓库：
+https://github.com/deepbeepmeep/Wan2GP
+
+2026 仍活跃，支持多种视频/图像/音频模型，面向 low-VRAM。
+
+同时社区存在：
+- 12GB VRAM + 32GB RAM profile 使用经验；
+- RAM 不足 issue；
+- 大模型可占用大量系统 RAM。
+
+定位：
+P1B/P1C optional runner，不是当前 ComfyUI baseline。
+
+## 6. LTX ComfyUI
+
+https://github.com/Lightricks/ComfyUI-LTXVideo
+
+官方当前 prerequisites：
+- CUDA GPU
+- 32GB+ VRAM
+- 100GB+ disk
+
+定位：
+不进入 4070S 12GB 的 P1A/P1B 原生 ComfyUI最小路径。
+其他低显存 runner 以后作为独立 Lab 评估。
+
+## 7. Drama Skills
+
+https://github.com/zenstory-ai/drama-skills
+
+参考：
+- text-first production truth
+- continuity lock
+- IMG/PLAN/REF
+- frozen keyframe
+- preview/confirm/produce
+- review 分离
+
+不照搬：
+具体供应商和文件数量限制。
+
+## 8. Story Claw
+
+https://github.com/ZC89757/story-claw
+
+参考：
+- stage-aware asset
+- voice map
+- VLM clip QC
+- reroll
+- episode workspace
+
+不照搬：
+完整 Electron/LTX 产品。
+
+## 9. PuLID
+
 https://github.com/ToTheBeginning/PuLID
 
-许可证：Apache-2.0。
+官方同时存在：
+- FLUX 16GB 描述
+- local gradio 12GB 支持描述
 
-已核验：
-- SDXL；
-- PuLID-FLUX；
-- 官方 README 说明 FLUX local demo 支持 12GB。
+因此不能直接写成“本项目 ComfyUI 12GB production verified”。
 
-本项目如何用：
-- 林黛玉人脸身份参考；
-- 先 reference，再决定是否训练 LoRA。
+定位：
+P2 benchmark。
 
-## 7. ComfyUI IPAdapter Plus
+## 10. IPAdapter Plus
 
-仓库：
 https://github.com/cubiq/ComfyUI_IPAdapter_plus
 
-许可证：GPL-3.0。
+- GPL-3.0
+- maintenance-only
 
-已核验：
-- IPAdapter reference implementation；
-- FaceID；
-- style/subject conditioning；
-- 2025-04-14 起作者声明 maintenance-only。
+定位：
+外部依赖候选，不 vendor。
 
-本项目如何用：
-- 可作为成熟参考能力；
-- 不把未来开发押在该插件；
-- 若分发/修改 GPL 代码，必须评估 GPL 义务；
-- 优先把它作为外部安装依赖而非复制进仓库。
+## 11. MuseTalk
 
-## 8. MuseTalk
-
-仓库：
 https://github.com/TMElyralab/MuseTalk
 
-许可证：MIT，另有依赖许可证清单。
+MuseTalk 1.5：
+- 多语言 lip sync
+- app.py Gradio 默认 port 7860
 
-已核验：
-- 1.5；
-- 多语言，包括中文；
-- audio-driven lip sync；
-- 训练/推理代码开放。
+定位：
+P5 标准人脸 lip sync。
+Gradio port 不是本项目 API contract，需要 adapter。
 
-本项目如何用：
-- 标准人脸对白镜头；
-- 非标准猿猴脸需单独验证。
+## 12. GPT-SoVITS
 
-## 9. GPT-SoVITS
-
-仓库：
 https://github.com/RVC-Boss/GPT-SoVITS
 
-许可证：MIT（仍需按所用权重/数据核对条款）。
+api_v2.py：
+- 默认 bind 127.0.0.1
+- 默认 port 9880
 
-已核验：
-- zero-shot TTS；
-- few-shot TTS；
-- 中文等多语言；
-- Windows 支持；
-- 官方给出消费级 GPU 推理数据。
+定位：
+P5 TTS。
 
-本项目如何用：
-- 角色固定 voice map；
-- 只使用拥有权利的训练/参考声音。
+## 13. 每次新技术进入项目必须记录
 
-## 10. ComfyUI
-
-仓库：
-https://github.com/comfyanonymous/ComfyUI
-
-本项目如何用：
-- 核心媒体执行引擎；
-- workflow JSON 是可版本化生产配置；
-- 通过本地服务队列让 Codex/CLI 调度，而不是依赖人工逐节点点击。
-
-## 11. 借鉴规则
-
-允许：
-- 学习架构；
-- 学习目录；
-- 学习流程；
-- 在许可证允许下调用依赖；
-- 在许可证允许下复用/改造代码并履行义务。
-
-不做：
-- 复制他人 demo 的人物和美术资产；
-- 复制现代影视演员脸；
-- 复制具体影视服装设计；
-- 把第三方代码许可证忽略掉；
-- 把第三方模型“代码许可证”等同于“权重商业许可证”。
-
-## 12. 每次技术升级的固定动作
-
-Codex 在引入新项目时必须记录：
-- source_url
+- source URL
 - commit/release
 - license
-- model_license
-- vram_claim
-- 本机实测
-- 替代对象
+- model license
+- advertised hardware
+- 本机 VRAM/RAM
+- disk
+- workflow
+- elapsed
+- quality
 - rollback
-- 是否进入 Lab 或 Production
 
-未经本机 benchmark 不允许直接替换主线。
+没有本机数据，不升级 Production。

@@ -1,224 +1,173 @@
-# 11 阶段路线图与任务拆解
+# 11 阶段路线图与任务拆解（执行版）
 
-## 总体路线
+## 新总路线
 
-P0 规格与骨架
-→ P1 4070S 基准
-→ P2 角色锁定
-→ P3 EP001 人工辅助闭环
-→ P4 自动化控制平面
-→ P5 语音/口型/声音
+P0R 本机重新基线
+→ P1A Wan2.2 5B 最小视频闭环
+→ P1A-Q 视觉质量
+→ P1B 可选替代比较
+→ P2 双身份同框
+→ P3 EP001 First Cut
+→ P4 控制平面
+→ P5 音频/口型/后期
 → P6 一键单集
-→ P7 系列化与泛化
+→ P7 系列化
+
+任何 Gate 未通过，不把后续阶段“预安装”到本机。
 
 ---
 
-## P0 产品与工程基线
+## P0R 本机重新基线
 
-状态：进行中，本轮主要完成。
+执行文档：
+docs/stages/P0R_REBASE_EXECUTION.md
 
-任务：
-- [x] 项目章程
-- [x] PRD
-- [x] 可行性报告
-- [x] 技术架构
-- [x] SOP
-- [x] 目录规范
-- [x] 人物系统
-- [x] episode 标准
-- [x] 模型矩阵
-- [x] 参考来源
-- [x] QA
-- [x] Roadmap
-- [x] 风险/合规
-- [x] Codex runbook
-- [x] EP001 试播计划
-- [ ] 本地 Codex 拉取并确认环境路径
+产出：
+- P1_ENVIRONMENT.md
+- local/inventory.json
+- 实际 ComfyUI URL
+- 磁盘容量
+- 已有模型/节点清单
+- 依赖缺口
 
 Gate：
-文档能让一个没有聊天历史的 Codex 说清项目目标、限制、下一步。
+没有未知关键环境项。
 
 ---
 
-## P1 RTX 4070S 基准验证
+## P1A Wan2.2-TI2V-5B 最小闭环
+
+执行文档：
+docs/stages/P1A_WAN22_5B_BASELINE.md
 
 目标：
-不是“装最多节点”，而是找出可稳定生产的最小技术组合。
+不是做短剧，只做第一条可复现 I2V。
 
-任务：
-1. 实现 scripts/env_probe.py。
-2. 记录：
-   - GPU driver
-   - CUDA
-   - VRAM
-   - RAM
-   - Python
-   - PyTorch
-   - ComfyUI commit
-   - custom node commits
-3. 准备固定 3 张 keyframe：
-   - 单人轻动作
-   - 双人低接触
-   - 双人手部交互
-4. Native Wan2.2 I2V benchmark。
-5. WanVideoWrapper FP8/GGUF/offload benchmark。
-6. FramePack benchmark。
-7. 每条记录显存峰值、耗时、失败率、identity/motion。
-8. 形成 P1_4070S_BASELINE.md。
-9. 冻结第一个 production video workflow。
+最小安装：
+- Wan2.2 5B 所需官方模型
+- 官方 ComfyUI workflow
+
+最小代码：
+- scripts/p1_comfy_probe.py
 
 Gate：
-至少一个 3–5 秒 9:16 I2V 工作流在 12GB 上稳定；连续 10 次 OOM ≤2。
+- 10 次串行稳定
+- metadata 完整
+- 无不可解释 OOM
+- 得出推荐起始参数
 
 ---
 
-## P2 角色一致性系统
+## P1A-Q 视觉质量
 
-目标：
-先解决角色，再做短剧。
-
-### 林黛玉
-- [ ] 完成原创原著型 face brief
-- [ ] 20–30 张一致 reference
-- [ ] 正/3/4/侧/全身
-- [ ] 至少 5 种表情
-- [ ] 3 个生活 stage
-- [ ] PuLID/IPAdapter benchmark
-- [ ] 判断 LoRA 是否必要
-
-### 孙悟空
-- [ ] 固定毛色、耳型、眉骨、口鼻结构
-- [ ] 20–30 张 reference
-- [ ] 参考 conditioning benchmark
-- [ ] LoRA 训练 benchmark
-- [ ] 3 个生活 stage
-
-### 双人
-- [ ] 10 个生活动作 keyframe test
-- [ ] 身高差锁定
-- [ ] 手部接触成功率统计
-- [ ] 确立 Hero Lane 规则
+固定 3 张 approved keyframe × 3 takes。
 
 Gate：
-固定 10 场景测试中，主观身份评分 ≥4/5 的关键帧 ≥80%。
+至少低风险/微动作镜头可达到可剪标准。
+
+如果 5B “能跑但质量不够”，不等于项目失败，进入 P1B。
 
 ---
 
-## P3 EP001 人工辅助完整闭环
+## P1B 可选替代
 
-目标：
-先做出一条真正能看的片，不急着自动化所有环节。
+执行文档：
+docs/stages/P1B_OPTIONAL_ALTERNATIVES.md
 
-使用：
-- Codex 生成/维护文档
-- ChatGPT 手工 Hero keyframe
-- ComfyUI I2V
-- GPT-SoVITS
-- MuseTalk（仅合适镜头）
-- FFmpeg
+最多一次只加入一个：
+1. FramePack
+2. WanGP 某一个明确模型/配置
 
-任务：
-- [ ] 冻结剧本
-- [ ] 20 镜分镜
-- [ ] 20 张 approved keyframe
-- [ ] 选 10–15 镜动画化
-- [ ] TTS
-- [ ] 环境声
-- [ ] 剪辑
-- [ ] QA
-- [ ] EP001 v1 成片
+不把 LTX native/14B GGUF 全部一起拉进来。
 
 Gate：
-45–90 秒完整成片，角色连续，无严重穿帮。
+只有明显优于 P1A 才替换 production candidate。
 
 ---
 
-## P4 Codex 自动化控制平面
+## P2 角色与双身份
 
-目标：
-让“手工操作 ComfyUI”转为“Codex/CLI 提交任务”。
+执行：
+docs/stages/P2_CHARACTER_DUAL_IDENTITY.md
 
-任务：
-- [ ] Python project skeleton
-- [ ] config loader
-- [ ] ComfyUI health check
-- [ ] workflow parameter injection
-- [ ] queue submit
-- [ ] status poll/websocket
-- [ ] result retrieval
-- [ ] manifest writer
-- [ ] shot state machine
-- [ ] reroll command
-- [ ] resume command
-- [ ] benchmark command
-
-建议 CLI：
-- claw doctor
-- claw episode validate EP001
-- claw shot render EP001 SH006
-- claw shot reroll EP001 SH006
-- claw episode status EP001
-- claw episode render EP001
+最高优先：
+双身份同框关键帧。
 
 Gate：
-任意单镜可以从 manifest 一键重跑，任务中断后可恢复。
+10 个固定生活场景中 ≥8 张同时满足两个角色 identity。
 
 ---
 
-## P5 音频、口型、后期自动化
+## P3 EP001 First Cut
 
-任务：
-- [ ] voice_map
-- [ ] GPT-SoVITS adapter
-- [ ] MuseTalk adapter
-- [ ] 孙悟空对白专项策略
-- [ ] ambience library
-- [ ] sfx library
-- [ ] FFmpeg timeline
-- [ ] subtitle
-- [ ] loudness
-- [ ] final technical QC
+执行：
+docs/stages/P3_EP001_FIRST_CUT.md
+
+v0.1：
+- 20 张 approved keyframe
+- 6 个低风险 I2V
+- 其余静态运动
+- voice-over
+- no lip sync
 
 Gate：
-同一集从 accepted clips 自动输出 final.mp4。
+45–90 秒可观看、无重大连续性错误。
+
+---
+
+## P4 控制平面
+
+执行：
+docs/stages/P4_CONTROL_PLANE.md
+
+只有 P3 证明人工流程有效后才抽象完整 CLI。
+
+Gate：
+任意 shot 一键重跑/恢复。
+
+---
+
+## P5 音频/口型/后期
+
+执行：
+docs/stages/P5_AUDIO_LIPSYNC_POST.md
+
+Gate：
+accepted clips 可自动合成 final。
 
 ---
 
 ## P6 一键单集
 
-输入：
-episode brief + 角色 stage。
+执行：
+docs/stages/P6_AUTOMATED_EPISODE.md
 
-系统自动：
-文本 → keyframe task → video task → audio → edit → QA。
-
-仍保留两个强制人工 gate：
-1. keyframe approval
-2. final approval
-
-不追求“完全无人值守发布”。
+保留：
+- Keyframe Approval
+- Final Approval
 
 ---
 
 ## P7 系列化
 
+执行：
+docs/stages/P7_SERIES_SCALE.md
+
+加入：
 - 跨集状态
-- 角色长期 stage
 - voice map
 - 场景复用
-- 道具生命周期
 - 自动 recap
-- 封面/标题/文案
-- 多系列模板
-- 新模型 benchmark bot
+- benchmark regression
+- 新模型 Lab lane
 
-## 优先级规则
+## 速度/存储 Gate
 
-任何时候出现新模型，不因“新”而打断主线。
+P1A/P1B 必须额外给出：
+- 单 shot p50 / p95 时间
+- 预计 6/12/20 animated shots 总 GPU 时间
+- 模型总磁盘占用
+- 临时文件占用
+- 推荐最低空闲空间
 
-只有满足：
-- 可在目标硬件运行；
-- 相同 benchmark 明显提升；
-- 许可证可接受；
-- 能回退；
-才升级 Production。
+没有这四项，不冻结 production workflow。

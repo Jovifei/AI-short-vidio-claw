@@ -1,64 +1,84 @@
 # AGENTS.md — AI/Codex 接手规则
 
-本文件是任何后续 AI、Codex、自动化 Agent 进入仓库后的第一份执行约束。
-
 ## 必须先读
 
-按顺序阅读：
 1. README.md
 2. PROJECT_STATE.md
-3. docs/00_PROJECT_CHARTER.md
-4. docs/01_PRD.md
+3. docs/17_TECH_ROUTE_REVALIDATION.md
+4. docs/00_PROJECT_CHARTER.md
 5. docs/02_FEASIBILITY.md
 6. docs/03_TECHNICAL_ARCHITECTURE.md
 7. docs/04_SOP.md
 8. docs/05_DIRECTORY_STANDARD.md
 9. docs/10_QA_ACCEPTANCE.md
 10. docs/11_ROADMAP.md
-11. docs/14_DECISION_LOG.md
+11. docs/13_CODEX_RUNBOOK.md
+12. docs/14_DECISION_LOG.md
 
-如任务涉及人物、模型、参考项目、版权，再读对应专题文档。
+## 当前最高优先级约束
+
+当前机器：Windows + RTX 4070 Super 12GB + 约 32GB RAM。
+
+**P1A 只允许验证 Wan2.2-TI2V-5B 原生 ComfyUI 路径。**
+在 P1A 通过前，不得主动：
+- 下载/安装 Wan2.2 14B；
+- 把 GGUF 14B / WanVideoWrapper block-swap 当作基线；
+- 安装 LTX-2.x 作为 P1 必选；
+- 开两个 GPU ComfyUI 常驻；
+- 接入 PuLID、FaceID、MuseTalk、GPT-SoVITS；
+- 批量渲染 EP001；
+- 一次性下载几十 GB 与 P1A 无关的模型。
 
 ## 不可违背的工程约束
 
-- 目标硬件：Windows + RTX 4070 Super 12GB + ComfyUI + Codex。
-- 第一性目标：角色一致性、故事连续性、生活感，高于“单张炫技”和原生高分辨率。
-- 视频默认使用 Image First → Video Second，不把纯文生长视频作为主流程。
-- 原生 ComfyUI 已支持的模型和能力，优先原生；WanVideoWrapper 只用于原生缺失的功能、实验模型或显存优化。
-- GPU 重任务默认串行运行，除非基准数据明确证明并发安全。
-- 每个 episode 必须先形成文本事实，再生成媒体；不得让生成结果反向成为唯一事实源。
-- 人物、造型、道具、场景需要“连续性锁”，改变必须有剧情依据并写入 episode 文件。
-- 不在 Git 中提交模型权重、LoRA 大文件、缓存、原始批量帧、视频成片、API key。
-- 所有外部模型与代码升级必须先记录版本、来源、许可证和回退方案。
-- 对失败镜头优先局部重抽或替换工作流，不允许为一个镜头破坏整个项目的统一参数。
-- 不自动模仿真实演员、配音演员或具体影视改编的受保护造型。角色设计以古典文学人物概念为基础，形成原创视觉资产。
+- 第一性目标：角色一致性、故事连续性、生活感，高于原生高分辨率。
+- 默认 Image First → Video Second。
+- 每集先有文本事实，媒体结果不能成为唯一事实源。
+- GPU heavy concurrency = 1。
+- 服务地址必须探测实际端口，不使用未经本机确认的 8188/8189/9881 假设。
+- P1 Gate 必须来自本机实测，不允许把目标分辨率写成既成事实。
+- 人类/非人角色身份策略分开。
+- P2 必须先解决“双身份同框 keyframe”，再宣称角色一致性路线通过。
+- 难镜头允许静态图 + 缓慢推拉/景深/雨雪环境动效，不强迫 I2V。
+- P3 First Cut 暂不做 lip sync；对白先用画外音。
+- 不在 Git 提交模型、LoRA 大文件、cache、成片、密钥。
+- 外部模型/节点升级先记录来源、版本、许可证、回退。
+- 失败镜头局部返工，不破坏整集基线。
+- 不自动模仿具体真实演员、配音演员或影视版受保护造型。
 
-## 修改项目时必须同步
+## 每次阶段完成必须同步
 
-任何影响下列内容的改动，都要同时更新 PROJECT_STATE.md 和 docs/14_DECISION_LOG.md：
-- 主视频模型
-- 人物一致性方案
-- 目录结构
-- 工作分辨率/帧数
-- ComfyUI 工作流接口
-- TTS/口型方案
-- 单集 SOP
-- 许可证/商业使用结论
+- PROJECT_STATE.md
+- docs/11_ROADMAP.md
+- docs/14_DECISION_LOG.md
+- docs/benchmarks/*
+- 对应 model/workflow manifest
 
-## 完成任务的最低交付
+## Benchmark 必填
 
-Codex 每完成一个阶段至少留下：
-- 可运行或可复现的文件；
-- 实测参数；
-- 输出位置；
-- 失败与限制；
-- 下一步；
-- 如有 benchmark，写清 GPU、显存峰值、耗时、分辨率、帧数、seed、模型版本。
+- machine
+- VRAM/RAM
+- driver/CUDA/PyTorch
+- ComfyUI commit
+- model file + hash
+- workflow + hash
+- input + hash
+- seed
+- width/height
+- frames
+- fps
+- peak VRAM
+- peak RAM
+- elapsed
+- result
+- error
+- visual notes
 
-## 不要做的事
+## 不要做
 
-- 不要新建第二套平行目录来解决同一个问题。
-- 不要把模型写死在业务代码中，使用 adapter + config。
-- 不要把 UI 当成第一阶段目标，先把 CLI/自动化生产闭环跑通。
-- 不要一次性自动生产 20 个镜头后才检查；按镜头或小批次设质量门。
-- 不要凭印象声称某模型“最好”，必须用本项目固定 benchmark 评价。
+- 不要为了“更先进”扩张 P1A 候选。
+- 不要两个变量同时改。
+- 不要先建完整源码包再跑第一条 API job。
+- 不要把本地 Desktop 端口猜成上游默认。
+- 不要将 14B 能在某社区配置上运行，写成“本机生产可用”。
+- 不要将静态角色 identity 与双人同框 identity 混为一谈。

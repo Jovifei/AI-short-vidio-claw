@@ -4,8 +4,11 @@ project:
   aspect_ratio: "9:16"
   target_duration_sec: [45, 90]
   target_shots: [10, 20]
-  fps_delivery: 24
-  delivery_resolution: [1080, 1920]
+
+delivery:
+  target_fps: 24
+  target_resolution: [1080, 1920]
+  note: "这是最终交付目标，不是 P1 源视频既成参数；插帧/放大方案在 P5 前由 benchmark 决定。"
 
 creative:
   pilot_series: "林黛玉 × 孙悟空：人间生活"
@@ -22,3 +25,7 @@ production:
   frozen_keyframe_required: true
   human_approval_gates: true
   gpu_heavy_jobs_serial: true
+  p3_first_cut:
+    animated_shots_target: 6
+    lipsync: false
+    dialogue_mode: voice_over

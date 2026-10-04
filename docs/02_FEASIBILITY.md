@@ -1,109 +1,205 @@
-# 02 可行性研究报告
+# 02 可行性研究报告（2026-10-04 二次复核版）
 
 ## 结论
 
-**可行，建议实施。**
+**项目战略可行（GO），当前机器尚未达到“今天即可生产”状态（Current Production NO-GO）。**
 
-RTX 4070 Super 12GB 不适合无约束地跑所有 14B/高分辨率视频模型，但非常适合“短镜头、关键帧驱动、低显存优化、串行生产”的 AI 短剧路线。
+核心路线成立，但立即执行路径必须收窄为：
 
-## 1. 技术可行性
+> 单 ComfyUI GPU 进程 + Wan2.2-TI2V-5B + 官方原生 workflow + native offload + 单张 approved keyframe + 最小 API 调用。
 
-### 视频
-Wan2.2 官方提供 T2V/I2V/TI2V，并已进入 ComfyUI 生态。官方 5B TI2V 强调消费级 GPU，但官方示例仍以高端显卡为主，因此本项目不把“720P 原生满配置”作为 12GB 基线。
+完成 P1A 实测后，再决定是否扩展到 FramePack、WanGP、量化 14B 或其他 runner。
 
-实际工程通过：
-- 更低工作分辨率；
-- 3–5 秒短镜头；
-- FP8/GGUF；
-- CPU offload；
-- block swap；
-- 最终插帧/放大；
-来适配 12GB。
+## 1. 为什么原路线需要修正
 
-WanVideoWrapper 公开支持 FP8、GGUF、block swap 等显存策略，适合作为 12GB 的实验/优化层；但其作者明确建议原生 ComfyUI 能完成的能力优先原生，所以本项目不会把 Wrapper 变成唯一依赖。
+原计划把“Native ComfyUI + Wan2.2”写得过宽，容易把 5B 与 14B 混在一起。
 
-### 长视频/长镜头
-FramePack 官方说明 RTX 30/40/50 系列、最低 6GB VRAM 可运行，并通过固定上下文降低长视频显存增长。它非常适合“人物动作不大、镜头较长”的回退，但不取代逐镜导演流程。
+### 官方事实 A：Wan2.2 官方仓库
+Wan2.2-TI2V-5B 的 720P 独立推理示例写明至少 24GB VRAM。
+Wan2.2-I2V-A14B 独立推理示例写明至少 80GB VRAM。
 
-### 身份一致性
-PuLID 支持 SDXL/FLUX 身份定制，官方 README 已说明 FLUX 本地 demo 可支持 12GB。人类角色可以使用 PuLID/IPAdapter/LoRA 的组合。
+来源：
+https://github.com/Wan-Video/Wan2.2
 
-IPAdapter 很适合 reference conditioning，但 ComfyUI_IPAdapter_plus 已进入 maintenance-only，故作为稳定能力保留，不把其未来更新当作路线依赖。
+### 官方事实 B：ComfyUI 官方文档
+ComfyUI Wan2.2 官方教程明确写：
+“The Wan2.2 5B version should fit well on 8GB vram with the ComfyUI native offloading.”
 
-非人形孙悟空不适合只靠 InsightFace/FaceID；角色 LoRA + reference conditioning 更合理。
+来源：
+https://docs.comfy.org/tutorials/video/wan/wan2_2
 
-### 口型与语音
-MuseTalk 1.5 支持中文等多语言音频驱动口型，适合林黛玉等标准人脸对白。
-GPT-SoVITS 支持 zero-shot/few-shot TTS 和中文，且公开给出消费级显卡速度数据，适合角色固定声线。
+这两条不是简单互相否定，而是运行时与 offload 策略不同。因此：
+- 不应把官方仓库的 24GB 直接理解成“12GB 一定不能跑 5B”；
+- 也不应把 ComfyUI 的 8GB 说明写成“本机 576×1024/3–5 秒一定稳定”。
 
-## 2. 产品可行性
+正确做法是 P1A 本机实测。
 
-生活短剧比武打短剧更适合当前技术：
-- 动作幅度较小；
-- 表演依赖微动作；
-- 大量镜头可用 I2V；
-- 场景可复用；
-- 室内、公交、菜场、雨夜等具备明确视觉语义；
-- 3–5 秒一个镜头符合短视频剪辑节奏。
+## 2. 目标硬件
 
-首个 CP 同时包含人类与非人角色，反而能作为角色一致性压力测试。
+- Windows
+- RTX 4070 Super 12GB
+- 系统 RAM 约 32GB
+- ComfyUI Desktop
+- FFmpeg
+- Codex
 
-## 3. 工程可行性
+约 32GB RAM 是重要约束：
+- 14B 强 CPU offload/block swap 不是当前最小可靠路线；
+- 任何声称“显存只占 5–10GB”的 14B 社区方案，都必须同时测系统 RAM 和 pagefile；
+- 不把别人 64GB/128GB RAM 的结果外推到本机。
 
-Codex 可负责：
-- 文档事实维护；
-- 生成 shot manifest；
-- 修改 workflow 参数；
-- 调 ComfyUI 队列；
-- 等待/轮询任务；
-- 管理输出；
-- 运行 QA；
-- 调 FFmpeg；
-- 记录 benchmark。
+## 3. 视频路线可行性
 
-ComfyUI 负责 GPU 图像/视频 graph。
+### P1A：Wan2.2-TI2V-5B Native ComfyUI
 
-这种“控制平面与媒体平面分离”比把所有功能塞进一个 UI 更易维护。
+结论：**优先验证，具备现实可行性。**
 
-## 4. 成本可行性
+理由：
+- ComfyUI 官方提供原生 5B workflow；
+- 官方明确提到 native offloading 和 8GB VRAM；
+- 单模型同时支持 T2V/I2V；
+- 对现有 ComfyUI 生态侵入最小。
 
-主要成本：
-- 本地电力与 GPU 时间；
-- SSD 空间；
-- 少量需要人工精修的 Hero keyframe；
-- 可选外部图像 API。
+风险：
+- 官方未给出本项目 480×832 / 576×1024、49/81 frames 在 4070S 12GB 上的完整数据；
+- 因此分辨率、帧数、耗时、RAM 使用都只能靠 P1A 得出。
 
-通过本地 I2V 和局部重跑，避免所有镜头按秒付费。
+### Wan2.2 14B
 
-## 5. 主要瓶颈
+结论：**退出 P1A。**
 
-1. 双人复杂互动：手、遮挡、接触关系最容易失败。
-2. 孙悟空非标准脸：角色一致和口型比人类难。
-3. 12GB 显存：必须接受 offload 带来的速度损失。
-4. LoRA 数据质量：角色未定妆前不能急着训练。
-5. 模型更新速度：必须 adapter 化，不可写死。
+官方 I2V-A14B 独立推理要求至少 80GB VRAM。
+12GB 上可以存在 GGUF/量化/offload 等社区实现，但其风险是：
+- 自定义节点；
+- 更大系统 RAM 压力；
+- 更慢；
+- 更多变量；
+- 本机 32GB RAM 尚未证明安全。
 
-## 6. 缓解策略
+所以只允许在 P1A 成功以后作为 Lab 候选，且必须独立审批。
 
-- 冻结关键帧后再 I2V；
-- 双人动作拆小：一个镜头只做一个主要动作；
-- 关键镜头使用 Hero Lane；
-- 失败只重跑 shot；
-- 角色参考包先稳定 20–30 张再训练 LoRA；
-- 每季度/每次大升级重新跑固定 benchmark；
-- 成片前 VLM + 人工双重 QC。
+### WanVideoWrapper
 
-## 7. Go / No-Go
+结论：**保留 Lab，不进入 P1A。**
 
-GO 条件：
-- P1 证明 12GB 能稳定生成 3–5 秒 I2V；
-- P2 人物一致性通过；
-- P3 能完整做出 EP001。
+优点：
+- FP8
+- GGUF
+- block swap
+- offload
+- 新 Wan 生态功能跟进快
 
-若 P1 无法实现，可降级：
-- 低分辨率生成；
-- 更短镜头；
-- FramePack；
-- 外部视频服务只用于少量困难镜头。
+但其 README 明确建议：原生 ComfyUI 已支持时优先 native。
 
-因此不存在必须中止项目的单点技术依赖。
+因此生产原则：
+native first；wrapper only when needed。
+
+### FramePack
+
+结论：**P1B 可选。**
+
+官方 FramePack：
+- RTX 30/40/50
+- 最低 6GB VRAM
+- 渐进式 next-frame-section
+
+适合：
+- 长一点的低动作镜头；
+- P1A 质量/速度不满足时作对照。
+
+不作为 P1A 首装，避免同时改变运行栈。
+
+### WanGP
+
+结论：**P1B/P1C 可选 runner。**
+
+WanGP 2026 仍持续更新并针对低显存做大量优化，也支持多种视频模型。
+但它是另一套执行环境；社区也存在系统 RAM 不足的案例。
+
+因此：
+- 不是当前 ComfyUI 主线；
+- P1A 成功后如需要更低显存/新模型再加入；
+- 任何 14B / H3 / LTX 结果都必须记录 RAM 峰值。
+
+### LTX-2.x
+
+结论：**不进入当前 P1 原生 ComfyUI最小路径。**
+
+Lightricks 官方 ComfyUI-LTXVideo 当前 README 推荐：
+- CUDA GPU
+- 32GB+ VRAM
+- 100GB+ free disk
+
+来源：
+https://github.com/Lightricks/ComfyUI-LTXVideo
+
+即使其他 runner 可做更低显存，不等于本机原生 ComfyUI 路径成立。后续可作为 Lab。
+
+## 4. 图像身份路线
+
+P1 不验证身份模型。
+
+原因：
+P1 的问题只有一个：
+**这台机器能否稳定把 approved keyframe 变成视频。**
+
+P2 再处理：
+- 林黛玉：PuLID / IPAdapter / LoRA
+- 孙悟空：LoRA + reference
+- 双身份同框：专项
+
+PuLID 官方 12GB 说法与本项目 ComfyUI production path 不是同一件事，必须 P2 本机实测。
+
+## 5. 服务可行性
+
+上游默认：
+- ComfyUI：8188
+- GPT-SoVITS API v2：9880
+- MuseTalk Gradio：7860
+
+但本机 ComfyUI Desktop 曾报告 8000，因此本项目：
+- 端口必须 P0R 探测；
+- 配置不再写死 8188/8189；
+- 12GB 下只有一个 GPU-heavy 服务活动；
+- P1 不启 GPT-SoVITS/MuseTalk。
+
+## 6. EP001 可行性
+
+原 EP001 最大问题是把最难动作放进第一批动画：
+- 消毒
+- 绷带手部特写
+- 按手
+- 泡沫点鼻子
+
+这些是高遮挡/高接触镜头，不适合拿来验证视频 baseline。
+
+修正：
+- 20 张 story keyframe 全做；
+- P3 v0.1 只动画 6 个低风险/微动作镜头；
+- 高风险镜头先用静态图 + Ken Burns / 景深 / 环境动效；
+- 三句台词画外音；
+- 不做 lip sync。
+
+## 7. 可行性 Gate
+
+战略 GO 不等于 Production Ready。
+
+顺序：
+P0R 环境确认
+→ P1A 5B baseline
+→ P1A-Q 视觉质量
+→ P1B 可选替代
+→ P2 双身份
+→ P3 First Cut
+
+任何阶段未过 Gate，不进入下一阶段大规模安装/生产。
+
+## 8. 最终结论
+
+原项目方向不需要推翻，但必须撤回四类未测断言：
+1. “Wan2.2”不再泛指 5B/14B；
+2. 不预设 576×1024 稳定；
+3. 不预设双 ComfyUI 服务；
+4. 不把单人 identity 方案当双人同框已经解决。
+
+修正后，项目可按阶段继续。
