@@ -1,7 +1,15 @@
 # PROJECT_STATE
 
-更新时间：2026-10-04 22:28 Asia/Shanghai
+更新时间：2026-10-04 22:34 Asia/Shanghai
 状态：**Strategic GO / Current Production NO-GO / P0R PASS / P1A L1 一次 480x832x49、L2 一次 480x832x81、L3 一次 576x1024x49 与 L4 一次 576x1024x81 T2V 已成功（submit-and-wait，L4 prompt 91225eb6）；不是 10 次稳定性，不是 PASS**
+
+## 内容修正（不是新的性能阶梯）
+
+`p1a_wan22_5b_smoke_00001_` 到 `00005_` 是官方模板地铁乐手提示词的性能 smoke，不是剧集画面。L4 的 `00006_` 同样是该模板，也不是 EP001。
+
+2026-10-04 22:29:54–22:33:54 Asia/Shanghai 另交了一条故事向 T2V，没有再跑性能阶梯。lab 文件 `workflows/video/lab/VID_wan22_5b_p1a_v001.json` 未改（SHA256 `c000f3731824a504ab50c123485ecc97e186d6bab55615bf08e6409a490f5fcb`），提示词由 `scripts/p1_comfy_probe.py` override。prompt_id `2bc0c584-7862-42a5-8f45-0795cb85f9f0`。480×832 / 49 frames，seed `20261004222901`。Comfy 执行 **239.374 s**。nvidia-smi 采样峰值 **10924 MiB**。输出 `docs/benchmarks/records/p1a_sh001_wukong_home_t2v_480x832x49_media/p1a_wan22_5b_smoke_00007_.mp4`（h264 480x832、49 frames、24 fps、2.041667 s）。记录 `docs/benchmarks/records/p1a_sh001_wukong_home_t2v_480x832x49.json`。
+
+`assets/characters` 仍无 approved 参考图（yaml `approved_refs: []`，无 png/jpg/webp）。workflow 无 LoadImage，本条是文本生成视频，没有人脸锁定。画面只要求孙悟空一人受伤回家；林黛玉不在这一镜。
 
 ## 1. 二次复核结论
 
