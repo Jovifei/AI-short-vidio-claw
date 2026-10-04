@@ -1,7 +1,7 @@
 # PROJECT_STATE
 
-更新时间：2026-10-04 17:45 Asia/Shanghai
-状态：**Strategic GO / Current Production NO-GO / P0R PASS → P1A 下载中**
+更新时间：2026-10-04 18:31 Asia/Shanghai
+状态：**Strategic GO / Current Production NO-GO / P0R PASS / P1A 权重已齐，下一步官方 GUI 模板试跑（未开始）**
 
 ## 1. 二次复核结论
 
@@ -21,12 +21,12 @@
 - Windows 11 Pro Build 22631
 - RTX 4070 SUPER / 12282 MiB VRAM / Driver 595.97 / nvidia-smi CUDA 13.2（无 nvcc）
 - System RAM 34164097024 bytes ≈ 31.82 GB；pagefile `D:\pagefile.sys` Allocated 66929 MB
-- Disk free: C 489.06 GB / D 134.33 GB / E 249.24 GB / F **334.79 GB**
+- Disk free at 17:40: C 489.06 GB / D 134.33 GB / E 249.24 GB / F **334.79 GB**. After the three 5B files, F free measured 18:31: **341333843968 bytes (317.89 GB)**
 - FFmpeg 8.1.1 可用（WinGet Gyan.FFmpeg）
 - **实际 ComfyUI URL：`http://127.0.0.1:8188`**（项目 image 实例 ComfyUI v0.38.0，torch 2.14.1+cu130）
 - Desktop：`F:\ComfyUI` basePath；ProductVersion 0.8.35.0；历史端口曾用 8000，**当前勿假设 8000**
 - 模型库：`F:\ComfyUI\models` ≈ 18.50 GB；已有 SDXL/SD1.5/VAE/FaceID adapter/clip_vision
-- **Wan2.2-TI2V-5B 三文件全部缺失**（diffusion / vae / umt5）
+- **Wan2.2-TI2V-5B 官方模板三文件已在 `F:\ComfyUI\models` 且 SHA256 匹配**（diffusion 9999658848, vae 1409400960, umt5 6735906897）。未跑 GUI，未写 probe，未排队视频
 - custom_nodes：comfyui_ipadapter_plus、glm_prompt（后者曾 IMPORT FAILED）
 - 仓库仍无生产客户端完成件、无 API workflow、无 EP001 实体生产目录
 - GPT-SoVITS / MuseTalk / 14B / LTX / FramePack / WanGP **不进 P1A**
@@ -36,7 +36,7 @@
 ### P0R：本地再基线 — **PASS（文档已提交）**
 环境探测、路径/端口/磁盘/现有模型盘点完成。
 
-### P1A：最窄视频基线 — **进行中：仅下载官方 5B 三文件**
+### P1A：最窄视频基线 — **权重已齐；下一步是官方 Template Library “Wan2.2 5B” GUI 首次运行，不是脚本**
 仅：
 - 一个 ComfyUI GPU 进程
 - 官方原生 Wan2.2 5B 模板

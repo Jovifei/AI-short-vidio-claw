@@ -94,7 +94,7 @@ COMFYUI_URL=http://127.0.0.1:8188
 | sdxl_vae.safetensors | 334641164 | vae |
 
 - Incomplete unrelated download observed: `F:\ComfyUI\models\checkpoints\.cache\huggingface\download\*.incomplete` (~5.03 GB, Juggernaut) — **not** P1A
-- **No** `wan2.2_*` / `umt5_xxl*` files under `F:\ComfyUI\models` or `E:\project\AI-short-vidio-claw\local`
+- At the 17:40 inventory: **no** `wan2.2_*` / `umt5_xxl*` weight files. Superseded at 18:31 by the section "P1A weights on disk".
 
 ## Existing nodes
 
@@ -111,14 +111,39 @@ P0R 未安装任何新 custom node。
 
 | file | size bytes | HF LFS SHA256 | source URL | destination | present? |
 |------|------------|---------------|------------|-------------|----------|
-| wan2.2_ti2v_5B_fp16.safetensors | 9999658848 | 456f901338bd9eadbded3828b819109a9b68e8a525ca5cf8d0049a69fcfeca1e | https://huggingface.co/Comfy-Org/Wan_2.2_ComfyUI_Repackaged/resolve/main/split_files/diffusion_models/wan2.2_ti2v_5B_fp16.safetensors | `F:\ComfyUI\models\diffusion_models\wan2.2_ti2v_5B_fp16.safetensors` | **NO** |
-| wan2.2_vae.safetensors | 1409400960 | e40321bd36b9709991dae2530eb4ac303dd168276980d3e9bc4b6e2b75fed156 | https://huggingface.co/Comfy-Org/Wan_2.2_ComfyUI_Repackaged/resolve/main/split_files/vae/wan2.2_vae.safetensors | `F:\ComfyUI\models\vae\wan2.2_vae.safetensors` | **NO** |
-| umt5_xxl_fp8_e4m3fn_scaled.safetensors | 6735906897 | c3355d30191f1f066b26d93fba017ae9809dce6c627dda5f6a66eaa651204f68 | https://huggingface.co/Comfy-Org/Wan_2.2_ComfyUI_Repackaged/resolve/main/split_files/text_encoders/umt5_xxl_fp8_e4m3fn_scaled.safetensors | `F:\ComfyUI\models\text_encoders\umt5_xxl_fp8_e4m3fn_scaled.safetensors` | **NO** |
+| wan2.2_ti2v_5B_fp16.safetensors | 9999658848 | 456f901338bd9eadbded3828b819109a9b68e8a525ca5cf8d0049a69fcfeca1e | https://huggingface.co/Comfy-Org/Wan_2.2_ComfyUI_Repackaged/resolve/main/split_files/diffusion_models/wan2.2_ti2v_5B_fp16.safetensors | `F:\ComfyUI\models\diffusion_models\wan2.2_ti2v_5B_fp16.safetensors` | **NO at 17:40; YES at 18:31** |
+| wan2.2_vae.safetensors | 1409400960 | e40321bd36b9709991dae2530eb4ac303dd168276980d3e9bc4b6e2b75fed156 | https://huggingface.co/Comfy-Org/Wan_2.2_ComfyUI_Repackaged/resolve/main/split_files/vae/wan2.2_vae.safetensors | `F:\ComfyUI\models\vae\wan2.2_vae.safetensors` | **NO at 17:40; YES at 18:31** |
+| umt5_xxl_fp8_e4m3fn_scaled.safetensors | 6735906897 | c3355d30191f1f066b26d93fba017ae9809dce6c627dda5f6a66eaa651204f68 | https://huggingface.co/Comfy-Org/Wan_2.2_ComfyUI_Repackaged/resolve/main/split_files/text_encoders/umt5_xxl_fp8_e4m3fn_scaled.safetensors | `F:\ComfyUI\models\text_encoders\umt5_xxl_fp8_e4m3fn_scaled.safetensors` | **NO at 17:40; YES at 18:31** |
 
 - free disk before (F:): **334.79 GB**
 - free disk after estimate: ≈ **317.9 GB**（334.79 − 16.89）
 
 **明确不下载**：14B、LTX、FramePack、WanGP、LoRA、PuLID、MuseTalk、GPT-SoVITS。
+
+
+## P1A weights on disk (measured 2026-10-04 18:31 Asia/Shanghai)
+
+Official template on this machine: `local/comfyui/image/venv/Lib/site-packages/comfyui_workflow_templates_json/templates/video_wan2_2_5B_ti2v.json` (installed templates package, not a repo file).
+
+Nodes and filenames:
+- UNETLoader `wan2.2_ti2v_5B_fp16.safetensors`
+- CLIPLoader `umt5_xxl_fp8_e4m3fn_scaled.safetensors` (type `wan`)
+- VAELoader `wan2.2_vae.safetensors`
+
+The template markdown links the text encoder at `Comfy-Org/Wan_2.1_ComfyUI_repackaged`. A HEAD request on 2026-10-04 returned the same `X-Linked-Size: 6735906897` and `X-Linked-ETag: c3355d30191f1f066b26d93fba017ae9809dce6c627dda5f6a66eaa651204f68` as `Comfy-Org/Wan_2.2_ComfyUI_Repackaged` (same xet object `b94ab462ac11c85e60e2e9bd4045d8eaad6f38186936cb6f8909ca43f6bdd348`). The file on disk was resumed from the Wan 2.2 URL.
+
+| file | bytes on disk | SHA256 | match |
+|------|----------------|--------|-------|
+| `F:\ComfyUI\models\diffusion_models\wan2.2_ti2v_5B_fp16.safetensors` | 9999658848 | 456f901338bd9eadbded3828b819109a9b68e8a525ca5cf8d0049a69fcfeca1e | yes (verified 18:27:17) |
+| `F:\ComfyUI\models\vae\wan2.2_vae.safetensors` | 1409400960 | e40321bd36b9709991dae2530eb4ac303dd168276980d3e9bc4b6e2b75fed156 | yes (verified 17:58:58) |
+| `F:\ComfyUI\models\text_encoders\umt5_xxl_fp8_e4m3fn_scaled.safetensors` | 6735906897 | c3355d30191f1f066b26d93fba017ae9809dce6c627dda5f6a66eaa651204f68 | yes (certutil SHA256 at 18:31, after curl reached 100%) |
+
+- F: free after these three files: **341333843968 bytes (317.89 GB)** measured 18:31.
+- Diffusion and VAE were already complete before this check. UMT5 was an in-progress `curl -C -` (pid 178516, started 17:42:48) that reached 6735906897 bytes at 18:30:44. This check did not start a second download.
+- Not downloaded: 14B, LTX, FramePack, WanGP, LoRA, PuLID, MuseTalk, GPT-SoVITS.
+- Not done: GUI template run, `scripts/p1_comfy_probe.py`, any queued video.
+- ComfyUI still LISTENING on `127.0.0.1:8188` (existing process; not relaunched).
+
 
 ## Risks
 
@@ -135,7 +160,7 @@ P0R 未安装任何新 custom node。
 - [x] 磁盘空闲已知
 - [x] Python/FFmpeg 可定位
 - [x] 现有模型/节点清单已知（`local/p0r/*.csv`，不提交）
-- [x] 能明确列出 P1A 需要下载什么（上表三文件，全部缺失）
+- [x] 能明确列出 P1A 需要下载什么（上表三文件；17:40 时全部缺失。18:31 已在磁盘且 SHA256 匹配，见 “P1A weights on disk”）
 
 P0R PASS → 进入 P1A 仅下载上述三文件。
 
