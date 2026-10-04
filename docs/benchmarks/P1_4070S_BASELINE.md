@@ -8,6 +8,7 @@
 > l2_480x832x81_recorded_at: 2026-10-04 21:04 Asia/Shanghai (job finished 2026-10-04 21:03 Asia/Shanghai). One L2 run only; not a P1A PASS.
 > l3_576x1024x49_recorded_at: 2026-10-04 22:12 Asia/Shanghai (job finished 2026-10-04 21:13 Asia/Shanghai). One L3 run only; not a P1A PASS. Follow-up checked history and did not POST /prompt.
 > l4_576x1024x81_recorded_at: 2026-10-04 22:28 Asia/Shanghai (job finished 2026-10-04 22:27 Asia/Shanghai). One L4 run only; not a P1A PASS.
+> l1_stability_10x_recorded_at: 2026-10-05 00:45 Asia/Shanghai (jobs 2026-10-05 00:07:11–00:42:06 Asia/Shanghai). Ten serial L1 480x832x49 runs, 10/10 success. Not a P1A PASS (no I2V).
 
 ## Run
 
@@ -246,10 +247,42 @@ Changed from the template widgets, for this one small run:
 - `ram_avail_bytes_min`: 25399296; `ram_total_bytes`: 34164097024
 - No OOM in history. `status_str` is success. No retry and no 14B
 
+## L1 stability 10x 480x832x49 (serial submit-and-wait)
+
+- Result: **10/10 success**. Failed: 0. OOM: 0. No retry. No second ComfyUI. No 14B. No LTX.
+- Script: `scripts/p1_comfy_probe.py` submit-and-wait, one job at a time. The script's default path is submit-and-wait (there is no separate subcommand). Each run refused to POST while the queue was non-empty. Prompt ids were stored before the next submit. History was checked against these ten ids; no duplicate POST.
+- Server: `http://127.0.0.1:8188` still PID 333664, started 2026-10-04 17:22:43 Asia/Shanghai. No GPU reset and no process restart during the series.
+- Lab workflow file was not edited: `workflows/video/lab/VID_wan22_5b_p1a_v001.json` SHA256 `c000f3731824a504ab50c123485ecc97e186d6bab55615bf08e6409a490f5fcb`, 2937 bytes.
+- Injected only seed plus Wan22ImageToVideoLatent **480x832x49**. Positive prompt was not overridden. It is the lab-graph benchmark line (retro subway musician), not the Wukong story. Steps 20, CFG 5.0, uni_pc / simple, unchanged.
+- Sampler: nvidia-smi `memory.used` and Win32 RAM every 5.0 s. Peaks below are sample peaks, not a continuous hardware maximum. GPU NVIDIA GeForce RTX 4070 SUPER, memory.total 12282 MiB, driver 595.97.
+- ffprobe on every probe copy: h264, 480x832, 49 frames, 24/1 fps, duration 2.041667 s. `*.mp4` is gitignored. Comfy outputs are under `local/comfyui/image/ComfyUI/output/video/` and match the probe-copy byte sizes.
+- Summary: `docs/benchmarks/records/p1a_wan22_5b_l1_stability_10x.json`
+
+| # | seed | prompt_id | elapsed s | peak MiB | samples | output |
+|---|------|-----------|-----------|----------|---------|--------|
+| 1 | 4808324901 | `951cc919-a5af-43d1-b8b3-060213cdbda6` | 306.100 | 11604 | 62 | `p1a_wan22_5b_smoke_00008_.mp4` |
+| 2 | 4808324902 | `1b656bb1-9951-4a28-9cc0-1d559ff45489` | 212.769 | 11076 | 44 | `p1a_wan22_5b_smoke_00009_.mp4` |
+| 3 | 4808324903 | `e7eab378-be0c-48ef-af86-fdabaed0e18d` | 208.991 | 11601 | 43 | `p1a_wan22_5b_smoke_00010_.mp4` |
+| 4 | 4808324904 | `bc392deb-442e-4499-b247-419655ac20ee` | 203.228 | 10912 | 42 | `p1a_wan22_5b_smoke_00011_.mp4` |
+| 5 | 4808324905 | `79069536-bfbb-4aeb-b70c-06e26eb6ed84` | 185.792 | 11700 | 39 | `p1a_wan22_5b_smoke_00012_.mp4` |
+| 6 | 4808324906 | `ee4ef7dc-c7af-42f7-b6c8-246175ae5962` | 188.091 | 11054 | 39 | `p1a_wan22_5b_smoke_00013_.mp4` |
+| 7 | 4808324907 | `d4f7d778-904c-4f7a-9e3a-99b77249764c` | 176.986 | 10986 | 36 | `p1a_wan22_5b_smoke_00014_.mp4` |
+| 8 | 4808324908 | `c09e2ef7-c749-4676-80b2-e363b15395dd` | 187.328 | 11733 | 38 | `p1a_wan22_5b_smoke_00015_.mp4` |
+| 9 | 4808324909 | `2d07953c-16f5-4d9a-9406-2983e04fd628` | 177.579 | 10921 | 37 | `p1a_wan22_5b_smoke_00016_.mp4` |
+| 10 | 4808324910 | `d8d0b33e-8b93-474b-a6d7-a4bc814f1cad` | 175.239 | 11730 | 36 | `p1a_wan22_5b_smoke_00017_.mp4` |
+
+Sorted elapsed seconds: 175.239, 176.986, 177.579, 185.792, 187.328, 188.091, 203.228, 208.991, 212.769, 306.100.
+
+- **p50 = 187.7095 s**. Median, Hyndman-Fan type 7: mean of the 5th and 6th sorted values (187.328 and 188.091).
+- **p95 = 264.101 s**. Same method: index `0.95*(10-1) = 8.55`, linear interpolation between 212.769 and 306.100. Nearest-rank p95 (`ceil(0.95*10)`) is the slowest run, 306.100 s. The 306.100 s run is the first of the series; the later nine are 175.239–212.769 s.
+- Sampled VRAM range across all nvidia-smi samples: **3261–11733 MiB**. Per-run sample peaks: **10912–11733 MiB** / 12282 MiB.
+- Lowest `ram_avail_bytes_min` across the ten records: 6713344 (run 1). `ram_total_bytes` 34164097024. No OOM.
+- Pure GPU time only, 2 takes, using p50 / p95: 6 shots 37.54 / 52.82 min; 12 shots 75.08 / 105.64 min; 20 shots 125.14 / 176.07 min. This is not wall-clock and not I2V.
+- This rung is the measured stable T2V config. It is not a recommended I2V production default, and it is not a P1A PASS.
+
 ## Not done
 
-- No job after this L4 success. No second submit
-- No 14B, GGUF, or WanGP
+- No 14B, GGUF, WanGP, or LTX
 - No I2V (`start_image` not connected; LoadImage was not added back)
-- L1 has one successful 480x832x49 run. L2 has one successful 480x832x81 run. L3 has one successful 576x1024x49 run. L4 has one successful 576x1024x81 run. No 10-run stability, no p50/p95, no recommended default
+- L2, L3, and L4 still have one run each, not ten
 - P1A PASS conditions are not met

@@ -1,7 +1,11 @@
 # PROJECT_STATE
 
-更新时间：2026-10-04 22:34 Asia/Shanghai
-状态：**Strategic GO / Current Production NO-GO / P0R PASS / P1A L1 一次 480x832x49、L2 一次 480x832x81、L3 一次 576x1024x49 与 L4 一次 576x1024x81 T2V 已成功（submit-and-wait，L4 prompt 91225eb6）；不是 10 次稳定性，不是 PASS**
+更新时间：2026-10-05 00:45 Asia/Shanghai
+状态：**Strategic GO / Current Production NO-GO / P0R PASS / P1A L1 T2V 480x832x49 已串行成功 10/10（p50 187.7095 s，p95 264.101 s，采样峰值 10912–11733 MiB）；L2/L3/L4 仍各一次。不是 I2V，不是 PASS**
+
+## L1 十次稳定性（Step 5，T2V）
+
+2026-10-05 00:07:11–00:42:06 Asia/Shanghai，同一 ComfyUI（`http://127.0.0.1:8188`，PID 333664，17:22:43 启动，没有第二进程，没有重启）对 lab 图 `workflows/video/lab/VID_wan22_5b_p1a_v001.json`（SHA256 `c000f3731824a504ab50c123485ecc97e186d6bab55615bf08e6409a490f5fcb`，文件未改）串行 submit-and-wait 十次。尺寸 480×832 / 49 frames。正向提示词没有覆盖，仍是图里的地铁乐手基准句，不是悟空故事。种子依次为 4808324901–4808324910。十次都成功，没有 OOM，没有重试。耗时（秒）：306.100、212.769、208.991、203.228、185.792、188.091、176.986、187.328、177.579、175.239。p50 **187.7095 s**，p95 **264.101 s**（Hyndman-Fan type 7）。nvidia-smi 每 5 秒采样，单次峰值 **10912–11733 MiB** / 12282 MiB，全部样本 **3261–11733 MiB**（不是连续硬件最大值）。汇总 `docs/benchmarks/records/p1a_wan22_5b_l1_stability_10x.json`，单次记录 `docs/benchmarks/records/p1a_wan22_5b_l1_stab_01.json` 至 `_10.json`。mp4 不入库。这不是 I2V，也不是 P1A PASS。
 
 ## 内容修正（不是新的性能阶梯）
 
@@ -44,7 +48,7 @@
 ### P0R：本地再基线 — **PASS（文档已提交）**
 环境探测、路径/端口/磁盘/现有模型盘点完成。
 
-### P1A：最窄视频基线 — **L1 一次 480×832 / 49 frames、L2 一次 480×832 / 81 frames、L3 一次 576×1024 / 49 frames 与 L4 一次 576×1024 / 81 frames T2V 已用 `scripts/p1_comfy_probe.py` submit-and-wait 跑通并写入记录（L4 prompt 91225eb6，591.983 s，采样峰值 11221 MiB）。不是 PASS。I2V、10 次稳定性都未做**
+### P1A：最窄视频基线 — **L1 480×832 / 49 frames T2V 已串行 10/10（2026-10-05 00:07–00:42 Asia/Shanghai，p50 187.7095 s，p95 264.101 s，单次采样峰值 10912–11733 MiB，全部样本 3261–11733 MiB）。L2/L3/L4 仍各一次。不是 PASS。I2V 未做**
 仅：
 - 一个 ComfyUI GPU 进程
 - 官方原生 Wan2.2 5B 模板
