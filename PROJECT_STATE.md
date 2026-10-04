@@ -1,7 +1,7 @@
 # PROJECT_STATE
 
-更新时间：2026-10-04 19:06 Asia/Shanghai
-状态：**Strategic GO / Current Production NO-GO / P0R PASS / P1A Step 3 脚本已记录一次已完成的 480x832x33 T2V（这次调用未新提交）；不是 10 次稳定性，不是 PASS**
+更新时间：2026-10-04 20:55 Asia/Shanghai
+状态：**Strategic GO / Current Production NO-GO / P0R PASS / P1A L1 一次 480x832x49 T2V 已成功（submit-and-wait，prompt 7f4294b9）；不是 10 次稳定性，不是 PASS**
 
 ## 1. 二次复核结论
 
@@ -26,7 +26,7 @@
 - **实际 ComfyUI URL：`http://127.0.0.1:8188`**（项目 image 实例 ComfyUI v0.38.0，torch 2.14.1+cu130）
 - Desktop：`F:\ComfyUI` basePath；ProductVersion 0.8.35.0；历史端口曾用 8000，**当前勿假设 8000**
 - 模型库：`F:\ComfyUI\models` ≈ 18.50 GB；已有 SDXL/SD1.5/VAE/FaceID adapter/clip_vision
-- **Wan2.2-TI2V-5B 官方模板三文件已在 `F:\ComfyUI\models` 且 SHA256 匹配**（diffusion 9999658848, vae 1409400960, umt5 6735906897）。2026-10-04 18:36–18:41 Asia/Shanghai 首次 smoke 成功（见 docs/benchmarks/P1_4070S_BASELINE.md）：prompt_id d0d5c325-9e52-4a49-9f89-7d7fd9095b6c；官方模板 video_wan2_2_5B_ti2v.json 转 API；LoadImage mode 4 旁路所以是 T2V；480x832 / 33 frames；执行 330.811 s；nvidia-smi 约 5.2 s 采样峰值 memory.used 11374 MiB；输出 local/comfyui/image/ComfyUI/output/video/p1a_wan22_5b_smoke_00001_.mp4（200534 bytes）。2026-10-04 18:45 Asia/Shanghai 从仍在运行的 ComfyUI history 导出该次 API graph（未重跑、未手工重建、未新开 ComfyUI）：`workflows/video/lab/VID_wan22_5b_p1a_v001.json` SHA256 `c000f3731824a504ab50c123485ecc97e186d6bab55615bf08e6409a490f5fcb`，2937 bytes。第二次同图运行 prompt_id `b484e13e-b779-4283-930b-9460122b2c6e`：Comfy 执行 2026-10-04 18:50:34.299–18:57:49.583 Asia/Shanghai，435.284 s；输出 `local/comfyui/image/ComfyUI/output/video/p1a_wan22_5b_smoke_00002_.mp4`（200534 bytes，SHA256 `7256d7908fa095b63577b4b66972d15804a42dacdef64d0583eadd36a07266e7`，ffprobe h264 480x832、33 frames、24/1 fps、时长 1.375 s，mtime 18:57:49 Asia/Shanghai）。这次没有执行中的 nvidia-smi 采样序列；11652 MiB 是一次手动采样，不是峰值。2026-10-04 19:06:20 Asia/Shanghai `scripts/p1_comfy_probe.py --from-prompt-id` 对这个已完成 prompt 做了 history GET、下载校验和一次跑后快照（nvidia-smi memory.used 4304 MiB / 12282 MiB，peak 字段为 null），进程 exit 0，没有 POST /prompt。记录 `docs/benchmarks/records/p1a_wan22_5b_probe_b484e13e.json`。ComfyUI 仍是 17:22:43 启动的 PID 333664，没有第二个进程
+- **Wan2.2-TI2V-5B 官方模板三文件已在 `F:\ComfyUI\models` 且 SHA256 匹配**（diffusion 9999658848, vae 1409400960, umt5 6735906897）。2026-10-04 18:36–18:41 Asia/Shanghai 首次 smoke 成功（见 docs/benchmarks/P1_4070S_BASELINE.md）：prompt_id d0d5c325-9e52-4a49-9f89-7d7fd9095b6c；官方模板 video_wan2_2_5B_ti2v.json 转 API；LoadImage mode 4 旁路所以是 T2V；480x832 / 33 frames；执行 330.811 s；nvidia-smi 约 5.2 s 采样峰值 memory.used 11374 MiB；输出 local/comfyui/image/ComfyUI/output/video/p1a_wan22_5b_smoke_00001_.mp4（200534 bytes）。2026-10-04 18:45 Asia/Shanghai 从仍在运行的 ComfyUI history 导出该次 API graph（未重跑、未手工重建、未新开 ComfyUI）：`workflows/video/lab/VID_wan22_5b_p1a_v001.json` SHA256 `c000f3731824a504ab50c123485ecc97e186d6bab55615bf08e6409a490f5fcb`，2937 bytes。第二次同图运行 prompt_id `b484e13e-b779-4283-930b-9460122b2c6e`：Comfy 执行 2026-10-04 18:50:34.299–18:57:49.583 Asia/Shanghai，435.284 s；输出 `local/comfyui/image/ComfyUI/output/video/p1a_wan22_5b_smoke_00002_.mp4`（200534 bytes，SHA256 `7256d7908fa095b63577b4b66972d15804a42dacdef64d0583eadd36a07266e7`，ffprobe h264 480x832、33 frames、24/1 fps、时长 1.375 s，mtime 18:57:49 Asia/Shanghai）。这次没有执行中的 nvidia-smi 采样序列；11652 MiB 是一次手动采样，不是峰值。2026-10-04 19:06:20 Asia/Shanghai `scripts/p1_comfy_probe.py --from-prompt-id` 对这个已完成 prompt 做了 history GET、下载校验和一次跑后快照（nvidia-smi memory.used 4304 MiB / 12282 MiB，peak 字段为 null），进程 exit 0，没有 POST /prompt。记录 `docs/benchmarks/records/p1a_wan22_5b_probe_b484e13e.json`。ComfyUI 仍是 17:22:43 启动的 PID 333664，没有第二个进程。2026-10-04 19:10:39.393–19:15:08.117 Asia/Shanghai L1 一次 submit-and-wait 成功：prompt_id `7f4294b9-f811-43c1-bc49-9a62bc90dd66`；lab workflow 文件未改（`workflows/video/lab/VID_wan22_5b_p1a_v001.json` SHA256 `c000f3731824a504ab50c123485ecc97e186d6bab55615bf08e6409a490f5fcb`）；history 图为 480x832x49，seed 898471028164125。Comfy 执行 **268.724 s**。输出 `local/comfyui/image/ComfyUI/output/video/p1a_wan22_5b_smoke_00003_.mp4`（326275 bytes，SHA256 `2aa87d8dd76e09361c00b5c4d5cee27d5532d068874e70fd987770c85e655029`，ffprobe h264 480x832、49 frames、24/1 fps、时长 2.041667 s）。记录 `docs/benchmarks/records/p1a_wan22_5b_l1_480x832x49.json`，内有 55 次 nvidia-smi 采样，memory.used 采样峰值 **11165 MiB** / 12282 MiB（不是连续硬件最大值）。这次复查 history 已是 success，队列为空，没有再 POST /prompt。监听 8188 的仍是 PID 333664
 - custom_nodes：comfyui_ipadapter_plus、glm_prompt（后者曾 IMPORT FAILED）
 - 仓库仍无生产客户端完成件、无 EP001 实体生产目录。Lab API workflow 只有这次 T2V smoke graph，不是生产 workflow
 - GPT-SoVITS / MuseTalk / 14B / LTX / FramePack / WanGP **不进 P1A**
@@ -36,7 +36,7 @@
 ### P0R：本地再基线 — **PASS（文档已提交）**
 环境探测、路径/端口/磁盘/现有模型盘点完成。
 
-### P1A：最窄视频基线 — **Step 3 `scripts/p1_comfy_probe.py` 已落地，并用已完成的 prompt b484e13e 写出记录（该次调用没有新提交，也没有跑参数阶梯）。不是 PASS。I2V、参数阶梯、10 次稳定性都未做**
+### P1A：最窄视频基线 — **L1 一次 480×832 / 49 frames T2V 已用 `scripts/p1_comfy_probe.py` submit-and-wait 跑通并写入记录（prompt 7f4294b9，268.724 s）。不是 PASS。I2V、L2–L4、10 次稳定性都未做**
 仅：
 - 一个 ComfyUI GPU 进程
 - 官方原生 Wan2.2 5B 模板

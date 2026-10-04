@@ -4,6 +4,7 @@
 > git_main at run time: b38c235946623708cb807f26e80d803d94932f6c
 > This file records the first smoke plus a second same-graph run. It is not a P1A PASS (no 10-run stability, no I2V).
 > step3_recorded_at: 2026-10-04 19:06 Asia/Shanghai
+> l1_480x832x49_recorded_at: 2026-10-04 20:55 Asia/Shanghai (job finished 2026-10-04 19:15 Asia/Shanghai). One L1 run only; not a P1A PASS.
 
 ## Run
 
@@ -123,11 +124,41 @@ Changed from the template widgets, for this one small run:
 - Server `/system_stats` at that call: comfyui 0.38.0, pytorch 2.14.1+cu130, python 3.12.9
 - Sampler change in the script (nvidia-smi + Win32 memory, sample errors non-fatal) was exercised only by this one post-run sample, not across a live generation
 
+
+## L1 480x832x49 (one submit-and-wait)
+
+- Result: **success**
+- Checked again  2026-10-04 20:55 Asia/Shanghai against live `GET /history/7f4294b9-f811-43c1-bc49-9a62bc90dd66` before any new submit. History was already terminal success. Queue running 0, pending 0. No replacement prompt was posted.
+- Script: `scripts/p1_comfy_probe.py` submit-and-wait. Probe log `local/p1a/l1_probe.log` (gitignored) ends `result=success` / `EXIT:0`. `queued_new_job`: true. This is one job, not 10 runs, and not L2.
+- prompt_id: `7f4294b9-f811-43c1-bc49-9a62bc90dd66`
+- Record: `docs/benchmarks/records/p1a_wan22_5b_l1_480x832x49.json` (written by that probe; fields below were checked against history and the mp4, not rewritten)
+- Lab workflow file was not edited: `workflows/video/lab/VID_wan22_5b_p1a_v001.json` SHA256 `c000f3731824a504ab50c123485ecc97e186d6bab55615bf08e6409a490f5fcb`, 2937 bytes. The submitted history graph is that graph with Wan22ImageToVideoLatent **480x832x49** and seed **898471028164125**. `execution_cached` nodes: 37, 38, 39, 48
+- Server: `http://127.0.0.1:8188` still PID 333664 (LISTENING). Probe process is not still running
+- Comfy `execution_start`: 2026-10-04 19:10:39.393 Asia/Shanghai (timestamp 1791112239393)
+- Comfy `execution_success`: 2026-10-04 19:15:08.117 Asia/Shanghai (timestamp 1791112508117)
+- Elapsed execution: **268.724 s**
+- Comfy output: `local/comfyui/image/ComfyUI/output/video/p1a_wan22_5b_smoke_00003_.mp4`
+- Probe copy (gitignored `*.mp4`): `docs/benchmarks/records/p1a_wan22_5b_l1_480x832x49_media/p1a_wan22_5b_smoke_00003_.mp4`
+- Size: **326275 bytes** (both paths)
+- SHA256: `2aa87d8dd76e09361c00b5c4d5cee27d5532d068874e70fd987770c85e655029`
+- ffprobe on the probe copy: h264, 480x832, 49 frames, 24/1 fps, duration 2.041667 s
+- Comfy file mtime: 2026-10-04 19:15:07 Asia/Shanghai
+
+### VRAM / RAM for L1
+
+- Sample log is the `samples` array in the record (55 nvidia-smi samples, interval 5.0 s), not an invented peak
+- GPU: NVIDIA GeForce RTX 4070 SUPER, nvidia-smi memory.total 12282 MiB, driver 595.97
+- First `memory.used`: **4425 MiB**
+- Peak sampled `memory.used`: **11165 MiB**
+- Last `memory.used`: **4452 MiB**
+- This is a sample peak, not a continuous hardware maximum
+- `ram_avail_bytes_min`: 29188096; `ram_total_bytes`: 34164097024
+- No OOM in history. `status_str` is success
+
 ## Not done
 
-- No third job from the verified probe invocation
+- No fourth job after this L1 success. This check did not POST `/prompt`
 - No 14B, GGUF, or WanGP
 - No I2V (`start_image` not connected; LoadImage was not added back)
-- No L1-L4 ladder and no 10-run stability
-- The fixed script's submit → wait path was not re-run after the sampler patch
-- P1A PASS conditions (10 serial runs, p50/p95, recommended baseline) are not met
+- L1 has one successful 480x832x49 run only. L2–L4 are not done. No 10-run stability, no p50/p95, no recommended default
+- P1A PASS conditions are not met
