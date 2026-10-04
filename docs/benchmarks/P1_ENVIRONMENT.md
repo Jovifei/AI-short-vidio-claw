@@ -141,7 +141,7 @@ The template markdown links the text encoder at `Comfy-Org/Wan_2.1_ComfyUI_repac
 - F: free after these three files: **341333843968 bytes (317.89 GB)** measured 18:31.
 - Diffusion and VAE were already complete before this check. UMT5 was an in-progress `curl -C -` (pid 178516, started 17:42:48) that reached 6735906897 bytes at 18:30:44. This check did not start a second download.
 - Not downloaded: 14B, LTX, FramePack, WanGP, LoRA, PuLID, MuseTalk, GPT-SoVITS.
-- Not done: GUI template run, `scripts/p1_comfy_probe.py`, any queued video.
+- Superseded at 18:41 by `docs/benchmarks/P1_4070S_BASELINE.md`: one official-template API smoke succeeded (prompt_id `d0d5c325-9e52-4a49-9f89-7d7fd9095b6c`, 480x832x33, 330.811 s, sampled peak nvidia-smi memory.used 11374 MiB). Still not done: GUI export, `workflows/video/lab/VID_wan22_5b_p1a_v001.json`, `scripts/p1_comfy_probe.py`, 10-run stability.
 - ComfyUI still LISTENING on `127.0.0.1:8188` (existing process; not relaunched).
 
 
