@@ -6,6 +6,7 @@
 > step3_recorded_at: 2026-10-04 19:06 Asia/Shanghai
 > l1_480x832x49_recorded_at: 2026-10-04 20:55 Asia/Shanghai (job finished 2026-10-04 19:15 Asia/Shanghai). One L1 run only; not a P1A PASS.
 > l2_480x832x81_recorded_at: 2026-10-04 21:04 Asia/Shanghai (job finished 2026-10-04 21:03 Asia/Shanghai). One L2 run only; not a P1A PASS.
+> l3_576x1024x49_recorded_at: 2026-10-04 22:12 Asia/Shanghai (job finished 2026-10-04 21:13 Asia/Shanghai). One L3 run only; not a P1A PASS. Follow-up checked history and did not POST /prompt.
 
 ## Run
 
@@ -185,10 +186,39 @@ Changed from the template widgets, for this one small run:
 - `ram_avail_bytes_min`: 61382656; `ram_total_bytes`: 34164097024
 - No OOM in history. `status_str` is success. No retry and no 14B
 
+## L3 576x1024x49 (one submit-and-wait)
+
+- Result: **success**
+- Script: `scripts/p1_comfy_probe.py` submit-and-wait. Record `queued_new_job`: true for that original submit. Probe log `local/p1a/l3_probe.log` (gitignored) is 0 bytes, so it does not itself show `EXIT:0`. Success is history `status_str=success` plus this record. This is one job, not 10 runs, and not L4.
+- prompt_id: `e16db48e-236f-4d63-8a2b-5cbf6a793df3`
+- Record: `docs/benchmarks/records/p1a_wan22_5b_l3_576x1024x49.json`
+- Lab workflow file was not edited: `workflows/video/lab/VID_wan22_5b_p1a_v001.json` SHA256 `c000f3731824a504ab50c123485ecc97e186d6bab55615bf08e6409a490f5fcb`, 2937 bytes. The submitted history graph is that graph with Wan22ImageToVideoLatent **576x1024x49** and seed **898471028164125**. `execution_cached` nodes: 37, 38, 39, 48
+- Server: `http://127.0.0.1:8188` still PID 333664 (LISTENING; parent venv launcher PID 450096, both started 17:22:43). No second ComfyUI was started. 2026-10-04 22:12 Asia/Shanghai recheck: queue empty, history already success, no new POST /prompt
+- Comfy `execution_start`: 2026-10-04 21:07:24.085 Asia/Shanghai (timestamp 1791119244085)
+- Comfy `execution_success`: 2026-10-04 21:13:25.097 Asia/Shanghai (timestamp 1791119605097)
+- Elapsed execution: **361.012 s**
+- Comfy output: `local/comfyui/image/ComfyUI/output/video/p1a_wan22_5b_smoke_00005_.mp4`
+- Probe copy (gitignored `*.mp4`): `docs/benchmarks/records/p1a_wan22_5b_l3_576x1024x49_media/p1a_wan22_5b_smoke_00005_.mp4`
+- Size: **305602 bytes** (both paths)
+- SHA256: `a27b59da390b105c042bc854c9532f711d9db0a175876a7dffc90f21e8b51cd9`
+- ffprobe on the probe copy: h264, 576x1024, 49 frames, 24/1 fps, duration 2.041667 s
+- Comfy file mtime: 2026-10-04 21:13:24 Asia/Shanghai
+
+### VRAM / RAM for L3
+
+- Sample log is the `samples` array in the record (73 nvidia-smi samples, interval 5.0 s), not an invented peak
+- GPU: NVIDIA GeForce RTX 4070 SUPER, nvidia-smi memory.total 12282 MiB, driver 595.97
+- First `memory.used`: **2968 MiB**
+- Peak sampled `memory.used`: **10648 MiB**
+- Last `memory.used`: **1945 MiB**
+- This is a sample peak, not a continuous hardware maximum
+- `ram_avail_bytes_min`: 853700608; `ram_total_bytes`: 34164097024
+- No OOM in history. `status_str` is success. No retry and no 14B
+
 ## Not done
 
-- No job after this L2 success. L3 and L4 were not started
+- No job after this L3 success. L4 was not started. The 22:12 recheck did not submit a replacement
 - No 14B, GGUF, or WanGP
 - No I2V (`start_image` not connected; LoadImage was not added back)
-- L1 has one successful 480x832x49 run. L2 has one successful 480x832x81 run. L3–L4 are not done. No 10-run stability, no p50/p95, no recommended default
+- L1 has one successful 480x832x49 run. L2 has one successful 480x832x81 run. L3 has one successful 576x1024x49 run. L4 is not done. No 10-run stability, no p50/p95, no recommended default
 - P1A PASS conditions are not met
