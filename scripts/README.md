@@ -1,92 +1,25 @@
-# scripts — V3 工具索引
+# 脚本入口（V5）
 
-## 环境
+主文档：`docs/30_PREPRODUCTION_V5_EXECUTION.md`；具体PowerShell命令见`docs/preproduction/LOCAL_COMMANDS_V5.md`。
 
-pip install -r requirements-tools.txt
+| 脚本 | 用途 | 是否提交GPU |
+|---|---|---|
+| `import_reference_bundle.py` | 全包hash预检后复制已有图，不覆盖、不批准 | 否 |
+| `preproduction.py plan` | 精确帧级数据合同 | 否 |
+| `approve_asset.py reference/keyframe` | 记录真实的具体批准，先验证后写入 | 否 |
+| `production_guard.py` | V5 guard入口，校验实际出场角色和I2V链路 | 否 |
+| `build_render_queue.py` | V5 queue入口，静帧与blocked分别列出 | 否 |
+| `preproduction.py prepare` | 冻结image/workflow/job及源文件hash | 否 |
+| `submit_prepared.py` | 默认dry-run；明确--execute才调用原probe | 可选 |
+| `render_reference_review.py` | 带标识的静态审片序列，CPU+FFmpeg | 否 |
+| `validate_production_package.py` | 区分contract_ok和production_ready | 否 |
 
-## 1. project_preflight.py
+保留`reference_index.py`与`create_contact_sheet.py`作为一般素材浏览工具，不把它们产生的索引自动当批准登记。
 
-检查 Product Stage 前置。
+保留`p1_comfy_probe.py`作为底层工具。正式流程不能用它绕过失败的guard；新入口通过任务包调用它。V5批准表不兼容旧空字段格式，必须显式按真实资产迁移，不自动赋予批准。
 
-示例：
+测试：`python -m unittest discover -s tests -p "test_preproduction_v5.py" -v`，不需要GPU/Pillow。审片序列另需Pillow及FFmpeg。
 
-python scripts/project_preflight.py --stage MODEL_REVIEW
-python scripts/project_preflight.py --stage V0
-python scripts/project_preflight.py --stage K1
-python scripts/project_preflight.py --stage T1
+## 保留的V3管理工具
 
-Fail-closed。
-
-## 2. reference_index.py
-
-扫描 reference，生成 SHA256/ref_id。
-不会自动批准。
-
-## 3. create_contact_sheet.py
-
-将本地 Reference 排成 Contact Sheet。
-只用于审核。
-
-## 4. approve_asset.py
-
-只有用户明确批准后调用。
-
-必须：
---user-confirmed YES
-
-它不应该被 Agent 在无人确认时自动调用。
-
-## 5. register_asset.py
-
-向 local/asset_ledger.jsonl 登记资产。
-
-不能授予 USER_APPROVED。
-
-## 6. validate_schema.py
-
-使用 schemas/ 校验 JSON。
-
-## 7. validate_production_package.py
-
-检查 LOOKREEL/EP 包结构与 approval manifest。
-
-## 8. build_render_queue.py
-
-只从 USER_APPROVED/PRODUCTION_READY shot 生成队列。
-
-## 9. production_guard.py
-
-视频前最终门禁：
-- approval
-- hash
-- identity refs
-- costume refs
-- LoadImage
-- start_image
-
-Guard 不通过禁止 POST /prompt。
-
-## 10. p1_comfy_probe.py
-
-底层 ComfyUI API 提交/监控/记录工具。
-
-V3 中：
-必须位于 Production Guard 之后。
-
-它不是 approval system。
-
-## 推荐调用链
-
-reference_index
-→ contact_sheet
-→ user approval
-→ approve_asset
-→ validate package
-→ build queue
-→ production_guard
-→ p1_comfy_probe
-
-## Future
-
-完整 CLI：
-等 E0/EP001 手工流程证明有效以后再抽象。
+`project_preflight.py`、`register_asset.py`、`validate_schema.py`及`schemas/`均保留；它们提供V3知识/台账检查。V5使用独立版本标记的计划/批准表，旧schema通过不能替代新的hash/live-chain guard。具体整合见docs/51_PREPRODUCTION_INTEGRATION_V5.md。

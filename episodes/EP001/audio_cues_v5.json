@@ -1,0 +1,157 @@
+{
+  "schema_version": 5,
+  "fps": 24,
+  "dialogue": [
+    {
+      "id": "VO01",
+      "character": "WUKONG",
+      "start_frame": 144,
+      "end_frame": 198,
+      "text": "皮外伤。",
+      "delivery": "压低声音、嘴硬但不故作威猛",
+      "asset_status": "NOT_RECORDED"
+    },
+    {
+      "id": "VO02",
+      "character": "DAIYU",
+      "start_frame": 216,
+      "end_frame": 300,
+      "text": "下次再逞能，我便不管你了。",
+      "delivery": "轻声、稳、略带嗔怪；不是训斥也不是哭腔",
+      "asset_status": "NOT_RECORDED"
+    },
+    {
+      "id": "VO03",
+      "character": "WUKONG",
+      "start_frame": 372,
+      "end_frame": 426,
+      "text": "你每回都这么说。",
+      "delivery": "小声带笑，收尾留气口",
+      "asset_status": "NOT_RECORDED"
+    }
+  ],
+  "rule": "临时画外音；语音实际录制后重新测时长，不剪断字来迎合时间码。",
+  "music": "optional_licensed_only",
+  "ambience": [
+    {
+      "start_frame": 0,
+      "end_frame": 84,
+      "cue": "日落楼道底噪，远处钥匙响",
+      "status": "NOT_RECORDED"
+    },
+    {
+      "start_frame": 84,
+      "end_frame": 144,
+      "cue": "门轴止声，室内安静",
+      "status": "NOT_RECORDED"
+    },
+    {
+      "start_frame": 144,
+      "end_frame": 204,
+      "cue": "药箱扣声；悟空画外音“皮外伤。”",
+      "status": "NOT_RECORDED"
+    },
+    {
+      "start_frame": 204,
+      "end_frame": 324,
+      "cue": "黛玉画外音“下次再逞能，我便不管你了。”",
+      "status": "NOT_RECORDED"
+    },
+    {
+      "start_frame": 324,
+      "end_frame": 372,
+      "cue": "布料轻声，不加医学解释",
+      "status": "NOT_RECORDED"
+    },
+    {
+      "start_frame": 372,
+      "end_frame": 444,
+      "cue": "悟空画外音“你每回都这么说。”",
+      "status": "NOT_RECORDED"
+    },
+    {
+      "start_frame": 444,
+      "end_frame": 516,
+      "cue": "冰箱低频底噪",
+      "status": "NOT_RECORDED"
+    },
+    {
+      "start_frame": 516,
+      "end_frame": 576,
+      "cue": "玻璃轻碰作为剪辑音，不伪装真实口型",
+      "status": "NOT_RECORDED"
+    },
+    {
+      "start_frame": 576,
+      "end_frame": 648,
+      "cue": "汤匙轻响、房间底噪",
+      "status": "NOT_RECORDED"
+    },
+    {
+      "start_frame": 648,
+      "end_frame": 708,
+      "cue": "流水声，夜末自然压低",
+      "status": "NOT_RECORDED"
+    },
+    {
+      "start_frame": 708,
+      "end_frame": 768,
+      "cue": "窗外鸟声；夜转晨用音色完成",
+      "status": "NOT_RECORDED"
+    },
+    {
+      "start_frame": 768,
+      "end_frame": 840,
+      "cue": "梳子轻落梳妆台",
+      "status": "NOT_RECORDED"
+    },
+    {
+      "start_frame": 840,
+      "end_frame": 912,
+      "cue": "风与叶片；没有凭空喷到脸上的水",
+      "status": "NOT_RECORDED"
+    },
+    {
+      "start_frame": 912,
+      "end_frame": 972,
+      "cue": "轻布声",
+      "status": "NOT_RECORDED"
+    },
+    {
+      "start_frame": 972,
+      "end_frame": 1032,
+      "cue": "小馆远处人声",
+      "status": "NOT_RECORDED"
+    },
+    {
+      "start_frame": 1032,
+      "end_frame": 1104,
+      "cue": "摊贩含混声，不录可识别的陌生对白",
+      "status": "NOT_RECORDED"
+    },
+    {
+      "start_frame": 1104,
+      "end_frame": 1176,
+      "cue": "车厢低噪与短促转向声",
+      "status": "NOT_RECORDED"
+    },
+    {
+      "start_frame": 1176,
+      "end_frame": 1236,
+      "cue": "雨声提前半秒进入",
+      "status": "NOT_RECORDED"
+    },
+    {
+      "start_frame": 1236,
+      "end_frame": 1332,
+      "cue": "雨声为情绪主线，音乐可无",
+      "status": "NOT_RECORDED"
+    },
+    {
+      "start_frame": 1332,
+      "end_frame": 1440,
+      "cue": "雨声隔窗转弱，房间安静",
+      "status": "NOT_RECORDED"
+    }
+  ]
+}

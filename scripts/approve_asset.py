@@ -1,61 +1,71 @@
 #!/usr/bin/env python3
-"""Write one explicit user approval into an approval manifest.
+"""Record explicit, asset-scoped human approval; a YES flag alone is not evidence.
 
-This tool is intentionally narrow: it cannot infer approval.
-The caller must provide --user-confirmed YES and the exact file to approve.
+This is an audit helper, not proof of a person's identity. Never manufacture the
+user quote or promote a new asset based on an earlier general style approval.
 """
-
-from __future__ import annotations
-
-import argparse, hashlib, json
-from datetime import datetime, timezone
+import argparse
+from copy import deepcopy
 from pathlib import Path
+from preproduction import (ContractError, approval_evidence, checked_asset, read_json,
+    relative_file, require, sha256_file, validate_keyframe, write_json)
 
-def sha256_file(path:Path)->str:
-    h=hashlib.sha256()
-    with path.open("rb") as f:
-        for chunk in iter(lambda:f.read(1024*1024),b""):
-            h.update(chunk)
-    return h.hexdigest()
+
+def approve_reference(root, registry, asset_id, evidence):
+    result = deepcopy(registry)
+    asset = result.get('assets', {}).get(asset_id)
+    require(isinstance(asset, dict), 'unknown reference id')
+    require(asset.get('character') in {'DAIYU', 'WUKONG'}, 'reference needs a known character')
+    require(set(asset.get('roles', [])) & {'face', 'costume'}, 'whole design boards/scenes cannot act as face references')
+    checked_asset(root, asset['path'], asset['sha256'])
+    approval_evidence(evidence, asset_id, asset['sha256'])
+    require(evidence['scope'] == 'reference', 'wrong evidence scope')
+    asset.update(status='USER_APPROVED', approval_evidence=evidence)
+    return result
+
+
+def approve_keyframe(root, plan, manifest, registry, sid, relative, bindings, evidence):
+    result = deepcopy(manifest)
+    require(sid in result.get('shots', {}), 'unknown shot')
+    image = relative_file(root, relative)
+    require(image.is_file(), 'keyframe does not exist')
+    digest = sha256_file(image)
+    approval_evidence(evidence, sid, digest)
+    require(evidence['scope'] == 'keyframe', 'wrong evidence scope')
+    entry = result['shots'][sid]
+    entry.update(status='USER_APPROVED', approved_by_user=True,
+                 approved_keyframe=relative, sha256=digest, approval_evidence=evidence,
+                 identity_refs=bindings.get('identity_refs', {}), costume_refs=bindings.get('costume_refs', {}))
+    # Validate the prospective record before replacing anything on disk.
+    validate_keyframe(root, plan, result, registry, sid)
+    return result
+
 
 def main():
-    p=argparse.ArgumentParser()
-    p.add_argument("--manifest",required=True)
-    p.add_argument("--shot",required=True)
-    p.add_argument("--image",required=True)
-    p.add_argument("--user-confirmed",required=True)
-    p.add_argument("--daiyu-ref",action="append",default=[])
-    p.add_argument("--wukong-ref",action="append",default=[])
-    p.add_argument("--daiyu-costume")
-    p.add_argument("--wukong-costume")
-    args=p.parse_args()
+    p = argparse.ArgumentParser(description=__doc__)
+    p.add_argument('kind', choices=['reference', 'keyframe'])
+    p.add_argument('--root', default='.')
+    p.add_argument('--registry', required=True)
+    p.add_argument('--evidence', required=True)
+    p.add_argument('--id', required=True)
+    p.add_argument('--user-confirmed', required=True, choices=['YES'])
+    p.add_argument('--plan'); p.add_argument('--manifest'); p.add_argument('--image'); p.add_argument('--bindings')
+    a = p.parse_args()
+    import json
+    try:
+        registry_path = relative_file(a.root, a.registry)
+        registry, evidence = read_json(registry_path), read_json(relative_file(a.root, a.evidence))
+        if a.kind == 'reference':
+            value = approve_reference(a.root, registry, a.id, evidence)
+            target = registry_path
+        else:
+            target = relative_file(a.root, a.manifest)
+            value = approve_keyframe(a.root, read_json(relative_file(a.root, a.plan)), read_json(target),
+                 registry, a.id, a.image, read_json(relative_file(a.root, a.bindings)), evidence)
+        write_json(target, value)
+        print(json.dumps({'updated': str(target), 'subject': a.id}, ensure_ascii=False)); return 0
+    except (ContractError, OSError, KeyError, TypeError) as exc:
+        print(json.dumps({'error': str(exc)}, ensure_ascii=False)); return 2
 
-    if args.user_confirmed!="YES":
-        raise SystemExit("refusing approval: --user-confirmed must be exactly YES")
-
-    manifest_path=Path(args.manifest)
-    image=Path(args.image)
-    if not manifest_path.is_file():
-        raise SystemExit("manifest not found")
-    if not image.is_file():
-        raise SystemExit("image not found")
-
-    data=json.loads(manifest_path.read_text(encoding="utf-8"))
-    shots=data.get("shots") or {}
-    if args.shot not in shots:
-        raise SystemExit(f"shot {args.shot} not in manifest")
-
-    shot=shots[args.shot]
-    shot["status"]="USER_APPROVED"
-    shot["approved_keyframe"]=image.name
-    shot["sha256"]=sha256_file(image)
-    shot["identity_refs"]={"DAIYU":args.daiyu_ref,"WUKONG":args.wukong_ref}
-    shot["costume_refs"]={"DAIYU":args.daiyu_costume,"WUKONG":args.wukong_costume}
-    shot["approved_by_user"]=True
-    shot["approved_at"]=datetime.now(timezone.utc).isoformat()
-
-    manifest_path.write_text(json.dumps(data,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
-    print(json.dumps({"shot":args.shot,"status":"USER_APPROVED","sha256":shot["sha256"]},ensure_ascii=False))
-
-if __name__=="__main__":
-    main()
+if __name__ == '__main__':
+    raise SystemExit(main())

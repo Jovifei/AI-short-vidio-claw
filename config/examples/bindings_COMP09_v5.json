@@ -1,0 +1,1 @@
+{"identity_refs":{"DAIYU":["DAIYU_FACE_CROP"],"WUKONG":["WUKONG_FACE_CROP"]},"costume_refs":{"DAIYU":{"stage_id":"DAIYU_CLASSIC_OUTDOOR","asset_id":"DAIYU_COSTUME_CROP"},"WUKONG":{"stage_id":"WUKONG_DZS_FORMAL","asset_id":"WUKONG_COSTUME_CROP"}},"note":"These are candidate IDs, NOT pre-approved. Each must receive actual reference-scoped approval before this binding can pass."}

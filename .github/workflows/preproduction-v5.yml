@@ -1,0 +1,21 @@
+name: Preproduction V5 offline checks
+on:
+  pull_request:
+  push:
+    branches: [main]
+permissions:
+  contents: read
+jobs:
+  contracts:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+      - name: Python version
+        run: python3 --version
+      - name: Offline unit tests (no GPU, no downloads)
+        run: python3 -m unittest discover -s tests -p 'test_preproduction_v5.py' -v
+      - name: Exact timeline validation
+        run: |
+          python3 scripts/preproduction.py plan --plan episodes/EP001/production_plan_v5.json
+          python3 scripts/preproduction.py plan --plan episodes/LOOKREEL01/production_plan_v5.json

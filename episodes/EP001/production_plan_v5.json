@@ -1,0 +1,636 @@
+{
+  "schema_version": 5,
+  "project_id": "EP001",
+  "visual_target_id": "ACTIVE_CP_VISUAL_V2",
+  "status": "PREPRODUCTION_DRAFT",
+  "fps": 24,
+  "total_frames": 1440,
+  "delivery_size": [
+    1080,
+    1920
+  ],
+  "first_cut_i2v_budget": 6,
+  "story_mode": "classical_costumes_in_modern_daily_life",
+  "shots": [
+    {
+      "shot_id": "SH001",
+      "title": "楼道回来",
+      "start_frame": 0,
+      "duration_frames": 84,
+      "characters": [
+        "WUKONG"
+      ],
+      "costume_stages": {
+        "WUKONG": "WUKONG_CLASSIC_OUTDOOR"
+      },
+      "location": "傍晚 HOME_ENTRY",
+      "story_purpose": "建立伤与逞强；不是动作冒险片",
+      "composition": "腰高中全景，走廊消失点在右上；悟空画右往左入门，受伤左手朝镜头",
+      "start_state": "站在门边，未敲门",
+      "visible_action": "抬右手将敲门，左手微缩；不迈大步",
+      "cut_to": "落在左手的目光接下一镜",
+      "continuity_lock": "裸露轻微擦伤，禁止血腥伤口",
+      "sound_cue": "日落楼道底噪，远处钥匙响",
+      "render_mode": "STILL",
+      "motion_tier": "M0",
+      "fallback": "同一批准关键帧等时长静态/不超过3%缓推；不换图、不重塑脸",
+      "candidate_limit": 3,
+      "video_take_limit": 2,
+      "status": "DRAFT",
+      "motion_prompt": ""
+    },
+    {
+      "shot_id": "SH002",
+      "title": "开门先看伤",
+      "start_frame": 84,
+      "duration_frames": 60,
+      "characters": [
+        "DAIYU",
+        "WUKONG"
+      ],
+      "costume_stages": {
+        "DAIYU": "DAIYU_CLASSIC_HOME",
+        "WUKONG": "WUKONG_CLASSIC_OUTDOOR"
+      },
+      "location": "傍晚 HOME_ENTRY",
+      "story_purpose": "黛玉不问来历，只注意到他受伤",
+      "composition": "门内反打，黛玉画左，悟空画右；不跨两人连线",
+      "start_state": "门已开到位，两个脸均露出",
+      "visible_action": "黛玉眼神由脸降到左手；悟空呼吸",
+      "cut_to": "眼神下降切药箱",
+      "continuity_lock": "伤口位置保持左手背；两只手不能对调",
+      "sound_cue": "门轴止声，室内安静",
+      "render_mode": "I2V",
+      "motion_tier": "M1",
+      "fallback": "同一批准关键帧等时长静态/不超过3%缓推；不换图、不重塑脸",
+      "candidate_limit": 3,
+      "video_take_limit": 2,
+      "status": "DRAFT",
+      "motion_prompt": "Daiyu lowers her gaze slightly toward the injured character's left hand. Both remain still; only breathing and a tiny eye movement. Preserve the approved faces and costumes.",
+      "i2v": {
+        "width": 480,
+        "height": 832,
+        "frames": 81,
+        "fps": 24,
+        "status": "LOCAL_I2V_VALIDATION_REQUIRED"
+      }
+    },
+    {
+      "shot_id": "SH003",
+      "title": "药箱落桌",
+      "start_frame": 144,
+      "duration_frames": 60,
+      "characters": [
+        "DAIYU",
+        "WUKONG"
+      ],
+      "costume_stages": {
+        "DAIYU": "DAIYU_CLASSIC_HOME",
+        "WUKONG": "WUKONG_CLASSIC_INJURED"
+      },
+      "location": "傍晚 LIVING_ROOM",
+      "story_purpose": "从看到到照顾形成因果",
+      "composition": "35mm感中景，药箱画左前，两人脸在上半幅；茶杯在右后",
+      "start_state": "药箱已经落桌，黛玉手刚松开",
+      "visible_action": "静帧推近药箱及两人，不演示多手操作",
+      "cut_to": "药箱圆角接棉片圆形",
+      "continuity_lock": "悟空室内轻装；外层挂在门边，有换装依据",
+      "sound_cue": "药箱扣声；悟空画外音“皮外伤。”",
+      "render_mode": "STILL",
+      "motion_tier": "M0",
+      "fallback": "同一批准关键帧等时长静态/不超过3%缓推；不换图、不重塑脸",
+      "candidate_limit": 3,
+      "video_take_limit": 2,
+      "status": "DRAFT",
+      "motion_prompt": ""
+    },
+    {
+      "shot_id": "SH004",
+      "title": "处理伤口",
+      "start_frame": 204,
+      "duration_frames": 120,
+      "characters": [
+        "DAIYU",
+        "WUKONG"
+      ],
+      "costume_stages": {
+        "DAIYU": "DAIYU_CLASSIC_HOME",
+        "WUKONG": "WUKONG_CLASSIC_INJURED"
+      },
+      "location": "傍晚 LIVING_ROOM",
+      "story_purpose": "她克制关心，他忍疼",
+      "composition": "两人中近景非纯手部；黛玉左、悟空右，左手背朝上平放桌中",
+      "start_state": "棉片靠近浅伤但未压到皮肤",
+      "visible_action": "只用静帧轻推；不演示消毒步骤",
+      "cut_to": "表情接包扎后的手",
+      "continuity_lock": "伤口仍是左手背，护腕已移到桌后；不把绷带套在右手",
+      "sound_cue": "黛玉画外音“下次再逞能，我便不管你了。”",
+      "render_mode": "STILL",
+      "motion_tier": "M0",
+      "fallback": "同一批准关键帧等时长静态/不超过3%缓推；不换图、不重塑脸",
+      "candidate_limit": 3,
+      "video_take_limit": 2,
+      "status": "DRAFT",
+      "motion_prompt": ""
+    },
+    {
+      "shot_id": "SH005",
+      "title": "包扎完成",
+      "start_frame": 324,
+      "duration_frames": 48,
+      "characters": [
+        "DAIYU",
+        "WUKONG"
+      ],
+      "costume_stages": {
+        "DAIYU": "DAIYU_CLASSIC_HOME",
+        "WUKONG": "WUKONG_CLASSIC_INJURED"
+      },
+      "location": "傍晚 LIVING_ROOM",
+      "story_purpose": "建立贯穿全片的状态",
+      "composition": "50mm感中景，已包好的左手背和两人脸都在画里",
+      "start_state": "绷带已固定，两手分离",
+      "visible_action": "不做缠绕动画，停住两秒",
+      "cut_to": "目光引到悟空偷看",
+      "continuity_lock": "BANDAGE_LH_01：米白手背斜带、左拇指外露、腕部两圈，五指外露",
+      "sound_cue": "布料轻声，不加医学解释",
+      "render_mode": "STILL",
+      "motion_tier": "M0",
+      "fallback": "同一批准关键帧等时长静态/不超过3%缓推；不换图、不重塑脸",
+      "candidate_limit": 3,
+      "video_take_limit": 2,
+      "status": "DRAFT",
+      "motion_prompt": ""
+    },
+    {
+      "shot_id": "SH006",
+      "title": "悟空偷看",
+      "start_frame": 372,
+      "duration_frames": 72,
+      "characters": [
+        "DAIYU",
+        "WUKONG"
+      ],
+      "costume_stages": {
+        "DAIYU": "DAIYU_CLASSIC_HOME",
+        "WUKONG": "WUKONG_CLASSIC_INJURED"
+      },
+      "location": "傍晚 LIVING_ROOM",
+      "story_purpose": "照顾的情绪回报",
+      "composition": "65mm感双人中近景；黛玉低头画左，悟空侧目画右",
+      "start_state": "药箱合拢；黛玉仍未抬头",
+      "visible_action": "悟空只移眼看她，嘴角略松，镜头极轻推进",
+      "cut_to": "切冷白冰箱灯",
+      "continuity_lock": "米白绷带仍在左手；无换帽换脸",
+      "sound_cue": "悟空画外音“你每回都这么说。”",
+      "render_mode": "I2V",
+      "motion_tier": "M1",
+      "fallback": "同一批准关键帧等时长静态/不超过3%缓推；不换图、不重塑脸",
+      "candidate_limit": 3,
+      "video_take_limit": 2,
+      "status": "DRAFT",
+      "motion_prompt": "Wukong makes a tiny sideways glance toward Daiyu. Daiyu keeps looking down. Subtle breathing only. Preserve both identities and all ornaments.",
+      "i2v": {
+        "width": 480,
+        "height": 832,
+        "frames": 81,
+        "fps": 24,
+        "status": "LOCAL_I2V_VALIDATION_REQUIRED"
+      }
+    },
+    {
+      "shot_id": "SH007",
+      "title": "一起看冰箱",
+      "start_frame": 444,
+      "duration_frames": 72,
+      "characters": [
+        "DAIYU",
+        "WUKONG"
+      ],
+      "costume_stages": {
+        "DAIYU": "DAIYU_CLASSIC_HOME",
+        "WUKONG": "WUKONG_CLASSIC_INJURED"
+      },
+      "location": "夜 KITCHEN_FRIDGE",
+      "story_purpose": "两个人已经熟悉彼此的生活",
+      "composition": "冰箱侧前35mm感，不用极端内部广角；两张脸居中",
+      "start_state": "门已打开、双手自然垂下",
+      "visible_action": "只移动眼神找食物，不伸手穿过对方",
+      "cut_to": "视线落到调味罐",
+      "continuity_lock": "左手绷带干燥；古装袖子不进食物架",
+      "sound_cue": "冰箱低频底噪",
+      "render_mode": "I2V",
+      "motion_tier": "M1",
+      "fallback": "同一批准关键帧等时长静态/不超过3%缓推；不换图、不重塑脸",
+      "candidate_limit": 3,
+      "video_take_limit": 2,
+      "status": "DRAFT",
+      "motion_prompt": "Both look quietly inside the open refrigerator. Tiny eye movements only, no reaching or new objects. Keep the exact faces and classical costumes.",
+      "i2v": {
+        "width": 480,
+        "height": 832,
+        "frames": 81,
+        "fps": 24,
+        "status": "LOCAL_I2V_VALIDATION_REQUIRED"
+      }
+    },
+    {
+      "shot_id": "SH008",
+      "title": "自己收手",
+      "start_frame": 516,
+      "duration_frames": 60,
+      "characters": [
+        "DAIYU",
+        "WUKONG"
+      ],
+      "costume_stages": {
+        "DAIYU": "DAIYU_CLASSIC_HOME",
+        "WUKONG": "WUKONG_CLASSIC_INJURED"
+      },
+      "location": "夜 KITCHEN_FRIDGE",
+      "story_purpose": "她一个眼神就懂的轻喜剧",
+      "composition": "相同轴线中景；调味罐在右前，黛玉看他",
+      "start_state": "悟空的右手停在罐前，尚未碰到",
+      "visible_action": "静态表情；不生成拿起再放回动作",
+      "cut_to": "调味罐切碗",
+      "continuity_lock": "用的是未受伤右手；左手不消失",
+      "sound_cue": "玻璃轻碰作为剪辑音，不伪装真实口型",
+      "render_mode": "STILL",
+      "motion_tier": "M0",
+      "fallback": "同一批准关键帧等时长静态/不超过3%缓推；不换图、不重塑脸",
+      "candidate_limit": 3,
+      "video_take_limit": 2,
+      "status": "DRAFT",
+      "motion_prompt": ""
+    },
+    {
+      "shot_id": "SH009",
+      "title": "普通宵夜",
+      "start_frame": 576,
+      "duration_frames": 72,
+      "characters": [
+        "DAIYU",
+        "WUKONG"
+      ],
+      "costume_stages": {
+        "DAIYU": "DAIYU_CLASSIC_HOME",
+        "WUKONG": "WUKONG_CLASSIC_INJURED"
+      },
+      "location": "夜 DINING",
+      "story_purpose": "静静同桌，比拥抱更有生活感",
+      "composition": "桌高50mm感中景，碗分离，两人肩距自然",
+      "start_state": "勺子已放下，热气位于两人之间",
+      "visible_action": "热气与呼吸轻动；无吞咽、夹菜和咀嚼特写",
+      "cut_to": "桌上碗切洗碗区",
+      "continuity_lock": "左手在桌沿可见，绷带保持",
+      "sound_cue": "汤匙轻响、房间底噪",
+      "render_mode": "I2V",
+      "motion_tier": "M1",
+      "fallback": "同一批准关键帧等时长静态/不超过3%缓推；不换图、不重塑脸",
+      "candidate_limit": 3,
+      "video_take_limit": 2,
+      "status": "DRAFT",
+      "motion_prompt": "Only steam and breathing move. Neither character eats or lifts utensils. Camera almost locked. Preserve both faces and costumes.",
+      "i2v": {
+        "width": 480,
+        "height": 832,
+        "frames": 81,
+        "fps": 24,
+        "status": "LOCAL_I2V_VALIDATION_REQUIRED"
+      }
+    },
+    {
+      "shot_id": "SH010",
+      "title": "一起收拾",
+      "start_frame": 648,
+      "duration_frames": 60,
+      "characters": [
+        "DAIYU",
+        "WUKONG"
+      ],
+      "costume_stages": {
+        "DAIYU": "DAIYU_CLASSIC_HOME",
+        "WUKONG": "WUKONG_CLASSIC_INJURED"
+      },
+      "location": "夜 KITCHEN_FRIDGE",
+      "story_purpose": "分工而不是让伤手下水",
+      "composition": "水槽側后35mm感；黛玉洗，悟空在干区右侧",
+      "start_state": "黛玉手持干净碗，悟空用右手接干布",
+      "visible_action": "静帧推拉；不把受伤左手泡水",
+      "cut_to": "水声接次晨梳洗",
+      "continuity_lock": "绷带不能湿、不能清洗后消失；轻古装袖口收起",
+      "sound_cue": "流水声，夜末自然压低",
+      "render_mode": "STILL",
+      "motion_tier": "M0",
+      "fallback": "同一批准关键帧等时长静态/不超过3%缓推；不换图、不重塑脸",
+      "candidate_limit": 3,
+      "video_take_limit": 2,
+      "status": "DRAFT",
+      "motion_prompt": ""
+    },
+    {
+      "shot_id": "SH011",
+      "title": "次晨梳洗",
+      "start_frame": 708,
+      "duration_frames": 60,
+      "characters": [
+        "DAIYU",
+        "WUKONG"
+      ],
+      "costume_stages": {
+        "DAIYU": "DAIYU_CLASSIC_HOME",
+        "WUKONG": "WUKONG_CLASSIC_INJURED"
+      },
+      "location": "晨 MORNING_ROOM",
+      "story_purpose": "新的一天仍然在一起",
+      "composition": "门外观察中景；镜子退到画面边，只有真实主体",
+      "start_state": "黛玉坐梳妆边，悟空站后侧",
+      "visible_action": "静帧或窗帘微动，不复制多重镜像",
+      "cut_to": "梳子作为动作匹配",
+      "continuity_lock": "同套居家轻古装，发髻只允许松一点",
+      "sound_cue": "窗外鸟声；夜转晨用音色完成",
+      "render_mode": "STILL",
+      "motion_tier": "M0",
+      "fallback": "同一批准关键帧等时长静态/不超过3%缓推；不换图、不重塑脸",
+      "candidate_limit": 3,
+      "video_take_limit": 2,
+      "status": "DRAFT",
+      "motion_prompt": ""
+    },
+    {
+      "shot_id": "SH012",
+      "title": "递梳子",
+      "start_frame": 768,
+      "duration_frames": 72,
+      "characters": [
+        "DAIYU",
+        "WUKONG"
+      ],
+      "costume_stages": {
+        "DAIYU": "DAIYU_CLASSIC_HOME",
+        "WUKONG": "WUKONG_CLASSIC_INJURED"
+      },
+      "location": "晨 MORNING_ROOM",
+      "story_purpose": "悟空也在照顾她",
+      "composition": "50mm感侧中景，右手持梳子在黛玉手边，离脸至少一掌",
+      "start_state": "梳子尚未交出，两人手不重叠",
+      "visible_action": "静态定格递物前一刻；不穿发丝",
+      "cut_to": "梳子形状切阳台细枝",
+      "continuity_lock": "左手休息在腹前，不能交换手",
+      "sound_cue": "梳子轻落梳妆台",
+      "render_mode": "STILL",
+      "motion_tier": "M0",
+      "fallback": "同一批准关键帧等时长静态/不超过3%缓推；不换图、不重塑脸",
+      "candidate_limit": 3,
+      "video_take_limit": 2,
+      "status": "DRAFT",
+      "motion_prompt": ""
+    },
+    {
+      "shot_id": "SH013",
+      "title": "阳台养花",
+      "start_frame": 840,
+      "duration_frames": 72,
+      "characters": [
+        "DAIYU",
+        "WUKONG"
+      ],
+      "costume_stages": {
+        "DAIYU": "DAIYU_CLASSIC_HOME",
+        "WUKONG": "WUKONG_CLASSIC_INJURED"
+      },
+      "location": "昼 BALCONY",
+      "story_purpose": "明亮与松弛",
+      "composition": "35mm感中景，叶片前景少量遮边；黛玉左、悟空右",
+      "start_state": "黛玉扶盆，悟空看叶片",
+      "visible_action": "只有叶片、衣袖和眼神动，不搬重盆",
+      "cut_to": "叶影接晒衣布",
+      "continuity_lock": "不让长冠翎碰花；居家无重甲",
+      "sound_cue": "风与叶片；没有凭空喷到脸上的水",
+      "render_mode": "I2V",
+      "motion_tier": "M1",
+      "fallback": "同一批准关键帧等时长静态/不超过3%缓推；不换图、不重塑脸",
+      "candidate_limit": 3,
+      "video_take_limit": 2,
+      "status": "DRAFT",
+      "motion_prompt": "Leaves move lightly in the breeze. The characters breathe and look at the plants without moving the pot. Preserve identities and clothing.",
+      "i2v": {
+        "width": 480,
+        "height": 832,
+        "frames": 81,
+        "fps": 24,
+        "status": "LOCAL_I2V_VALIDATION_REQUIRED"
+      }
+    },
+    {
+      "shot_id": "SH014",
+      "title": "晒衣布",
+      "start_frame": 912,
+      "duration_frames": 60,
+      "characters": [
+        "DAIYU",
+        "WUKONG"
+      ],
+      "costume_stages": {
+        "DAIYU": "DAIYU_CLASSIC_HOME",
+        "WUKONG": "WUKONG_CLASSIC_INJURED"
+      },
+      "location": "昼 BALCONY",
+      "story_purpose": "受伤之后也想帮忙",
+      "composition": "侧拍中景：古装衣布横穿画中，人物脸完整",
+      "start_state": "悟空右手提一角，黛玉接另一角",
+      "visible_action": "静态推拉；不追求夹子开合",
+      "cut_to": "布料划过形成时间转场",
+      "continuity_lock": "左手不用力，布料形状与衣色不跳变",
+      "sound_cue": "轻布声",
+      "render_mode": "STILL",
+      "motion_tier": "M0",
+      "fallback": "同一批准关键帧等时长静态/不超过3%缓推；不换图、不重塑脸",
+      "candidate_limit": 3,
+      "video_take_limit": 2,
+      "status": "DRAFT",
+      "motion_prompt": ""
+    },
+    {
+      "shot_id": "SH015",
+      "title": "同桌午饭",
+      "start_frame": 972,
+      "duration_frames": 60,
+      "characters": [
+        "DAIYU",
+        "WUKONG"
+      ],
+      "costume_stages": {
+        "DAIYU": "DAIYU_CLASSIC_OUTDOOR",
+        "WUKONG": "WUKONG_CLASSIC_OUTDOOR"
+      },
+      "location": "昼 DINING",
+      "story_purpose": "平凡日子延续",
+      "composition": "50mm感双人桌边，外出古装已整理好",
+      "start_state": "两人坐定，不拿复杂筷子动作",
+      "visible_action": "静帧、少量热气",
+      "cut_to": "篮子入画引出市场",
+      "continuity_lock": "外出装在此已换好；左手绷带继续外露",
+      "sound_cue": "小馆远处人声",
+      "render_mode": "STILL",
+      "motion_tier": "M0",
+      "fallback": "同一批准关键帧等时长静态/不超过3%缓推；不换图、不重塑脸",
+      "candidate_limit": 3,
+      "video_take_limit": 2,
+      "status": "DRAFT",
+      "motion_prompt": ""
+    },
+    {
+      "shot_id": "SH016",
+      "title": "去菜市场",
+      "start_frame": 1032,
+      "duration_frames": 72,
+      "characters": [
+        "DAIYU",
+        "WUKONG"
+      ],
+      "costume_stages": {
+        "DAIYU": "DAIYU_CLASSIC_OUTDOOR",
+        "WUKONG": "WUKONG_CLASSIC_OUTDOOR"
+      },
+      "location": "昼 MARKET",
+      "story_purpose": "古装人物与现代生活的反差",
+      "composition": "35mm感环境中景，路人只在虚化后方；不要求正脸群演",
+      "start_state": "黛玉低头挑菜，悟空右手拎篮",
+      "visible_action": "静帧跟随裁切；首版不做人群行走",
+      "cut_to": "菜篮接公交脚边包袋",
+      "continuity_lock": "篮子在右手；绷带在左；无现代衣服",
+      "sound_cue": "摊贩含混声，不录可识别的陌生对白",
+      "render_mode": "STILL",
+      "motion_tier": "M0",
+      "fallback": "同一批准关键帧等时长静态/不超过3%缓推；不换图、不重塑脸",
+      "candidate_limit": 3,
+      "video_take_limit": 2,
+      "status": "DRAFT",
+      "motion_prompt": ""
+    },
+    {
+      "shot_id": "SH017",
+      "title": "公交靠肩",
+      "start_frame": 1104,
+      "duration_frames": 72,
+      "characters": [
+        "DAIYU",
+        "WUKONG"
+      ],
+      "costume_stages": {
+        "DAIYU": "DAIYU_CLASSIC_OUTDOOR",
+        "WUKONG": "WUKONG_CLASSIC_OUTDOOR"
+      },
+      "location": "暮 BUS",
+      "story_purpose": "不用对白的信任",
+      "composition": "50mm感坐姿中近景，同一侧车窗，避免强镜面",
+      "start_state": "黛玉靠在悟空无硬甲的上臂/肩部",
+      "visible_action": "车内轻晃、呼吸；头的接触点不滑移",
+      "cut_to": "窗外雨点预入下一镜",
+      "continuity_lock": "左手绷带放腿上；篮子脚边；不得头碰尖甲",
+      "sound_cue": "车厢低噪与短促转向声",
+      "render_mode": "I2V",
+      "motion_tier": "M1",
+      "fallback": "同一批准关键帧等时长静态/不超过3%缓推；不换图、不重塑脸",
+      "candidate_limit": 3,
+      "video_take_limit": 2,
+      "status": "DRAFT",
+      "motion_prompt": "Very gentle bus sway and breathing. Daiyu remains at the same resting point on Wukong's shoulder. Preserve both faces, bandage, and costume.",
+      "i2v": {
+        "width": 480,
+        "height": 832,
+        "frames": 81,
+        "fps": 24,
+        "status": "LOCAL_I2V_VALIDATION_REQUIRED"
+      }
+    },
+    {
+      "shot_id": "SH018",
+      "title": "雨刚开始",
+      "start_frame": 1176,
+      "duration_frames": 60,
+      "characters": [
+        "DAIYU",
+        "WUKONG"
+      ],
+      "costume_stages": {
+        "DAIYU": "DAIYU_CLASSIC_RAIN",
+        "WUKONG": "WUKONG_CLASSIC_OUTDOOR"
+      },
+      "location": "夜 RAIN_STOP",
+      "story_purpose": "最后一段的环境变化",
+      "composition": "中景雨棚下，不直接生成复杂开伞动作",
+      "start_state": "伞已经打开，两人衣服尚干",
+      "visible_action": "静态加雨声，不动画伞骨",
+      "cut_to": "开放伞形匹配下一镜",
+      "continuity_lock": "同一把深褐伞；悟空右手握柄",
+      "sound_cue": "雨声提前半秒进入",
+      "render_mode": "STILL",
+      "motion_tier": "M0",
+      "fallback": "同一批准关键帧等时长静态/不超过3%缓推；不换图、不重塑脸",
+      "candidate_limit": 3,
+      "video_take_limit": 2,
+      "status": "DRAFT",
+      "motion_prompt": ""
+    },
+    {
+      "shot_id": "SH019",
+      "title": "伞偏向她",
+      "start_frame": 1236,
+      "duration_frames": 96,
+      "characters": [
+        "DAIYU",
+        "WUKONG"
+      ],
+      "costume_stages": {
+        "DAIYU": "DAIYU_CLASSIC_RAIN",
+        "WUKONG": "WUKONG_CLASSIC_OUTDOOR"
+      },
+      "location": "夜 RAIN_STREET",
+      "story_purpose": "他也用行动照顾她",
+      "composition": "35mm感中全景；伞覆盖画左的黛玉，悟空画右外肩露在雨里",
+      "start_state": "两人已站在雨中，目光相遇前一刻",
+      "visible_action": "首版静态慢推；不强迫四秒行走",
+      "cut_to": "湿肩接室内干衣",
+      "continuity_lock": "悟空右外肩更湿，左手靠内被护住；米白绷带不湿",
+      "sound_cue": "雨声为情绪主线，音乐可无",
+      "render_mode": "STILL",
+      "motion_tier": "M0",
+      "fallback": "同一批准关键帧等时长静态/不超过3%缓推；不换图、不重塑脸",
+      "candidate_limit": 3,
+      "video_take_limit": 2,
+      "status": "DRAFT",
+      "motion_prompt": ""
+    },
+    {
+      "shot_id": "SH020",
+      "title": "夜间收尾",
+      "start_frame": 1332,
+      "duration_frames": 108,
+      "characters": [
+        "DAIYU",
+        "WUKONG"
+      ],
+      "costume_stages": {
+        "DAIYU": "DAIYU_CLASSIC_HOME",
+        "WUKONG": "WUKONG_CLASSIC_INJURED"
+      },
+      "location": "夜 BEDROOM",
+      "story_purpose": "用绷带的回望闭环",
+      "composition": "50mm感床侧中景，台灯画左，悟空右，黛玉熟睡",
+      "start_state": "被角已盖好，悟空坐旁看自己的左手",
+      "visible_action": "静帧缓慢推近两人和绷带；最后留半秒不加字幕",
+      "cut_to": "黑场/自然止于末帧",
+      "continuity_lock": "悟空换回干燥轻古装；绷带是同一左手状态；卸下重饰",
+      "sound_cue": "雨声隔窗转弱，房间安静",
+      "render_mode": "STILL",
+      "motion_tier": "M0",
+      "fallback": "同一批准关键帧等时长静态/不超过3%缓推；不换图、不重塑脸",
+      "candidate_limit": 3,
+      "video_take_limit": 2,
+      "status": "DRAFT",
+      "motion_prompt": ""
+    }
+  ]
+}

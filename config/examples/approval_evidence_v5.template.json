@@ -1,0 +1,10 @@
+{
+  "subject_id": null,
+  "sha256": null,
+  "scope": null,
+  "decision": null,
+  "source": null,
+  "user_quote": null,
+  "recorded_at": null,
+  "instructions": "Only transcribe an actual asset-specific user approval. General style approval is insufficient; do not invent evidence. scope must be reference or keyframe."
+}

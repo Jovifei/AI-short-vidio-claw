@@ -1,84 +1,32 @@
 #!/usr/bin/env python3
-"""Validate a LOOKREEL/episode production package without rendering."""
-
-from __future__ import annotations
-
+"""Report document-contract readiness separately from media/render readiness."""
 import argparse
 import json
 from pathlib import Path
+from preproduction import check_plan, queue, read_json, relative_file, require
 
 
-def main() -> int:
-    p = argparse.ArgumentParser()
-    p.add_argument("--project-dir", required=True)
-    p.add_argument("--approval-manifest", default="approval_manifest.json")
-    args = p.parse_args()
+def main():
+    p=argparse.ArgumentParser(description=__doc__)
+    p.add_argument('--root',default='.')
+    p.add_argument('--project-dir',required=True)
+    p.add_argument('--registry',default='assets/registry/generated_assets_v5.json')
+    p.add_argument('--require-ready',action='store_true')
+    a=p.parse_args()
+    try:
+        root=Path(a.root).resolve(); project=relative_file(root,a.project_dir)
+        plan=read_json(project/'production_plan_v5.json')
+        approval=read_json(project/'approval_manifest_v5.json')
+        registry=read_json(relative_file(root,a.registry))
+        summary=check_plan(plan)
+        require(set(approval.get('shots',{}))=={s['shot_id'] for s in plan['shots']},'plan/approval shot IDs differ')
+        require(approval.get('schema_version')==5 and approval.get('project_id')==plan['project_id'],'approval schema/project mismatch')
+        result={'contract_ok':True,**summary,**queue(root,plan,approval,registry),
+                'note':'contract_ok does not mean images exist or production is approved.'}
+        print(json.dumps(result,ensure_ascii=False,indent=2))
+        return 2 if a.require_ready and not result['production_ready'] else 0
+    except Exception as exc:
+        print(json.dumps({'contract_ok':False,'production_ready':False,'error':str(exc)},ensure_ascii=False));return 2
 
-    root = Path(args.project_dir)
-    errors = []
-    warnings = []
-
-    required_any = [
-        ("plan/episode", ["plan.yaml", "episode.yaml"]),
-        ("image prompts", ["image_prompts.md"]),
-        ("video prompts", ["video_prompts.md"]),
-        ("edit plan", ["edit_plan.md"]),
-    ]
-    for label, choices in required_any:
-        if not any((root / name).is_file() for name in choices):
-            errors.append(f"missing {label}: one of {choices}")
-
-    manifest_path = root / args.approval_manifest
-    if not manifest_path.is_file():
-        errors.append(f"missing approval manifest: {manifest_path}")
-        manifest = None
-    else:
-        try:
-            manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
-        except Exception as exc:
-            errors.append(f"invalid approval manifest JSON: {exc}")
-            manifest = None
-
-    counts = {"shots": 0, "approved": 0, "production_ready": 0}
-    if isinstance(manifest, dict):
-        shots = manifest.get("shots")
-        if not isinstance(shots, dict) or not shots:
-            errors.append("approval manifest has no shots")
-        else:
-            counts["shots"] = len(shots)
-            for shot_id, shot in shots.items():
-                if not isinstance(shot, dict):
-                    errors.append(f"{shot_id}: shot entry not object")
-                    continue
-                status = shot.get("status")
-                if status in {"USER_APPROVED", "PRODUCTION_READY"}:
-                    counts["approved"] += 1
-                    if not shot.get("sha256"):
-                        errors.append(f"{shot_id}: approved but sha256 missing")
-                    refs = shot.get("identity_refs") or {}
-                    for char in ("DAIYU", "WUKONG"):
-                        if not refs.get(char):
-                            errors.append(f"{shot_id}: approved but {char} identity refs missing")
-                    costumes = shot.get("costume_refs") or {}
-                    for char in ("DAIYU", "WUKONG"):
-                        if not costumes.get(char):
-                            errors.append(f"{shot_id}: approved but {char} costume ref missing")
-                if status == "PRODUCTION_READY":
-                    counts["production_ready"] += 1
-
-    if counts["approved"] == 0:
-        warnings.append("no user-approved keyframes yet; rendering must remain blocked")
-
-    report = {
-        "project_dir": str(root),
-        "counts": counts,
-        "errors": errors,
-        "warnings": warnings,
-        "ok": not errors,
-    }
-    print(json.dumps(report, ensure_ascii=False, indent=2))
-    return 0 if not errors else 2
-
-
-if __name__ == "__main__":
+if __name__=='__main__':
     raise SystemExit(main())
