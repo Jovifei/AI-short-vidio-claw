@@ -1,79 +1,86 @@
 # 11 路线图（V2 Active）
 
-## 已完成 Lab
+## A. 已完成：远端可完成部分
 
-- P0R 本机环境基线：完成
-- Wan2.2 5B 权重/ComfyUI：完成
-- T2V 480×832×49 十次运行：完成
-- 一次 I2V 接线成功：完成
+- [x] V2 route correction
+- [x] Lab / Production split
+- [x] Active Visual Spec
+- [x] Character Cards
+- [x] Costume Stages
+- [x] Location / Prop Registry
+- [x] Season creative bible
+- [x] LOOKREEL01 plan
+- [x] LOOKREEL01 image prompts
+- [x] LOOKREEL01 video prompts
+- [x] LOOKREEL01 edit / QA
+- [x] EP001 script
+- [x] EP001 20-shot storyboard
+- [x] EP001 continuity
+- [x] EP001 image/video prompts
+- [x] EP001 edit / QA
+- [x] Production workflow candidate
+- [x] Production Guard
+- [x] Reference index tool
+- [x] Production package validator
+- [x] Local handoff instructions
 
-注意：这些只证明 Runtime，不证明人物 Production。
+## B. 已完成：本机历史 Lab
 
-## 当前 Product Roadmap
+- [x] P0R environment
+- [x] Wan2.2 5B weights
+- [x] T2V 480×832×49 ten runs
+- [x] one I2V wiring run
 
-### V0 Visual Target Lock
-- [ ] 收集用户批准人物脸 reference
-- [ ] 收集用户批准古装 reference
-- [ ] 建立 manifest/hash
-- [ ] Golden Face Set
+这些只证明 Runtime。
+
+## C. 当前本地阶段 V0
+
+- [ ] reference files 放入 local/
+- [ ] reference_index.json
+- [ ] DAIYU Golden Face Set
+- [ ] WUKONG Golden Face Set
 - [ ] Golden Costume Set
-- [ ] 10 composition refs 编号
+- [ ] composition refs 01–10
+- [ ] user approval
+
 Gate：VISUAL_TARGET_LOCKED
 
-### K1 Ten Composition Keyframes
-- [ ] 10 张 candidate
-- [ ] face QA
-- [ ] costume QA
-- [ ] anatomy QA
-- [ ] 用户逐张批准
-Gate：10/10 approved
+## D. K1
 
-### T1 Approved I2V
-- [ ] production workflow
-- [ ] production guard
-- [ ] 3 张 approved keyframe 各 1 take
-- [ ] 一张 LOW-risk 重复 3–5 次
-Gate：Production Candidate for LOW-RISK I2V
+- [ ] 10 candidate keyframes
+- [ ] 10 face QA
+- [ ] 10 costume QA
+- [ ] 10 anatomy QA
+- [ ] 10 user approvals
+- [ ] approval_manifest hashes
 
-### M1 Motion Ladder
-- [ ] 10 张分 M0/M1/M2/M3
-- [ ] 禁止 Agent 自行升级高风险镜头
+Gate：10/10 USER_APPROVED
 
-### E0 CP Look Reel
-- [ ] 20–30 秒
-- [ ] 约 4 个 motion shot
-- [ ] 其余静态/轻推拉
-Gate：用户批准整体人物视觉
+## E. T1
 
-### E1 EP001
-- [ ] 20 shot cards
-- [ ] 20 approved keyframes
-- [ ] 4–6 低风险 motion
-- [ ] First Cut
-Gate：人物正确 + 故事成立
+- [ ] Production Guard
+- [ ] 3 approved keyframes × 1 I2V
+- [ ] LOW-risk 3–5 repeat
+- [ ] identity drift QA
 
-### A1 本地身份自动化
-只有 E1 成功后才评估：
-- PuLID
-- IPAdapter
-- Character LoRA
-目标是降低 Hero Lane 成本，不是重新定义人物。
+Gate：LOW-RISK I2V Production Candidate
 
-### A2 音频/口型
-- GPT-SoVITS
-- MuseTalk
-- SFX/BGM
-- FPS/upscale
+## F. E0
 
-### A3 控制平面
-把已验证手工流程自动化。
+- [ ] 20–30 second look reel
+- [ ] user visual approval
 
-### Series
-连续 3 集后再考虑 UI/规模化。
+## G. E1 / EP001
 
-## 冻结原则
-在 K1 未 PASS 前：
-- 不再跑无 reference 的故事 T2V
-- 不训练角色 LoRA
-- 不开始 EP001
-- 不接 lip sync
+- [ ] 20 approved story keyframes
+- [ ] 4–6 motion shots
+- [ ] first cut
+- [ ] user approval
+
+## H. 后续
+
+- [ ] local identity automation
+- [ ] TTS
+- [ ] lip sync
+- [ ] full CLI control plane
+- [ ] series scaling

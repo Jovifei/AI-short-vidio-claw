@@ -1,0 +1,12 @@
+character_id: WUKONG
+status: DRAFT
+visual_target_id: ACTIVE_CP_VISUAL_V2
+approved_by_user: false
+approved_at: null
+
+golden_face_refs: []
+golden_costume_refs: []
+
+references: []
+
+note: "Run scripts/reference_index.py on local references, then manually map approved ref_ids here. Never auto-approve."

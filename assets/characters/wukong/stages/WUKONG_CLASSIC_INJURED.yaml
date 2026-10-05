@@ -1,0 +1,10 @@
+stage_id: WUKONG_CLASSIC_INJURED
+inherits: WUKONG_CLASSIC_HOME
+purpose: EP001_injury_continuity
+injury:
+  area: left_forearm_or_hand
+  before_bandage: visible_minor_injury
+  after_bandage: bandage_persists_until_episode_end
+performance:
+  - pretending_not_to_hurt
+  - protecting_injured_hand

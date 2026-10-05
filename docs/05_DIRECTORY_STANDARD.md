@@ -1,13 +1,14 @@
-# 05 目录与文件规范
+# 05 目录与文件规范（V2 Active）
 
-## 1. 设计目标
+## 1. 目标
 
-目录必须同时满足：
-- 人能一眼看懂；
-- Codex 能按约定自动定位；
-- 大文件不进 Git；
-- 每一集可单独重跑；
-- 模型、工作流、人物、集数彼此解耦。
+目录必须让人和 Agent 都能回答：
+- 角色 reference 在哪里；
+- 哪些是 Lab；
+- 哪些是 Production；
+- 哪些是 approved；
+- 哪些可以提交 Git；
+- 哪些必须只留本地。
 
 ## 2. 标准目录
 
@@ -16,8 +17,6 @@ AI-short-vidio-claw/
 ├─ README.md
 ├─ AGENTS.md
 ├─ PROJECT_STATE.md
-├─ .env.example
-├─ .gitignore
 │
 ├─ config/
 │  ├─ project.example.yaml
@@ -27,209 +26,203 @@ AI-short-vidio-claw/
 ├─ docs/
 │  ├─ 00_PROJECT_CHARTER.md
 │  ├─ 01_PRD.md
-│  ├─ 02_FEASIBILITY.md
-│  ├─ 03_TECHNICAL_ARCHITECTURE.md
-│  ├─ 04_SOP.md
 │  ├─ 05_DIRECTORY_STANDARD.md
-│  ├─ 06_CHARACTER_SYSTEM.md
-│  ├─ 07_EPISODE_STANDARD.md
-│  ├─ 08_MODEL_AND_WORKFLOW_MATRIX.md
-│  ├─ 09_REFERENCE_SOURCES.md
-│  ├─ 10_QA_ACCEPTANCE.md
-│  ├─ 11_ROADMAP.md
-│  ├─ 12_RISK_AND_COMPLIANCE.md
-│  ├─ 13_CODEX_RUNBOOK.md
-│  ├─ 14_DECISION_LOG.md
-│  ├─ 15_EP001_PILOT_PLAN.md
-│  └─ benchmarks/
+│  ├─ 18_ROUTE_CORRECTION_AND_MASTER_PLAN.md
+│  ├─ 19_ACTIVE_VISUAL_SPEC.md
+│  ├─ 20_CREATIVE_AND_SERIES_BIBLE.md
+│  ├─ 21_PRODUCTION_SOP_V2.md
+│  ├─ 22_LOCAL_HANDOFF.md
+│  ├─ stages/
+│  ├─ benchmarks/
+│  └─ reviews/
 │
 ├─ assets/
-│  ├─ README.md
 │  ├─ characters/
 │  │  ├─ daiyu/
 │  │  │  ├─ character.yaml
-│  │  │  ├─ reference/
-│  │  │  ├─ approved/
+│  │  │  ├─ reference_manifest.example.yaml
 │  │  │  └─ stages/
 │  │  └─ wukong/
+│  │     ├─ character.yaml
+│  │     ├─ reference_manifest.example.yaml
+│  │     └─ stages/
+│  ├─ style/
+│  │  └─ ACTIVE_VISUAL_TARGET.yaml
 │  ├─ locations/
 │  ├─ props/
-│  ├─ style/
 │  └─ audio/
 │
-├─ models/
-│  ├─ README.md
-│  └─ manifests/
-│
-├─ workflows/
-│  ├─ README.md
-│  ├─ image/
-│  ├─ video/
-│  ├─ lipsync/
-│  └─ post/
-│
 ├─ prompts/
-│  ├─ README.md
-│  ├─ system/
 │  ├─ image/
 │  ├─ video/
 │  └─ qa/
 │
-├─ episodes/
-│  ├─ README.md
-│  ├─ _template/
-│  └─ EP001/
+├─ workflows/
+│  ├─ image/
+│  ├─ video/
+│  │  ├─ lab/
+│  │  └─ production/
+│  ├─ lipsync/
+│  └─ post/
 │
-├─ src/
-│  └─ ai_short_video_claw/
-│     ├─ adapters/
-│     ├─ pipeline/
-│     ├─ manifests/
-│     ├─ qa/
-│     └─ cli/
+├─ episodes/
+│  ├─ LOOKREEL01/
+│  ├─ EP001/
+│  └─ _template/
 │
 ├─ scripts/
-│  └─ README.md
+│  ├─ p1_comfy_probe.py
+│  ├─ reference_index.py
+│  ├─ production_guard.py
+│  └─ validate_production_package.py
 │
-├─ tests/
+├─ models/
+│  └─ manifests/
 │
 ├─ outputs/
 │  └─ README.md
 │
-├─ build/
-├─ dist/
-└─ local/                 # 整个目录 Git ignored
+└─ local/                     # Git ignored
+   ├─ references/
+   │  ├─ inbox/
+   │  └─ active_visual_target/
+   │     ├─ daiyu/
+   │     │  ├─ face/
+   │     │  └─ costume/
+   │     ├─ wukong/
+   │     │  ├─ face/
+   │     │  └─ costume/
+   │     └─ composition/
+   │        └─ lookreel01/
+   │
+   ├─ production/
+   │  ├─ LOOKREEL01/
+   │  │  ├─ candidates/
+   │  │  ├─ approved/
+   │  │  ├─ video/
+   │  │  ├─ audio/
+   │  │  └─ edit/
+   │  └─ EP001/
+   │     ├─ candidates/
+   │     ├─ approved/
+   │     ├─ video/
+   │     ├─ audio/
+   │     └─ edit/
+   │
    ├─ models/
-   │  ├─ checkpoints/
-   │  ├─ diffusion_models/
-   │  ├─ loras/
-   │  ├─ vae/
-   │  ├─ text_encoders/
-   │  ├─ clip_vision/
-   │  ├─ ipadapter/
-   │  ├─ insightface/
-   │  ├─ tts/
-   │  └─ lipsync/
-   ├─ comfyui/
-   │  ├─ image/
-   │  └─ video/
    ├─ cache/
-   ├─ temp/
-   └─ external/
+   └─ temp/
 ~~~
 
-## 3. 关键目录解释
+## 3. Lab 与 Production 物理分开
 
-### assets/
-保存“创作身份资产”与小型配置，不保存未经授权的影视素材库。
+Lab workflow：
+workflows/video/lab/
 
-人物资产按 character_id 管理。每个角色应该有 character.yaml，记录：
-- canonical_name
-- visual_traits
-- forbidden_drift
-- baseline_stage
-- approved_reference IDs
-- lora model id
-- voice id
+Production workflow：
+workflows/video/production/
 
-approved/ 只放最终确认的人物参考图。数量控制，避免仓库膨胀；大图可放 local 并在 yaml 记录路径/hash。
+Lab media：
+local/lab/ 或 docs/reviews/（仅审核副本）
 
-### models/
-Git 中只放 manifest，不放权重。
+Production media：
+local/production/<PROJECT_ID>/
 
-local/models/ 才是真正模型文件夹。
+禁止把 lab output 直接复制为 approved production asset。
 
-建议不要在多个 ComfyUI 安装里重复下载同一权重；优先用：
-- Windows junction/symlink；
-- ComfyUI extra_model_paths；
-指向统一 local/models。
+## 4. Reference
 
-### workflows/
-只保存可复用、已验收的 ComfyUI API workflow JSON。
+第三方/用户 reference 原图：
+local/references/
+
+Git 中只保存：
+- ref_id
+- hash
+- relative path
+- approval status
+- notes
+
+真实大图不提交。
+
+## 5. Approved Keyframe
+
+路径：
+local/production/<PROJECT_ID>/approved/
 
 命名：
-- IMG_identity_pulid_v001.json
-- IMG_keyframe_dual_v001.json
-- VID_wan22_i2v_576x1024_v001.json
-- VID_wan22_lowvram_v001.json
-- LIP_musetalk_v001.json
+<PROJECT>_<SHOT>_KF_vNNN.png
 
-不能把临时实验 workflow 直接覆盖 production 版本。
+例：
+LOOKREEL01_COMP01_KF_v001.png
 
-### episodes/
-每集一个独立工作单元。
+每张必须在 approval_manifest 中有：
+- sha256
+- approved_by_user
+- approved_at
+- identity refs
+- costume refs
 
-EP001/
-- episode.yaml
-- script.md
-- visual_design.md
+## 6. Candidate
+
+路径：
+local/production/<PROJECT_ID>/candidates/<SHOT_ID>/
+
+candidate 永远不能被 Production Guard 当作 approved input。
+
+## 7. 视频
+
+原始 take：
+local/production/<PROJECT_ID>/video/<SHOT_ID>/takes/
+
+accepted：
+local/production/<PROJECT_ID>/video/<SHOT_ID>/accepted/
+
+命名：
+<PROJECT>_<SHOT>_TAKE01.mp4
+<PROJECT>_<SHOT>_ACCEPTED_v001.mp4
+
+## 8. Episode 文档
+
+Git 中 episodes/<ID>/ 必须包含：
+- episode.yaml / plan.yaml
+- script.md（剧情项目）
 - storyboard.md
 - image_prompts.md
 - video_prompts.md
 - edit_plan.md
-- qa_report.md
-- manifest.json
-- frames/
-- video/
-- audio/
+- approval_manifest.json
+- qa.md / qa_report.md
 
-其中 generated 大文件可在 local 或 ignored 子目录。
+## 9. 模型
 
-### outputs/
-只用于成片及交付包，本地生成，不进入 Git。
-建议：
-- outputs/previews/
-- outputs/final/
-- outputs/archive/
+Git：
+models/manifests/
 
-### build/
-代码编译、打包的临时目录，可删除重建。
+真实权重：
+local/models/ 或 F:/ComfyUI/models（当前机器）
 
-### dist/
-未来 CLI/桌面工具的发行包，不作为素材目录。
+不要复制大模型进仓库。
 
-## 4. 文件命名
+## 10. build / dist / outputs
 
-镜头：
-SHOT-EP001-001
+build：
+软件构建临时产物。
 
-关键帧：
-EP001_SH001_KF_v003.png
+dist：
+未来 CLI/桌面程序发行包。
 
-视频 take：
-EP001_SH001_TAKE02.mp4
+outputs：
+最终交付索引/小型说明；真实大视频默认留 local/production/.../edit/。
 
-接受视频：
-EP001_SH001_ACCEPTED.mp4
+## 11. 状态
 
-对白：
-EP001_SH001_DAIYU_LINE01.wav
+DRAFT
+CANDIDATE
+USER_APPROVED
+PRODUCTION_READY
+VIDEO_ACCEPTED
+FIRST_CUT
+FINAL_QC
+DONE
 
-人物 reference：
-CHAR_DAIYU_BASE_FRONT_v002.png
-
-人物 stage：
-CHAR_DAIYU_STAGE_HOME_v001.yaml
-
-## 5. 版本原则
-
-- prompt 修改必须增加 revision；
-- workflow 结构变更必须增加版本；
-- approved 资产不可静默覆盖；
-- accepted clip 不覆盖旧 take；
-- final.mp4 每次交付写 build number 或日期到 manifest。
-
-## 6. 模型目录与 ComfyUI 的关系
-
-本项目不要求复制模型到 ComfyUI 默认路径。
-推荐 local/models 为单一真实来源，然后映射至 ComfyUI。
-
-映射示意：
-- local/models/diffusion_models → ComfyUI/models/diffusion_models
-- local/models/loras → ComfyUI/models/loras
-- local/models/vae → ComfyUI/models/vae
-- local/models/text_encoders → ComfyUI/models/text_encoders
-- local/models/clip_vision → ComfyUI/models/clip_vision
-- local/models/ipadapter → ComfyUI/models/ipadapter
-
-模型 manifest 必须记录：来源 URL、文件名、hash、许可证、用途、最后验证日期。
+只有用户明确批准才能进入 USER_APPROVED。

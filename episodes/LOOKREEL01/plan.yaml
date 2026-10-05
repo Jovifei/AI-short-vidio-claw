@@ -1,46 +1,106 @@
 project_id: LOOKREEL01
 status: DRAFT
 visual_target_id: ACTIVE_CP_VISUAL_V2
-goal: "10 approved keyframes + 20-30 second visual look reel"
+goal: "10 approved keyframes + 20-30 second CP visual look reel"
+aspect_ratio: "9:16"
+delivery_fps: 24
+
+required_refs:
+  daiyu_face_set: DAIYU_GOLDEN_FACE_SET
+  daiyu_costume_outdoor: DAIYU_CLASSIC_OUTDOOR
+  daiyu_costume_home: DAIYU_CLASSIC_HOME
+  wukong_face_set: WUKONG_GOLDEN_FACE_SET
+  wukong_costume_outdoor: WUKONG_CLASSIC_OUTDOOR
+  wukong_costume_home: WUKONG_CLASSIC_HOME
 
 shots:
   - id: COMP01
     title: "夜景并肩站姿"
+    composition_ref: COMP_REF_01
+    costume:
+      DAIYU: DAIYU_CLASSIC_OUTDOOR
+      WUKONG: WUKONG_CLASSIC_OUTDOOR
     motion_tier: M2
+    target_duration_sec: 3
     approval_status: DRAFT
   - id: COMP02
     title: "室内近景"
+    composition_ref: COMP_REF_02
+    costume:
+      DAIYU: DAIYU_CLASSIC_HOME
+      WUKONG: WUKONG_CLASSIC_HOME
     motion_tier: M0
+    target_duration_sec: 2.5
     approval_status: DRAFT
   - id: COMP03
     title: "奏乐与陪伴"
+    composition_ref: COMP_REF_03
+    costume:
+      DAIYU: DAIYU_CLASSIC_HOME
+      WUKONG: WUKONG_CLASSIC_HOME
     motion_tier: M1
+    target_duration_sec: 3
     approval_status: DRAFT
   - id: COMP04
     title: "近镜自拍"
+    composition_ref: COMP_REF_04
+    costume:
+      DAIYU: DAIYU_CLASSIC_OUTDOOR
+      WUKONG: WUKONG_CLASSIC_OUTDOOR
     motion_tier: M1
+    target_duration_sec: 2.5
     approval_status: DRAFT
   - id: COMP05
     title: "相机与小点心"
+    composition_ref: COMP_REF_05
+    costume:
+      DAIYU: DAIYU_CLASSIC_HOME
+      WUKONG: WUKONG_CLASSIC_HOME
     motion_tier: M1
+    target_duration_sec: 3
     approval_status: DRAFT
   - id: COMP06
     title: "床边互动"
+    composition_ref: COMP_REF_06
+    costume:
+      DAIYU: DAIYU_CLASSIC_HOME
+      WUKONG: WUKONG_CLASSIC_HOME
     motion_tier: M0
+    target_duration_sec: 2.5
     approval_status: DRAFT
   - id: COMP07
     title: "镜前抱起构图"
+    composition_ref: COMP_REF_07
+    costume:
+      DAIYU: DAIYU_CLASSIC_HOME
+      WUKONG: WUKONG_CLASSIC_HOME
     motion_tier: M0
+    target_duration_sec: 2.5
     approval_status: DRAFT
   - id: COMP08
     title: "枕头大战"
+    composition_ref: COMP_REF_08
+    costume:
+      DAIYU: DAIYU_CLASSIC_HOME
+      WUKONG: WUKONG_CLASSIC_HOME
     motion_tier: M0
+    target_duration_sec: 2.5
     approval_status: DRAFT
   - id: COMP09
     title: "花束站姿"
+    composition_ref: COMP_REF_09
+    costume:
+      DAIYU: DAIYU_CLASSIC_OUTDOOR
+      WUKONG: WUKONG_CLASSIC_OUTDOOR
     motion_tier: M1
+    target_duration_sec: 3
     approval_status: DRAFT
   - id: COMP10
-    title: "四格日常"
+    title: "四格情侣日常"
+    composition_ref: COMP_REF_10
+    costume:
+      DAIYU: DAIYU_CLASSIC_OUTDOOR
+      WUKONG: WUKONG_CLASSIC_OUTDOOR
     motion_tier: M0
+    target_duration_sec: 3
     approval_status: DRAFT

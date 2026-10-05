@@ -1,0 +1,41 @@
+character_id: DAIYU
+status: VISUAL_TARGET_DRAFT
+visual_target_id: ACTIVE_CP_VISUAL_V2
+
+identity:
+  source: user_approved_visual_references
+  approved_face_refs: []
+  approved_costume_refs: []
+  identity_score_min: 4
+
+face:
+  shape: "rounded oval; natural jaw; non-pointed chin"
+  eyes: "restrained classical look; avoid exaggerated modern eyelid styling"
+  brows: "fine and soft"
+  nose_mouth: "small and natural"
+  hair: "classical hairstyle; stage-specific ornaments"
+
+performance:
+  - calm_focus
+  - restrained_smile
+  - subtle_displeasure
+  - caring
+  - curiosity
+  - quiet_fatigue
+  - stubbornness
+
+hard_reject:
+  - pointed_v_chin
+  - generic_ai_girl_face
+  - modern_influencer_makeup
+  - modern_character_clothing
+  - perpetual_head_tilt
+
+costume_stages:
+  - DAIYU_CLASSIC_OUTDOOR
+  - DAIYU_CLASSIC_HOME
+  - DAIYU_CLASSIC_RAIN
+
+voice:
+  voice_id: null
+  enabled_stage: A2

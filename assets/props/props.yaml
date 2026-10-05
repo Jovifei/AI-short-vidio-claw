@@ -1,0 +1,40 @@
+props:
+  MEDKIT:
+    first_appearance: EP001_SH003
+    last_appearance: EP001_SH006
+    continuity: "same box and contents"
+
+  INJURY:
+    first_appearance: EP001_SH001
+    transition: EP001_SH005
+    before: "minor visible injury"
+    after: "bandage"
+
+  BANDAGE:
+    first_appearance: EP001_SH005
+    persists_through: EP001_SH020
+    continuity: "same hand/forearm and similar wrapping"
+
+  UMBRELLA:
+    first_appearance: EP001_SH018
+    last_appearance: EP001_SH019
+    continuity: "same umbrella"
+
+  MARKET_BASKET:
+    first_appearance: EP001_SH016
+    last_appearance: EP001_SH016
+
+  CAMERA:
+    project: LOOKREEL01
+    shots: [COMP05]
+    rule: "modern life prop allowed; character costume remains classical"
+
+  FLOWER_BOUQUET:
+    project: LOOKREEL01
+    shots: [COMP09]
+
+  CLASSICAL_INSTRUMENT:
+    project: LOOKREEL01
+    shots: [COMP03]
+    status: DRAFT
+    rule: "pick one instrument before generation and keep it consistent"

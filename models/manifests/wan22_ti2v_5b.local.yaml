@@ -1,0 +1,28 @@
+model_id: wan22_ti2v_5b_local_baseline
+status: INSTALLED_AND_LAB_VERIFIED
+machine: RTX_4070_SUPER_12GB
+
+files:
+  diffusion:
+    filename: wan2.2_ti2v_5B_fp16.safetensors
+    local_path: F:/ComfyUI/models/diffusion_models/wan2.2_ti2v_5B_fp16.safetensors
+    bytes: 9999658848
+    sha256: 456f901338bd9eadbded3828b819109a9b68e8a525ca5cf8d0049a69fcfeca1e
+  vae:
+    filename: wan2.2_vae.safetensors
+    local_path: F:/ComfyUI/models/vae/wan2.2_vae.safetensors
+    bytes: 1409400960
+    sha256: e40321bd36b9709991dae2530eb4ac303dd168276980d3e9bc4b6e2b75fed156
+  text_encoder:
+    filename: umt5_xxl_fp8_e4m3fn_scaled.safetensors
+    local_path: F:/ComfyUI/models/text_encoders/umt5_xxl_fp8_e4m3fn_scaled.safetensors
+    bytes: 6735906897
+    sha256: c3355d30191f1f066b26d93fba017ae9809dce6c627dda5f6a66eaa651204f68
+
+lab_evidence:
+  t2v_480x832x49_10x: success
+  i2v_wiring_one_run: success
+  approved_identity_i2v: not_tested
+
+production_status: NOT_PROMOTED
+production_gate: T1_APPROVED_I2V_BASELINE

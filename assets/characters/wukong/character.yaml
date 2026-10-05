@@ -1,0 +1,40 @@
+character_id: WUKONG
+status: VISUAL_TARGET_DRAFT
+visual_target_id: ACTIVE_CP_VISUAL_V2
+
+identity:
+  source: user_approved_visual_references
+  approved_face_refs: []
+  approved_costume_refs: []
+  identity_score_min: 4
+
+face:
+  species_read: "clearly simian; not a human face with fur"
+  brow: "stable pronounced simian brow"
+  muzzle: "stable simian muzzle/nose-mouth structure"
+  ears: "stable shape and placement"
+  fur: "stable approved tone and cheek pattern"
+
+performance:
+  - playful
+  - alert
+  - stubborn
+  - protective
+  - clumsy_domestic_help
+  - restrained_tenderness
+
+hard_reject:
+  - ordinary_male_face_with_fur
+  - species_drift
+  - random_ear_shape
+  - random_muzzle_shape
+  - modern_character_clothing
+
+costume_stages:
+  - WUKONG_CLASSIC_OUTDOOR
+  - WUKONG_CLASSIC_HOME
+  - WUKONG_CLASSIC_INJURED
+
+voice:
+  voice_id: null
+  enabled_stage: A2
