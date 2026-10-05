@@ -1,0 +1,111 @@
+EP001:
+  title: "大圣今天受伤了"
+  logline: "悟空受伤回家，黛玉嘴上嫌弃却一直照顾；雨夜回家时，悟空把伞全偏给她。"
+  theme: "照顾是行动。"
+  hook: "他不怕疼，却怕她不说话。"
+  reusable_sets: [HOME_MASTER_V1, MARKET, BUS, RAIN_STREET]
+  hero_props: [MEDKIT, BANDAGE, UMBRELLA]
+  high_risk: [wound_care, hand_bandage]
+  ending_image: "雨伞偏向黛玉"
+
+EP002:
+  title: "桃子不能当晚饭"
+  logline: "悟空把冰箱塞满桃子，黛玉发现他根本没准备正经晚饭。"
+  theme: "迁就不是输。"
+  hook: "冰箱门一开，全是桃。"
+  beats:
+    - "冰箱全是桃"
+    - "黛玉沉默看他"
+    - "悟空自己把桃放回去"
+    - "两人一起准备简单晚饭"
+    - "最后一颗桃被留在黛玉碗边"
+  reusable_sets: [HOME_MASTER_V1]
+  new_props: [PEACH_BASKET, SIMPLE_INGREDIENTS]
+  motion_priority: [fridge_open, glance, table]
+  static_first: [cutting_food]
+
+EP003:
+  title: "黛玉生病的一天"
+  logline: "黛玉不舒服，悟空第一次负责照顾，却把所有可能有用的东西都堆到床边。"
+  theme: "笨拙也可以是体贴。"
+  hook: "床边堆得像杂货铺。"
+  beats:
+    - "悟空搬来过量物品"
+    - "黛玉嫌乱"
+    - "悟空安静下来"
+    - "只留下水和一颗桃"
+  reusable_sets: [HOME_MASTER_V1]
+  new_props: [TEA_CUP, WATER_JUG, FRUIT_PLATE]
+  safety_note: "No diagnostic or treatment claims; ordinary rest/care only."
+
+EP004:
+  title: "第一次逛菜市场"
+  logline: "黛玉认真挑菜，悟空却对每个摊位都好奇，最后还是绕回桃摊。"
+  theme: "人间烟火是共同生活的一部分。"
+  hook: "悟空站在桃摊前不走。"
+  reusable_sets: [MARKET]
+  new_props: [SHOPPING_BAG, PEACH_STALL]
+  motion_priority: [slow_walk, stop_at_stall]
+  high_risk: [busy_crowd]
+
+EP005:
+  title: "他们吵架了"
+  logline: "两个人因为小事冷战，谁都不先道歉，但仍然默默为对方留饭、让伞。"
+  theme: "稳定的关系不靠每次正式和解。"
+  hook: "一整顿饭，两个人没看对方一眼。"
+  reusable_sets: [HOME_MASTER_V1, RAIN_STREET]
+  motion_priority: [eye_line_avoidance, plate_push, umbrella]
+  dialogue_level: low
+
+EP006:
+  title: "大圣学会梳头"
+  logline: "悟空学着帮黛玉整理头发，越认真越笨拙，最后发饰还是歪了一点。"
+  theme: "亲密来自重复的小事。"
+  hook: "悟空拿梳子的表情比打架还认真。"
+  reusable_sets: [HOME_MASTER_V1]
+  new_props: [COMB, HAIR_ORNAMENT_SET]
+  high_risk: [hand_near_face, long_hair]
+  static_hero: "发饰歪一点的完成瞬间"
+
+EP007:
+  title: "一把伞"
+  logline: "一场雨、一段等人和一把伞，几乎无对白地讲完一集。"
+  theme: "保护不需要说出来。"
+  hook: "下雨时，黛玉一个人等。"
+  reusable_sets: [RAIN_STOP, RAIN_STREET]
+  new_props: []
+  dialogue_level: none_or_minimal
+  motion_priority: [rain, umbrella, slow_walk]
+  hero_image: "伞全偏向黛玉"
+
+EP008:
+  title: "第一次去花果山"
+  logline: "黛玉第一次进入悟空的过去，看到他在熟悉山水里变得完全不同。"
+  theme: "爱一个人也包括进入他的过去。"
+  hook: "悟空第一次在她面前真正像回家。"
+  new_sets: [HUAGUO_MOUNTAIN_V1]
+  new_props: [RUYI_JINGU_BANG_OPTIONAL]
+  myth_ratio: 0.35
+  crowd_policy: "Monkey group only as distant/sound suggestion in first version."
+  ending_image: "两人看山中落日"
+
+EP009:
+  title: "大圣读诗"
+  logline: "悟空看不懂黛玉的诗，却记住了她写字时的样子和其中一句话。"
+  theme: "理解不一定来自知识。"
+  hook: "悟空盯着一页诗，比看妖怪还认真。"
+  reusable_sets: [HOME_MASTER_V1]
+  new_props: [BRUSH, INK, PAPER, POEM_BOOK]
+  motion_priority: [page, eye_line, writing_static]
+  high_risk: [calligraphy_hand_detail]
+
+EP010:
+  title: "不会老的人"
+  logline: "两人第一次谈到时间差异，却没有解决它，只是继续准备第二天的生活。"
+  theme: "知道未来会有问题，不等于今天不能生活。"
+  hook: "一张旧照片里，悟空没有变。"
+  reusable_sets: [HOME_MASTER_V1]
+  new_props: [OLD_PHOTO_PRINT]
+  myth_ratio: 0.20
+  dialogue_level: medium
+  ending_image: "两人继续准备第二天要带的东西"

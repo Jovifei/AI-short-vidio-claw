@@ -1,0 +1,46 @@
+relationship_id: DAIYU_WUKONG_CP_V1
+status: ACTIVE
+
+distance_levels:
+  L0:
+    name: same_frame
+    body_contact: none
+  L1:
+    name: shared_eye_line
+    body_contact: none
+  L2:
+    name: close_distance
+    target_gap_cm: "10-40"
+  L3:
+    name: light_touch
+    examples: [shoulder, sleeve, handoff]
+  L4:
+    name: lean_or_handhold
+    examples: [shoulder_rest, hand_hold, umbrella]
+  L5:
+    name: high_contact
+    examples: [lift, embrace]
+    production_default: static_only
+
+preferred_daily_interactions:
+  - side_by_side
+  - one_watches_other
+  - shared_prop
+  - same_task
+  - one_waits
+  - subtle_help
+  - quiet_protection
+
+avoid_repetition:
+  - every_shot_hugging
+  - every_shot_eye_contact
+  - every_shot_smiling_at_camera
+  - every_shot_romantic_pose
+
+character_dynamic:
+  DAIYU:
+    care_style: detail_oriented
+    comedy_style: dry_reaction
+  WUKONG:
+    care_style: action_oriented
+    comedy_style: impulsive_then_self_correcting

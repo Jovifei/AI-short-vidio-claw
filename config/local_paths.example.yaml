@@ -1,0 +1,24 @@
+project_root: "E:/project/AI-short-vidio-claw"
+
+comfyui:
+  url: "http://127.0.0.1:8188"
+  root: "E:/project/AI-short-vidio-claw/local/comfyui/image/ComfyUI"
+  shared_models_root: "F:/ComfyUI/models"
+
+references:
+  inbox: "local/references/inbox"
+  active: "local/references/active_visual_target"
+  model_review: "local/production/MODEL_REVIEW"
+
+production:
+  lookreel01: "local/production/LOOKREEL01"
+  ep001: "local/production/EP001"
+
+training:
+  root: "local/training"
+
+audio:
+  root: "local/audio"
+
+notes:
+  - "Example only. Local Codex must verify actual paths before use."

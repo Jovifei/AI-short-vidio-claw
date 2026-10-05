@@ -1,0 +1,36 @@
+stage_id: DAIYU_CANONICAL_LAVENDER
+inherits: DAIYU
+status: PREPROD_CANDIDATE
+
+silhouette:
+  - layered_classical_robe
+  - long_flowing_sleeves
+  - slim_waist_sash
+  - soft_skirt_layers
+
+palette:
+  - moon_white
+  - pale_lavender
+  - soft_jade
+  - muted_pink
+
+motif:
+  - small_flower_embroidery
+  - subtle_botanical_pattern
+
+hair:
+  silhouette: "approved classical updo with soft broken bangs and long side locks"
+  ornaments:
+    - small_white_or_lilac_flower
+    - pearl_or_jade_drop
+
+use:
+  - canonical_model_sheet
+  - outdoor
+  - daily
+  - scenic
+
+forbidden:
+  - modern_hanfu_fashion_influencer_styling
+  - oversized_heavy_crown
+  - saturated_red

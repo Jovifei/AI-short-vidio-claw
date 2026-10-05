@@ -1,0 +1,55 @@
+style_id: DAILY_CINEMA_V1
+status: ACTIVE
+
+aspect_ratio: "9:16"
+delivery_fps: 24
+
+shot_size_mix:
+  establishing_full: 0.15
+  medium_two_shot: 0.35
+  medium_close: 0.30
+  close_up: 0.15
+  detail: 0.05
+
+lens_feel:
+  environment:
+    range_mm: "28-35"
+    use:
+      - market
+      - corridor
+      - balcony
+      - full_body_two_shot
+  daily_two_shot:
+    range_mm: "45-55"
+    use:
+      - table
+      - care
+      - home
+  emotion:
+    range_mm: "65-85"
+    use:
+      - glance
+      - quiet_closeup
+
+camera_motion_priority:
+  - static
+  - slow_push
+  - slow_lateral_slide
+  - slow_follow
+  - subtle_handheld_drift
+
+default_forbidden_motion:
+  - whip_pan
+  - fast_orbit
+  - crash_zoom
+  - violent_handheld
+  - impossible_drone_move
+
+vertical_safe_zone:
+  top_percent: 8
+  side_percent: 6
+  bottom_percent: 14
+
+notes:
+  - "Camera should feel present but not performative."
+  - "Do not use ultra-wide close faces."

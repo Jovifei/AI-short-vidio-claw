@@ -1,0 +1,44 @@
+project_id: LOOKREEL01
+status: PREPROD_LOCKED
+
+sets:
+  COMP01_NIGHT_WALK:
+    environment: "wide city walkway or riverside"
+    anchors: [lamp_post_or_column, railing, distant_city_lights]
+    clutter: low
+    color: "cool night + warm practical"
+  COMP02_HOME_CLOSE:
+    environment: "soft bed/daybed corner"
+    anchors: [linen, window_light]
+    clutter: low
+  COMP03_MUSIC_CORNER:
+    environment: "home/window/daybed"
+    anchors: [classical_instrument, cushion, curtain]
+    clutter: light
+  COMP04_SELFIE:
+    environment: "courtyard/home entrance"
+    anchors: [wide_lens_perspective]
+    clutter: low
+  COMP05_CAMERA_DESSERT:
+    environment: "warm home corner"
+    anchors: [small_table, dessert, camera, optional_candle]
+    clutter: light
+  COMP06_BED_INTERACTION:
+    environment: "soft bedroom/daybed"
+    anchors: [fabric_layers]
+    clutter: low
+  COMP07_MIRROR_LIFT:
+    environment: "simple mirror area"
+    anchors: [single_large_mirror]
+    warning: "avoid multiple reflections"
+  COMP08_PILLOW:
+    environment: "home bedroom"
+    anchors: [two_pillows, soft_bedding]
+    warning: "minimal feathers"
+  COMP09_BOUQUET:
+    environment: "open grass/terrace under blue sky"
+    anchors: [clean_sky, grass, bouquet]
+    clutter: very_low
+  COMP10_COLLAGE:
+    environment: "four simple daily settings"
+    rule: "all panels share same character identities and costume family"

@@ -1,0 +1,32 @@
+stage_id: WUKONG_DZS_DAILY
+inherits: WUKONG
+status: PREPROD_CANDIDATE
+
+identity_symbol:
+  required:
+    - light_buddhist_crown_or_cap
+    - prayer_beads
+    - golden_yellow_classical_layers
+    - grey_or_brown_stole
+    - monkey_king_face
+
+armor:
+  heavy_pauldron: false
+  full_battle_armor: false
+
+palette:
+  - ochre_yellow
+  - muted_gold
+  - stone_grey
+  - dark_brown
+  - black
+
+use:
+  - daily_outdoor
+  - home_adjacent
+  - grass
+  - market
+  - bus
+  - quiet_scenes
+
+rule: "Lightweight daily form must still read as Wukong / Douzhanshengfo, not generic monk."

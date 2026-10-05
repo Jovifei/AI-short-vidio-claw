@@ -1,8 +1,14 @@
 stage_id: DAIYU_CLASSIC_RAIN
-inherits: DAIYU_CLASSIC_OUTDOOR
+inherits: DAIYU_CANONICAL_LAVENDER
+status: PREPROD_CANDIDATE
 purpose: rain_scene
+
 continuity:
   clothing_wetness: controlled
   hair_wetness: subtle
+  face_identity: unchanged
+
 props:
   - shared_umbrella
+
+rule: "Rain changes wetness and fabric behavior, never face or costume identity."

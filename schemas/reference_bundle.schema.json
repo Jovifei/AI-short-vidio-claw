@@ -1,0 +1,61 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "reference_bundle.schema.json",
+  "title": "Reference Bundle",
+  "type": "object",
+  "required": [
+    "bundle_id",
+    "shot_id",
+    "daiyu_refs",
+    "wukong_refs",
+    "composition_ref",
+    "bundle_hash"
+  ],
+  "properties": {
+    "bundle_id": {
+      "type": "string"
+    },
+    "shot_id": {
+      "type": "string"
+    },
+    "daiyu_refs": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "maxItems": 3
+    },
+    "wukong_refs": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "maxItems": 3
+    },
+    "daiyu_costume_ref": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "wukong_costume_ref": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "composition_ref": {
+      "type": "string"
+    },
+    "bundle_hash": {
+      "type": "string"
+    },
+    "created_at": {
+      "type": [
+        "string",
+        "null"
+      ]
+    }
+  },
+  "additionalProperties": false
+}

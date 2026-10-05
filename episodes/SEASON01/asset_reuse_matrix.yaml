@@ -1,0 +1,34 @@
+sets:
+  HOME_MASTER_V1: [EP001, EP002, EP003, EP005, EP006, EP009, EP010]
+  MARKET: [EP001, EP004]
+  BUS: [EP001]
+  RAIN_STOP: [EP001, EP007]
+  RAIN_STREET: [EP001, EP005, EP007]
+  HUAGUO_MOUNTAIN_V1: [EP008, EP010]
+
+props:
+  UMBRELLA: [EP001, EP005, EP007]
+  PEACH: [EP002, EP003, EP004]
+  CAMERA: [LOOKREEL01]
+  FLOWER_BOUQUET: [LOOKREEL01]
+  BANDAGE: [EP001]
+  COMB: [EP006]
+  WRITING_SET: [EP009]
+  OLD_PHOTO_PRINT: [EP010]
+
+costume_strategy:
+  DAIYU_CANONICAL_HOME: [EP001, EP002, EP003, EP005, EP006, EP009, EP010]
+  DAIYU_CANONICAL_LAVENDER: [EP001, EP004, EP007, EP008]
+  WUKONG_DZS_HOME: [EP001, EP002, EP003, EP005, EP006, EP009, EP010]
+  WUKONG_DZS_DAILY: [EP001, EP004, EP007]
+  WUKONG_DZS_FORMAL: [LOOKREEL01, EP008]
+
+batching:
+  home_keyframes:
+    episodes: [EP001, EP002, EP003, EP005, EP006, EP009, EP010]
+    purpose: "Reuse the same home geography and reduce visual drift."
+  rain_keyframes:
+    episodes: [EP001, EP005, EP007]
+    purpose: "Reuse umbrella/rain light recipe."
+  market_keyframes:
+    episodes: [EP001, EP004]

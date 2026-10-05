@@ -1,107 +1,177 @@
-# 24 给本地 Codex 的启动指令
+# 24 给本地 Codex 的启动指令（V3）
 
-请接管 E:\project\AI-short-vidio-claw 最新 main。
+请接管：
+E:\project\AI-short-vidio-claw
+最新 main。
 
-不要继续跑历史 P1A 泛化 T2V benchmark。
+## Step 0：更新
 
-严格阅读：
-1. AGENTS.md
-2. PROJECT_STATE.md
-3. docs/18_ROUTE_CORRECTION_AND_MASTER_PLAN.md
-4. docs/19_ACTIVE_VISUAL_SPEC.md
-5. docs/25_CHARACTER_MODELING_REVIEW_SPEC.md
-6. docs/05_DIRECTORY_STANDARD.md
-7. docs/22_LOCAL_HANDOFF.md
-8. docs/27_GPU_EXECUTION_CHECKLIST.md
-9. docs/stages/V0_REFERENCE_AND_LOOK_LOCK.md
-10. docs/stages/K1_TEN_COMPOSITION_KEYFRAMES.md
-
-## Task 0：人物模型审核优先
-
-用户需要先审核：
-- DAIYU Model Sheet
-- WUKONG Model Sheet
-- Couple Scale Sheet
-
-将最终图片放：
-local/production/MODEL_REVIEW/
-
-根据用户反馈更新：
-assets/characters/daiyu/modeling_review.yaml
-assets/characters/wukong/modeling_review.yaml
-
-没有 GOLDEN_MODEL_APPROVED，不进入 K1 视频生产。
-
-## Task 1：Reference Inbox
-
-创建并检查：
-local/references/inbox/
-local/references/active_visual_target/
-
-如果 reference 还没在本机，列出缺失项并停止，不用 SDXL 临时猜人物。
-
-## Task 2：Index
-
-reference 到位后运行：
-python scripts/reference_index.py --root local/references/active_visual_target --out local/references/reference_index.json
-
-检查 hash，不自动批准。
-
-## Task 3：Contact Sheet
+git status
+git pull --ff-only
+记录 HEAD。
 
 安装轻量工具依赖：
+
 pip install -r requirements-tools.txt
 
-生成角色联系表：
-python scripts/create_contact_sheet.py --input local/references/active_visual_target/daiyu --out local/production/MODEL_REVIEW/daiyu_contact.jpg
-python scripts/create_contact_sheet.py --input local/references/active_visual_target/wukong --out local/production/MODEL_REVIEW/wukong_contact.jpg
+## Step 1：Preflight
 
-给用户看。
-未确认前停止。
+运行：
 
-## Task 4：V0 Manifest
+python scripts/project_preflight.py --stage MODEL_REVIEW
 
-根据用户明确批准结果更新：
-assets/characters/daiyu/reference_manifest.yaml
-assets/characters/wukong/reference_manifest.yaml
+如果报错：
+修文件/路径事实。
+不要直接开始 GPU。
 
-只有明确批准 ref_id 才进入 golden_face_refs / golden_costume_refs。
+## Step 2：读当前事实
 
-## Task 5：K1
+顺序：
 
-V0 PASS 后，按照：
-episodes/LOOKREEL01/plan.yaml
-episodes/LOOKREEL01/shot_cards.yaml
-episodes/LOOKREEL01/image_prompts.md
+1. AGENTS.md
+2. PROJECT_STATE.md
+3. docs/49_AGENT_OPERATING_RULES.md
+4. docs/45_STAGE_ACCEPTANCE_CRITERIA.md
+5. docs/30_VISUAL_DIRECTION_BIBLE.md
+6. docs/31_CINEMATOGRAPHY_GRAMMAR.md
+7. docs/32_CHARACTER_PERFORMANCE_BIBLE.md
+8. docs/25_CHARACTER_MODELING_REVIEW_SPEC.md
+9. docs/41_PRELOCAL_READINESS_CHECKLIST.md
 
-制作 10 张关键帧。
+## Step 3：人物建模图落盘
 
-candidate：
-local/production/LOOKREEL01/candidates/<SHOT>/
+用户已经允许当前方向继续前期工作。
 
-approved：
-local/production/LOOKREEL01/approved/
+把最终候选建模图放：
 
-用户批准后运行 approve_asset.py 写真实 hash。
+local/production/MODEL_REVIEW/
+- daiyu/
+- wukong/
+- couple/
 
-## Task 6：Package Validation
+以及用于身份锁定的 reference：
 
-python scripts/validate_production_package.py --project-dir episodes/LOOKREEL01
+local/references/active_visual_target/
+- daiyu/face/
+- daiyu/costume/
+- wukong/face/
+- wukong/costume/
+- composition/lookreel01/
 
-## Task 7：Build Queue
+不要把截图 UI 边框当人物 reference，如果有原图优先原图。
 
-python scripts/build_render_queue.py --manifest episodes/LOOKREEL01/approval_manifest.json --project-root local/production/LOOKREEL01 --out local/production/LOOKREEL01/render_queue.json
+## Step 4：Index
 
-## Task 8：T1 前 Guard
+python scripts/reference_index.py ^
+  --root local/references/active_visual_target ^
+  --out local/references/reference_index.json
 
-对每个 READY shot：
-python scripts/production_guard.py --approval-manifest episodes/LOOKREEL01/approval_manifest.json --shot COMP01 --image <approved-image-path> --workflow workflows/video/production/VID_wan22_5b_i2v_prod_v001.json
+## Step 5：Contact Sheet
 
-只有 ok=true 才允许调用 ComfyUI。
+python scripts/create_contact_sheet.py ^
+  --input local/references/active_visual_target/daiyu ^
+  --out local/production/MODEL_REVIEW/daiyu_contact.jpg
 
-## Stop Rules
+python scripts/create_contact_sheet.py ^
+  --input local/references/active_visual_target/wukong ^
+  --out local/production/MODEL_REVIEW/wukong_contact.jpg
 
-- Golden Model 未批准：停止。
-- K1 未全部 USER_APPROVED：不开始 EP001。
-- Production Guard fail：不提交视频。
-- M0/M3：不自动做完整 I2V。
+生成 couple contact sheet 同理。
+
+## Step 6：等待 Final Golden Approval
+
+当前用户只是允许继续前期，不自动写 FINAL GOLDEN。
+
+把 Contact Sheet 给用户。
+
+用户明确锁定后：
+- modeling_review.yaml → golden_model_status: APPROVED
+- reference_manifest.yaml → USER_APPROVED
+- 填 golden_face_refs / golden_costume_refs
+- 写 approved_at
+
+Agent 不得擅自执行。
+
+## Step 7：Schema / Preflight
+
+JSON manifest：
+
+python scripts/validate_schema.py ...
+
+然后：
+
+python scripts/project_preflight.py --stage V0
+
+V0 PASS 后再 K1。
+
+## Step 8：K1
+
+读：
+episodes/LOOKREEL01/
+docs/46_BATCH_PRODUCTION_PLAN.md
+docs/47_PROMPT_COMPOSITION_SYSTEM.md
+docs/48_REFERENCE_BUNDLE_SPEC.md
+
+每次做 3–5 张后停下审核。
+
+不要 10 张全自动出完才看。
+
+## Step 9：Approval
+
+用户批准图后：
+
+python scripts/approve_asset.py ...
+
+然后：
+
+python scripts/build_render_queue.py ...
+
+## Step 10：T1
+
+每条先：
+
+python scripts/production_guard.py ...
+
+ok=true 才调用 ComfyUI。
+
+优先：
+COMP09
+COMP04
+COMP01/05
+
+禁止先做 COMP07/08 高风险动态。
+
+## Step 11：E0
+
+10 still + 约4 motion
+→ 20–30s Look Reel
+→ 用户批准
+
+## Step 12：EP001
+
+Look Reel approved 后：
+
+20 still 全部先完成
+→ silent story cut
+→ 4–6 motion
+→ audio
+→ first cut
+
+## GPU Stop Rules
+
+- Guard fail：STOP
+- identity 2次系统性失败：STATIC
+- M2 3次失败：降 M1
+- M3：默认不自动
+- OOM：先减 workload，不自动安装14B runner
+
+## 每日/每批提交
+
+必须更新：
+- PROJECT_STATE
+- approval manifest
+- asset ledger
+- QA
+- WBS/Gate
+
+不要只提交 mp4。

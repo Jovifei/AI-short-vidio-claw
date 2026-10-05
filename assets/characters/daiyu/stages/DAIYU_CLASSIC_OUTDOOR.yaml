@@ -1,20 +1,5 @@
 stage_id: DAIYU_CLASSIC_OUTDOOR
-inherits: DAIYU
-purpose: outdoor_daily_life
-silhouette:
-  - layered_classical_robes
-  - light_and_flowing
-palette:
-  - moon_white
-  - pale_blue
-  - pale_lilac
-  - muted_pink_grey
-hair:
-  classical: true
-  ornaments: approved_reference_required
-forbidden:
-  - t_shirt
-  - hoodie
-  - jeans
-  - sneaker
-  - modern_coat
+alias_of: DAIYU_CANONICAL_LAVENDER
+status: ACTIVE_ALIAS
+purpose: compatibility_with_existing_shot_cards
+rule: "Resolve this legacy stage to DAIYU_CANONICAL_LAVENDER."

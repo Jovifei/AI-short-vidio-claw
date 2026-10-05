@@ -1,0 +1,36 @@
+keyframe:
+  KF_DAIYU_IDENTITY: "Daiyu face/identity mismatch"
+  KF_WUKONG_IDENTITY: "Wukong face/identity mismatch"
+  KF_WUKONG_SPECIES: "Wukong humanized or species drift"
+  KF_COSTUME: "Wrong or modern costume"
+  KF_ANATOMY: "Severe anatomy/contact error"
+  KF_CONTINUITY: "Wrong injury/prop/weather state"
+  KF_COMPOSITION: "Composition does not serve shot purpose"
+  KF_POSTER_LIKE: "Too staged/editorial; lacks life feeling"
+
+video:
+  VID_DAIYU_IDENTITY: "Daiyu identity drifts during clip"
+  VID_WUKONG_IDENTITY: "Wukong identity drifts during clip"
+  VID_SPECIES_DRIFT: "Wukong becomes human/other species"
+  VID_COSTUME_DRIFT: "Costume changes"
+  VID_EXTRA_LIMB: "Extra or disappearing limb"
+  VID_HAND_FAIL: "Hand/contact breaks"
+  VID_PROP_DRIFT: "Prop disappears or changes"
+  VID_BG_MELT: "Background severe deformation"
+  VID_CAMERA_FAIL: "Camera motion unstable or wrong"
+  VID_MOTION_TOO_LARGE: "Motion exceeds intended tier"
+  VID_MOTION_TOO_STATIC: "Required action unreadable"
+  VID_END_FRAME_BAD: "Ending frame unusable"
+
+audio:
+  AUDIO_VOICE_ID: "Voice identity inconsistent"
+  AUDIO_PRONUNCIATION: "Pronunciation/name error"
+  AUDIO_LEVEL: "Dialogue or mix level problem"
+  AUDIO_RIGHTS: "Voice/music/SFX rights not cleared"
+
+edit:
+  EDIT_MISSING_SHOT: "Timeline missing required shot"
+  EDIT_CONTINUITY: "Order breaks story/continuity"
+  EDIT_PACING: "Shot duration harms pacing"
+  EDIT_SUBTITLE: "Subtitle overflow/incorrect timing"
+  EDIT_TECH: "Resolution/fps/codec/black-frame issue"

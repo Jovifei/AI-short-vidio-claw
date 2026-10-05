@@ -1,0 +1,53 @@
+style_id: CP_PALETTE_V1
+status: ACTIVE
+
+characters:
+  DAIYU:
+    primary:
+      - moon_white
+      - pale_lilac
+      - pale_blue
+      - muted_pink_grey
+      - jade
+    avoid:
+      - neon
+      - saturated_hot_pink
+  WUKONG:
+    primary:
+      - warm_gold
+      - ochre
+      - cinnabar_red
+      - dark_brown
+      - black_accent
+    materials:
+      - aged_gold
+      - wood_beads
+      - woven_fabric
+
+lighting:
+  day:
+    key: natural_window_or_sun
+    contrast: low_to_moderate
+    saturation: restrained
+  night:
+    subject: warm_practical
+    environment: cool_ambient
+    reflections: allowed
+  rain:
+    subject_visibility: high
+    road_reflections: subtle
+    wetness_continuity: required
+
+image_texture:
+  target:
+    - live_action
+    - natural_skin
+    - believable_fur
+    - fabric_texture
+    - subtle_film_grain
+  reject:
+    - plastic_skin
+    - over_sharpen
+    - game_cg
+    - anime_render
+    - excessive_hdr

@@ -1,0 +1,55 @@
+character_id: WUKONG
+canonical_visual_id: WUKONG_GOLDEN_CANDIDATE_V1
+status: PREPROD_APPROVED_PENDING_LOCAL_HASH
+
+face:
+  species: "humanoid simian, unmistakably monkey king"
+  fur_color: "warm golden-brown"
+  brow:
+    shape: "pronounced simian brow ridge"
+    stability: required
+  eyes:
+    character: "alert, expressive"
+    rule: "human-readable emotion without humanizing skull/face"
+  muzzle:
+    structure: "clear simian nose-mouth projection"
+    reject: "ordinary human nose and lips"
+  ears:
+    shape: "prominent rounded/protruding simian ears"
+    placement: stable
+  cheek_fur:
+    density: "moderate"
+    map: stable
+  chin_fur:
+    presence: "short beard-like fur"
+  forehead_furline:
+    rule: stable
+
+headwear:
+  formal:
+    - buddhist_victory_crown
+    - gold_ornament
+    - red_plume_or_ribbon
+  daily:
+    - lighter_buddhist_cap_or_crown
+    - retained_identity_symbol
+
+body:
+  build: "lean athletic humanoid"
+  hands: "furred hands, simian cues retained"
+  tail:
+    present: true
+    color: "same golden-brown family"
+
+identity_hard_reject:
+  - ordinary_human_male_face_with_fur
+  - western_ape_movie_face
+  - gorilla_like_mass
+  - fox_or_lion_face
+  - random_ear_shape
+  - missing_muzzle
+  - severe_fur_color_shift
+
+notes:
+  - "User said the modeled direction feels acceptable for continued preproduction."
+  - "Final Golden status requires local reference hash and explicit approval record."

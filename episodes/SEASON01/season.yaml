@@ -1,0 +1,35 @@
+season_id: SEASON01
+title: "黛玉与悟空｜人间生活"
+status: PREPRODUCTION
+visual_target_id: ACTIVE_CP_VISUAL_V3
+episodes:
+  - EP001
+  - EP002
+  - EP003
+  - EP004
+  - EP005
+  - EP006
+  - EP007
+  - EP008
+  - EP009
+  - EP010
+
+arc:
+  act1: [EP001, EP002, EP003]
+  act2: [EP004, EP005, EP006, EP007]
+  act3: [EP008, EP009, EP010]
+
+content_ratio:
+  daily_life: 0.70
+  relationship_progression: 0.20
+  mythic_fate: 0.10
+
+production_order:
+  wave1: [EP001, EP002, EP007]
+  wave2: [EP003, EP004, EP006]
+  wave3: [EP005, EP008, EP009, EP010]
+
+reasoning:
+  wave1: "Validate story, comedy-life, and mostly-wordless emotion."
+  wave2: "Expand reusable home/market/hair-care assets."
+  wave3: "Attempt conflict and myth/fate only after identity pipeline is stable."

@@ -1,57 +1,92 @@
-# scripts
+# scripts — V3 工具索引
 
-## Active V2 Tools
+## 环境
 
-### reference_index.py
-扫描 local/references，计算 SHA256 和 ref_id。
-不会自动批准。
-
-示例：
-python scripts/reference_index.py --root local/references/active_visual_target --out local/references/reference_index.json
-
-### create_contact_sheet.py
-把人物 reference 排成联系表，方便用户审核。
-
-依赖：
 pip install -r requirements-tools.txt
 
+## 1. project_preflight.py
+
+检查 Product Stage 前置。
+
 示例：
-python scripts/create_contact_sheet.py --input local/references/active_visual_target/daiyu --out local/production/MODEL_REVIEW/daiyu_contact.jpg
 
-### approve_asset.py
-把“用户已经明确批准”的某张 keyframe 写入 approval manifest。
+python scripts/project_preflight.py --stage MODEL_REVIEW
+python scripts/project_preflight.py --stage V0
+python scripts/project_preflight.py --stage K1
+python scripts/project_preflight.py --stage T1
 
-它要求：
+Fail-closed。
+
+## 2. reference_index.py
+
+扫描 reference，生成 SHA256/ref_id。
+不会自动批准。
+
+## 3. create_contact_sheet.py
+
+将本地 Reference 排成 Contact Sheet。
+只用于审核。
+
+## 4. approve_asset.py
+
+只有用户明确批准后调用。
+
+必须：
 --user-confirmed YES
 
-示例：
-python scripts/approve_asset.py --manifest episodes/LOOKREEL01/approval_manifest.json --shot COMP01 --image local/production/LOOKREEL01/approved/LOOKREEL01_COMP01_KF_v001.png --user-confirmed YES --daiyu-ref DAIYU_FACE_FRONT_001 --wukong-ref WUKONG_FACE_FRONT_001 --daiyu-costume DAIYU_CLASSIC_OUTDOOR --wukong-costume WUKONG_CLASSIC_OUTDOOR
+它不应该被 Agent 在无人确认时自动调用。
 
-注意：
-此工具不应由 Agent 在没有用户明确批准时自行调用。
+## 5. register_asset.py
 
-### validate_production_package.py
-检查 LOOKREEL/EP 包文档与 approval manifest。
+向 local/asset_ledger.jsonl 登记资产。
 
-### production_guard.py
-Production I2V 的 fail-closed 门禁。
-验证：
-- shot 已用户批准
-- keyframe hash 一致
+不能授予 USER_APPROVED。
+
+## 6. validate_schema.py
+
+使用 schemas/ 校验 JSON。
+
+## 7. validate_production_package.py
+
+检查 LOOKREEL/EP 包结构与 approval manifest。
+
+## 8. build_render_queue.py
+
+只从 USER_APPROVED/PRODUCTION_READY shot 生成队列。
+
+## 9. production_guard.py
+
+视频前最终门禁：
+- approval
+- hash
 - identity refs
 - costume refs
 - LoadImage
-- start_image connection
+- start_image
 
-通过后才允许调用 ComfyUI。
+Guard 不通过禁止 POST /prompt。
 
-### build_render_queue.py
-只从 USER_APPROVED / PRODUCTION_READY shot 构建渲染队列。
-未批准镜头自动 skipped。
+## 10. p1_comfy_probe.py
 
-### p1_comfy_probe.py
-已有底层 ComfyUI 提交工具。
-V2 中必须位于 Production Guard 后面。
+底层 ComfyUI API 提交/监控/记录工具。
+
+V3 中：
+必须位于 Production Guard 之后。
+
+它不是 approval system。
+
+## 推荐调用链
+
+reference_index
+→ contact_sheet
+→ user approval
+→ approve_asset
+→ validate package
+→ build queue
+→ production_guard
+→ p1_comfy_probe
 
 ## Future
-完整 episode CLI 等 E0/E1 证明流程后再抽象。
+
+完整 CLI：
+等 E0/EP001 手工流程证明有效以后再抽象。

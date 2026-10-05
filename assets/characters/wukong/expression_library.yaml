@@ -1,0 +1,31 @@
+character_id: WUKONG
+library_id: WUKONG_EXPR_V1
+
+expressions:
+  neutral_alert:
+    eyes: "active"
+    brow: "simian structure preserved"
+  playful:
+    eyes: "quick side glance"
+    mouth: "small asymmetric smile"
+  pretending_fine:
+    face: "controlled"
+    body: "protect injured hand"
+  brief_pain:
+    eyes: "small tension"
+    mouth: "short compression"
+    note: "do not exaggerate"
+  tender_glance:
+    eyes: "soft but species structure unchanged"
+  protective:
+    eyes: "focused forward"
+    body: "stable"
+  caught:
+    eyes: "quick look away"
+    use: [comedy]
+
+hard_reject:
+  - humanized_smile
+  - smooth_human_cheeks
+  - missing_muzzle
+  - random_ear_shape

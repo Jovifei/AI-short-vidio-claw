@@ -1,0 +1,64 @@
+set_id: HOME_MASTER_V1
+status: PREPROD_LOCKED
+purpose: "Reusable home geography for EP001/EP002/EP003/EP005/EP006/EP009/EP010"
+
+layout:
+  ENTRY:
+    connects_to: LIVING_ROOM
+    visual_anchor:
+      - wooden_or_neutral_door
+      - small_shoe_storage_or_side_table
+      - warm_corridor_practical
+  LIVING_ROOM:
+    connects_to: [ENTRY, KITCHEN, BALCONY, BEDROOM]
+    visual_anchor:
+      - low_table
+      - fabric_sofa_or_daybed
+      - warm_lamp
+      - small_books_or_daily_items
+      - no_luxury_showroom
+  KITCHEN:
+    connects_to: [LIVING_ROOM]
+    visual_anchor:
+      - refrigerator
+      - sink
+      - small_counter
+      - bowls
+      - simple_food_storage
+  BALCONY:
+    connects_to: LIVING_ROOM
+    visual_anchor:
+      - potted_plants
+      - laundry
+      - city_or_trees_background
+  BEDROOM:
+    connects_to: LIVING_ROOM
+    visual_anchor:
+      - simple_bed
+      - warm_bedside_lamp
+      - fabric_layers
+      - no_hotel_luxury
+
+continuity:
+  camera_axis:
+    rule: "Keep major room relationships stable across episodes."
+  clutter:
+    level: light_realistic
+  wall_palette:
+    - warm_neutral
+    - muted_wood
+  avoid:
+    - palace_set
+    - luxury_modern_mansion
+    - sci_fi_interior
+
+character_contrast:
+  rule: "Modern home environment is allowed; characters remain in approved classical costumes."
+
+reference_need:
+  - entry_wide
+  - living_room_wide
+  - kitchen_fridge
+  - kitchen_sink
+  - balcony_day
+  - bedroom_night

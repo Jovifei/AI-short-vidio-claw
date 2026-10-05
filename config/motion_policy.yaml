@@ -1,0 +1,47 @@
+tiers:
+  M0:
+    subject_motion: none_or_near_none
+    allowed:
+      - slow_zoom
+      - slow_pan
+      - parallax
+      - environment_overlay
+    auto_i2v: false
+  M1:
+    subject_motion: micro
+    allowed:
+      - blink
+      - breathing
+      - small_glance
+      - restrained_smile
+      - slight_head_turn
+      - sleeve_or_fur_motion
+    auto_i2v: true
+    max_attempts: 3
+  M2:
+    subject_motion: slow_body
+    allowed:
+      - one_or_two_steps
+      - light_lean
+      - handoff
+      - umbrella_move
+      - bouquet_raise
+    auto_i2v: true
+    max_attempts: 3
+    downgrade_on_failure: M1
+  M3:
+    subject_motion: complex_contact
+    examples:
+      - lift
+      - embrace
+      - rapid_play
+      - complex_kiss_motion
+      - intertwined_hands
+      - mirror_contact
+    auto_i2v: false
+    default_fallback: M0
+
+global:
+  systematic_identity_failures_before_static: 2
+  require_approved_start_image: true
+  one_primary_action_per_clip: true
