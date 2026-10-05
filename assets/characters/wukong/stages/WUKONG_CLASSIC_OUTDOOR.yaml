@@ -1,0 +1,16 @@
+stage_id: WUKONG_CLASSIC_OUTDOOR
+inherits: WUKONG
+purpose: outdoor_daily_life
+silhouette:
+  - classical_monkey_king_layers
+  - waist_belt
+  - wrist_guards
+palette:
+  - yellow_gold
+  - warm_brown
+  - dark_red_accent
+forbidden:
+  - hoodie
+  - sports_jacket
+  - jeans
+  - sneaker

@@ -1,0 +1,13 @@
+stage_id: WUKONG_CLASSIC_HOME
+inherits: WUKONG
+purpose: home_daily_life
+silhouette:
+  - simplified_classical_layers
+  - reduced_armor
+  - retained_classical_identity
+forbidden:
+  - t_shirt
+  - hoodie
+  - track_jacket
+  - modern_pajamas
+note: "Home stage reduces heavy costume elements but remains period/classical."

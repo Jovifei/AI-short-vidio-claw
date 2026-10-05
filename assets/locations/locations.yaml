@@ -1,0 +1,55 @@
+locations:
+  HOME_ENTRY:
+    type: modern_apartment_corridor
+    use: [EP001_SH001, EP001_SH002]
+    visual: "ordinary modern corridor; warm practical lights; no fantasy decoration required"
+
+  LIVING_ROOM:
+    type: modern_home
+    use: [EP001_SH003, EP001_SH004, EP001_SH005, EP001_SH006]
+    visual: "lived-in; small table; fabric; warm light; not showroom-clean"
+
+  KITCHEN_FRIDGE:
+    type: modern_home_kitchen
+    use: [EP001_SH007, EP001_SH008, EP001_SH009, EP001_SH010]
+    visual: "real refrigerator, ordinary food, bowls, sink, household clutter"
+
+  MORNING_ROOM:
+    type: modern_home
+    use: [EP001_SH011, EP001_SH012]
+    visual: "soft morning daylight; simple mirror/desk; avoid complex mirror multiplication"
+
+  BALCONY:
+    type: apartment_balcony
+    use: [EP001_SH013, EP001_SH014]
+    visual: "plants, laundry, daylight, breeze"
+
+  DINING:
+    type: home_or_small_eatery
+    use: [EP001_SH015]
+    visual: "simple table, ordinary food, warm daily life"
+
+  MARKET:
+    type: everyday_market
+    use: [EP001_SH016]
+    visual: "real produce stalls; background crowd de-emphasized"
+
+  BUS:
+    type: modern_public_transport
+    use: [EP001_SH017]
+    visual: "ordinary bus; window reflections controlled; seated intimate framing"
+
+  RAIN_STOP:
+    type: bus_stop_or_street_shelter
+    use: [EP001_SH018]
+    visual: "night rain begins; cold ambient light; warm practical highlights"
+
+  RAIN_STREET:
+    type: city_night_street
+    use: [EP001_SH019]
+    visual: "wet ground reflections; one umbrella; no fashion-ad styling"
+
+  BEDROOM:
+    type: modern_home_bedroom
+    use: [EP001_SH020]
+    visual: "soft warm bedside light; lived-in bedding; quiet ending"

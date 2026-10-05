@@ -1,0 +1,26 @@
+active_visual_target: ACTIVE_CP_VISUAL_V2
+active_look_reel: LOOKREEL01
+active_episode: EP001
+
+gates:
+  require_visual_target_lock: true
+  require_user_approved_keyframe: true
+  require_production_guard: true
+  production_t2v_for_characters: false
+
+video:
+  candidate_workflow: workflows/video/production/VID_wan22_5b_i2v_prod_v001.json
+  default_width: 480
+  default_height: 832
+  default_frames: 49
+  fps: 24
+  gpu_concurrency: 1
+
+motion:
+  default_tier: M1
+  m3_auto_render: false
+
+paths:
+  references: local/references/active_visual_target
+  lookreel: local/production/LOOKREEL01
+  ep001: local/production/EP001

@@ -1,0 +1,24 @@
+episode_id: EP001
+visual_target_id: ACTIVE_CP_VISUAL_V2
+
+shots:
+  SH001: {location: HOME_ENTRY, characters: [WUKONG], costume: {WUKONG: WUKONG_CLASSIC_OUTDOOR}, motion_tier: M2, duration: 3.0}
+  SH002: {location: HOME_ENTRY, characters: [DAIYU, WUKONG], costume: {DAIYU: DAIYU_CLASSIC_HOME, WUKONG: WUKONG_CLASSIC_OUTDOOR}, motion_tier: M1, duration: 2.5}
+  SH003: {location: LIVING_ROOM, characters: [DAIYU, WUKONG], costume: {DAIYU: DAIYU_CLASSIC_HOME, WUKONG: WUKONG_CLASSIC_INJURED}, motion_tier: M1, duration: 2.5}
+  SH004: {location: LIVING_ROOM, characters: [DAIYU, WUKONG], costume: {DAIYU: DAIYU_CLASSIC_HOME, WUKONG: WUKONG_CLASSIC_INJURED}, motion_tier: M0, duration: 2.5}
+  SH005: {location: LIVING_ROOM, characters: [DAIYU, WUKONG], costume: {DAIYU: DAIYU_CLASSIC_HOME, WUKONG: WUKONG_CLASSIC_INJURED}, motion_tier: M0, duration: 2.0}
+  SH006: {location: LIVING_ROOM, characters: [DAIYU, WUKONG], costume: {DAIYU: DAIYU_CLASSIC_HOME, WUKONG: WUKONG_CLASSIC_INJURED}, motion_tier: M1, duration: 3.0}
+  SH007: {location: KITCHEN_FRIDGE, characters: [DAIYU, WUKONG], costume: {DAIYU: DAIYU_CLASSIC_HOME, WUKONG: WUKONG_CLASSIC_INJURED}, motion_tier: M1, duration: 3.0}
+  SH008: {location: KITCHEN_FRIDGE, characters: [DAIYU, WUKONG], costume: {DAIYU: DAIYU_CLASSIC_HOME, WUKONG: WUKONG_CLASSIC_INJURED}, motion_tier: M0, duration: 2.0}
+  SH009: {location: KITCHEN_FRIDGE, characters: [DAIYU, WUKONG], costume: {DAIYU: DAIYU_CLASSIC_HOME, WUKONG: WUKONG_CLASSIC_INJURED}, motion_tier: M1, duration: 3.0}
+  SH010: {location: KITCHEN_FRIDGE, characters: [DAIYU, WUKONG], costume: {DAIYU: DAIYU_CLASSIC_HOME, WUKONG: WUKONG_CLASSIC_INJURED}, motion_tier: M1, duration: 2.5}
+  SH011: {location: MORNING_ROOM, characters: [DAIYU, WUKONG], costume: {DAIYU: DAIYU_CLASSIC_HOME, WUKONG: WUKONG_CLASSIC_INJURED}, motion_tier: M1, duration: 2.5}
+  SH012: {location: MORNING_ROOM, characters: [DAIYU, WUKONG], costume: {DAIYU: DAIYU_CLASSIC_HOME, WUKONG: WUKONG_CLASSIC_INJURED}, motion_tier: M1, duration: 3.0}
+  SH013: {location: BALCONY, characters: [DAIYU, WUKONG], costume: {DAIYU: DAIYU_CLASSIC_HOME, WUKONG: WUKONG_CLASSIC_INJURED}, motion_tier: M1, duration: 3.0}
+  SH014: {location: BALCONY, characters: [DAIYU, WUKONG], costume: {DAIYU: DAIYU_CLASSIC_HOME, WUKONG: WUKONG_CLASSIC_INJURED}, motion_tier: M1, duration: 2.0}
+  SH015: {location: DINING, characters: [DAIYU, WUKONG], costume: {DAIYU: DAIYU_CLASSIC_OUTDOOR, WUKONG: WUKONG_CLASSIC_OUTDOOR}, motion_tier: M0, duration: 2.5}
+  SH016: {location: MARKET, characters: [DAIYU, WUKONG], costume: {DAIYU: DAIYU_CLASSIC_OUTDOOR, WUKONG: WUKONG_CLASSIC_OUTDOOR}, motion_tier: M2, duration: 3.0}
+  SH017: {location: BUS, characters: [DAIYU, WUKONG], costume: {DAIYU: DAIYU_CLASSIC_OUTDOOR, WUKONG: WUKONG_CLASSIC_OUTDOOR}, motion_tier: M1, duration: 3.0}
+  SH018: {location: RAIN_STOP, characters: [DAIYU, WUKONG], costume: {DAIYU: DAIYU_CLASSIC_RAIN, WUKONG: WUKONG_CLASSIC_OUTDOOR}, motion_tier: M1, duration: 2.5}
+  SH019: {location: RAIN_STREET, characters: [DAIYU, WUKONG], costume: {DAIYU: DAIYU_CLASSIC_RAIN, WUKONG: WUKONG_CLASSIC_OUTDOOR}, motion_tier: M2, duration: 3.5}
+  SH020: {location: BEDROOM, characters: [DAIYU, WUKONG], costume: {DAIYU: DAIYU_CLASSIC_HOME, WUKONG: WUKONG_CLASSIC_INJURED}, motion_tier: M0, duration: 3.0}

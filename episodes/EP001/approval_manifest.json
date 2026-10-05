@@ -1,0 +1,349 @@
+{
+  "episode_id": "EP001",
+  "status": "DRAFT",
+  "visual_target_id": "ACTIVE_CP_VISUAL_V2",
+  "approved_by_user": false,
+  "approved_at": null,
+  "shots": {
+    "SH001": {
+      "status": "DRAFT",
+      "approved_keyframe": null,
+      "sha256": null,
+      "identity_refs": {
+        "DAIYU": [],
+        "WUKONG": []
+      },
+      "costume_refs": {
+        "DAIYU": null,
+        "WUKONG": null
+      },
+      "motion_tier": null,
+      "approved_by_user": false,
+      "approved_at": null,
+      "notes": ""
+    },
+    "SH002": {
+      "status": "DRAFT",
+      "approved_keyframe": null,
+      "sha256": null,
+      "identity_refs": {
+        "DAIYU": [],
+        "WUKONG": []
+      },
+      "costume_refs": {
+        "DAIYU": null,
+        "WUKONG": null
+      },
+      "motion_tier": null,
+      "approved_by_user": false,
+      "approved_at": null,
+      "notes": ""
+    },
+    "SH003": {
+      "status": "DRAFT",
+      "approved_keyframe": null,
+      "sha256": null,
+      "identity_refs": {
+        "DAIYU": [],
+        "WUKONG": []
+      },
+      "costume_refs": {
+        "DAIYU": null,
+        "WUKONG": null
+      },
+      "motion_tier": null,
+      "approved_by_user": false,
+      "approved_at": null,
+      "notes": ""
+    },
+    "SH004": {
+      "status": "DRAFT",
+      "approved_keyframe": null,
+      "sha256": null,
+      "identity_refs": {
+        "DAIYU": [],
+        "WUKONG": []
+      },
+      "costume_refs": {
+        "DAIYU": null,
+        "WUKONG": null
+      },
+      "motion_tier": null,
+      "approved_by_user": false,
+      "approved_at": null,
+      "notes": ""
+    },
+    "SH005": {
+      "status": "DRAFT",
+      "approved_keyframe": null,
+      "sha256": null,
+      "identity_refs": {
+        "DAIYU": [],
+        "WUKONG": []
+      },
+      "costume_refs": {
+        "DAIYU": null,
+        "WUKONG": null
+      },
+      "motion_tier": null,
+      "approved_by_user": false,
+      "approved_at": null,
+      "notes": ""
+    },
+    "SH006": {
+      "status": "DRAFT",
+      "approved_keyframe": null,
+      "sha256": null,
+      "identity_refs": {
+        "DAIYU": [],
+        "WUKONG": []
+      },
+      "costume_refs": {
+        "DAIYU": null,
+        "WUKONG": null
+      },
+      "motion_tier": null,
+      "approved_by_user": false,
+      "approved_at": null,
+      "notes": ""
+    },
+    "SH007": {
+      "status": "DRAFT",
+      "approved_keyframe": null,
+      "sha256": null,
+      "identity_refs": {
+        "DAIYU": [],
+        "WUKONG": []
+      },
+      "costume_refs": {
+        "DAIYU": null,
+        "WUKONG": null
+      },
+      "motion_tier": null,
+      "approved_by_user": false,
+      "approved_at": null,
+      "notes": ""
+    },
+    "SH008": {
+      "status": "DRAFT",
+      "approved_keyframe": null,
+      "sha256": null,
+      "identity_refs": {
+        "DAIYU": [],
+        "WUKONG": []
+      },
+      "costume_refs": {
+        "DAIYU": null,
+        "WUKONG": null
+      },
+      "motion_tier": null,
+      "approved_by_user": false,
+      "approved_at": null,
+      "notes": ""
+    },
+    "SH009": {
+      "status": "DRAFT",
+      "approved_keyframe": null,
+      "sha256": null,
+      "identity_refs": {
+        "DAIYU": [],
+        "WUKONG": []
+      },
+      "costume_refs": {
+        "DAIYU": null,
+        "WUKONG": null
+      },
+      "motion_tier": null,
+      "approved_by_user": false,
+      "approved_at": null,
+      "notes": ""
+    },
+    "SH010": {
+      "status": "DRAFT",
+      "approved_keyframe": null,
+      "sha256": null,
+      "identity_refs": {
+        "DAIYU": [],
+        "WUKONG": []
+      },
+      "costume_refs": {
+        "DAIYU": null,
+        "WUKONG": null
+      },
+      "motion_tier": null,
+      "approved_by_user": false,
+      "approved_at": null,
+      "notes": ""
+    },
+    "SH011": {
+      "status": "DRAFT",
+      "approved_keyframe": null,
+      "sha256": null,
+      "identity_refs": {
+        "DAIYU": [],
+        "WUKONG": []
+      },
+      "costume_refs": {
+        "DAIYU": null,
+        "WUKONG": null
+      },
+      "motion_tier": null,
+      "approved_by_user": false,
+      "approved_at": null,
+      "notes": ""
+    },
+    "SH012": {
+      "status": "DRAFT",
+      "approved_keyframe": null,
+      "sha256": null,
+      "identity_refs": {
+        "DAIYU": [],
+        "WUKONG": []
+      },
+      "costume_refs": {
+        "DAIYU": null,
+        "WUKONG": null
+      },
+      "motion_tier": null,
+      "approved_by_user": false,
+      "approved_at": null,
+      "notes": ""
+    },
+    "SH013": {
+      "status": "DRAFT",
+      "approved_keyframe": null,
+      "sha256": null,
+      "identity_refs": {
+        "DAIYU": [],
+        "WUKONG": []
+      },
+      "costume_refs": {
+        "DAIYU": null,
+        "WUKONG": null
+      },
+      "motion_tier": null,
+      "approved_by_user": false,
+      "approved_at": null,
+      "notes": ""
+    },
+    "SH014": {
+      "status": "DRAFT",
+      "approved_keyframe": null,
+      "sha256": null,
+      "identity_refs": {
+        "DAIYU": [],
+        "WUKONG": []
+      },
+      "costume_refs": {
+        "DAIYU": null,
+        "WUKONG": null
+      },
+      "motion_tier": null,
+      "approved_by_user": false,
+      "approved_at": null,
+      "notes": ""
+    },
+    "SH015": {
+      "status": "DRAFT",
+      "approved_keyframe": null,
+      "sha256": null,
+      "identity_refs": {
+        "DAIYU": [],
+        "WUKONG": []
+      },
+      "costume_refs": {
+        "DAIYU": null,
+        "WUKONG": null
+      },
+      "motion_tier": null,
+      "approved_by_user": false,
+      "approved_at": null,
+      "notes": ""
+    },
+    "SH016": {
+      "status": "DRAFT",
+      "approved_keyframe": null,
+      "sha256": null,
+      "identity_refs": {
+        "DAIYU": [],
+        "WUKONG": []
+      },
+      "costume_refs": {
+        "DAIYU": null,
+        "WUKONG": null
+      },
+      "motion_tier": null,
+      "approved_by_user": false,
+      "approved_at": null,
+      "notes": ""
+    },
+    "SH017": {
+      "status": "DRAFT",
+      "approved_keyframe": null,
+      "sha256": null,
+      "identity_refs": {
+        "DAIYU": [],
+        "WUKONG": []
+      },
+      "costume_refs": {
+        "DAIYU": null,
+        "WUKONG": null
+      },
+      "motion_tier": null,
+      "approved_by_user": false,
+      "approved_at": null,
+      "notes": ""
+    },
+    "SH018": {
+      "status": "DRAFT",
+      "approved_keyframe": null,
+      "sha256": null,
+      "identity_refs": {
+        "DAIYU": [],
+        "WUKONG": []
+      },
+      "costume_refs": {
+        "DAIYU": null,
+        "WUKONG": null
+      },
+      "motion_tier": null,
+      "approved_by_user": false,
+      "approved_at": null,
+      "notes": ""
+    },
+    "SH019": {
+      "status": "DRAFT",
+      "approved_keyframe": null,
+      "sha256": null,
+      "identity_refs": {
+        "DAIYU": [],
+        "WUKONG": []
+      },
+      "costume_refs": {
+        "DAIYU": null,
+        "WUKONG": null
+      },
+      "motion_tier": null,
+      "approved_by_user": false,
+      "approved_at": null,
+      "notes": ""
+    },
+    "SH020": {
+      "status": "DRAFT",
+      "approved_keyframe": null,
+      "sha256": null,
+      "identity_refs": {
+        "DAIYU": [],
+        "WUKONG": []
+      },
+      "costume_refs": {
+        "DAIYU": null,
+        "WUKONG": null
+      },
+      "motion_tier": null,
+      "approved_by_user": false,
+      "approved_at": null,
+      "notes": ""
+    }
+  }
+}

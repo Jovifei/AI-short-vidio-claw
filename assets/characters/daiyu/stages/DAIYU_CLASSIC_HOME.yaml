@@ -1,0 +1,17 @@
+stage_id: DAIYU_CLASSIC_HOME
+inherits: DAIYU
+purpose: home_daily_life
+silhouette:
+  - simplified_classical_inner_layers
+  - soft_outer_robe_optional
+palette:
+  - ivory
+  - pale_blue
+  - pale_lilac
+forbidden:
+  - modern_pajamas
+  - t_shirt
+  - hoodie
+  - sweater
+  - jeans
+note: "Home means lighter classical layers, not modern sleepwear."

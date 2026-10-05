@@ -1,83 +1,81 @@
 # PROJECT_STATE
 
 更新时间：2026-10-05
-状态：**LAB 5B runtime verified / PRODUCT visual target NOT LOCKED / Active next = V0 → K1**
+状态：**REMOTE_PREP_COMPLETE / LAB_RUNTIME_VERIFIED / PRODUCT_WAITING_V0_REFERENCE_LOCK**
 
-## 1. 审核结论
+## 1. 当前判断
 
-当前成果“不像要求”的根因已经定位。
+Wan2.2-TI2V-5B 在本机的 Runtime 已有有效 Lab 数据。
+但现有短剧人物成果不合格，原因不是简单的“模型不能跑”，而是过去没有先锁人物 reference，并混用了 Lab 与 Product。
 
-不是简单的“Wan2.2 5B 路线错了”，而是：
-- 已生成的大多数视频属于 Lab benchmark；
-- Lab 中大量使用官方地铁乐手 prompt；
-- 故事向 SH001 是无参考图 T2V；
-- 唯一 I2V 来自未批准 SDXL 静帧；
-- 没有 approved 孙悟空/林黛玉视觉 reference；
-- 旧文档把 approved keyframe 放在 P2，却让 P1A 先要求它，存在阶段依赖循环；
-- 旧 Character Bible 与用户当前视觉要求不一致。
+V2 已完成路线纠偏。
 
-因此 V2 将“视觉锁定”放到视频 Production 之前。
+## 2. 远端已经完成
 
-## 2. 保留的 Lab 事实
+- 项目架构/PRD/SOP
+- V2 Lab/Production 分离
+- Active Visual Spec
+- 角色 Character Cards
+- Costume Stages
+- Location/Prop Registry
+- 第一季创作圣经
+- LOOKREEL01 10 构图完整创作包
+- EP001 完整剧本与 20 镜
+- Image/Video Prompt Packs
+- Continuity / Edit / QA
+- Production I2V workflow candidate
+- Wan2.2 5B local model manifest
+- reference_index
+- production_guard
+- package validator
+- local handoff 文档
 
-已有事实继续有效：
-- ComfyUI URL http://127.0.0.1:8188
+详细：
+docs/23_REMOTE_PREP_COMPLETION.md
+
+## 3. 当前唯一真正前置
+
+V0 Visual Target Lock。
+
+需要本地落地：
+- DAIYU face refs
+- DAIYU costume refs
+- WUKONG face refs
+- WUKONG costume refs
+- 10 composition refs
+
+并由用户明确批准。
+
+## 4. Lab 已知事实
+
+- ComfyUI: http://127.0.0.1:8188（以本机当前运行复核为准）
 - RTX 4070 SUPER 12282 MiB
-- RAM 约 31.82 GB
-- Wan2.2-TI2V-5B 官方三份模型已安装
-- 480×832×49 T2V 串行 10/10 成功
+- RAM ~31.82 GB
+- Wan2.2-TI2V-5B 三份核心模型已安装
+- 480×832×49 T2V 10/10 success
 - p50 187.7095 s
 - p95 264.101 s
-- 曾有一次 480×832×49 I2V 成功
-- 未测试 approved identity keyframe 的 Production I2V
+- 一次 I2V wiring success
+- approved identity I2V 尚未验证
 
-这些只证明 runtime，不证明人物效果。
+## 5. Product 当前 Gate
 
-## 3. 当前冻结动作
+V0 未 PASS：
+禁止 Product I2V。
 
-现在停止：
-- 泛化 T2V benchmark
-- 临时人物图继续 I2V
-- 直接开始 EP001
-- 本地 LoRA/PuLID 扩张
-- TTS/LipSync
+K1 未 PASS：
+禁止 T1。
 
-## 4. 当前立即阶段
+T1 未 PASS：
+Wan2.2 5B 只能叫 Lab Runtime / Production Candidate，不能叫正式生产引擎。
 
-### V0
-收集并冻结：
-- 林黛玉 Golden Face Set
-- 孙悟空 Golden Face Set
-- 双方 Golden Costume Set
-- 10 张 composition refs
+E0 未获用户批准：
+禁止完整 EP001 生产。
 
-状态目标：
-VISUAL_TARGET_LOCKED
+## 6. 下一步
 
-### K1
-按用户的 10 个构图生成 10 张 approved keyframe。
+本地 Codex 执行：
+docs/24_LOCAL_CODEX_START_PROMPT.md
 
-第一优先是：
-人物脸 → 古装 → CP 感 → anatomy → 构图。
-
-## 5. V0/K1 完成后
-
-再执行 T1：
-用 approved keyframe 验证 Wan2.2 5B Production I2V。
-
-只有 T1 通过，才能把 5B 写成：
-Production Candidate for LOW-RISK I2V。
-
-## 6. EP001
-
-EP001 现在排在 E0 CP Look Reel 之后。
-
-先让用户批准 20–30 秒人物视觉样片，再做《大圣今天受伤了》。
-
-## 7. 旧 P1A 状态
-
-旧 P1A benchmark 文档不删除，但归档为 Lab 路线。
-十次 T2V 不再作为下一步任务。
-
-详细审计：
-docs/reviews/2026-10-05-远端审核.md
+远端无需继续编造人物素材。
+等待真实 reference → V0 → K1。

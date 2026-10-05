@@ -1,0 +1,52 @@
+episode_id: EP001
+
+global:
+  character_clothing_modernization_forbidden: true
+  visual_target: ACTIVE_CP_VISUAL_V2
+
+DAIYU:
+  face_refs: []
+  stages:
+    home: DAIYU_CLASSIC_HOME
+    outdoor: DAIYU_CLASSIC_OUTDOOR
+    rain: DAIYU_CLASSIC_RAIN
+  performance_arc:
+    - calm_observation
+    - focused_care
+    - mild_annoyance
+    - relaxed_daily_life
+    - quiet_awareness
+
+WUKONG:
+  face_refs: []
+  stages:
+    home: WUKONG_CLASSIC_INJURED
+    outdoor: WUKONG_CLASSIC_OUTDOOR
+    injured: WUKONG_CLASSIC_INJURED
+  injury:
+    SH001_SH004: visible_minor_injury
+    SH005_SH020: bandage_present
+    hand_use: limited_after_bandage
+  performance_arc:
+    - pretending_fine
+    - brief_pain
+    - soft_glances
+    - playful_daily_life
+    - protective_rain_scene
+
+weather:
+  SH001_SH017: dry
+  SH018: rain_begins
+  SH019: wukong_outer_side_wet
+  SH020: indoor_dry_after_return
+
+props:
+  medkit:
+    appears: SH003
+    exits: SH006
+  bandage:
+    appears: SH005
+    persists_to: SH020
+  umbrella:
+    appears: SH018
+    persists_to: SH019

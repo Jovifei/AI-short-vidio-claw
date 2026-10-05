@@ -1,0 +1,169 @@
+{
+  "project_id": "LOOKREEL01",
+  "visual_target_id": "ACTIVE_CP_VISUAL_V2",
+  "status": "DRAFT",
+  "approved_by_user": false,
+  "approved_at": null,
+  "shots": {
+    "COMP01": {
+      "status": "DRAFT",
+      "approved_keyframe": null,
+      "sha256": null,
+      "identity_refs": {
+        "DAIYU": [],
+        "WUKONG": []
+      },
+      "costume_refs": {
+        "DAIYU": null,
+        "WUKONG": null
+      },
+      "approved_by_user": false,
+      "approved_at": null,
+      "notes": ""
+    },
+    "COMP02": {
+      "status": "DRAFT",
+      "approved_keyframe": null,
+      "sha256": null,
+      "identity_refs": {
+        "DAIYU": [],
+        "WUKONG": []
+      },
+      "costume_refs": {
+        "DAIYU": null,
+        "WUKONG": null
+      },
+      "approved_by_user": false,
+      "approved_at": null,
+      "notes": ""
+    },
+    "COMP03": {
+      "status": "DRAFT",
+      "approved_keyframe": null,
+      "sha256": null,
+      "identity_refs": {
+        "DAIYU": [],
+        "WUKONG": []
+      },
+      "costume_refs": {
+        "DAIYU": null,
+        "WUKONG": null
+      },
+      "approved_by_user": false,
+      "approved_at": null,
+      "notes": ""
+    },
+    "COMP04": {
+      "status": "DRAFT",
+      "approved_keyframe": null,
+      "sha256": null,
+      "identity_refs": {
+        "DAIYU": [],
+        "WUKONG": []
+      },
+      "costume_refs": {
+        "DAIYU": null,
+        "WUKONG": null
+      },
+      "approved_by_user": false,
+      "approved_at": null,
+      "notes": ""
+    },
+    "COMP05": {
+      "status": "DRAFT",
+      "approved_keyframe": null,
+      "sha256": null,
+      "identity_refs": {
+        "DAIYU": [],
+        "WUKONG": []
+      },
+      "costume_refs": {
+        "DAIYU": null,
+        "WUKONG": null
+      },
+      "approved_by_user": false,
+      "approved_at": null,
+      "notes": ""
+    },
+    "COMP06": {
+      "status": "DRAFT",
+      "approved_keyframe": null,
+      "sha256": null,
+      "identity_refs": {
+        "DAIYU": [],
+        "WUKONG": []
+      },
+      "costume_refs": {
+        "DAIYU": null,
+        "WUKONG": null
+      },
+      "approved_by_user": false,
+      "approved_at": null,
+      "notes": ""
+    },
+    "COMP07": {
+      "status": "DRAFT",
+      "approved_keyframe": null,
+      "sha256": null,
+      "identity_refs": {
+        "DAIYU": [],
+        "WUKONG": []
+      },
+      "costume_refs": {
+        "DAIYU": null,
+        "WUKONG": null
+      },
+      "approved_by_user": false,
+      "approved_at": null,
+      "notes": ""
+    },
+    "COMP08": {
+      "status": "DRAFT",
+      "approved_keyframe": null,
+      "sha256": null,
+      "identity_refs": {
+        "DAIYU": [],
+        "WUKONG": []
+      },
+      "costume_refs": {
+        "DAIYU": null,
+        "WUKONG": null
+      },
+      "approved_by_user": false,
+      "approved_at": null,
+      "notes": ""
+    },
+    "COMP09": {
+      "status": "DRAFT",
+      "approved_keyframe": null,
+      "sha256": null,
+      "identity_refs": {
+        "DAIYU": [],
+        "WUKONG": []
+      },
+      "costume_refs": {
+        "DAIYU": null,
+        "WUKONG": null
+      },
+      "approved_by_user": false,
+      "approved_at": null,
+      "notes": ""
+    },
+    "COMP10": {
+      "status": "DRAFT",
+      "approved_keyframe": null,
+      "sha256": null,
+      "identity_refs": {
+        "DAIYU": [],
+        "WUKONG": []
+      },
+      "costume_refs": {
+        "DAIYU": null,
+        "WUKONG": null
+      },
+      "approved_by_user": false,
+      "approved_at": null,
+      "notes": ""
+    }
+  }
+}

@@ -1,0 +1,8 @@
+stage_id: DAIYU_CLASSIC_RAIN
+inherits: DAIYU_CLASSIC_OUTDOOR
+purpose: rain_scene
+continuity:
+  clothing_wetness: controlled
+  hair_wetness: subtle
+props:
+  - shared_umbrella

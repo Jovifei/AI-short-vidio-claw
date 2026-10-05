@@ -1,0 +1,29 @@
+episode_id: EP001
+title: "大圣今天受伤了"
+status: DRAFT
+visual_target_id: ACTIVE_CP_VISUAL_V2
+target_duration_sec: 60
+aspect_ratio: "9:16"
+delivery_fps: 24
+
+theme: "照顾不是说出口的"
+hook: "不怕天不怕地的大圣，回到家却最怕她不说话。"
+
+characters:
+  - DAIYU
+  - WUKONG
+
+required_gates:
+  - V0_VISUAL_TARGET_LOCKED
+  - K1_LOOKREEL_KEYFRAMES_APPROVED
+  - T1_LOW_RISK_I2V_APPROVED
+  - E0_LOOK_REEL_APPROVED
+
+dialogue_policy:
+  first_cut: voice_over
+  lipsync: deferred
+
+production_policy:
+  all_story_keyframes_before_video: true
+  production_t2v_for_characters: false
+  high_risk_motion_static_allowed: true
