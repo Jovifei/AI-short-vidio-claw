@@ -57,3 +57,11 @@ dist/
 Thumbs.db
 .vscode/
 .idea/
+
+# Remote-audit copies only. Does not un-ignore models/, local/, or outputs/.
+!docs/reviews/
+!docs/reviews/**
+!docs/reviews/**/*.mp4
+!docs/reviews/**/*.mov
+!docs/reviews/**/*.mkv
+!docs/reviews/**/*.webm
