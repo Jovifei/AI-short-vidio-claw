@@ -2,169 +2,63 @@
 
 > RTX 4070 Super 12GB + ComfyUI + Codex 的角色一致 AI 竖屏短剧生产线。
 
-## 当前状态
+## 当前状态与唯一入口
 
-**模型人物方向：用户已表示“感觉可以，可以继续使用建模人物做前期工作”。**
-因此当前状态记为：
+人物方向已获“感觉可以，可以继续前期工作”的认可，记录为 `PREPROD_MODEL_DIRECTION_APPROVED`，不是所有新图/权重/三维模型已经最终批准。
 
-`PREPROD_MODEL_DIRECTION_APPROVED`
+**保留V2技术路线、V3创作圣经，补齐V5执行合同。** 提交前main新增的V3摄影、表演、服装、第一季、声音、WBS与Schema均保留，本轮是在其上整合，不覆盖。
 
-但最终 `GOLDEN_MODEL_APPROVED` 仍需要：
-- 本地保存最终建模图/reference
-- SHA256
-- Reference Manifest
-- 用户明确最终锁定
+先读 [整合与执行索引](docs/51_PREPRODUCTION_INTEGRATION_V5.md) → [详细任务与Gate](docs/30_PREPRODUCTION_V5_EXECUTION.md) → [本地逐条命令](docs/preproduction/LOCAL_COMMANDS_V5.md)。
 
-**远端/非本地 Preproduction 已继续扩展到 V3 详细层。**
-
-## 当前 Active Route
+## 产品路线
 
 ```text
-Model Direction PREPROD APPROVED
-  ↓
-Local Reference Hash + Final Golden Lock
-  ↓
-V0 Visual Lock
-  ↓
-K1 10 Approved Couple Keyframes
-  ↓
-T1 Approved-Keyframe I2V
-  ↓
-E0 20–30s CP Look Reel
-  ↓
-User Approval
-  ↓
-EP001 20 Story Keyframes
-  ↓
-4–6 Low-risk Motion Shots
-  ↓
-First Cut
-  ↓
-Audio / Local Identity Automation / Full CLI
+当前人物方向
+ → 真实参考/具体批准/哈希
+ → 逐镜关键帧
+ → approved-keyframe I2V小样
+ → 静动态混剪Look Reel
+ → EP001故事片
+ → 需要时再优化本地身份训练、配音与自动化
 ```
 
-## 最重要规则
+脸、服装、解剖与情侣关系优先于动作和清晰度；场景可以现代，人物保持批准古装；主角生产镜头禁止无参考T2V，Lab结果不能顶替生产Gate。
 
-1. 用户批准的 Reference 才是人物事实源。
-2. Production 禁止主角纯 T2V。
-3. 没有 Approved Keyframe 不进 I2V。
-4. 人物脸 > 服装 > 解剖 > CP 感 > 构图 > 动作 > 清晰度。
-5. 场景可以现代，人物保持批准古装。
-6. 高风险动作允许 Static + 微镜头运动。
-7. Lab 与 Production 永远分开。
+## 本轮新增的可检查交付
 
-## 已准备的主要内容
+- 3张角色/组合板、10张最近样图、4张确定性裁片：17项实际素材索引，原图由本次交付包导入local。
+- LOOKREEL01：10镜、648帧/24fps=27秒；EP001：20镜、1440帧/24fps=60秒。
+- 两集机器执行计划、逐镜阅读版、未冒签的批准表；EP001台词/环境音表和字幕草稿。
+- 53项离线回归、逐资产hash、实际I2V连线检查、冻结任务包、默认dry-run提交器。
+- 20秒CPU静态参考审片序列，标注REFERENCE REVIEW / NOT EP001；不是正式剧情成片。
 
-### 人物
-`assets/characters/`
-- Canonical Visual
-- Expression Library
-- Costume Stages
-- Model Review
-- Reference Manifest
+详细验证见 `docs/preproduction/VALIDATION_V5.md`。本轮没有新跑用户GPU、没有训练LoRA、没有三维拓扑/骨骼产物。
 
-孙悟空增加：
-- WUKONG_DZS_FORMAL
-- WUKONG_DZS_DAILY
-- WUKONG_DZS_HOME
+## 保留的V3创作知识
 
-林黛玉增加：
-- DAIYU_CANONICAL_LAVENDER
-- DAIYU_CANONICAL_HOME
+| 主题 | 位置 |
+|---|---|
+| 人物Canonical Visual、表情、斗战胜佛FORMAL/DAILY/HOME | `assets/characters/` |
+| 美术/摄影/表演 | `docs/30_VISUAL_DIRECTION_BIBLE.md`、31、32；`assets/style/`、`assets/relationship/` |
+| 第一季十集与资产复用 | `episodes/SEASON01/`、38号文档 |
+| LoRA/声音/后期/QA/恢复 | 33–39号文档 |
+| 分工/准备度/容量/WBS/风险/验收/批次/Prompt/Reference/Agent | 40–50号文档 |
+| Schema与管理工具 | `schemas/`、`project_preflight.py`、`register_asset.py`、`validate_schema.py` |
 
-### 美术/摄影
-`docs/30_VISUAL_DIRECTION_BIBLE.md`
-`docs/31_CINEMATOGRAPHY_GRAMMAR.md`
-`docs/32_CHARACTER_PERFORMANCE_BIBLE.md`
+V3服装alias继续有效。COMP09明确FORMAL，日常市场/公交使用DAILY。具体执行参数只认各集`production_plan_v5.json`，不与旧YAML双写。
 
-结构化配置：
-`assets/style/`
-`assets/relationship/`
+## 快速离线检查
 
-### LOOKREEL01
-`episodes/LOOKREEL01/`
-- 10 shot plan
-- detailed shot cards
-- image/video prompts
-- edit plan
-- QA
-- approval manifest
-
-### EP001
-`episodes/EP001/`
-《大圣今天受伤了》
-- script
-- storyboard
-- detailed shot cards
-- continuity
-- image/video prompts
-- edit plan
-- QA
-- approval manifest
-
-### 第一季
-`episodes/SEASON01/`
-- 10 集结构
-- episode briefs
-- asset reuse matrix
-
-### 训练/声音/后期
-- 33 LoRA Plan
-- 34 Audio Bible
-- 35 Post-production
-- 36 QA Regression
-- 37 Asset Versioning
-- 38 Season Blueprint
-- 39 Failure Recovery
-
-### 执行管理
-- 40 Work Split
-- 41 Readiness
-- 42 Capacity
-- 43 WBS
-- 44 Risk Register
-- 45 Stage Acceptance
-- 46 Batch Plan
-- 47 Prompt System
-- 48 Reference Bundle
-- 49 Agent Rules
-- 50 Preproduction Completion
-
-## 自动化工具
-
-`scripts/`
-- reference_index.py
-- create_contact_sheet.py
-- approve_asset.py
-- register_asset.py
-- validate_schema.py
-- project_preflight.py
-- validate_production_package.py
-- build_render_queue.py
-- production_guard.py
-- p1_comfy_probe.py
-
-## Schema
-
-`schemas/`
-- reference manifest
-- approval manifest
-- render record
-- asset ledger
-
-## 本机下一步
-
-本地 Codex 先：
-
-```bash
-git pull --ff-only
-pip install -r requirements-tools.txt
-python scripts/project_preflight.py --stage MODEL_REVIEW
+```powershell
+python -m unittest discover -s tests -p "test_preproduction_v5.py" -v
+python scripts/validate_production_package.py --project-dir episodes/EP001
+python scripts/validate_production_package.py --project-dir episodes/LOOKREEL01
 ```
 
-然后把当前认可的建模图/reference 落到：
-`local/references/active_visual_target/`
+`contract_ok=true`不等于素材已获批；目前具体关键帧未批准时`production_ready=false`是正确状态。
 
-做 Hash、Contact Sheet、最终 Golden Lock。
+## 数据与执行
 
-在 Final Golden Lock 前，不批量消耗 GPU。
+Git保存文档、代码、计划、hash与批准证据；不上传大模型。原图在本次补充素材包，经 `import_reference_bundle.py` 校验后导入 `local/references/generated/20261005_v5/`，不覆盖冲突文件、不自动批准。
+
+新任务先 `preproduction.py prepare` 冻结输入；不联网。`submit_prepared.py` 默认仅打印命令，明确 `--execute` 才调用已有ComfyUI probe。严格串行，状态未知先查history，不重复POST。

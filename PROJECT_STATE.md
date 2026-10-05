@@ -1,112 +1,40 @@
 # PROJECT_STATE
 
-更新时间：2026-10-05 23:45 +08:00
+更新：2026-10-06。状态：**V5前期数据与离线工具已验证；用户电脑GPU、正式关键帧与成片未复测/未完成**。
 
-状态：
-**REMOTE_PREPRODUCTION_V3_COMPLETE / MODEL_DIRECTION_PREPROD_APPROVED / FINAL_GOLDEN_HASH_PENDING**
+## 当前入口
 
-## 1. 用户最新反馈
+先读 `docs/51_PREPRODUCTION_INTEGRATION_V5.md`、`docs/30_PREPRODUCTION_V5_EXECUTION.md` 和 `docs/preproduction/LOCAL_COMMANDS_V5.md`。
 
-用户对当前建模人物方向表示：
-“感觉可以，继续用建模的人物制作短剧所需的所有不在本地执行的工作。”
+保留V2大路线。V5只是补齐制作合同、真实素材、帧级计划、连续性与测试，不切换5B、不安装14B、不重跑地铁模板。
 
-项目解释：
-- 允许继续所有非本地 Preproduction；
-- 允许围绕当前人物方向写剧本、Prompt、Stage、视觉圣经；
-- 不自动等同 FINAL_GOLDEN_MODEL；
-- Final Golden 仍需要本地 Reference + Hash + 最终批准。
+## 本轮实际完成
 
-## 2. 已完成的非本地工作
+- 找到并归档本对话中3张人物设定板、10张最近样图；另从设定板精确裁出4张参考，17项均记录真实hash/尺寸/来源。
+- 区分MODEL_REVIEW、REFBATCH02与原LOOKREEL01，避免第几张图错配第几个镜头。
+- EP001 20镜精确1440帧/60秒；LOOKREEL01 10镜精确648帧/27秒；各有机器计划与逐镜阅读版。
+- EP001左手伤/绷带、换装、冠帽、伞/湿肩/手部用途写入连续性，三句台词与字幕草稿落盘。
+- 新审批合同、单/双人校验、M0/M3过滤、资产hash、实际I2V链路、不可覆盖任务包与提交意图记录。
+- 53项离线回归通过；20秒CPU静态审片序列已生成并用ffprobe核对720×1280/24fps/480帧。它标注REFERENCE REVIEW，不是EP001。
 
-### 产品/架构
-- PRD / Route V2
-- Lab / Production Split
-- Gate Matrix
-- Work Split
-- WBS
-- Risk Register
-- Stage Acceptance
+## 批准边界
 
-### 人物
-- DAIYU / WUKONG Canonical Visual
-- Expression Library
-- Modeling Review
-- Costume Stages
-- Douzhanshengfo Formal/Daily/Home
-- Relationship Interaction Library
+用户的“感觉可以，继续用建模的人物”记录为方向认可。未将后续新图、所有服装阶段、所有镜头或LoRA自动写成已批准。17项媒体索引仍为CANDIDATE；两份v5单镜批准表仍为DRAFT。
 
-### 视觉
-- Visual Direction Bible
-- Cinematography Grammar
-- Lighting/Color
-- Performance Bible
-- Reference Bundle Spec
-- Prompt Composition System
+具体参考/关键帧批准后即可检查相应镜头。三张合适关键帧可先做局部T1，不必等待全十张；完整Look Reel仍要求全十镜批准。
 
-### 创作
-- Season 01 10 episodes
-- LOOKREEL01 full package
-- EP001 full package
-- Asset reuse matrix
+## 历史事实保留
 
-### 后期/声音
-- Audio Voice/Sound Bible
-- Post-production Spec
-- QA Regression
-- Failure Recovery
+原仓库记录：4070 SUPER 12282 MiB、约31.82GB RAM、5B三份权重、480×832×49 T2V十次成功、一次未批准图I2V跑通。它们继续归Lab，不当成本轮画质或运行保证。
 
-### ML/Automation
-- LoRA Dataset/Training Plan
-- Schemas
-- Reference Index
-- Contact Sheet
-- Explicit Approval Tool
-- Asset Ledger Tool
-- Project Preflight
-- Package Validator
-- Render Queue
-- Production Guard
-- Production Wan2.2 5B I2V candidate workflow
+## 下一步
 
-## 3. 已知本地 Lab
+1. 从本次包导入已有真实图，工具校验hash，不重找已生成图。
+2. 具体确认脸与服装reference，补清晰HOME参考，不给空ID。
+3. 按V5逐镜单做关键帧候选/审批；离线guard和prepare可提前检查。
+4. 本地明确允许后才submit_prepared --execute，三张小样后看身份/衣料稳定性。
+5. 静动态混剪E0，再执行EP001。不把“前期合同通过”当作成片通过。
 
-- RTX 4070 SUPER 12282 MiB
-- RAM ~31.82 GB
-- Wan2.2-TI2V-5B models installed
-- 480×832×49 T2V 10/10
-- p50 187.7095s
-- p95 264.101s
-- one I2V wiring success
-- approved-keyframe I2V not yet verified
+## 并行提交已整合
 
-## 4. 当前唯一正确 Local Gate
-
-MODEL_REVIEW_FINAL：
-
-1. 保存最终人物建模/reference
-2. SHA256
-3. Contact Sheet
-4. 用户最终锁定
-5. modeling_review.yaml → APPROVED
-6. reference_manifest → USER_APPROVED
-
-然后才进入 V0/K1/T1。
-
-## 5. 当前禁止
-
-- 未批准人物批量 I2V
-- 无 start_image 的 Product T2V
-- 自动训练 LoRA
-- 自动把 PREPROD_APPROVED 改 GOLDEN
-- M3 高风险镜头自动批量
-- 为了“继续推进”自行改人物脸
-
-## 6. 详细索引
-
-docs/30–50 为当前扩展 Preproduction 知识层。
-
-当前执行优先阅读：
-- AGENTS.md
-- docs/49_AGENT_OPERATING_RULES.md
-- docs/45_STAGE_ACCEPTANCE_CRITERIA.md
-- docs/41_PRELOCAL_READINESS_CHECKLIST.md
+本轮提交前main新增 `114523857ece96d5f4f11179af7d0141b9b8b8dc` 的V3制作圣经、Canonical服装/表情、第一季、WBS、风险、schema与preflight工具。全部保留，V5追加资产/帧级/执行合同；没有回退这些内容。角色方向采用PREPROD_MODEL_DIRECTION_APPROVED，服装别名沿用V3；明确FORMAL的花束主视觉与DAILY的日常镜头分开。
