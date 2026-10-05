@@ -1,0 +1,17 @@
+character_id: DAIYU
+status: DRAFT
+visual_target_id: ACTIVE_CP_VISUAL_V2
+approved_by_user: false
+approved_at: null
+
+golden_face_refs: []
+golden_costume_refs: []
+
+references:
+  # - ref_id: DAIYU_FACE_FRONT_001
+  #   local_relative_path: local/references/active_visual_target/daiyu/face/...
+  #   sha256: ""
+  #   type: face
+  #   angle: front
+  #   approved_by_user: false
+  #   notes: ""

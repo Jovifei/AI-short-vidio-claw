@@ -1,24 +1,36 @@
-# 阶段执行文档
+# 阶段执行文档 — V2 Active Order
 
-本目录不是“参考建议”，而是给本地 Agent/Codex 逐阶段执行的工作单。
+## 当前产品执行顺序
 
-执行顺序：
-
-1. P0R_REBASE_EXECUTION.md
-2. P1A_WAN22_5B_BASELINE.md
-3. P1AQ_VISUAL_QUALITY.md
-4. P1B_OPTIONAL_ALTERNATIVES.md（条件触发）
-5. P2_CHARACTER_DUAL_IDENTITY.md
-6. P3_EP001_FIRST_CUT.md
+1. V0_REFERENCE_AND_LOOK_LOCK.md
+2. K1_TEN_COMPOSITION_KEYFRAMES.md
+3. T1_APPROVED_I2V_BASELINE.md
+4. M1_MOTION_RISK_LADDER.md
+5. E0_CP_LOOK_REEL.md
+6. E1_EP001_STORY_PRODUCTION.md
 7. P4_CONTROL_PLANE.md
 8. P5_AUDIO_LIPSYNC_POST.md
 9. P6_AUTOMATED_EPISODE.md
 10. P7_SERIES_SCALE.md
 
-规则：
-- 不越级；
-- Gate 未过不自动进入下一阶段；
-- P1B 是可选，不是必做；
-- 每阶段只解决一个主要风险；
-- 实测结果写入 docs/benchmarks；
-- 关键结论同步 PROJECT_STATE / ROADMAP / ADR。
+## 旧技术阶段
+
+以下文件继续保留为 Lab/历史依据：
+- P0R_REBASE_EXECUTION.md
+- P1A_WAN22_5B_BASELINE.md
+- P1AQ_VISUAL_QUALITY.md
+- P1B_OPTIONAL_ALTERNATIVES.md
+- P2_CHARACTER_DUAL_IDENTITY.md
+- P3_EP001_FIRST_CUT.md
+
+它们不再决定当前 Product 阶段顺序。
+
+## 规则
+
+- Lab 输出不等于产品输出；
+- V0/K1 未通过，禁止产品视频；
+- Production 必须 Image First；
+- 每个阶段有 Gate；
+- Gate 未过不自动前进；
+- 人物脸与服装优先于动态比例；
+- 实测写 benchmarks，用户批准写 approval manifest。

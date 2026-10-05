@@ -1,0 +1,46 @@
+project_id: LOOKREEL01
+status: DRAFT
+visual_target_id: ACTIVE_CP_VISUAL_V2
+goal: "10 approved keyframes + 20-30 second visual look reel"
+
+shots:
+  - id: COMP01
+    title: "夜景并肩站姿"
+    motion_tier: M2
+    approval_status: DRAFT
+  - id: COMP02
+    title: "室内近景"
+    motion_tier: M0
+    approval_status: DRAFT
+  - id: COMP03
+    title: "奏乐与陪伴"
+    motion_tier: M1
+    approval_status: DRAFT
+  - id: COMP04
+    title: "近镜自拍"
+    motion_tier: M1
+    approval_status: DRAFT
+  - id: COMP05
+    title: "相机与小点心"
+    motion_tier: M1
+    approval_status: DRAFT
+  - id: COMP06
+    title: "床边互动"
+    motion_tier: M0
+    approval_status: DRAFT
+  - id: COMP07
+    title: "镜前抱起构图"
+    motion_tier: M0
+    approval_status: DRAFT
+  - id: COMP08
+    title: "枕头大战"
+    motion_tier: M0
+    approval_status: DRAFT
+  - id: COMP09
+    title: "花束站姿"
+    motion_tier: M1
+    approval_status: DRAFT
+  - id: COMP10
+    title: "四格日常"
+    motion_tier: M0
+    approval_status: DRAFT

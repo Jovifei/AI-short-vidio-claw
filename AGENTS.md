@@ -1,84 +1,110 @@
 # AGENTS.md — AI/Codex 接手规则
 
-## 必须先读
+## 最高优先级
 
+当前项目执行 V2 Product Route。
+
+必须先读：
 1. README.md
 2. PROJECT_STATE.md
-3. docs/17_TECH_ROUTE_REVALIDATION.md
-4. docs/00_PROJECT_CHARTER.md
-5. docs/02_FEASIBILITY.md
-6. docs/03_TECHNICAL_ARCHITECTURE.md
-7. docs/04_SOP.md
-8. docs/05_DIRECTORY_STANDARD.md
-9. docs/10_QA_ACCEPTANCE.md
-10. docs/11_ROADMAP.md
-11. docs/13_CODEX_RUNBOOK.md
-12. docs/14_DECISION_LOG.md
+3. docs/18_ROUTE_CORRECTION_AND_MASTER_PLAN.md
+4. docs/19_ACTIVE_VISUAL_SPEC.md
+5. docs/stages/README.md
 
-## 当前最高优先级约束
+## 当前任务
 
-当前机器：Windows + RTX 4070 Super 12GB + 约 32GB RAM。
+在 V0/K1 未 PASS 前：
+- 不继续新增故事 T2V；
+- 不拿官方模板输出当产品结果；
+- 不用临时 SDXL 图代替 approved character reference；
+- 不批量提交 Wan I2V；
+- 不训练 LoRA；
+- 不接 TTS/LipSync；
+- 不开始 EP001 正式生产。
 
-**P1A 只允许验证 Wan2.2-TI2V-5B 原生 ComfyUI 路径。**
-在 P1A 通过前，不得主动：
-- 下载/安装 Wan2.2 14B；
-- 把 GGUF 14B / WanVideoWrapper block-swap 当作基线；
-- 安装 LTX-2.x 作为 P1 必选；
-- 开两个 GPU ComfyUI 常驻；
-- 接入 PuLID、FaceID、MuseTalk、GPT-SoVITS；
-- 批量渲染 EP001；
-- 一次性下载几十 GB 与 P1A 无关的模型。
+## Lab / Production 强制分离
 
-## 不可违背的工程约束
+### LAB_ONLY
+可以：
+- 官方模板
+- 通用 prompt
+- 性能测试
+- OOM/VRAM/RAM 测量
 
-- 第一性目标：角色一致性、故事连续性、生活感，高于原生高分辨率。
-- 默认 Image First → Video Second。
-- 每集先有文本事实，媒体结果不能成为唯一事实源。
-- GPU heavy concurrency = 1。
-- 服务地址必须探测实际端口，不使用未经本机确认的 8188/8189/9881 假设。
-- P1 Gate 必须来自本机实测，不允许把目标分辨率写成既成事实。
-- 人类/非人角色身份策略分开。
-- P2 必须先解决“双身份同框 keyframe”，再宣称角色一致性路线通过。
-- 难镜头允许静态图 + 缓慢推拉/景深/雨雪环境动效，不强迫 I2V。
-- P3 First Cut 暂不做 lip sync；对白先用画外音。
-- 不在 Git 提交模型、LoRA 大文件、cache、成片、密钥。
-- 外部模型/节点升级先记录来源、版本、许可证、回退。
-- 失败镜头局部返工，不破坏整集基线。
-- 不自动模仿具体真实演员、配音演员或影视版受保护造型。
+LAB_ONLY 输出不能：
+- 使用正式 SHOT 编号冒充剧情镜头
+- 进入 final timeline
+- 被写成角色质量结论
 
-## 每次阶段完成必须同步
+### PRODUCTION
+每个 shot 必须有：
+- composition_ref
+- identity refs
+- costume refs
+- approved_keyframe
+- approval manifest
+- motion_tier
 
+缺任何一项，不提交视频任务。
+
+## Production T2V 禁止
+
+主角 Production 镜头必须 Image First → Video Second。
+
+如果 workflow 没有 LoadImage/start_image：
+Production Guard 必须拒绝提交。
+
+## 当前人物视觉
+
+以 docs/19_ACTIVE_VISUAL_SPEC.md 为准。
+
+文字 prompt 不是 identity source。
+用户批准 reference 和 approved golden keyframe 才是。
+
+当前服装规则：
+- 双方只使用已批准古装
+- 不出现现代人物服装
+- 现代生活场景可以保留
+
+## 动态策略
+
+M0/M1/M2/M3 见 docs/stages/M1_MOTION_RISK_LADDER.md。
+Codex 不得自行把高风险静态镜头升级为完整 I2V。
+
+## 失败处理
+
+人物脸不对：
+停止该镜头，不通过继续抽视频解决。
+
+服装不对：
+回关键帧阶段。
+
+视频换脸：
+降低 motion / frames 或降为静态。
+
+## Git
+
+不提交：
+- 模型权重
+- 大批量输出
+- 第三方 reference 原图
+- API key
+
+Git 保存：
+- manifest
+- hash
+- prompts
+- workflow
+- QA
+- stage report
+- benchmark
+
+## 每阶段结束
+
+同步：
 - PROJECT_STATE.md
-- docs/11_ROADMAP.md
-- docs/14_DECISION_LOG.md
-- docs/benchmarks/*
-- 对应 model/workflow manifest
+- stage report
+- approval/QA
+- manifest
 
-## Benchmark 必填
-
-- machine
-- VRAM/RAM
-- driver/CUDA/PyTorch
-- ComfyUI commit
-- model file + hash
-- workflow + hash
-- input + hash
-- seed
-- width/height
-- frames
-- fps
-- peak VRAM
-- peak RAM
-- elapsed
-- result
-- error
-- visual notes
-
-## 不要做
-
-- 不要为了“更先进”扩张 P1A 候选。
-- 不要两个变量同时改。
-- 不要先建完整源码包再跑第一条 API job。
-- 不要把本地 Desktop 端口猜成上游默认。
-- 不要将 14B 能在某社区配置上运行，写成“本机生产可用”。
-- 不要将静态角色 identity 与双人同框 identity 混为一谈。
+只有用户明确批准，才能把状态从 CANDIDATE 改为 APPROVED。
