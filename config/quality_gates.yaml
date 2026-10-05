@@ -1,0 +1,49 @@
+visual_target:
+  require_user_approval: true
+  character_identity_min: 4
+  hard_reject:
+    - modern_character_clothing
+    - daiyu_modernized_face
+    - daiyu_pointed_v_chin
+    - wukong_humanized_face
+    - wukong_species_drift
+
+keyframe:
+  order:
+    - identity
+    - costume
+    - anatomy
+    - continuity
+    - chemistry
+    - composition
+    - lighting
+  min_scores:
+    identity_each: 4
+    anatomy: 3
+    continuity: 4
+    chemistry: 3
+  hard_reject:
+    - extra_limb
+    - severe_hand_error
+    - missing_character
+    - wrong_costume_stage
+
+video:
+  allowed_auto_motion_tiers:
+    - M1
+    - M2
+  blocked_auto_motion_tiers:
+    - M0
+    - M3
+  hard_reject:
+    - identity_drift
+    - species_drift
+    - costume_drift
+    - extra_limb
+    - subject_disappear
+    - severe_background_melt
+  fallback_after_repeated_failures: STATIC_ACCEPTED
+
+approval:
+  agent_can_set_user_approved: false
+  required_user_signal: explicit

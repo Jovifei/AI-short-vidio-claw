@@ -1,0 +1,368 @@
+episode_id: EP001
+title: "大圣今天受伤了"
+visual_target_id: ACTIVE_CP_VISUAL_V2
+
+shots:
+  SH001:
+    title: "楼道回来"
+    purpose: "建立受伤事件与悟空逞强性格"
+    location: HOME_ENTRY
+    time: evening
+    characters: [WUKONG]
+    costume: {WUKONG: WUKONG_CLASSIC_OUTDOOR}
+    continuity_in: "no bandage yet; minor left-hand/forearm injury visible"
+    composition:
+      framing: "medium-full vertical"
+      camera_height: "waist height"
+      angle: "corridor three-quarter"
+      lens_feel: "35mm"
+      depth: "long corridor perspective"
+    pose:
+      body: "walking slowly toward door"
+      hand: "injured hand held slightly protected, not theatrical"
+      face: "stubborn, pretending fine"
+    light: "warm corridor practical, realistic"
+    keyframe_moment: "one step before reaching the door"
+    motion_tier: M2
+    motion: "two slow steps then pause"
+    camera_motion: "slow follow"
+    duration: 3.0
+    risk: "single character; low identity complexity"
+    fallback: "still + corridor push-in"
+
+  SH002:
+    title: "开门先看伤"
+    purpose: "不用台词建立黛玉的在意"
+    location: HOME_ENTRY
+    time: evening
+    characters: [DAIYU, WUKONG]
+    costume: {DAIYU: DAIYU_CLASSIC_HOME, WUKONG: WUKONG_CLASSIC_OUTDOOR}
+    continuity_in: "injury visible; no bandage"
+    composition:
+      framing: "medium two-shot through doorframe"
+      lens_feel: "50mm"
+      layers: "Daiyu inside, Wukong outside"
+    pose:
+      DAIYU: "door open, eyes lowered toward injured hand"
+      WUKONG: "standing casually, trying to look normal"
+    keyframe_moment: "Daiyu has just noticed the injury"
+    motion_tier: M1
+    motion: "Daiyu gaze shifts to injured hand; Wukong small breath"
+    duration: 2.5
+    risk: "dual identity"
+    fallback: "static with eye-line emphasis"
+
+  SH003:
+    title: "药箱落桌"
+    purpose: "黛玉直接行动而不是追问"
+    location: LIVING_ROOM
+    time: evening
+    characters: [DAIYU, WUKONG]
+    costume: {DAIYU: DAIYU_CLASSIC_HOME, WUKONG: WUKONG_CLASSIC_INJURED}
+    props: [MEDKIT]
+    composition:
+      framing: "medium-wide two-shot"
+      lens_feel: "35-50mm"
+      table: "foreground/center"
+    pose:
+      DAIYU: "standing or sitting near table, medkit in hand"
+      WUKONG: "seated, relaxed posture"
+    keyframe_moment: "medkit just touches table"
+    motion_tier: M1
+    duration: 2.5
+    fallback: "still + tiny hand motion"
+
+  SH004:
+    title: "处理伤口"
+    purpose: "温柔与逞强的第一次正面碰撞"
+    location: LIVING_ROOM
+    characters: [DAIYU, WUKONG]
+    costume: {DAIYU: DAIYU_CLASSIC_HOME, WUKONG: WUKONG_CLASSIC_INJURED}
+    props: [MEDKIT, INJURY]
+    composition:
+      framing: "medium-close two-shot, both faces visible"
+      lens_feel: "50-70mm"
+      hands: "visible but not extreme close-up"
+    pose:
+      DAIYU: "focused on wound"
+      WUKONG: "slight tension in face, pretending no pain"
+    keyframe_moment: "treatment underway"
+    motion_tier: M0
+    duration: 2.5
+    risk: "high contact / hand interaction"
+    fallback: "hero still + slow push"
+
+  SH005:
+    title: "包扎完成"
+    purpose: "建立绷带连续性"
+    location: LIVING_ROOM
+    characters: [DAIYU, WUKONG]
+    costume: {DAIYU: DAIYU_CLASSIC_HOME, WUKONG: WUKONG_CLASSIC_INJURED}
+    props: [BANDAGE]
+    continuity_out: "bandage persists to SH020"
+    composition:
+      framing: "medium shot with bandaged hand visible"
+      lens_feel: "50mm"
+    pose:
+      DAIYU: "finishing/withdrawing hands"
+      WUKONG: "looking at bandage"
+    keyframe_moment: "bandage already secure"
+    motion_tier: M0
+    duration: 2.0
+    fallback: "static"
+
+  SH006:
+    title: "悟空偷看"
+    purpose: "第一处明显 CP 情绪"
+    location: LIVING_ROOM
+    characters: [DAIYU, WUKONG]
+    costume: {DAIYU: DAIYU_CLASSIC_HOME, WUKONG: WUKONG_CLASSIC_INJURED}
+    continuity_in: "bandage present"
+    composition:
+      framing: "medium-close"
+      lens_feel: "65mm"
+      emphasis: "Daiyu foreground activity, Wukong glance"
+    pose:
+      DAIYU: "looks down while tidying medkit"
+      WUKONG: "side glance toward Daiyu"
+    motion_tier: M1
+    duration: 3.0
+    camera_motion: "very slow push"
+    i2v_priority: HIGH
+
+  SH007:
+    title: "一起翻冰箱"
+    purpose: "证明同居生活"
+    location: KITCHEN_FRIDGE
+    time: late_night
+    characters: [DAIYU, WUKONG]
+    costume: {DAIYU: DAIYU_CLASSIC_HOME, WUKONG: WUKONG_CLASSIC_INJURED}
+    composition:
+      preferred: "fridge interior POV"
+      alternate: "side three-quarter"
+      lens_feel: "28-35mm"
+    pose:
+      both: "lean slightly toward refrigerator"
+    motion_tier: M1
+    duration: 3.0
+    motion: "small head/eye movements"
+    environment_motion: "refrigerator light stable"
+    fallback: "still + push"
+
+  SH008:
+    title: "自己把手收回来"
+    purpose: "轻喜剧，不用说教"
+    location: KITCHEN_FRIDGE
+    characters: [DAIYU, WUKONG]
+    costume: {DAIYU: DAIYU_CLASSIC_HOME, WUKONG: WUKONG_CLASSIC_INJURED}
+    props: ["spicy_food_or_condiment"]
+    composition:
+      framing: "medium two-shot"
+      eye_line: "Daiyu looks at food then Wukong"
+    keyframe_moment: "Wukong realizes and stops"
+    motion_tier: M0
+    duration: 2.0
+    risk: "hand prop interaction"
+    fallback: "static comic beat"
+
+  SH009:
+    title: "宵夜"
+    purpose: "建立稳定亲密日常"
+    location: KITCHEN_FRIDGE
+    characters: [DAIYU, WUKONG]
+    costume: {DAIYU: DAIYU_CLASSIC_HOME, WUKONG: WUKONG_CLASSIC_INJURED}
+    composition:
+      framing: "medium two-shot at small table"
+      lens_feel: "50mm"
+    props: ["simple_hot_food"]
+    pose:
+      both: "natural seated eating posture"
+    motion_tier: M1
+    duration: 3.0
+    motion: "steam, small gaze, breathing"
+    i2v_priority: MEDIUM
+
+  SH010:
+    title: "一起收拾"
+    purpose: "共同生活，不做炫技打闹"
+    location: KITCHEN_FRIDGE
+    characters: [DAIYU, WUKONG]
+    costume: {DAIYU: DAIYU_CLASSIC_HOME, WUKONG: WUKONG_CLASSIC_INJURED}
+    composition:
+      framing: "medium-wide sink two-shot"
+      lens_feel: "35mm"
+    pose:
+      both: "side by side"
+    motion_tier: M1
+    duration: 2.5
+    risk: "hands + water"
+    fallback: "still + water reflection"
+
+  SH011:
+    title: "第二天梳洗"
+    purpose: "时间推进与同居证明"
+    location: MORNING_ROOM
+    time: morning
+    characters: [DAIYU, WUKONG]
+    costume: {DAIYU: DAIYU_CLASSIC_HOME, WUKONG: WUKONG_CLASSIC_INJURED}
+    composition:
+      framing: "medium-wide"
+      mirror: "optional but not central"
+    motion_tier: M1
+    duration: 2.5
+    fallback: "side angle without mirror"
+
+  SH012:
+    title: "帮整理一缕头发"
+    purpose: "悟空反过来照顾黛玉"
+    location: MORNING_ROOM
+    characters: [DAIYU, WUKONG]
+    costume: {DAIYU: DAIYU_CLASSIC_HOME, WUKONG: WUKONG_CLASSIC_INJURED}
+    composition:
+      framing: "medium-close"
+      lens_feel: "50-65mm"
+    pose:
+      WUKONG: "behind/side, hand near hair but not covering face"
+      DAIYU: "calm, slightly amused"
+    motion_tier: M1
+    duration: 3.0
+    risk: "hand near face/hair"
+    fallback: "hand holds comb rather than touching hair"
+
+  SH013:
+    title: "阳台花草"
+    purpose: "明亮、轻松、林黛玉与植物关系"
+    location: BALCONY
+    time: day
+    characters: [DAIYU, WUKONG]
+    costume: {DAIYU: DAIYU_CLASSIC_HOME, WUKONG: WUKONG_CLASSIC_INJURED}
+    composition:
+      framing: "medium-wide with plants foreground"
+      lens_feel: "35mm"
+    motion_tier: M1
+    duration: 3.0
+    motion: "small plant adjustment; breeze"
+    i2v_priority: HIGH
+
+  SH014:
+    title: "晒衣布"
+    purpose: "继续体现伤手限制"
+    location: BALCONY
+    characters: [DAIYU, WUKONG]
+    costume: {DAIYU: DAIYU_CLASSIC_HOME, WUKONG: WUKONG_CLASSIC_INJURED}
+    composition:
+      framing: "medium"
+    pose:
+      WUKONG: "single-handed task awkward"
+      DAIYU: "naturally takes over part"
+    motion_tier: M1
+    duration: 2.0
+    fallback: "freeze before handoff"
+
+  SH015:
+    title: "同桌午饭"
+    purpose: "生活段落收束"
+    location: DINING
+    characters: [DAIYU, WUKONG]
+    costume: {DAIYU: DAIYU_CLASSIC_OUTDOOR, WUKONG: WUKONG_CLASSIC_OUTDOOR}
+    composition:
+      framing: "medium two-shot"
+      lens_feel: "50mm"
+    motion_tier: M0
+    duration: 2.5
+    risk: "food/chopsticks"
+    fallback: "static with steam"
+
+  SH016:
+    title: "去菜市场"
+    purpose: "把古典人物放入真实人间烟火"
+    location: MARKET
+    time: day
+    characters: [DAIYU, WUKONG]
+    costume: {DAIYU: DAIYU_CLASSIC_OUTDOOR, WUKONG: WUKONG_CLASSIC_OUTDOOR}
+    props: [MARKET_BASKET]
+    composition:
+      framing: "medium-wide environmental"
+      lens_feel: "28-35mm"
+      crowd: "soft background only"
+    motion_tier: M2
+    duration: 3.0
+    motion: "slow walk / pause at stall"
+    risk: "background crowd"
+    fallback: "static market portrait"
+
+  SH017:
+    title: "公交靠肩"
+    purpose: "安静温柔"
+    location: BUS
+    time: late_afternoon
+    characters: [DAIYU, WUKONG]
+    costume: {DAIYU: DAIYU_CLASSIC_OUTDOOR, WUKONG: WUKONG_CLASSIC_OUTDOOR}
+    continuity: "bandage visible"
+    composition:
+      framing: "seated medium-close"
+      lens_feel: "50mm"
+      background: "window / seats"
+    pose:
+      DAIYU: "asleep/resting near shoulder"
+      WUKONG: "still, protective"
+    motion_tier: M1
+    duration: 3.0
+    motion: "bus sway, breathing, blink"
+    i2v_priority: HIGH
+
+  SH018:
+    title: "雨刚开始"
+    purpose: "进入结尾"
+    location: RAIN_STOP
+    time: night
+    weather: rain_start
+    characters: [DAIYU, WUKONG]
+    costume: {DAIYU: DAIYU_CLASSIC_RAIN, WUKONG: WUKONG_CLASSIC_OUTDOOR}
+    props: [UMBRELLA]
+    composition:
+      framing: "medium two-shot"
+      light: "cool rain ambient + warm practical"
+    motion_tier: M1
+    duration: 2.5
+    motion: "light rain; umbrella readied"
+
+  SH019:
+    title: "伞偏向她"
+    purpose: "全片核心无对白爱情表达"
+    location: RAIN_STREET
+    time: night
+    weather: rain
+    characters: [DAIYU, WUKONG]
+    costume: {DAIYU: DAIYU_CLASSIC_RAIN, WUKONG: WUKONG_CLASSIC_OUTDOOR}
+    props: [UMBRELLA]
+    continuity_out: "Wukong outer shoulder wetter; Daiyu relatively dry"
+    composition:
+      framing: "medium-full walking two-shot"
+      lens_feel: "35mm"
+      ground: "wet reflections"
+    motion_tier: M2
+    duration: 3.5
+    motion: "slow walking, umbrella slight sway"
+    camera_motion: "slow lateral tracking"
+    i2v_priority: HIGH
+
+  SH020:
+    title: "夜间收尾"
+    purpose: "用安静动作结束，而非对白"
+    location: BEDROOM
+    time: late_night
+    characters: [DAIYU, WUKONG]
+    costume: {DAIYU: DAIYU_CLASSIC_HOME, WUKONG: WUKONG_CLASSIC_INJURED}
+    continuity: "bandage still present"
+    composition:
+      framing: "quiet medium shot"
+      lens_feel: "50-65mm"
+      light: "warm bedside lamp"
+    pose:
+      DAIYU: "sleeping"
+      WUKONG: "seated near bed, looking at bandage then Daiyu"
+    keyframe_moment: "before touching blanket"
+    motion_tier: M0
+    duration: 3.0
+    fallback: "slow push only"
