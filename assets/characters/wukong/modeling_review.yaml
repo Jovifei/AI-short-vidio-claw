@@ -1,0 +1,48 @@
+character_id: WUKONG
+review_status: DRAFT
+golden_model_status: NOT_APPROVED
+
+required_sheets:
+  face_identity_sheet:
+    required: true
+    approved: false
+  full_character_sheet:
+    required: true
+    approved: false
+  expression_sheet:
+    required: true
+    approved: false
+  couple_scale_sheet:
+    required: true
+    approved: false
+
+face_review:
+  identity: null
+  species_read: null
+  brow_shape: null
+  muzzle_shape: null
+  ear_shape: null
+  cheek_fur_map: null
+  forehead_fur_line: null
+  humanized_face_reject: true
+  notes: ""
+
+body_review:
+  shoulder_width: null
+  head_body_ratio: null
+  arm_fur_pattern: null
+  tail_length_color: null
+  notes: ""
+
+costume_review:
+  outdoor_stage: WUKONG_CLASSIC_OUTDOOR
+  home_stage: WUKONG_CLASSIC_HOME
+  injured_stage: WUKONG_CLASSIC_INJURED
+  approved: false
+  notes: ""
+
+approval:
+  approved_by_user: false
+  approved_at: null
+  approved_sheet_hashes: []
+  notes: ""

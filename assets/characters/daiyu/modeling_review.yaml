@@ -1,0 +1,46 @@
+character_id: DAIYU
+review_status: DRAFT
+golden_model_status: NOT_APPROVED
+
+required_sheets:
+  face_identity_sheet:
+    required: true
+    approved: false
+  full_character_sheet:
+    required: true
+    approved: false
+  expression_sheet:
+    required: true
+    approved: false
+  couple_scale_sheet:
+    required: true
+    approved: false
+
+face_review:
+  identity: null
+  face_geometry: null
+  eyes_brows: null
+  nose_mouth: null
+  hair: null
+  modernized_face_reject: true
+  pointed_v_chin_reject: true
+  notes: ""
+
+body_review:
+  shoulder_width: null
+  head_body_ratio: null
+  sitting_standing_consistency: null
+  notes: ""
+
+costume_review:
+  outdoor_stage: DAIYU_CLASSIC_OUTDOOR
+  home_stage: DAIYU_CLASSIC_HOME
+  rain_stage: DAIYU_CLASSIC_RAIN
+  approved: false
+  notes: ""
+
+approval:
+  approved_by_user: false
+  approved_at: null
+  approved_sheet_hashes: []
+  notes: ""

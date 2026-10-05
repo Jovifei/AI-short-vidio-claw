@@ -1,86 +1,99 @@
 # 11 路线图（V2 Active）
 
-## A. 已完成：远端可完成部分
+## A. 已完成：远端
 
 - [x] V2 route correction
 - [x] Lab / Production split
 - [x] Active Visual Spec
 - [x] Character Cards
 - [x] Costume Stages
+- [x] Character Modeling Review Spec
+- [x] DAIYU/WUKONG modeling review manifests
 - [x] Location / Prop Registry
-- [x] Season creative bible
+- [x] Season Creative Bible
 - [x] LOOKREEL01 plan
-- [x] LOOKREEL01 image prompts
-- [x] LOOKREEL01 video prompts
-- [x] LOOKREEL01 edit / QA
+- [x] LOOKREEL01 detailed shot cards
+- [x] LOOKREEL01 image/video prompts
+- [x] LOOKREEL01 edit / QA / approval manifest
 - [x] EP001 script
-- [x] EP001 20-shot storyboard
+- [x] EP001 storyboard
+- [x] EP001 detailed shot cards
 - [x] EP001 continuity
 - [x] EP001 image/video prompts
-- [x] EP001 edit / QA
-- [x] Production workflow candidate
-- [x] Production Guard
+- [x] EP001 edit / QA / approval manifest
+- [x] Production I2V workflow candidate
+- [x] Quality gates
 - [x] Reference index tool
-- [x] Production package validator
-- [x] Local handoff instructions
+- [x] Contact sheet tool
+- [x] Explicit approval tool
+- [x] Production Guard
+- [x] Render queue builder
+- [x] Package validator
+- [x] Local GPU runbook
 
-## B. 已完成：本机历史 Lab
+## B. 已完成：历史 Lab
 
 - [x] P0R environment
 - [x] Wan2.2 5B weights
 - [x] T2V 480×832×49 ten runs
 - [x] one I2V wiring run
 
-这些只证明 Runtime。
+## C. 当前：人物模型审核
 
-## C. 当前本地阶段 V0
+- [ ] DAIYU Model Sheet
+- [ ] WUKONG Model Sheet
+- [ ] Couple Scale Sheet
+- [ ] 用户逐项反馈
+- [ ] Golden Model Approved
 
-- [ ] reference files 放入 local/
+Gate：GOLDEN_MODEL_APPROVED
+
+## D. V0
+
+- [ ] 本地 reference files
 - [ ] reference_index.json
-- [ ] DAIYU Golden Face Set
-- [ ] WUKONG Golden Face Set
+- [ ] Golden Face Set
 - [ ] Golden Costume Set
 - [ ] composition refs 01–10
+- [ ] contact sheet
 - [ ] user approval
 
 Gate：VISUAL_TARGET_LOCKED
 
-## D. K1
+## E. K1
 
 - [ ] 10 candidate keyframes
-- [ ] 10 face QA
-- [ ] 10 costume QA
-- [ ] 10 anatomy QA
+- [ ] face/costume/anatomy QA
 - [ ] 10 user approvals
-- [ ] approval_manifest hashes
+- [ ] approval manifest hashes
 
 Gate：10/10 USER_APPROVED
 
-## E. T1
+## F. T1
 
 - [ ] Production Guard
 - [ ] 3 approved keyframes × 1 I2V
-- [ ] LOW-risk 3–5 repeat
+- [ ] LOW-risk repeat 3–5
 - [ ] identity drift QA
 
 Gate：LOW-RISK I2V Production Candidate
 
-## F. E0
+## G. E0
 
-- [ ] 20–30 second look reel
+- [ ] 20–30s Look Reel
 - [ ] user visual approval
 
-## G. E1 / EP001
+## H. E1 / EP001
 
 - [ ] 20 approved story keyframes
 - [ ] 4–6 motion shots
 - [ ] first cut
 - [ ] user approval
 
-## H. 后续
+## I. 后续
 
-- [ ] local identity automation
+- [ ] Local identity automation / LoRA
 - [ ] TTS
-- [ ] lip sync
-- [ ] full CLI control plane
-- [ ] series scaling
+- [ ] LipSync
+- [ ] Full CLI control plane
+- [ ] Series scaling

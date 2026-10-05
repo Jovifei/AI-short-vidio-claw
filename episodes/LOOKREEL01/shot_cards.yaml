@@ -1,0 +1,228 @@
+project_id: LOOKREEL01
+visual_target_id: ACTIVE_CP_VISUAL_V2
+
+shots:
+  COMP01:
+    title: "夜景并肩站姿"
+    story_purpose: "建立这是一对已经熟悉彼此的恋人"
+    location: "modern_city_riverside_or_wide_sidewalk"
+    time: "night"
+    characters: [DAIYU, WUKONG]
+    costume: {DAIYU: DAIYU_CLASSIC_OUTDOOR, WUKONG: WUKONG_CLASSIC_OUTDOOR}
+    composition:
+      camera_height: "low-waist-to-knee level"
+      camera_angle: "slightly low"
+      framing: "full body vertical"
+      lens_feel: "28-35mm environmental portrait"
+      foreground: "lamp post/column on one side"
+      background: "city lights, railing, open walkway"
+    pose:
+      DAIYU: "one arm loosely near a column/rail, relaxed hip, body turned slightly toward WUKONG"
+      WUKONG: "close beside her, one leg relaxed, torso slightly angled toward DAIYU"
+      eye_line: "either mutual glance or both toward camera; avoid fashion-model blank stare"
+    light:
+      key: "warm practical street light"
+      fill: "soft city ambient"
+      contrast: "moderate, documentary"
+    motion_tier: M2
+    primary_motion: "small weight shift / one slow step"
+    secondary_motion: "brief glance"
+    camera_motion: "slow push-in"
+    hard_reject:
+      - modern_character_clothing
+      - fashion_editorial_pose
+      - identity_drift
+      - wukong_humanized_face
+    static_fallback: "3s slow push-in"
+
+  COMP02:
+    title: "室内亲密近景"
+    story_purpose: "建立亲密距离，但把身份正确放在动作之前"
+    location: "home_bed_or_daybed"
+    time: "morning_or_soft_daylight"
+    characters: [DAIYU, WUKONG]
+    costume: {DAIYU: DAIYU_CLASSIC_HOME, WUKONG: WUKONG_CLASSIC_HOME}
+    composition:
+      camera_height: "bed level"
+      camera_angle: "close side angle"
+      framing: "face-dominant two-shot"
+      lens_feel: "50-85mm intimate portrait"
+    pose:
+      relationship: "faces close, no complex hand entanglement"
+      DAIYU: "lying/reclining naturally"
+      WUKONG: "leaning closer but preserving clear face geometry"
+    light:
+      key: "window daylight"
+      fill: "soft warm room bounce"
+    motion_tier: M0
+    camera_motion: "very slow push"
+    hard_reject:
+      - face_redesign
+      - excessive_romantic_poster_styling
+      - anatomy_overlap
+    static_fallback: "primary final treatment"
+
+  COMP03:
+    title: "奏乐与陪伴"
+    story_purpose: "展示安静的陪伴，不靠拥抱表达亲密"
+    location: "home_window_or_soft_daybed"
+    time: "late_afternoon"
+    costume: {DAIYU: DAIYU_CLASSIC_HOME, WUKONG: WUKONG_CLASSIC_HOME}
+    props: [CLASSICAL_INSTRUMENT]
+    composition:
+      framing: "medium-wide two layer"
+      lens_feel: "35-50mm"
+      WUKONG_position: "background/upper layer"
+      DAIYU_position: "foreground/lower layer"
+    pose:
+      WUKONG: "seated with instrument"
+      DAIYU: "reclining/listening, relaxed smile"
+    motion_tier: M1
+    primary_motion: "very small instrument-hand movement"
+    secondary_motion: "Daiyu restrained smile / blink"
+    environment_motion: "curtain/light breeze"
+    hard_reject:
+      - modern_guitar
+      - detailed_finger_choreography
+      - identity_drift
+
+  COMP04:
+    title: "近镜趣味自拍"
+    story_purpose: "建立两人会一起玩闹、并不总是古典肃穆"
+    location: "courtyard_or_home_entrance"
+    time: "day"
+    costume: {DAIYU: DAIYU_CLASSIC_OUTDOOR, WUKONG: WUKONG_CLASSIC_OUTDOOR}
+    composition:
+      lens_feel: "wide selfie perspective"
+      WUKONG_position: "very close foreground"
+      DAIYU_position: "mid/background"
+      framing: "playful asymmetric"
+    pose:
+      WUKONG: "leans into frame"
+      DAIYU: "small playful gesture, calm smile"
+    motion_tier: M1
+    primary_motion: "tiny lean toward lens"
+    secondary_motion: "blink/light smile"
+    hard_reject:
+      - wukong_face_becoming_human
+      - daiyu_generic_modern_face
+
+  COMP05:
+    title: "相机与小点心"
+    story_purpose: "表现悟空认真给黛玉拍照的生活感"
+    location: "warm_home_corner"
+    time: "evening"
+    costume: {DAIYU: DAIYU_CLASSIC_HOME, WUKONG: WUKONG_CLASSIC_HOME}
+    props: [CAMERA, SMALL_DESSERT]
+    composition:
+      DAIYU_position: "foreground"
+      WUKONG_position: "behind/side with camera"
+      lens_feel: "35-50mm candid"
+    pose:
+      DAIYU: "holds dessert, slightly shy"
+      WUKONG: "camera near face, focused"
+    motion_tier: M1
+    primary_motion: "camera raises slightly"
+    secondary_motion: "Daiyu lowers eyes and smiles"
+    environment_motion: "small candle flame if present"
+    hard_reject:
+      - modern_character_clothing
+      - camera_blocking_wukong_identity
+
+  COMP06:
+    title: "床边轻松互动"
+    story_purpose: "展示熟悉后的轻松与玩笑"
+    location: "home_bed"
+    time: "day"
+    costume: {DAIYU: DAIYU_CLASSIC_HOME, WUKONG: WUKONG_CLASSIC_HOME}
+    composition:
+      framing: "close-medium"
+      lens_feel: "50mm"
+      emphasis: "faces and shoulder line"
+    pose:
+      relationship: "close but not hand-entangled"
+    motion_tier: M0
+    static_fallback: "preferred"
+    hard_reject:
+      - hand_entanglement
+      - identity_drift
+
+  COMP07:
+    title: "镜前抱起构图"
+    story_purpose: "高亲密度社媒感构图"
+    location: "home_mirror_area"
+    costume: {DAIYU: DAIYU_CLASSIC_HOME, WUKONG: WUKONG_CLASSIC_HOME}
+    composition:
+      framing: "full-to-three-quarter mirror shot"
+      mirror: true
+    pose:
+      WUKONG: "holds DAIYU securely"
+      DAIYU: "one arm around shoulder; device/camera optional"
+    motion_tier: M0
+    hard_reject:
+      - mirror_duplicate_face
+      - extra_limbs
+      - impossible_leg_position
+      - identity_drift
+    static_fallback: "mandatory first version"
+
+  COMP08:
+    title: "枕头大战"
+    story_purpose: "表现情侣打闹与生命力"
+    location: "home_bedroom"
+    time: "day"
+    costume: {DAIYU: DAIYU_CLASSIC_HOME, WUKONG: WUKONG_CLASSIC_HOME}
+    props: [PILLOWS]
+    composition:
+      framing: "medium-wide frozen-action"
+      lens_feel: "35mm"
+    pose:
+      both: "each holds one pillow; frozen playful peak"
+    environment:
+      optional: "few feathers only"
+    motion_tier: M0
+    hard_reject:
+      - too_many_feathers
+      - extra_arms
+      - face_occlusion
+    static_fallback: "primary"
+
+  COMP09:
+    title: "花束站姿"
+    story_purpose: "建立稳定、易识别的双人主视觉"
+    location: "open_grass_or_rooftop_under_blue_sky"
+    time: "day"
+    costume: {DAIYU: DAIYU_CLASSIC_OUTDOOR, WUKONG: WUKONG_CLASSIC_OUTDOOR}
+    props: [FLOWER_BOUQUET]
+    composition:
+      camera_angle: "low"
+      framing: "full body"
+      lens_feel: "28-35mm"
+      background: "clean sky"
+    pose:
+      relationship: "standing close; bouquet between or slightly in front"
+      eye_line: "Wukong may glance at Daiyu"
+    motion_tier: M1
+    primary_motion: "small glance"
+    secondary_motion: "subtle breathing"
+    environment_motion: "bouquet/sleeves in wind"
+    hard_reject:
+      - bouquet_covering_key_face_landmarks
+      - identity_drift
+    i2v_priority: HIGH
+
+  COMP10:
+    title: "四格情侣日常"
+    story_purpose: "证明同一对人物跨四种小场景仍稳定"
+    format: "2x2 collage"
+    costume: {DAIYU: DAIYU_CLASSIC_OUTDOOR, WUKONG: WUKONG_CLASSIC_OUTDOOR}
+    panels:
+      P1: "户外近镜小表情"
+      P2: "一人靠近另一人肩背"
+      P3: "居家一起整理/护理"
+      P4: "一人从后方轻靠近另一人"
+    motion_tier: M0
+    hard_reject:
+      - identity_difference_between_panels
+      - costume_randomization
+    static_fallback: "primary"
