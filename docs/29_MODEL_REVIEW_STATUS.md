@@ -1,75 +1,84 @@
 # 29 人物模型审核状态
 
 日期：2026-10-05
-状态：WAITING_USER_REVIEW
+状态：PREPROD_MODEL_DIRECTION_APPROVED / FINAL_GOLDEN_PENDING
 
-## 已生成用于用户审核的建模参考
+## 用户最新反馈
 
-本轮已在对话中生成两类人物建模审核图：
+用户表示：
+“感觉可以，继续用建模的人物制作短剧所需的所有不在本地执行的工作。”
 
-1. 综合人物建模参考板
-   - 孙悟空多角度脸部
-   - 林黛玉多角度脸部
-   - 双方全身/服装
-   - 同框比例
-   - 10 个情侣构图示意
+项目解释：
 
-2. 锁脸/角色设计参考板
-   - 孙悟空正面、侧面、表情
-   - 林黛玉正面、侧面、表情
-   - 双方全身造型
-   - 动作示意与道具
+这已经足够允许：
+- 继续剧本
+- 继续分镜
+- 继续角色/服装 Stage
+- 继续 Prompt
+- 继续场景/声音/后期规划
+- 继续 LOOKREEL/EP001 Preproduction
 
-这些图片目前只是 CANDIDATE REVIEW ASSET。
-尚未写入 Golden Model Approved。
+但还不自动等于：
+FINAL_GOLDEN_MODEL_APPROVED。
 
-## 用户需要审核的重点
+原因：
+最终本地生产需要可验证的：
+- 文件
+- Hash
+- Reference Manifest
+- Contact Sheet
+- 最终锁定状态
+
+## 当前建模方向
 
 ### 林黛玉
-- 脸型是否正确
-- 下巴是否仍偏尖
-- 眼型/眉形是否正确
-- 是否有现代 AI 美女感
-- 发型/发饰是否正确
-- 古装是否符合目标
+采用当前建模图方向：
+- 柔和圆润鹅蛋脸
+- 非尖 V 下巴
+- 含蓄眼眉
+- 古典发髻
+- 花/玉/珠类轻饰
+- 月白/淡紫/淡青服装
+
+Canonical：
+assets/characters/daiyu/canonical_visual.yaml
 
 ### 孙悟空
-- 是否一眼是经典齐天大圣猴脸
-- 眉骨是否正确
-- 吻部是否正确
-- 耳形是否正确
-- 毛色/毛区是否正确
-- 是否出现普通男性脸加毛
-- 头箍/服装是否正确
+采用当前建模图方向：
+- 金棕猴脸
+- 明确眉骨/吻部/耳形
+- 斗战胜佛佛冠/冠饰
+- 佛珠
+- 红金正式造型 + 黄灰金日常造型
 
-### Couple
-- 身高差
-- 体型差
-- 同框时两张脸是否仍稳定
-- CP 感是否自然
+Canonical：
+assets/characters/wukong/canonical_visual.yaml
 
-## 用户反馈后必须执行
+## 服装
 
-1. 把用户明确批准的建模图保存到：
-   local/production/MODEL_REVIEW/approved/
+孙悟空：
+- DZS_FORMAL
+- DZS_DAILY
+- DZS_HOME
 
-2. 运行 reference_index / hash。
+林黛玉：
+- CANONICAL_LAVENDER
+- CANONICAL_HOME
+- RAIN
 
-3. 更新：
-   assets/characters/daiyu/modeling_review.yaml
-   assets/characters/wukong/modeling_review.yaml
+## Final Golden Gate
 
-4. 只有用户明确批准，才设置：
-   golden_model_status: APPROVED
+只有用户明确说：
+“锁定这个人物/就用这版作为最终人物”
 
-5. 如果用户指出脸型不对：
-   只重新做人物建模板，不进入 K1，不消耗 Wan I2V GPU 时间。
+并且本地有 Hash 后：
 
-## 当前 Gate
+golden_model_status: APPROVED
 
-GOLDEN_MODEL_APPROVED = false
+## 当前允许的下一步
 
-因此：
-- K1 可以继续准备文档，但不能把错误脸批量化；
-- Product I2V 继续禁止；
-- LoRA 训练继续禁止。
+继续 Preproduction：
+已完成 docs/30–50。
+
+本地下一步：
+把人物 reference 落盘并做 Final Golden Review。

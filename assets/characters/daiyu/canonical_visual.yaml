@@ -1,0 +1,54 @@
+character_id: DAIYU
+canonical_visual_id: DAIYU_GOLDEN_CANDIDATE_V1
+status: PREPROD_APPROVED_PENDING_LOCAL_HASH
+
+face:
+  overall_shape: "soft rounded oval"
+  jaw: "natural taper, not V-line"
+  chin: "small, rounded, non-pointed"
+  cheek: "subtle natural fullness"
+  eyes:
+    shape: "narrow almond"
+    scale: "natural, not enlarged"
+    lid: "subtle single/inner-double impression"
+    gaze: "restrained and intelligent"
+  brows:
+    thickness: "fine"
+    arc: "soft"
+    expression: "capable of slight frown without permanent sadness"
+  nose:
+    scale: "small"
+    bridge: "natural and straight"
+  mouth:
+    scale: "small"
+    lips: "restrained natural fullness"
+
+hair:
+  color: black
+  fringe: "soft broken bangs, stable contour"
+  side_locks: "long and narrow"
+  bun: "classical structured updo"
+  ornaments:
+    - small_flower
+    - pearl_or_jade_drop
+    - fine_hairpin
+  rule: "same silhouette across shots unless costume stage explicitly changes"
+
+body:
+  build: "slender adult"
+  posture: "classical but relaxed"
+  reject:
+    - child_proportion
+    - fashion_model_exaggerated_long_legs
+
+identity_hard_reject:
+  - pointed_v_chin
+  - generic_modern_ai_beauty
+  - heavy_modern_makeup
+  - large_idol_eyes
+  - westernized_face_geometry
+  - random_hair_silhouette
+
+notes:
+  - "User said the modeled direction feels acceptable for continued preproduction."
+  - "Final Golden status requires local reference hash and explicit approval record."

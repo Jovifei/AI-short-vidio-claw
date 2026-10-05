@@ -1,147 +1,170 @@
 # AI-short-vidio-claw
 
-> 面向 RTX 4070 Super 12GB 的角色一致 AI 竖屏短剧生产线。
+> RTX 4070 Super 12GB + ComfyUI + Codex 的角色一致 AI 竖屏短剧生产线。
 
 ## 当前状态
 
-**远端能完成的产品规划、剧本、资产模型、SOP、Prompt、Workflow 候选与门禁代码已经准备完成。**
+**模型人物方向：用户已表示“感觉可以，可以继续使用建模人物做前期工作”。**
+因此当前状态记为：
 
-当前状态：
+`PREPROD_MODEL_DIRECTION_APPROVED`
 
-- Lab Runtime：Wan2.2-TI2V-5B 已在本机证明可运行。
-- Product：等待 V0 人物/服装 Reference 落地与用户批准。
-- 禁止继续用未批准人物做故事视频。
+但最终 `GOLDEN_MODEL_APPROVED` 仍需要：
+- 本地保存最终建模图/reference
+- SHA256
+- Reference Manifest
+- 用户明确最终锁定
 
-## 核心原则
+**远端/非本地 Preproduction 已继续扩展到 V3 详细层。**
 
-1. Identity First。
-2. Image First → Video Second。
-3. Lab 与 Production 分离。
-4. 用户批准的视觉 reference 是人物事实源。
-5. 人物古装先锁定，再做生活场景。
-6. Approved Keyframe 才能进 I2V。
-7. 高风险动作允许静态表达。
-8. 本地自动化服务于已经确定的美术目标，而不是替代美术决策。
-
-## Active Route
+## 当前 Active Route
 
 ```text
-V0 Reference / Look Lock
+Model Direction PREPROD APPROVED
+  ↓
+Local Reference Hash + Final Golden Lock
+  ↓
+V0 Visual Lock
   ↓
 K1 10 Approved Couple Keyframes
   ↓
 T1 Approved-Keyframe I2V
   ↓
-M1 Motion Risk Selection
-  ↓
 E0 20–30s CP Look Reel
   ↓
-User Visual Approval
+User Approval
   ↓
-E1 EP001 Story Production
+EP001 20 Story Keyframes
   ↓
-Local Identity Automation
+4–6 Low-risk Motion Shots
   ↓
-Audio / LipSync / Full Control Plane
+First Cut
   ↓
-Series
+Audio / Local Identity Automation / Full CLI
 ```
 
-## 已准备好的创作包
+## 最重要规则
+
+1. 用户批准的 Reference 才是人物事实源。
+2. Production 禁止主角纯 T2V。
+3. 没有 Approved Keyframe 不进 I2V。
+4. 人物脸 > 服装 > 解剖 > CP 感 > 构图 > 动作 > 清晰度。
+5. 场景可以现代，人物保持批准古装。
+6. 高风险动作允许 Static + 微镜头运动。
+7. Lab 与 Production 永远分开。
+
+## 已准备的主要内容
+
+### 人物
+`assets/characters/`
+- Canonical Visual
+- Expression Library
+- Costume Stages
+- Model Review
+- Reference Manifest
+
+孙悟空增加：
+- WUKONG_DZS_FORMAL
+- WUKONG_DZS_DAILY
+- WUKONG_DZS_HOME
+
+林黛玉增加：
+- DAIYU_CANONICAL_LAVENDER
+- DAIYU_CANONICAL_HOME
+
+### 美术/摄影
+`docs/30_VISUAL_DIRECTION_BIBLE.md`
+`docs/31_CINEMATOGRAPHY_GRAMMAR.md`
+`docs/32_CHARACTER_PERFORMANCE_BIBLE.md`
+
+结构化配置：
+`assets/style/`
+`assets/relationship/`
 
 ### LOOKREEL01
 `episodes/LOOKREEL01/`
-
-包含：
-- 10 个构图计划
-- 图片生成说明
-- 视频动作提示
-- 剪辑计划
+- 10 shot plan
+- detailed shot cards
+- image/video prompts
+- edit plan
 - QA
 - approval manifest
 
 ### EP001
 `episodes/EP001/`
-
 《大圣今天受伤了》
-
-包含：
-- episode config
-- 完整剧本
-- 20 镜 storyboard
-- shot manifest
+- script
+- storyboard
+- detailed shot cards
 - continuity
-- image prompts
-- video prompts
+- image/video prompts
 - edit plan
 - QA
 - approval manifest
 
-## 人物/资产
+### 第一季
+`episodes/SEASON01/`
+- 10 集结构
+- episode briefs
+- asset reuse matrix
 
-`assets/characters/`
-- DAIYU character card
-- WUKONG character card
-- HOME / OUTDOOR / RAIN / INJURED stages
+### 训练/声音/后期
+- 33 LoRA Plan
+- 34 Audio Bible
+- 35 Post-production
+- 36 QA Regression
+- 37 Asset Versioning
+- 38 Season Blueprint
+- 39 Failure Recovery
 
-`assets/locations/locations.yaml`
-`assets/props/props.yaml`
+### 执行管理
+- 40 Work Split
+- 41 Readiness
+- 42 Capacity
+- 43 WBS
+- 44 Risk Register
+- 45 Stage Acceptance
+- 46 Batch Plan
+- 47 Prompt System
+- 48 Reference Bundle
+- 49 Agent Rules
+- 50 Preproduction Completion
 
-当前视觉规格：
-`docs/19_ACTIVE_VISUAL_SPEC.md`
+## 自动化工具
 
-## Production Video
+`scripts/`
+- reference_index.py
+- create_contact_sheet.py
+- approve_asset.py
+- register_asset.py
+- validate_schema.py
+- project_preflight.py
+- validate_production_package.py
+- build_render_queue.py
+- production_guard.py
+- p1_comfy_probe.py
 
-候选：
-`workflows/video/production/VID_wan22_5b_i2v_prod_v001.json`
+## Schema
 
-它还不是正式 Production Frozen。
-必须先通过：
-`docs/stages/T1_APPROVED_I2V_BASELINE.md`
+`schemas/`
+- reference manifest
+- approval manifest
+- render record
+- asset ledger
 
-## 自动化门禁
+## 本机下一步
 
-`scripts/reference_index.py`
-- 计算本地 reference hash
-- 不会自动批准
+本地 Codex 先：
 
-`scripts/validate_production_package.py`
-- 检查 episode/lookreel 包
+```bash
+git pull --ff-only
+pip install -r requirements-tools.txt
+python scripts/project_preflight.py --stage MODEL_REVIEW
+```
 
-`scripts/production_guard.py`
-- 检查用户批准状态
-- 校验 keyframe hash
-- 检查 identity/costume refs
-- 检查 LoadImage/start_image
-- 不通过时禁止提交 ComfyUI
+然后把当前认可的建模图/reference 落到：
+`local/references/active_visual_target/`
 
-## 本地目录
+做 Hash、Contact Sheet、最终 Golden Lock。
 
-真实 reference、大模型、candidate、approved 图片、视频都放 local/。
-
-详见：
-`docs/05_DIRECTORY_STANDARD.md`
-
-## 新 Agent 阅读顺序
-
-1. AGENTS.md
-2. PROJECT_STATE.md
-3. docs/18_ROUTE_CORRECTION_AND_MASTER_PLAN.md
-4. docs/19_ACTIVE_VISUAL_SPEC.md
-5. docs/20_CREATIVE_AND_SERIES_BIBLE.md
-6. docs/21_PRODUCTION_SOP_V2.md
-7. docs/22_LOCAL_HANDOFF.md
-8. docs/23_REMOTE_PREP_COMPLETION.md
-9. docs/24_LOCAL_CODEX_START_PROMPT.md
-10. 当前 stage 文件
-
-## 现在唯一正确的下一步
-
-本地 Codex 执行：
-
-`docs/24_LOCAL_CODEX_START_PROMPT.md`
-
-即：
-**导入真实人物/服装 references → V0 → 用户批准 → K1。**
-
-在人物视觉没有锁定前，不再消耗 GPU 生成故事视频。
+在 Final Golden Lock 前，不批量消耗 GPU。

@@ -1,0 +1,35 @@
+voice_bible_id: CP_VOICE_V1
+status: PREPROD
+
+DAIYU:
+  voice_id: DAIYU_VOICE_TBD
+  source_policy: authorized_only
+  target:
+    volume: restrained
+    tempo: slow_to_medium
+    articulation: clear
+    emotion: subtle
+    humor: dry
+  avoid:
+    - modern_idol_baby_voice
+    - over_crying
+    - imitation_of_specific_actor
+
+WUKONG:
+  voice_id: WUKONG_VOICE_TBD
+  source_policy: authorized_only
+  target:
+    volume: medium
+    tempo: medium_fast
+    texture: warm_slight_grain
+    emotion: agile
+    serious_mode: stable_and_lower
+  avoid:
+    - cartoon_monkey_squeal
+    - imitation_of_specific_actor
+    - constant_shouting
+
+dialogue:
+  max_line_seconds_target: 3
+  natural_pause_seconds: "0.2-0.8"
+  first_cut_lipsync_required: false

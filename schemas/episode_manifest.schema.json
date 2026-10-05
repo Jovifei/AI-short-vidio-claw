@@ -1,0 +1,68 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "episode_manifest.schema.json",
+  "title": "Episode Manifest",
+  "type": "object",
+  "required": [
+    "episode_id",
+    "status",
+    "shots"
+  ],
+  "properties": {
+    "episode_id": {
+      "type": "string"
+    },
+    "status": {
+      "type": "string"
+    },
+    "visual_target_id": {
+      "type": "string"
+    },
+    "script_hash": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "storyboard_hash": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "shots": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "properties": {
+          "keyframe_asset_id": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "video_asset_id": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "status": {
+            "type": "string"
+          },
+          "qa": {
+            "type": "object"
+          }
+        },
+        "additionalProperties": true
+      }
+    },
+    "final_asset_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    }
+  },
+  "additionalProperties": true
+}

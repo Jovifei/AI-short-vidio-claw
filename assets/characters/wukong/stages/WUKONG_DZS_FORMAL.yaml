@@ -1,0 +1,38 @@
+stage_id: WUKONG_DZS_FORMAL
+inherits: WUKONG
+status: PREPROD_CANDIDATE
+
+identity_symbol:
+  title: "斗战胜佛"
+  required:
+    - buddhist_victory_crown
+    - prayer_beads
+    - gold_red_ritual_armor_or_robe
+    - monkey_king_face
+  optional:
+    - ruyi_jingu_bang
+    - plume_or_ribbon
+
+palette:
+  - warm_gold
+  - cinnabar_red
+  - dark_brown
+  - black_accent
+
+materials:
+  - aged_gold
+  - brocade
+  - leather_or_fabric_bracer
+  - wood_beads
+
+use:
+  - hero_visual
+  - scenic_outdoor
+  - ceremonial
+  - LOOKREEL01_COMP01
+  - LOOKREEL01_COMP09
+
+avoid:
+  - excessive_game_armor
+  - giant_shoulders
+  - modern_fashion_mix

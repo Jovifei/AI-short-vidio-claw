@@ -1,0 +1,119 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "asset_ledger.schema.json",
+  "title": "Asset Ledger Entry",
+  "type": "object",
+  "required": [
+    "asset_id",
+    "type",
+    "status",
+    "version",
+    "sha256"
+  ],
+  "properties": {
+    "asset_id": {
+      "type": "string"
+    },
+    "type": {
+      "enum": [
+        "CHAR_REF",
+        "COSTUME_REF",
+        "COMP_REF",
+        "KEYFRAME",
+        "VIDEO_TAKE",
+        "VIDEO_ACCEPTED",
+        "VOICE",
+        "SFX",
+        "MUSIC",
+        "WORKFLOW",
+        "MODEL",
+        "PROMPT",
+        "FINAL"
+      ]
+    },
+    "status": {
+      "enum": [
+        "DRAFT",
+        "CANDIDATE",
+        "RECOMMENDED",
+        "USER_APPROVED",
+        "PRODUCTION_READY",
+        "ACCEPTED",
+        "SUPERSEDED",
+        "REJECTED",
+        "ARCHIVED"
+      ]
+    },
+    "project": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "shot": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "version": {
+      "type": "string"
+    },
+    "local_path": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-fA-F]{64}$"
+    },
+    "source": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "generated_by": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "identity_refs": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "costume_refs": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "created_at": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "approved_at": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "supersedes": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "notes": {
+      "type": "string"
+    }
+  },
+  "additionalProperties": true
+}

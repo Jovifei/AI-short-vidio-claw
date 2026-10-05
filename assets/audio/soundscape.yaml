@@ -1,0 +1,42 @@
+soundscape_id: SEASON01_SFX_V1
+status: PREPROD
+
+locations:
+  HOME_ENTRY:
+    ambience: [corridor_hum, distant_building_noise]
+    foley: [footstep, door_lock, door_hinge]
+  LIVING_ROOM:
+    ambience: [quiet_room_tone]
+    foley: [fabric, medkit, small_object]
+  KITCHEN_FRIDGE:
+    ambience: [refrigerator_low_hum]
+    foley: [fridge_door, bowl, water, packaging]
+  BALCONY:
+    ambience: [distant_city, breeze, leaves]
+    foley: [cloth, pot, water]
+  MARKET:
+    ambience: [soft_crowd, stall_activity]
+    foley: [basket, bag, produce]
+  BUS:
+    ambience: [engine_low, road_vibration]
+    foley: [seat_fabric, subtle_bag]
+  RAIN_STOP:
+    ambience: [light_rain, distant_traffic]
+    foley: [umbrella_open]
+  RAIN_STREET:
+    ambience: [umbrella_rain, wet_road, distant_cars]
+    foley: [wet_footstep, fabric]
+  BEDROOM:
+    ambience: [quiet_night_room]
+    foley: [bedding, cloth]
+
+music:
+  DAILY_MOTIF:
+    character: "light, minimal, warm"
+    episodes: [EP001, EP002, EP003, EP004, EP005, EP006]
+  FATE_MOTIF:
+    character: "sparse, reflective, slightly ancient"
+    episodes: [EP008, EP009, EP010]
+
+mix_rule:
+  priority: [dialogue, ambience, foley, music]

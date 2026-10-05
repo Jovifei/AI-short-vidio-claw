@@ -1,0 +1,167 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "shot_card.schema.json",
+  "title": "Shot Card",
+  "type": "object",
+  "required": [
+    "shot_id",
+    "story_purpose",
+    "characters",
+    "composition",
+    "motion_tier",
+    "approval_status"
+  ],
+  "properties": {
+    "shot_id": {
+      "type": "string"
+    },
+    "story_purpose": {
+      "type": "string"
+    },
+    "location": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "time_of_day": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "weather": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "characters": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "minItems": 1
+    },
+    "identity_refs": {
+      "type": "object"
+    },
+    "costume_stage": {
+      "type": "object"
+    },
+    "props": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "continuity_in": {
+      "type": [
+        "string",
+        "object",
+        "null"
+      ]
+    },
+    "continuity_out": {
+      "type": [
+        "string",
+        "object",
+        "null"
+      ]
+    },
+    "composition": {
+      "type": "object"
+    },
+    "body_position": {
+      "type": [
+        "object",
+        "string",
+        "null"
+      ]
+    },
+    "eye_line": {
+      "type": [
+        "object",
+        "string",
+        "null"
+      ]
+    },
+    "hand_state": {
+      "type": [
+        "object",
+        "string",
+        "null"
+      ]
+    },
+    "keyframe_frozen_moment": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "motion_tier": {
+      "enum": [
+        "M0",
+        "M1",
+        "M2",
+        "M3"
+      ]
+    },
+    "primary_motion": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "secondary_motion": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "camera_motion": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "environment_motion": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "target_duration": {
+      "type": [
+        "number",
+        "null"
+      ]
+    },
+    "risk_notes": {
+      "type": [
+        "string",
+        "array",
+        "null"
+      ]
+    },
+    "fallback": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "approval_status": {
+      "enum": [
+        "DRAFT",
+        "CANDIDATE",
+        "RECOMMENDED",
+        "USER_APPROVED",
+        "PRODUCTION_READY",
+        "VIDEO_ACCEPTED",
+        "STATIC_ACCEPTED",
+        "REJECTED"
+      ]
+    }
+  },
+  "additionalProperties": true
+}

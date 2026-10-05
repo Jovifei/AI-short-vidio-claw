@@ -1,0 +1,39 @@
+character_id: DAIYU
+library_id: DAIYU_EXPR_V1
+
+expressions:
+  neutral:
+    eyes: "calm, attentive"
+    mouth: "relaxed"
+    use: [model_sheet, daily]
+  restrained_smile:
+    eyes: "softened"
+    mouth: "very small smile"
+    use: [cp, home]
+  mild_displeasure:
+    eyes: "slight side glance"
+    brows: "small tension only"
+    mouth: "closed"
+    use: [comedy]
+  focused_care:
+    eyes: "downward attention"
+    brows: "relaxed concentration"
+    use: [EP001]
+  amused:
+    eyes: "brief side glance"
+    mouth: "small contained smile"
+    use: [daily]
+  quiet_fatigue:
+    eyes: "slightly lowered"
+    posture: "relaxed, not weak"
+    use: [night]
+  stubborn:
+    chin: "slight lift"
+    eyes: "steady"
+    use: [conflict]
+
+forbidden:
+  - perpetual_sadness
+  - constant_head_tilt
+  - exaggerated_crying
+  - idol_smile

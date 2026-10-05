@@ -1,110 +1,119 @@
-# AGENTS.md — AI/Codex 接手规则
+# AGENTS.md — AI/Codex 最高执行规则
 
-## 最高优先级
+## 1. 当前项目状态
 
-当前项目执行 V2 Product Route。
+人物方向已获得“可继续前期工作”的用户认可。
 
-必须先读：
+状态：
+PREPROD_MODEL_DIRECTION_APPROVED
+
+不是：
+FINAL_GOLDEN_MODEL_APPROVED
+
+不要混淆。
+
+## 2. 必须先读
+
 1. README.md
 2. PROJECT_STATE.md
 3. docs/18_ROUTE_CORRECTION_AND_MASTER_PLAN.md
 4. docs/19_ACTIVE_VISUAL_SPEC.md
-5. docs/stages/README.md
+5. docs/30_VISUAL_DIRECTION_BIBLE.md
+6. docs/31_CINEMATOGRAPHY_GRAMMAR.md
+7. docs/32_CHARACTER_PERFORMANCE_BIBLE.md
+8. docs/45_STAGE_ACCEPTANCE_CRITERIA.md
+9. docs/49_AGENT_OPERATING_RULES.md
+10. 当前 stage 文件
 
-## 当前任务
+## 3. Production 硬规则
 
-在 V0/K1 未 PASS 前：
-- 不继续新增故事 T2V；
-- 不拿官方模板输出当产品结果；
-- 不用临时 SDXL 图代替 approved character reference；
-- 不批量提交 Wan I2V；
-- 不训练 LoRA；
-- 不接 TTS/LipSync；
-- 不开始 EP001 正式生产。
+- 主角镜头必须 Image First → Video Second。
+- Approved Keyframe 前禁止 Product I2V。
+- Visual Reference 高于文字 Prompt。
+- 场景可现代，人物服装保持批准古装。
+- GPU heavy jobs 串行。
+- Lab output 不能满足 Product Gate。
+- Agent 不能自行设置 USER_APPROVED/GOLDEN_MODEL_APPROVED。
 
-## Lab / Production 强制分离
+## 4. 人物
 
-### LAB_ONLY
-可以：
-- 官方模板
-- 通用 prompt
-- 性能测试
-- OOM/VRAM/RAM 测量
+DAIYU：
+canonical visual + approved refs。
 
-LAB_ONLY 输出不能：
-- 使用正式 SHOT 编号冒充剧情镜头
-- 进入 final timeline
-- 被写成角色质量结论
-
-### PRODUCTION
-每个 shot 必须有：
-- composition_ref
-- identity refs
-- costume refs
-- approved_keyframe
-- approval manifest
-- motion_tier
-
-缺任何一项，不提交视频任务。
-
-## Production T2V 禁止
-
-主角 Production 镜头必须 Image First → Video Second。
-
-如果 workflow 没有 LoadImage/start_image：
-Production Guard 必须拒绝提交。
-
-## 当前人物视觉
-
-以 docs/19_ACTIVE_VISUAL_SPEC.md 为准。
-
-文字 prompt 不是 identity source。
-用户批准 reference 和 approved golden keyframe 才是。
-
-当前服装规则：
-- 双方只使用已批准古装
-- 不出现现代人物服装
-- 现代生活场景可以保留
-
-## 动态策略
-
-M0/M1/M2/M3 见 docs/stages/M1_MOTION_RISK_LADDER.md。
-Codex 不得自行把高风险静态镜头升级为完整 I2V。
-
-## 失败处理
+WUKONG：
+canonical visual + Douzhanshengfo stages + approved refs。
 
 人物脸不对：
-停止该镜头，不通过继续抽视频解决。
+回模型/关键帧层。
+不要在视频层硬救。
 
-服装不对：
-回关键帧阶段。
+## 5. Motion
 
-视频换脸：
-降低 motion / frames 或降为静态。
+M0：静态
+M1：微动作
+M2：慢中动作
+M3：高风险
 
-## Git
+自动队列默认只允许 M1/M2。
+M0 用静态。
+M3 需显式人工决定。
 
-不提交：
-- 模型权重
-- 大批量输出
-- 第三方 reference 原图
-- API key
+## 6. 失败上限
 
-Git 保存：
-- manifest
-- hash
-- prompts
-- workflow
-- QA
-- stage report
-- benchmark
+Keyframe：
+3 轮仍不对 → Hero/manual。
 
-## 每阶段结束
+I2V：
+2 次系统性身份失败 → static fallback。
 
-同步：
-- PROJECT_STATE.md
-- stage report
-- approval/QA
-- manifest
+M2：
+3 次失败 → M1。
 
-只有用户明确批准，才能把状态从 CANDIDATE 改为 APPROVED。
+不要无限抽卡。
+
+## 7. 本地前置
+
+先运行：
+python scripts/project_preflight.py --stage <STAGE>
+
+Production 视频前：
+python scripts/production_guard.py ...
+
+Guard fail：
+绝不 POST /prompt。
+
+## 8. 记录
+
+所有可进入 Production 的资产必须有：
+- asset ID
+- path
+- sha256
+- source
+- refs
+- stage
+- status
+- approval
+
+## 9. 技术栈
+
+不要因为新模型热门自动更换 Production。
+
+任何新模型：
+Lab
+→ fixed regression
+→ compare
+→ approval
+→ production promotion。
+
+## 10. 任务结束报告
+
+必须写：
+- 完成 WBS ID
+- Gate
+- Files
+- Benchmark/QA
+- Blocker
+- Commit
+- Next WBS
+
+不能只写“继续优化”。

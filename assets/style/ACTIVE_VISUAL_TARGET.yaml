@@ -1,32 +1,63 @@
-visual_target_id: ACTIVE_CP_VISUAL_V2
-status: ACTIVE
+visual_target_id: ACTIVE_CP_VISUAL_V3
+status: PREPROD_APPROVED_PENDING_LOCAL_REFERENCE_HASH
 updated: 2026-10-05
+
+approval_context:
+  note: "User stated the modeled character direction feels acceptable and asked to continue preproduction using these modeled characters."
+  scope: "preproduction and documentation"
+  final_golden_model_approval: false
 
 characters:
   DAIYU:
-    identity_source: user_approved_visual_references
+    canonical_visual: assets/characters/daiyu/canonical_visual.yaml
+    identity_source_priority:
+      - user_approved_visual_references
+      - approved_model_sheet
+      - approved_golden_keyframe
+      - textual_character_bible
     face_priority: highest
     modernized_face_forbidden: true
     pointed_v_chin_forbidden: true
-    costume_policy: classic_period_costume_only
+    default_stages:
+      outdoor: DAIYU_CANONICAL_LAVENDER
+      home: DAIYU_CANONICAL_HOME
+      rain: DAIYU_CLASSIC_RAIN
+
   WUKONG:
-    identity_source: user_approved_visual_references
+    canonical_visual: assets/characters/wukong/canonical_visual.yaml
+    identity_source_priority:
+      - user_approved_visual_references
+      - approved_model_sheet
+      - approved_golden_keyframe
+      - textual_character_bible
     face_priority: highest
     humanized_face_forbidden: true
-    costume_policy: classic_period_costume_only
+    default_stages:
+      formal: WUKONG_DZS_FORMAL
+      outdoor: WUKONG_DZS_DAILY
+      home: WUKONG_DZS_HOME
+      injured: WUKONG_CLASSIC_INJURED
 
 scene_policy:
   modern_daily_life_locations_allowed: true
   modern_character_clothing_allowed: false
+  mythic_locations_allowed: true
 
 production:
   text_description_is_not_identity_source: true
   approved_keyframe_required_for_video: true
   production_t2v_for_character_creation: false
   hero_lane_allowed: true
+  local_identity_automation_deferred: true
+
+style:
+  visual_direction: LIVE_CLASSIC_CP_V1
+  camera_grammar: DAILY_CINEMA_V1
+  color_bible: CP_PALETTE_V1
 
 qa:
   identity_min_score_each: 4
   modern_apparel_is_hard_reject: true
   wukong_humanization_is_hard_reject: true
   daiyu_modernization_is_hard_reject: true
+  golden_model_requires_explicit_final_approval: true

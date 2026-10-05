@@ -1,90 +1,157 @@
-# 23 远端准备完成报告
+# 23 远端准备完成报告（V3）
 
 日期：2026-10-05
-状态：REMOTE_PREP_COMPLETE / WAITING_MODEL_REVIEW_AND_LOCAL_REFERENCES
+状态：REMOTE_PREPRODUCTION_V3_COMPLETE
 
-## 已经由远端完成
+## 1. 用户模型方向
 
-### 产品/架构
-- V2 路线纠偏
-- Lab / Production 分离
-- Visual Lock 前置
-- Approved Keyframe 前置
-- Motion Tier
-- Production Guard
-- 目录标准
-- 质量 Gate
+用户对当前建模人物方向表示可以继续用于前期工作。
 
-### 创作
-- 第一季创作圣经
-- 第一季 10 集方向
-- LOOKREEL01 十构图设计
-- LOOKREEL01 详细 Shot Cards
-- LOOKREEL01 图片提示包
-- LOOKREEL01 视频动作提示包
-- LOOKREEL01 剪辑方案
-- LOOKREEL01 QA
-- EP001 完整剧本
-- EP001 20 镜 storyboard
-- EP001 20 镜详细 Shot Cards
-- EP001 image prompt pack
-- EP001 video prompt pack
-- EP001 continuity
-- EP001 edit plan
-- EP001 QA
+项目状态：
+PREPROD_MODEL_DIRECTION_APPROVED
 
-### 角色/资产建模
-- DAIYU active character card
-- WUKONG active character card
-- 双方 HOME / OUTDOOR / RAIN / INJURED costume stages
-- 人物建模审核规格
-- DAIYU modeling_review
-- WUKONG modeling_review
-- locations registry
-- props registry
-- visual target config
-- reference manifests
+最终 Golden 仍待：
+本地文件 + Hash + Contact Sheet + 最终明确批准。
 
-### 模型/Workflow
-- Wan2.2-TI2V-5B 本机 manifest
-- Production candidate I2V workflow JSON
-- Production workflow metadata
-- Lab benchmark 保留
+## 2. 已完成：产品与路线
 
-### 自动化
-- reference_index.py
-- create_contact_sheet.py
-- approve_asset.py
-- production_guard.py
-- build_render_queue.py
-- validate_production_package.py
-- p1_comfy_probe.py
+- PRD
+- V2/V3 route correction
+- Lab / Production split
+- Gate Matrix
+- WBS
+- Risk Register
+- Stage Acceptance
+- Work Split
+- Batch Plan
+- Capacity Budget
+- Agent Operating Rules
 
-## 现在仍然必须本地完成
+## 3. 已完成：人物
 
-1. 把用户认可的人物/服装 reference 放入 local/
-2. 计算 hash
-3. 生成 contact sheet
-4. 用户批准 Golden Face / Costume Set
-5. 用户审核三张人物建模板
-6. K1 十张 keyframe
-7. 用户批准每张 keyframe
-8. 本机 ComfyUI + GPU 做 T1
-9. E0 Look Reel
-10. EP001 GPU 渲染和 FFmpeg
+- DAIYU Character Card
+- WUKONG Character Card
+- Canonical Visual YAML
+- Modeling Review
+- Expression Libraries
+- Couple Interaction Library
+- Couple Scale spec
 
-## 当前 blocker
+服装：
+- DAIYU_CANONICAL_LAVENDER
+- DAIYU_CANONICAL_HOME
+- DAIYU_CLASSIC_RAIN
+- WUKONG_DZS_FORMAL
+- WUKONG_DZS_DAILY
+- WUKONG_DZS_HOME
+- WUKONG_CLASSIC_INJURED
 
-不是技术模型，而是：
-**Golden Model / Golden Face / Golden Costume 尚未得到用户最终批准。**
+## 4. 已完成：视觉
 
-在批准以前，Production Guard 阻止视频属于正确行为。
+- Visual Direction Bible
+- Cinematography Grammar
+- Lighting/Color config
+- Prompt Composition System
+- Reference Bundle Spec
+- Keyframe Template
+- Motion Template
+- Visual QA Template
 
-## 重新审核节点
+## 5. 已完成：创作
 
-- 人物建模板用户反馈完成
-- V0 contact sheet 完成
-- K1 10 keyframes 完成
-- T1 I2V 完成
-- E0 Look Reel 完成
-- EP001 First Cut 完成
+### LOOKREEL01
+- plan
+- 10 detailed shot cards
+- image prompts
+- video prompts
+- edit
+- QA
+- approval manifest
+
+### EP001
+- episode config
+- full script
+- 20-shot storyboard
+- 20 detailed shot cards
+- shot manifest
+- continuity
+- image/video prompts
+- edit
+- QA
+- approval manifest
+
+### SEASON01
+- season structure
+- 10 episode briefs
+- asset reuse matrix
+- production wave plan
+
+## 6. 已完成：场景/道具
+
+- home master set
+- lookreel sets
+- location registry
+- prop registry
+- rain continuity
+- reusable asset strategy
+
+## 7. 已完成：声音/后期
+
+- Voice Bible
+- Soundscape
+- Post-production Spec
+- Final QC rules
+
+## 8. 已完成：训练规划
+
+- Dataset structure
+- data count
+- caption rules
+- validation set
+- LoRA experiment matrix
+- regression criteria
+- version naming
+
+实际训练仍必须本地 GPU。
+
+## 9. 已完成：QA/资产
+
+- QA Regression Matrix
+- Asset Ledger rules
+- Failure Recovery
+- Stage Acceptance
+- JSON Schemas
+
+## 10. 已完成：技术与脚本
+
+- Wan2.2 5B model manifest
+- Production I2V candidate workflow
+- reference_index
+- create_contact_sheet
+- approve_asset
+- register_asset
+- validate_schema
+- project_preflight
+- validate_production_package
+- build_render_queue
+- production_guard
+- p1_comfy_probe
+
+## 11. 真正仍需本地
+
+1. 保存当前建模图/reference
+2. Hash
+3. Final Golden Approval
+4. 10 Keyframes
+5. Approved I2V
+6. Look Reel
+7. EP001 media
+8. Actual audio
+9. LoRA training
+10. FFmpeg final build
+
+## 12. Stop Point
+
+远端此时不应继续虚构“已批准图片/已完成视频”。
+
+下一步必须由真实 Reference/Media 进入本地文件系统，然后再继续 QA 与生成。

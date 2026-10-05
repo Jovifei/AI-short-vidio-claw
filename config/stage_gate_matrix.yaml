@@ -1,0 +1,76 @@
+pipeline_id: V2_PRODUCT_ROUTE
+
+stages:
+  MODEL_REVIEW:
+    inputs:
+      - model_sheet_candidates
+      - character_modeling_review_spec
+    human_gate: true
+    output_status: GOLDEN_MODEL_APPROVED
+    blocked_if:
+      - face_identity_not_approved
+
+  V0_VISUAL_LOCK:
+    inputs:
+      - golden_model
+      - local_reference_hashes
+      - costume_refs
+      - composition_refs
+    human_gate: true
+    output_status: VISUAL_TARGET_LOCKED
+
+  K1_KEYFRAMES:
+    inputs:
+      - visual_target_locked
+      - lookreel_shot_cards
+    human_gate: true
+    output_status: TEN_KEYFRAMES_APPROVED
+
+  T1_I2V:
+    inputs:
+      - approved_keyframes
+      - production_i2v_workflow
+      - production_guard
+    human_gate: false
+    qa_gate: true
+    output_status: LOW_RISK_I2V_CANDIDATE
+
+  E0_LOOK_REEL:
+    inputs:
+      - ten_keyframes_approved
+      - accepted_motion_clips
+      - edit_plan
+    human_gate: true
+    output_status: LOOK_REEL_APPROVED
+
+  E1_EP001:
+    inputs:
+      - look_reel_approved
+      - ep001_story_package
+    human_gate: true
+    output_status: EP001_FIRST_CUT_APPROVED
+
+  A1_IDENTITY_AUTOMATION:
+    inputs:
+      - golden_model
+      - approved_training_dataset
+    human_gate: true
+    output_status: LOCAL_IDENTITY_MODEL_APPROVED
+
+  A2_AUDIO:
+    inputs:
+      - approved_voice_assets
+      - picture_lock
+    human_gate: true
+    output_status: AUDIO_APPROVED
+
+  A3_AUTOMATION:
+    inputs:
+      - proven_manual_pipeline
+    human_gate: false
+    output_status: PIPELINE_AUTOMATED
+
+rules:
+  no_stage_skip: true
+  agent_cannot_set_human_gate: true
+  lab_outputs_cannot_satisfy_product_gate: true

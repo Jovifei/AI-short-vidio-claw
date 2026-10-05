@@ -1,0 +1,22 @@
+stage_id: DAIYU_CANONICAL_HOME
+inherits: DAIYU_CANONICAL_LAVENDER
+status: PREPROD_CANDIDATE
+
+purpose: home_daily_life
+
+simplify:
+  outer_layers: reduced
+  embroidery: lighter
+  hair_ornaments: fewer
+
+retain:
+  - classical_neckline
+  - long_sleeves
+  - soft_lavender_or_ivory
+  - canonical_hair_silhouette
+
+forbidden:
+  - modern_sleepwear
+  - knitwear
+  - t_shirt
+  - modern_house_dress

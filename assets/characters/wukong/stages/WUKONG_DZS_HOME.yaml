@@ -1,0 +1,25 @@
+stage_id: WUKONG_DZS_HOME
+inherits: WUKONG_DZS_DAILY
+status: PREPROD_CANDIDATE
+
+purpose: home_daily_life
+
+simplify:
+  crown: "lighter cap/circlet"
+  beads: "retain"
+  heavy_armor: "remove"
+  staff: "normally off-frame"
+
+retain:
+  - classical_layered_robe
+  - gold_or_ochre_color_family
+  - monkey_face
+  - simian_hands
+  - one_identity_symbol
+
+forbidden:
+  - t_shirt
+  - tank_top
+  - hoodie
+  - sportswear
+  - modern_pajamas

@@ -1,99 +1,100 @@
-# 11 路线图（V2 Active）
+# 11 路线图（V3）
 
-## A. 已完成：远端
+## A. 远端非本地 Preproduction
 
-- [x] V2 route correction
+- [x] Product route correction
 - [x] Lab / Production split
-- [x] Active Visual Spec
-- [x] Character Cards
-- [x] Costume Stages
-- [x] Character Modeling Review Spec
-- [x] DAIYU/WUKONG modeling review manifests
-- [x] Location / Prop Registry
-- [x] Season Creative Bible
-- [x] LOOKREEL01 plan
-- [x] LOOKREEL01 detailed shot cards
-- [x] LOOKREEL01 image/video prompts
-- [x] LOOKREEL01 edit / QA / approval manifest
-- [x] EP001 script
-- [x] EP001 storyboard
-- [x] EP001 detailed shot cards
-- [x] EP001 continuity
-- [x] EP001 image/video prompts
-- [x] EP001 edit / QA / approval manifest
-- [x] Production I2V workflow candidate
-- [x] Quality gates
-- [x] Reference index tool
-- [x] Contact sheet tool
-- [x] Explicit approval tool
-- [x] Production Guard
-- [x] Render queue builder
-- [x] Package validator
-- [x] Local GPU runbook
+- [x] Character modeling direction
+- [x] Canonical visuals
+- [x] Douzhanshengfo costume stages
+- [x] Daiyu canonical costume stages
+- [x] Expression libraries
+- [x] Couple interaction library
+- [x] Visual Direction Bible
+- [x] Cinematography Grammar
+- [x] Performance Bible
+- [x] Location/Set Bible
+- [x] Prop registry
+- [x] Audio Bible
+- [x] Post-production spec
+- [x] QA regression
+- [x] Asset/version lifecycle
+- [x] LoRA plan
+- [x] Failure recovery
+- [x] Capacity budget
+- [x] WBS
+- [x] Risk register
+- [x] Stage gates
+- [x] Batch plan
+- [x] Prompt system
+- [x] Reference bundle spec
+- [x] Agent rules
+- [x] JSON schemas
+- [x] Utility scripts
+- [x] LOOKREEL01 full package
+- [x] EP001 full package
+- [x] Season01 10-episode blueprint
 
-## B. 已完成：历史 Lab
+## B. 人物方向
 
-- [x] P0R environment
-- [x] Wan2.2 5B weights
-- [x] T2V 480×832×49 ten runs
-- [x] one I2V wiring run
+- [x] User says current modeled direction can continue preproduction
+- [ ] Save final model sheets locally
+- [ ] SHA256
+- [ ] Contact Sheet
+- [ ] Explicit Final Golden Approval
 
-## C. 当前：人物模型审核
+Gate：
+GOLDEN_MODEL_APPROVED
 
-- [ ] DAIYU Model Sheet
-- [ ] WUKONG Model Sheet
-- [ ] Couple Scale Sheet
-- [ ] 用户逐项反馈
-- [ ] Golden Model Approved
+## C. V0
 
-Gate：GOLDEN_MODEL_APPROVED
-
-## D. V0
-
-- [ ] 本地 reference files
-- [ ] reference_index.json
+- [ ] Reference files local
+- [ ] reference_index
 - [ ] Golden Face Set
 - [ ] Golden Costume Set
-- [ ] composition refs 01–10
-- [ ] contact sheet
-- [ ] user approval
+- [ ] Composition refs
+- [ ] Contact Sheet
+- [ ] User approval
 
-Gate：VISUAL_TARGET_LOCKED
+Gate：
+VISUAL_TARGET_LOCKED
 
-## E. K1
+## D. K1 LOOKREEL
 
-- [ ] 10 candidate keyframes
-- [ ] face/costume/anatomy QA
+- [ ] 10 candidates
+- [ ] QA
 - [ ] 10 user approvals
-- [ ] approval manifest hashes
+- [ ] hashes
 
-Gate：10/10 USER_APPROVED
+Gate：
+TEN_KEYFRAMES_APPROVED
 
-## F. T1
+## E. T1
 
-- [ ] Production Guard
-- [ ] 3 approved keyframes × 1 I2V
-- [ ] LOW-risk repeat 3–5
-- [ ] identity drift QA
+- [ ] 3 approved keyframes I2V
+- [ ] LOW-risk repeat
+- [ ] identity regression
 
-Gate：LOW-RISK I2V Production Candidate
+Gate：
+LOW_RISK_I2V_PRODUCTION_CANDIDATE
 
-## G. E0
+## F. E0
 
 - [ ] 20–30s Look Reel
-- [ ] user visual approval
+- [ ] User visual approval
 
-## H. E1 / EP001
+## G. EP001
 
-- [ ] 20 approved story keyframes
-- [ ] 4–6 motion shots
-- [ ] first cut
-- [ ] user approval
+- [ ] 20 approved stills
+- [ ] 4–6 accepted motion clips
+- [ ] First Cut
+- [ ] Audio
+- [ ] User approval
 
-## I. 后续
+## H. 后续
 
-- [ ] Local identity automation / LoRA
+- [ ] Identity LoRA
 - [ ] TTS
 - [ ] LipSync
-- [ ] Full CLI control plane
-- [ ] Series scaling
+- [ ] Full Control Plane
+- [ ] Season scale
