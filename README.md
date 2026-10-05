@@ -2,139 +2,89 @@
 
 > 本地优先、角色一致、可复现的 AI 竖屏短剧生产线。目标硬件：Windows + RTX 4070 Super 12GB + 约 32GB RAM + ComfyUI + Codex。
 
-## 当前技术状态
+## 当前状态
 
-**战略结论：GO。当前机器生产就绪度：NO-GO，先完成 P0R/P1A。**
+**技术 Lab：Wan2.2-TI2V-5B 已证明能在本机运行。**
+**产品 Production：尚未通过人物视觉锁定，当前禁止继续用未批准角色图制作故事视频。**
 
-本项目核心方法仍成立：
-- Image First → Video Second；
-- 角色/造型/道具连续性先冻结，再生成视频；
-- GPU 重任务串行；
-- 每镜可追溯、可重跑；
-- 两道人类 Gate：Keyframe Approval / Final Approval。
+2026-10-05 审核发现：
+- 大部分已生成 mp4 是官方模板地铁乐手；
+- 一条 SH001 是无参考图 T2V；
+- 唯一一次 I2V 使用未审核 SDXL 静帧；
+- 因此“成果不像要求”不是 5B 已经被证明不行，而是 Production 根本还没按产品要求开始。
 
-但 2026-10-04 二次复核后，立即执行路线已收窄：
+完整纠偏：
+- docs/18_ROUTE_CORRECTION_AND_MASTER_PLAN.md
+- docs/19_ACTIVE_VISUAL_SPEC.md
 
-> **P1A 只验证：单 ComfyUI 进程 + Wan2.2-TI2V-5B + 官方原生 workflow + native offload。**
-
-暂不把以下内容放进 P1A：
-- Wan2.2 14B；
-- GGUF 14B；
-- WanVideoWrapper 14B/block-swap；
-- LTX-2.x 原生 ComfyUI；
-- PuLID / FaceID；
-- GPT-SoVITS / MuseTalk；
-- 两个同时常驻的 ComfyUI 服务。
-
-原因不是这些路线“永远不能用”，而是当前机器为 12GB VRAM + ~32GB RAM，且本地尚未安装 Wan 权重/完成 API workflow 基线。先把变量收窄，拿到本机证据，再扩展。
-
-## 第一阶段目标
-
-把一张已人工确认的关键帧，用 Wan2.2-TI2V-5B 在本机生成第一条可复现的短视频，并记录：
-
-- 模型文件名与 hash
-- ComfyUI commit
-- workflow hash
-- 实际端口
-- 输入 keyframe
-- prompt
-- seed
-- 分辨率
-- 帧数
-- 实际 fps
-- 峰值显存
-- 系统 RAM 峰值
-- 运行耗时
-- 输出路径
-- 成功/失败原因
-
-**P1 Gate 不再预设“576×1024 一定稳定”。** 分辨率和帧数必须通过阶梯实测得到。
-
-## 当前生产架构
+## V2 当前有效路线
 
 ```text
-故事/剧本
+V0 视觉 reference 锁定
   ↓
-视觉设定 + 连续性锁
+K1 用户 10 个构图 → 10 张 approved keyframe
   ↓
-正式分镜
+T1 用 approved keyframe 验证 Wan2.2 5B I2V
   ↓
-冻结关键帧
-  ├─ Hero Lane：ChatGPT/人工精修
-  └─ Local Lane：ComfyUI（P2 以后）
+M1 动态风险分级
   ↓
-Approved Keyframe
+E0 20–30 秒 CP Look Reel
   ↓
-P1A 视频基线
-  └─ 单 ComfyUI + Native Wan2.2-TI2V-5B
+用户批准人物方向
   ↓
-P1B 可选对照（仅 P1A 通过后）
-  ├─ FramePack
-  └─ WanGP / 其他低显存 runner
+E1 EP001 20 张 story keyframe
   ↓
-P2 双身份同框 keyframe
+EP001 First Cut：静态 + 低风险 I2V
   ↓
-P3 EP001 First Cut
-  ↓
-P4 完整控制平面
-  ↓
-P5 TTS / Lip Sync / 后期
-  ↓
-P6 一键单集
-  ↓
-P7 系列化
+本地身份自动化 / TTS / LipSync / 控制平面
 ```
 
-## 重要事实边界
+## 关键产品规则
 
-- Wan2.2 官方仓库的 5B 720P 独立推理示例写的是至少 24GB VRAM；但 ComfyUI 官方 Wan2.2 页面明确写“5B version should fit well on 8GB vram with the ComfyUI native offloading”。因此本项目不拿任何一边的数字直接当 4070S 实测结果，而是以本机 benchmark 为准。
-- Wan2.2 I2V-A14B 官方独立推理示例要求至少 80GB VRAM。12GB 上的 14B 必须依赖量化/强 offload/第三方实现，故退出 P1A。
-- LTX-2.x 官方 ComfyUI-LTXVideo 当前 README 推荐 32GB+ VRAM，因此不作为本机 P1A/P1B 原生 ComfyUI 首选。
-- MuseTalk 官方 Gradio 默认端口是 7860；GPT-SoVITS API v2 默认 9880；ComfyUI 上游默认 8188，但本项目必须发现实际本机端口，不允许硬编码。
+1. Production 不允许纯 T2V 创建主角。
+2. 没有 approved identity refs，不生成产品关键帧。
+3. 没有 approved keyframe，不提交产品视频。
+4. 用户判断人物“像不像”时，视觉 reference 高于文字 prompt。
+5. 当前人物服装只使用已批准古装，不穿现代服装；场景可以现代生活化。
+6. 人物脸优先于动作复杂度和原生清晰度。
+7. 高风险动作允许保留为静态照片/轻推拉，不强迫 I2V。
 
-## 文档阅读顺序
+## Lab 与 Production
 
-新接手 AI/Codex：
-1. AGENTS.md
-2. PROJECT_STATE.md
-3. docs/17_TECH_ROUTE_REVALIDATION.md
-4. docs/00_PROJECT_CHARTER.md
-5. docs/01_PRD.md
-6. docs/02_FEASIBILITY.md
-7. docs/03_TECHNICAL_ARCHITECTURE.md
-8. docs/04_SOP.md
-9. docs/05_DIRECTORY_STANDARD.md
-10. docs/06_CHARACTER_SYSTEM.md
-11. docs/08_MODEL_AND_WORKFLOW_MATRIX.md
-12. docs/10_QA_ACCEPTANCE.md
-13. docs/11_ROADMAP.md
-14. docs/13_CODEX_RUNBOOK.md
-15. docs/14_DECISION_LOG.md
-16. docs/15_EP001_PILOT_PLAN.md
-17. docs/stages/ 下对应阶段执行报告
+### Lab
+用于显存、速度、API、OOM、workflow 测试。
+输出必须标记 LAB_ONLY。
 
-## 本地数据原则
-
-Git 只保存：
-- 代码
-- 配置
-- workflow
-- 剧本/分镜/提示词
-- model manifest
-- benchmark
-- QA
-
-不提交：
-- 大模型
-- LoRA 权重
-- cache
-- 批量帧
-- 大视频
-- API key
+### Production
+用于真正短剧。
+必须携带：
+- identity refs
+- costume refs
+- composition ref
+- approved keyframe
+- approval manifest
+- motion tier
 
 ## 当前下一步
 
-本地 Agent 只执行：
-**docs/stages/P0R_REBASE_EXECUTION.md → docs/stages/P1A_WAN22_5B_BASELINE.md**
+**停止继续做泛化 T2V benchmark。**
 
-在 P1A prerequisites 未通过前，**不提交任何图生视频任务**。
+本地 Agent 只执行：
+1. docs/stages/V0_REFERENCE_AND_LOOK_LOCK.md
+2. docs/stages/K1_TEN_COMPOSITION_KEYFRAMES.md
+
+10 张人物静帧通过用户批准后，再执行 T1。
+
+## 文档阅读顺序
+
+1. AGENTS.md
+2. PROJECT_STATE.md
+3. docs/18_ROUTE_CORRECTION_AND_MASTER_PLAN.md
+4. docs/19_ACTIVE_VISUAL_SPEC.md
+5. docs/stages/README.md
+6. docs/06_CHARACTER_SYSTEM.md
+7. docs/15_EP001_PILOT_PLAN.md
+8. 对应 active stage 文件
+9. docs/reviews/2026-10-05-远端审核.md（历史执行审计）
+
+已有 P0R/P1A benchmark 继续保留，作为 Lab 事实，不删除。

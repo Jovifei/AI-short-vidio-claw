@@ -1,0 +1,32 @@
+visual_target_id: ACTIVE_CP_VISUAL_V2
+status: ACTIVE
+updated: 2026-10-05
+
+characters:
+  DAIYU:
+    identity_source: user_approved_visual_references
+    face_priority: highest
+    modernized_face_forbidden: true
+    pointed_v_chin_forbidden: true
+    costume_policy: classic_period_costume_only
+  WUKONG:
+    identity_source: user_approved_visual_references
+    face_priority: highest
+    humanized_face_forbidden: true
+    costume_policy: classic_period_costume_only
+
+scene_policy:
+  modern_daily_life_locations_allowed: true
+  modern_character_clothing_allowed: false
+
+production:
+  text_description_is_not_identity_source: true
+  approved_keyframe_required_for_video: true
+  production_t2v_for_character_creation: false
+  hero_lane_allowed: true
+
+qa:
+  identity_min_score_each: 4
+  modern_apparel_is_hard_reject: true
+  wukong_humanization_is_hard_reject: true
+  daiyu_modernization_is_hard_reject: true
