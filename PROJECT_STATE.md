@@ -1,34 +1,39 @@
 # PROJECT_STATE
 
-更新：2026-10-07。
+更新：2026-10-07。**实体素材FIX2已打包并验证；完整远端创作交付未完成；生产未就绪。**
 
-**状态：REMOTE_DELIVERY_INCOMPLETE / MEDIA_RECOVERY_PREPARED / PRODUCTION_NOT_READY。**
+## 当前接收入口
 
-## 最新交付纠正
+使用 `docs/preproduction/DELIVERY_FIX2_20261007.md` 和 `tasks/media_delivery_fix2.json`。
 
-用户两份本地审计指出：17项素材未落盘，30镜批准表DRAFT，HOME/DAILY及连续性参考有缺口。该结果与“远端已经全部做完”不相符。此前完成宣称撤回；计划和离线测试完成不等于媒体完成。
+实际包名：`AI_short_drama_MEDIA_HANDOFF_FIX2.zip`。大小65,965,628 bytes；SHA256 `e7c90d0d5885445eb650cfefdeb1512cfc316a706b896dbf0cdad3ffe5189f6a`。
 
-本轮真实补交32个图片文件：原V5 17项、旧古装构图来源10张、道具上下文1张、确定性裁片4张。它们通过独立ZIP提供，不在公开Git中。Git pull不能自动把对话附件写到E盘。
+这是对话附件，不是GitHub Release。git pull只拿脚本/清单，不会把PNG传到E盘。旧PR7包名/hash不能拿来验证这个FIX2包；使用 `receive_delivery_fix2.py`，不要混用旧接收脚本。
 
-入口：`docs/preproduction/MEDIA_HANDOFF_CORRECTION_20261007.md`。
+## 这次实际补交
 
-## 已完成与未完成分开
+- 原V5 17项原件，hash与既有registry完全一致。
+- 10张古装构图来源，独立编号，与REFBATCH02分开。
+- 1张手部上下文、4张带父图与裁框的局部选项。
+- 共32个真实PNG和32个不同内容hash；不是32张新生成图片，不是30镜完成图。
+- 32项本地审片页，明确默认未审核；27秒/24fps/648帧来源静态审片，标注非正式产品。
+- 实体导入、重复导入和hash核查均成功；原registry及两份30镜批准表保持不变。
+- 本轮78项离线回归通过（53既有V5+25本轮）。用户Windows/ComfyUI/GPU未在本轮测试。
 
-- 已完成：V5计划/脚本、已有素材恢复、逐字节hash校验、审核页、可重复安全导入工具、80项离线回归。
-- 未完成：EP001 20张精确剧情关键帧；LOOKREEL来源图与计划差异修复；全部服装/状态独立定妆。
-- 未由本轮执行：用户电脑ComfyUI/GPU、LoRA训练、声音模型、正式I2V与成片。
-- 不能代做：针对具体已呈现图片的用户判断。不能把尚未产出图片的责任转成“等用户批准”。
+## 未完成事项不转嫁
 
-实际逐项台账：`tasks/remote_delivery_status_20261007.json`。未完成图片任务负责人保持REMOTE_PREPARATION，不交给本地Agent假装只剩GPU。
+EP00120张精确剧情关键帧仍未交付；LOOKREEL10张来源与计划仍有差异；独立HOME/雨天/受伤等状态图仍不完整。本轮出图尝试未达到独立镜头规格，未计入完成量。
 
-## 本地当前可执行范围
+这些事项仍是REMOTE_PREPARATION。不能再把“还没产出图”表述成“只差用户批准”，也不能交给本地Codex假装只剩GPU。
 
-先接收 `AI_short_drama_media_recovery_20261007.zip`，再运行 receive_media_v5.py --apply / --check，核对32项收据。打开审核页，记录明确的参考意见。仍不批量提交正式视频。
+## 当前Gate
 
-这只解决“原图没进机”和“没有可看审核入口”；没有把生产就绪改成true。
+具体参考与30镜批准未自动提升。两个V5计划仍contract_ok=true、ready=[]、production_ready=false。
 
-## 现有基线全部保留
+本地此时可以接收素材、审核实际图、检查合同；不能据此批量提交正式I2V。
 
-继续使用92793fa中的V5执行合同及1145238中的V3创作知识层；不换Wan2.2-TI2V-5B，不新增模型，不重跑地铁T2V。三张合适获批关键帧可以局部T1；整片仍逐镜验收。
+## 既定路线与历史证据
 
-历史4070S、约32GB RAM、T2V十次成功和一次未批准图I2V是历史Lab证据，不是本轮生产验收。本地审计报告提到的8188运行状态按用户材料记录，本轮没有远程确认E/F盘或服务。
+V2产品路线、V3创作知识、V5执行合同全部保留；不换Wan2.2-TI2V-5B、不加14B、不重跑地铁T2V。三张合适的获批关键帧可以局部T1；完整Look Reel仍逐镜验收。
+
+历史4070S/约32GB RAM/T2V十次成功/一次未批准I2V仅为Lab依据，不代表本轮画质或用户本机已验收。

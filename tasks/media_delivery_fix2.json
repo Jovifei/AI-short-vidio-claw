@@ -1,0 +1,52 @@
+{
+  "delivery_id": "MEDIA_HANDOFF_FIX2_20261007",
+  "base_commit": "611da331e2bcd4c032bf1cf9a82df2d2601d9c32",
+  "active_receipt_doc": "docs/preproduction/DELIVERY_FIX2_20261007.md",
+  "supersedes_receipt_only": "MEDIA_RECOVERY_20261007",
+  "changes_technical_route": false,
+  "package": {
+    "filename": "AI_short_drama_MEDIA_HANDOFF_FIX2.zip",
+    "surface": "conversation_attachment_not_git_release",
+    "bytes": 65965628,
+    "sha256": "e7c90d0d5885445eb650cfefdeb1512cfc316a706b896dbf0cdad3ffe5189f6a",
+    "manifest_sha256": "b39e2546ba2af81cefa9a1c751271b322c7294db4857b406a5ace6ce1bb193ed",
+    "real_png_files": 32,
+    "unique_image_hashes": 32,
+    "original_v5_files": 17,
+    "composition_sources": 10,
+    "prop_context_sources": 1,
+    "deterministic_crop_options": 4,
+    "exact_EP001_keyframes_created": 0,
+    "new_user_approvals": 0,
+    "installed_on_user_pc": "NOT_CONFIRMED"
+  },
+  "verification": {
+    "environment": "assistant container Python 3.13.5",
+    "offline_passed": 78,
+    "original_v5_tests": 53,
+    "new_receiver_tests": 16,
+    "new_feedback_tests": 9,
+    "real_first_import": 32,
+    "real_repeat_import_skipped": 32,
+    "real_check": 32,
+    "all_pngs_decodable": true,
+    "registry_and_both_approval_hashes_unchanged": true,
+    "gallery_cards": 32,
+    "gallery_default_choices": 0,
+    "reference_only_export_passed": true,
+    "user_windows_file_url_tested": false,
+    "source_review_video_frames": 648,
+    "source_review_video_fps": 24,
+    "source_review_video_seconds": 27,
+    "user_gpu_executed": false
+  },
+  "remote_request_complete": false,
+  "production_ready": false,
+  "remaining": [
+    {"project": "EP001", "owner": "REMOTE_PREPARATION", "state": "EXACT_KEYFRAMES_NOT_DELIVERED", "shots": ["SH001", "SH002", "SH003", "SH004", "SH005", "SH006", "SH007", "SH008", "SH009", "SH010", "SH011", "SH012", "SH013", "SH014", "SH015", "SH016", "SH017", "SH018", "SH019", "SH020"]},
+    {"project": "LOOKREEL01", "owner": "REMOTE_PREPARATION", "state": "SOURCES_RECOVERED_NEED_REWORK", "shots": ["COMP01", "COMP02", "COMP03", "COMP04", "COMP05", "COMP06", "COMP07", "COMP08", "COMP09", "COMP10"]},
+    {"project": "COSTUME_STATES", "owner": "REMOTE_PREPARATION", "state": "CROP_OPTIONS_NOT_INDEPENDENT_COMPLETE_SHEETS"}
+  ],
+  "local_authorized_next": ["receive_media", "check_receipt", "review_actual_sources", "offline_contract_validation"],
+  "local_not_ready": ["production_i2v", "batch_EP001_render", "lora_training"]
+}
