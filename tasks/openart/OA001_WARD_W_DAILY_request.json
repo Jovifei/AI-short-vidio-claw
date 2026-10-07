@@ -1,0 +1,66 @@
+{
+  "schema_version": 1,
+  "request_id": "OA001_WARD_W_DAILY",
+  "related_task": "WARD_W_DAILY",
+  "date": "2026-10-07",
+  "base_commit": "126bfac17563a5563f0485070dfbfcefda06c8ba",
+  "record_type": "PRE_SUBMISSION_SNAPSHOT",
+  "status_at_commit": "PREPARED_NOT_SUBMITTED",
+  "owner": "REMOTE_IMAGE_PRODUCTION",
+  "provider": "OpenArt",
+  "model": "nano-banana-2",
+  "mode": "image2image",
+  "parameters": {
+    "imageCount": 1,
+    "aspectRatio": "9:16",
+    "resolution": "1K",
+    "autoEnhancePrompt": false
+  },
+  "credit_quote": {
+    "balance_before_job": 40,
+    "one_job_cost": 20,
+    "quoted_config": "nano-banana-2 image2image, imageCount=1, 1K, 9:16",
+    "automatic_paid_upgrade": false,
+    "automatic_retry": false
+  },
+  "reference": {
+    "registry_asset_id": "REFB02_02",
+    "source_filename": "悟空与黛玉的草坡相伴.png",
+    "sha256": "09da40f244a0e3867627a3d6d6ba1a5d7b4c91110a3ec615fcd0234b35d85db5",
+    "bytes": 2421177,
+    "width": 941,
+    "height": 1672,
+    "provider_import_status": "SUCCESS",
+    "usage": "Only the golden-furred male character on the left: face, cap, fur and daily costume. Exclude the woman, grass and seated pose from the output.",
+    "input_difference_from_S0": "Explicit pilot input override: a real single-scene reference replaces S0 face-only crop input. This job is experimental and cannot satisfy S0 dependency results without separate actual-output and identity review.",
+    "public_cdn_url_omitted": true,
+    "new_reference_approval_granted": false
+  },
+  "prompt": "Create exactly ONE full-length photorealistic character photograph in vertical 9:16 format. This is a single camera image, not a poster, contact sheet, model sheet, collage, storyboard, infographic, or multi-panel layout. No text, labels, numbers, borders, logos or watermarks.\n\nUse ONLY the golden-furred adult male character on the LEFT of the supplied grassy hillside photograph as the appearance reference for the fictional Monkey King, Sun Wukong. Preserve his specific compact face proportions, brow shape, alert brown eyes, short simian nose-and-mouth structure, outward rounded ears, and golden-brown cheek and chin fur. Do not redesign him as a conventionally handsome human man, a gorilla, a lion, or a Western fantasy beast. Do not include the woman from the reference. Do not copy the grassy background or the sitting pose.\n\nShow this one adult character standing alone in a relaxed, nearly frontal three-quarter pose on a plain warm-gray studio floor and background. His head is upright, expression calm and observant; his complete soft cap, body, hands and both feet are visible with comfortable margins. His arms rest slightly away from his sides and both hands are unobstructed and anatomically coherent. No injury, no bandages, no weapons, no other props.\n\nPreserve the reference's understated DAILY classical costume: muted ochre-yellow long sleeves and loose trousers, a stone-gray lightweight short outer wrap, a simple black cloth waist sash, a black neck scarf and soft black cloth boots. Keep the small low gray soft cap with a restrained gold crescent ornament, but no lettering. Add only a small restrained wooden prayer-bead strand, not oversized jewelry. No red-and-gold battle armor, no shoulder spikes, no tall crown, no long plumes, no T-shirt, vest, hoodie, jeans or modern fashion. This is the daily outfit, not the formal armor or a different HOME design.\n\nSoft even daylight from camera-left, believable skin and fine fur, slightly worn woven fabric, natural proportions, moderate depth of field, documentary costume photography rather than glamour advertising. One person, one uninterrupted scene, one finished vertical photograph.",
+  "output_contract": {
+    "count": 1,
+    "aspect_ratio": "9:16",
+    "single_scene": true,
+    "full_body_required": true,
+    "both_hands_uninjured": true,
+    "no_text": true,
+    "identity_review_required": true,
+    "no_collage_crops_as_completion": true
+  },
+  "result": {
+    "history_id": null,
+    "image_path": null,
+    "image_sha256": null,
+    "remote_art_qa": "NOT_YET_AVAILABLE",
+    "user_approved": false,
+    "production_ready": false,
+    "qualified_output_count": 0
+  },
+  "on_completion": {
+    "candidate_target": "local/references/openart/OA001_WARD_W_DAILY/candidate_v001.png",
+    "receipt_target": "tasks/openart/OA001_WARD_W_DAILY_result.json",
+    "record": ["history_id", "actual_model", "actual_image_dimensions", "sha256", "actual_credit_charge_if_returned", "reference_hash", "identity_and_costume_review"],
+    "do_not": ["mark_pending_as_completed", "grant_user_approval", "change_Wan2.2_TI2V_5B", "submit_I2V_before_approved_keyframes"]
+  },
+  "note": "This commit records a prepared request and accepted source import only. It is not a completed image or a full remote-delivery claim. The subsequent OpenArt generation result, if submitted, must be tracked by its returned historyId."
+}
