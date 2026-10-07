@@ -17,7 +17,7 @@ jobs:
         run: python -m pip install 'Pillow==12.3.0'
       - name: Collect the already-generated preview (GET only)
         run: python scripts/collect_openart_result.py --fetch --out local/provider_review/OA001
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
           name: OA001-provider-receipt
           path: local/provider_review/OA001/

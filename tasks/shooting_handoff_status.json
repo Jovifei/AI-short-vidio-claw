@@ -1,0 +1,41 @@
+{
+  "updated": "2026-10-07",
+  "base_commit": "aa0f1c19a7f5804519ac4aff257382d031cb6d6c",
+  "execution_runbook_complete": true,
+  "remote_artwork_complete": false,
+  "local_batch_shooting_authorized_by_this_report": false,
+  "preferred_still_channel": "CHATGPT_IMAGES_REFERENCE_EDIT",
+  "video_engine_unchanged": "Wan2.2-TI2V-5B",
+  "oa001": {
+    "provider_status": "COMPLETED",
+    "actual_preview_received_and_viewed": true,
+    "actual_format": "WEBP",
+    "actual_bytes": 70472,
+    "large_watermark_present": true,
+    "production_qualified": false,
+    "no_new_generation_or_credits_this_turn": true
+  },
+  "verified_in_assistant_container": {
+    "python": "3.13.5",
+    "pillow": "12.3.0",
+    "existing_v5_tests": 53,
+    "new_tests": 31,
+    "total_selected_tests_passed": 84,
+    "original_17_registered_reference_files_present_and_hash_valid": true,
+    "LOOKREEL01_valid_approved_input_shots": 0,
+    "EP001_valid_approved_input_shots": 0,
+    "both_plans_contract_valid": true,
+    "both_whole_project_inputs_ready": false,
+    "user_windows_or_gpu_tested": false,
+    "user_approvals_changed": 0
+  },
+  "next_remote_work": [
+    "Create and deliver clean standalone wardrobe/state images with actual identity review, not watermarked previews.",
+    "Create and deliver exact LOOKREEL01 and EP001 keyframe candidates; source photos and task requests do not count as finished shots.",
+    "Provide actual file hashes, reference bindings and review pack; request specific visual judgment only after real files exist."
+  ],
+  "next_local_allowed": ["safe_git_receive", "source_media_import", "offline_readiness_report", "read_only_runtime_check"],
+  "local_t1_condition": "Three suitable explicitly approved, byte-valid I2V inputs, followed by verified local environment and explicit trial execution.",
+  "full_project_condition": "All planned STILL and I2V keyframes approved and present; runtime/visual acceptance remains separate.",
+  "media_package": "AI_short_drama_MEDIA_READY.zip (existing 26-source package; not new 30-shot production images)"
+}

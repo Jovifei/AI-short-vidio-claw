@@ -2,32 +2,41 @@
 
 更新：2026-10-07。
 
-**S0独立出图执行层完成并测试；合格新关键帧仍未完成；未交接本地GPU生产。**
+**本地执行书与输入检查已补齐；OA001实图已取回审核但有大水印；完整远端图片制作未完成，不能宣布批量开拍。**
 
-## 本轮实质新增
+## 当前入口
 
-`docs/preproduction/SINGLE_IMAGE_EXECUTION.md` 是本轮入口；新增remote_image_packets.py、42个独立请求的生成规则与28项回归。已有V5 53项回归在容器继续通过。
+`START_HERE_LOCAL.md` → `docs/preproduction/LOCAL_SHOOTING_RUNBOOK.md`。
 
-从两份当前V5计划生成42个单图任务（9服装/状态、20剧情、9情侣、四格的4个子图）与4张经过hash核对的真实输入裁片。42是请求数，不是完成的图片数。没有改原30镜计划、批准表、registry或Wan2.2-TI2V-5B。
+状态台账：`tasks/shooting_handoff_status.json`。
 
-输出门禁拒绝横板、小尺寸缩略图、多帧图片，语义质量仍需远端实际看图记录。依赖图的任务、输入和结果hash可追溯；远端QA不等于用户批准。
+## 本轮实际完成
 
-## 实际阻塞与责任
+- 实际取回OpenArt已完成的OA001：WEBP 768×1376，70,472 bytes，SHA256 `0607e4f1cb05757f135415995961d0caecfd702a29fb62da3a1a2b34f5791349`。
+- 确认是单幅完整站姿，但中央OpenArt水印覆盖腰部/前臂，且服装细节有变化；只存供应商审片，未当生产参考，未去水印，未授予批准。
+- 默认静帧通道改回ChatGPT Images参考编辑。Nano Banana仅保留一次单图输出试验；本轮没有新增第三方生成、扣费或升级。
+- 修正整集validator只检查I2V而可能漏掉STILL输入的缺口；新增只读launch_readiness逐镜解码、引用和hash检查。
+- 新增独立T1试拍任务：33/49/81帧副本，不改27秒/60秒计划，不把49帧的2.0417秒试验冒充正式3秒镜头。
+- 助手Python3.13.5/Pillow12.3.0：53项既有V5 +31项新回归，共84项选定离线测试通过。不是用户Windows/GPU测试。
 
-本轮单镜生成仍返回横向项目板，未计入完成；备用HeyGen服务要求付费计划，未升级或继续下单。
+## 当前真实输入状态
 
-新精确关键帧0张；定妆状态图0/9；EP00120镜和LOOKREEL差异修复仍由REMOTE_IMAGE_PRODUCTION负责。没有把尚未产出图改写成“只等用户审批”，没有让本地代做而宣称只剩显卡。
+助手测试目录原17项来源文件存在且hash有效；不意味着用户E盘已收到。两集计划合同有效，但LOOKREEL01获批有效输入0/10、EP001为0/20。所有原审批表保持原样，未代签。
 
-下一批顺序：WARD_W_DAILY、WARD_W_FORMAL、WARD_D_OUTDOOR。需要可按单图参考编辑请求工作的出图通道；通道可用后先验证这三张实物，再扩展。当前不宣称已经后台持续生成。
+OA001 provider COMPLETED不等于人物定妆完成。42个独立生成请求也不等于42张图片。
 
-## 已有真实来源包继续有效
+## 仍由远端负责
 
-`AI_short_drama_MEDIA_READY.zip`仍是当前26项原件来源包，54,937,113 bytes，SHA256 `6259e103d41af94a3c984d6d47a62b65b70579ba7694bede2c338ad3ba3e6906`。入口仍为`docs/preproduction/CURRENT_MEDIA_RECEIPT.md`，复用import_reference_bundle.py，不新建第四个接收器。
+独立无水印服装/状态图、LOOKREEL来源差异修复、EP00120张精确剧情关键帧，以及对应实图hash、bindings与审片尚未全部完成。不得把没产出的图称为“只等用户审批”，不得让本地Codex补图后声称只剩显卡工作。
 
-本轮独立任务包是小型远端执行资料，与媒体来源包用途不同。Git保存代码/配置/记录；真实输入随任务附件。git pull不能凭空恢复对话PNG。
+## 本地当前可以做
 
-## 不变的Gate
+安全接收代码和既有来源包、离线测试、只读检查ComfyUI实际端口/队列/模型/RAM/显存。
 
-两份V5计划和30镜批准表不改；production_ready=false、overall_request_complete=false。三张具体合适获批关键帧可局部T1，完整Look Reel仍逐镜验收。历史Lab不是身份/画质生产验收。
+至少三张合适获批I2V输入有效后才启动局部T1；完整Look Reel仍需10/10图片输入，EP001需20/20。输入齐不等于本机T1、动态画质或最终成片验收通过。
 
-逐阶段状态：`tasks/remote_image_phase_status.json`。
+## 路线不变
+
+V2产品路线、V3创作知识、V5计划/批准/工作流全部保留。视频仍为单ComfyUI+Wan2.2-TI2V-5B、GPU串行；不升级14B，不训练LoRA作为首片前置。三句台词先画外音。
+
+来源接收仍用`AI_short_drama_MEDIA_READY.zip`（26项既有来源，SHA256 `6259e103d41af94a3c984d6d47a62b65b70579ba7694bede2c338ad3ba3e6906`）和既有import_reference_bundle.py；不新建另一个恢复入口。git pull只取文本/脚本，不凭空恢复附件PNG。

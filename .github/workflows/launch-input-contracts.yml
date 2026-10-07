@@ -1,0 +1,20 @@
+name: Launch input contracts
+on:
+  pull_request:
+  push:
+    branches: [main, codex/local-shooting-sop-20261007]
+permissions:
+  contents: read
+jobs:
+  offline:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - run: python -m pip install 'Pillow==12.3.0'
+      - run: python -m unittest discover -s tests -p 'test_preproduction_v5.py' -v
+      - run: python -m unittest discover -s tests -p 'test_launch_readiness.py' -v
+      - name: Actual repository still reports missing media, not a false ready
+        run: python scripts/launch_readiness.py --project all

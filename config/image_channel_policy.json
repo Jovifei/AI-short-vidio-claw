@@ -1,0 +1,41 @@
+{
+  "policy_version": 1,
+  "updated": "2026-10-07",
+  "purpose": "Still-image creation only. Keep Wan2.2-TI2V-5B for local video.",
+  "preferred_channel": "CHATGPT_IMAGES_REFERENCE_EDIT",
+  "input_contract": "One isolated shot/task plus its actual face/costume references; no whole project or infographic board.",
+  "chatgpt_web": {
+    "enabled_for_remote_artwork": true,
+    "execution_mode": "interactive_reference_image_edit",
+    "provider_model_version": "record actual model when exposed; do not invent a hidden model id",
+    "automatic_local_control_via_chatgpt_subscription": "NOT_ASSUMED"
+  },
+  "openai_api": {
+    "automatic_execution": false,
+    "requires_separate_credentials_and_budget": true,
+    "note": "ChatGPT subscription and OpenAI API billing are separate. Do not silently switch the user to paid API use."
+  },
+  "openart": {
+    "role": "OPTIONAL_EXPLICITLY_AUTHORIZED_FALLBACK",
+    "automatic_generation": false,
+    "automatic_retry": false,
+    "automatic_upgrade": false,
+    "last_pilot": "OA001_WARD_W_DAILY",
+    "reason_for_pilot": "Earlier tool calls returned multi-panel boards; test explicit single-image reference editing, not proven model superiority.",
+    "default_for_next_request": false
+  },
+  "handoff_quality": {
+    "clean_master_bytes_required": true,
+    "thumbnail_is_not_master": true,
+    "provider_completed_is_not_art_approval": true,
+    "watermark_must_not_be_silently_removed": true,
+    "one_continuous_scene_required_except_explicit_COMP10_assembly": true,
+    "reference_character_and_costume_matching_required": true,
+    "source_plan_and_file_hashes_required": true
+  },
+  "local_video": {
+    "model": "Wan2.2-TI2V-5B",
+    "concurrency": 1,
+    "replace_model_due_to_image_provider_choice": false
+  }
+}

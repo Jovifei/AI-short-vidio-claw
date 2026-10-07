@@ -10,12 +10,27 @@
   "resource_url": "https://cdn.openart.ai/watermarked_images/UnUC2OldJIjagbwDQQVT/thumbnail_dbe05ed8_1791384899255.webp",
   "provider_reported": {"width": 768, "height": 1376, "format": "png", "resolution": "1K"},
   "content_review": {
-    "status": "PENDING_BYTE_RECEIPT_AND_VISUAL_REVIEW",
-    "reason": "Returned URL is under watermarked_images and has a thumbnail name. Do not call this a clean original based on COMPLETED status.",
-    "actual_file_sha256": null,
-    "actual_file_format": null,
+    "status": "REVIEWED_NOT_PRODUCTION_ACCEPTED",
+    "actual_file_sha256": "0607e4f1cb05757f135415995961d0caecfd702a29fb62da3a1a2b34f5791349",
+    "actual_file_bytes": 70472,
+    "actual_file_format": "WEBP",
+    "actual_width": 768,
+    "actual_height": 1376,
+    "single_portrait_scene": true,
+    "full_body_visible": true,
+    "both_hands_visible": true,
+    "large_visible_openart_watermark": true,
+    "watermark_location": "Central torso/waist and both forearms",
     "identity_accepted": false,
-    "costume_accepted": false
+    "costume_accepted": false,
+    "quality_decision": "REVIEW_PREVIEW_ONLY",
+    "observations": [
+      "Actual independent portrait, not a project board.",
+      "Ochre sleeves/trousers, gray outer layer, low cap, black scarf/sash/boots, bead strand visible.",
+      "Costume ornament, cap and drape differ from grassy source; no exact user visual acceptance inferred.",
+      "Large OpenArt watermark makes returned file unsuitable for production or training. No removal attempted."
+    ],
+    "review_method": "Downloaded the GitHub Actions artifact and visually opened the actual 768x1376 WEBP in assistant container; no user PC/GPU run."
   },
   "request_quote_credits": 20,
   "actual_job_charge": null,
@@ -23,5 +38,13 @@
   "automatic_paid_upgrade": false,
   "approval_status": "NOT_USER_APPROVED",
   "qualified_production_asset": false,
-  "note": "Preserve the earlier pre-submission request snapshot. This is the separate terminal provider receipt, not final art approval. The job result does not make EP001 or LOOKREEL ready."
+  "artifact": {
+    "run_id": 37642626667,
+    "artifact_id": 11493008203,
+    "name": "OA001-provider-receipt",
+    "expires_at": "2026-11-06T15:19:48Z",
+    "source_branch": "codex/oa001-byte-review",
+    "scope": "REVIEW_ONLY_NOT_CANONICAL_ASSET"
+  },
+  "note": "Preserve the earlier pre-submission request snapshot. This is the separate terminal provider receipt and actual preview review, not final art approval. The job result does not make EP001 or LOOKREEL ready."
 }
