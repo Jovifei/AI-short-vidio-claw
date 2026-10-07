@@ -2,19 +2,19 @@
 
 > RTX 4070 Super 12GB + ComfyUI + Codex 的角色一致 AI 竖屏短剧生产线。
 
-## 2026-10-07 实体素材接收修复
+## 当前实际接收入口
 
-先读 [FIX2实际交付与接收](docs/preproduction/DELIVERY_FIX2_20261007.md)。本轮实际提供 `AI_short_drama_MEDIA_HANDOFF_FIX2.zip`，32项原件/来源/裁片；使用 `receive_delivery_fix2.py` 导入。**ZIP需要从对话附件明确传到本机，git pull不会传图片；这不是30镜已完成。**
+本轮已通过对话链接提供 `AI_short_drama_MEDIA_READY.zip`，54,937,113 bytes，26项真实PNG与27秒静态候选审片。先读 [当前素材接收说明](docs/preproduction/CURRENT_MEDIA_RECEIPT.md)。复用已有V5导入器，不再安装新接收版本。新只读registry是 `assets/registry/received_sources_20261007.json`。
 
-当前 `remote_request_complete=false`、`production_ready=false`。逐项状态见 `tasks/media_delivery_fix2.json`。旧PR7接收包的hash不适用于FIX2。
+**不是26张新出图，也不是30镜开拍包。** EP001精确关键帧等仍由远端补齐，`remote_request_complete=false`、`production_ready=false`。Git不含图片，git pull不等于附件传输。历史FIX2说明保留，仅供接收那个特定旧包，不能混用其hash验证本包。
 
 ## 当前状态与唯一入口
 
 人物方向已获“感觉可以，可以继续前期工作”的认可，记录为 `PREPROD_MODEL_DIRECTION_APPROVED`，不是所有新图/权重/三维模型已经最终批准。
 
-**保留V2技术路线、V3创作圣经，补齐V5执行合同。** 提交前main新增的V3摄影、表演、服装、第一季、声音、WBS与Schema均保留，本轮是在其上整合，不覆盖。
+**保留V2技术路线、V3创作圣经和V5执行合同。** 不覆盖已有摄影、表演、服装、第一季、声音、WBS与Schema。
 
-技术执行读 [整合与执行索引](docs/51_PREPRODUCTION_INTEGRATION_V5.md) → [详细任务与Gate](docs/30_PREPRODUCTION_V5_EXECUTION.md) → [本地逐条命令](docs/preproduction/LOCAL_COMMANDS_V5.md)。实体素材接收以本文顶部FIX2入口为准。
+技术执行读 [整合与执行索引](docs/51_PREPRODUCTION_INTEGRATION_V5.md) → [详细任务与Gate](docs/30_PREPRODUCTION_V5_EXECUTION.md) → [本地逐条命令](docs/preproduction/LOCAL_COMMANDS_V5.md)。实体素材接收以本文顶部当前入口为准。
 
 ## 产品路线
 
@@ -32,13 +32,13 @@
 
 ## V5已完成的可检查内容
 
-- 3张角色/组合板、10张最近样图、4张确定性裁片：17项实际素材索引；原件已包括在FIX2中。
+- 3张角色/组合板、10张最近样图、4张确定性裁片：原17项均包括在当前附件。
 - LOOKREEL01：10镜、648帧/24fps=27秒；EP001：20镜、1440帧/24fps=60秒。
 - 两集机器执行计划、逐镜阅读版、未冒签的批准表；EP001台词/环境音表和字幕草稿。
 - 53项既有V5离线回归、逐资产hash、实际I2V连线检查、冻结任务包、默认dry-run提交器。
-- 20秒CPU静态参考审片序列，标注REFERENCE REVIEW / NOT EP001；不是正式剧情成片。
+- CPU静态参考审片不是正式剧情成片。
 
-详细验证见 `docs/preproduction/VALIDATION_V5.md`。没有新跑用户GPU、没有训练LoRA、没有三维拓扑/骨骼产物。
+详细验证见 `docs/preproduction/VALIDATION_V5.md` 与当前接收说明。没有新跑用户GPU，没有训练LoRA，没有三维拓扑/骨骼产物。
 
 ## 保留的V3创作知识
 
@@ -61,10 +61,10 @@ python scripts/validate_production_package.py --project-dir episodes/EP001
 python scripts/validate_production_package.py --project-dir episodes/LOOKREEL01
 ```
 
-`contract_ok=true`不等于素材已获批；目前具体关键帧未批准时`production_ready=false`是正确状态。
+`contract_ok=true`不等于素材已获批；具体关键帧未批准时`production_ready=false`是正确状态。
 
 ## 数据与执行
 
-Git保存文档、代码、计划、hash与批准证据；不上传大模型。原图经FIX2脚本校验后导入local，不覆盖冲突文件、不自动批准。
+Git保存文档、代码、计划、hash与批准证据；不上传大模型。原图经已有V5导入器校验后导入local，不覆盖冲突文件、不自动批准。只读received_sources登记不能替换生产generated_assets登记。
 
 新任务先 `preproduction.py prepare` 冻结输入；不联网。`submit_prepared.py` 默认仅打印命令，明确 `--execute` 才调用已有ComfyUI probe。严格串行，状态未知先查history，不重复POST。
