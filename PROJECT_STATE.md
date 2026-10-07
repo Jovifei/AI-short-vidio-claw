@@ -1,39 +1,33 @@
 # PROJECT_STATE
 
-更新：2026-10-07。**实体素材FIX2已打包并验证；完整远端创作交付未完成；生产未就绪。**
+更新：2026-10-07。**本轮实体来源包已实际提供链接；独立剧情关键帧未完成，生产仍未就绪。**
 
 ## 当前接收入口
 
-使用 `docs/preproduction/DELIVERY_FIX2_20261007.md` 和 `tasks/media_delivery_fix2.json`。
+读 `docs/preproduction/CURRENT_MEDIA_RECEIPT.md` 与 `tasks/current_media_handoff.json`。
 
-实际包名：`AI_short_drama_MEDIA_HANDOFF_FIX2.zip`。大小65,965,628 bytes；SHA256 `e7c90d0d5885445eb650cfefdeb1512cfc316a706b896dbf0cdad3ffe5189f6a`。
+本轮附件：`AI_short_drama_MEDIA_READY.zip`，54,937,113 bytes，SHA256 `6259e103d41af94a3c984d6d47a62b65b70579ba7694bede2c338ad3ba3e6906`。附件已通过可点击链接交付；本机是否收到尚未确认。不要用历史FIX2的hash校验本包。
 
-这是对话附件，不是GitHub Release。git pull只拿脚本/清单，不会把PNG传到E盘。旧PR7包名/hash不能拿来验证这个FIX2包；使用 `receive_delivery_fix2.py`，不要混用旧接收脚本。
+这次不再新增接收器。复用V5 `import_reference_bundle.py` 与新只读 `received_sources_20261007.json`。
 
-## 这次实际补交
+## 实际完成
 
-- 原V5 17项原件，hash与既有registry完全一致。
-- 10张古装构图来源，独立编号，与REFBATCH02分开。
-- 1张手部上下文、4张带父图与裁框的局部选项。
-- 共32个真实PNG和32个不同内容hash；不是32张新生成图片，不是30镜完成图。
-- 32项本地审片页，明确默认未审核；27秒/24fps/648帧来源静态审片，标注非正式产品。
-- 实体导入、重复导入和hash核查均成功；原registry及两份30镜批准表保持不变。
-- 本轮78项离线回归通过（53既有V5+25本轮）。用户Windows/ComfyUI/GPU未在本轮测试。
+- 原V5 17项恢复；另9张旧生成古装来源归档，共26项不同PNG。
+- 十种LOOKREEL构图来源审片，其中花束复用REFB02_09，不重复计数。
+- 实际27秒/24fps/648帧静态候选审片与可打开的HTML反馈页。
+- 实物首次导入26、重复跳过26，26项hash/尺寸/解码通过；原registry及两份批准表没有改变。
+- 容器重跑V5 53项、新增registry测试4项，共57项通过；另8组实物检查通过。没有用户GPU测试。
 
-## 未完成事项不转嫁
+## 未完成不转嫁
 
-EP00120张精确剧情关键帧仍未交付；LOOKREEL10张来源与计划仍有差异；独立HOME/雨天/受伤等状态图仍不完整。本轮出图尝试未达到独立镜头规格，未计入完成量。
+EP00120张精确剧情关键帧、LOOKREEL来源差异修复、独立HOME/雨天/绷带状态参考仍未完整。本輪独立出图未达到单镜格式；拼贴板未计入完成，也未拆小图凑数。
 
-这些事项仍是REMOTE_PREPARATION。不能再把“还没产出图”表述成“只差用户批准”，也不能交给本地Codex假装只剩GPU。
+上述仍属REMOTE_PREPARATION，不表述成“只等用户批准”，不交给本地冒充只剩显卡执行。
 
 ## 当前Gate
 
-具体参考与30镜批准未自动提升。两个V5计划仍contract_ok=true、ready=[]、production_ready=false。
+原两份30镜批准表保持DRAFT；production_ready=false、remote_request_complete=false。本地只接收与核对，不据此批量开拍。
 
-本地此时可以接收素材、审核实际图、检查合同；不能据此批量提交正式I2V。
+## 路线不变
 
-## 既定路线与历史证据
-
-V2产品路线、V3创作知识、V5执行合同全部保留；不换Wan2.2-TI2V-5B、不加14B、不重跑地铁T2V。三张合适的获批关键帧可以局部T1；完整Look Reel仍逐镜验收。
-
-历史4070S/约32GB RAM/T2V十次成功/一次未批准I2V仅为Lab依据，不代表本轮画质或用户本机已验收。
+保留V2产品路线、V3创作知识、V5执行合同；不换Wan2.2-TI2V-5B，不增加14B或新runner。三张具体合适获批关键帧可局部T1；完整Look Reel仍逐镜验收。历史Lab成功不是人物/画质生产验收。

@@ -1,0 +1,42 @@
+{
+  "date": "2026-10-07",
+  "base_commit": "ac026f2d3a2489bf30e82920a71ac06e4482df67",
+  "active_receipt": "docs/preproduction/CURRENT_MEDIA_RECEIPT.md",
+  "changes_video_engine_or_production_plan": false,
+  "new_importer_added": false,
+  "actual_attachment": {
+    "filename": "AI_short_drama_MEDIA_READY.zip",
+    "bytes": 54937113,
+    "sha256": "6259e103d41af94a3c984d6d47a62b65b70579ba7694bede2c338ad3ba3e6906",
+    "surface": "conversation_attachment",
+    "git_contains_media": false,
+    "user_pc_received": "NOT_CONFIRMED",
+    "original_v5_images": 17,
+    "additional_recovered_old_images": 9,
+    "unique_png_files": 26,
+    "lookreel_source_selections": 10,
+    "source_clip_frames": 648,
+    "source_clip_fps": 24,
+    "source_clip_seconds": 27,
+    "source_clip_type": "SILENT_STATIC_CANDIDATE_REVIEW"
+  },
+  "verified": {
+    "runtime": "assistant container Python 3.13.5",
+    "v5_regression_passed": 53,
+    "new_metadata_tests_passed": 4,
+    "real_asset_integration_checks_passed": 8,
+    "first_import": 26,
+    "repeat_import_skipped": 26,
+    "all_hashes_dimensions_decode_pass": true,
+    "production_registry_and_approvals_unchanged": true,
+    "zip_crc_pass": true,
+    "user_gpu_tested": false
+  },
+  "new_exact_EP001_keyframes": 0,
+  "new_approved_keyframes": 0,
+  "generation_outcome": "SINGLE_SHOT_LAYOUT_NOT_MET; COLLAGE_OUTPUTS_EXCLUDED",
+  "production_ready": false,
+  "remote_request_complete": false,
+  "remaining_owner": "REMOTE_PREPARATION",
+  "remaining": ["EP001 20 exact independent keyframes", "LOOKREEL identity/costume/composition corrections", "independent HOME/rain/injury state references"]
+}
