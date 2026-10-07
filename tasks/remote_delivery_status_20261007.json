@@ -1,0 +1,54 @@
+{
+  "date": "2026-10-07",
+  "base_commit": "92793fa4a2b234df232cdabfaeae0a8a0ed6eda7",
+  "request_fulfilled": false,
+  "remote_complete": false,
+  "production_ready": false,
+  "delivery": {
+    "filename": "AI_short_drama_media_recovery_20261007.zip",
+    "delivery_surface": "conversation_attachment_not_git_media",
+    "bytes": 64223971,
+    "sha256": "c558b4c3e209cd5711a4216b098a445433ae0c0c6a4218c37a6ff4a83b5b6428",
+    "real_images": 32,
+    "original_v5_files": 17,
+    "look_composition_sources": 10,
+    "prop_context_source": 1,
+    "deterministic_crop_options": 4,
+    "new_exact_EP001_keyframes": 0,
+    "installed_on_user_pc": "NOT_CONFIRMED",
+    "approvals_changed": 0
+  },
+  "remote_unfinished": {
+    "EP001": {
+      "owner": "REMOTE_PREPARATION",
+      "state": "NOT_DELIVERED_AS_EXACT_PLAN_KEYFRAMES",
+      "shots": ["SH001", "SH002", "SH003", "SH004", "SH005", "SH006", "SH007", "SH008", "SH009", "SH010", "SH011", "SH012", "SH013", "SH014", "SH015", "SH016", "SH017", "SH018", "SH019", "SH020"],
+      "requirements_source": "episodes/EP001/production_plan_v5.json",
+      "assign_to_local_as_gpu_only": false
+    },
+    "LOOKREEL01": {
+      "owner": "REMOTE_PREPARATION",
+      "state": "SOURCE_RECOVERED_NEEDS_SHOT_AND_IDENTITY_REWORK",
+      "shots": ["COMP01", "COMP02", "COMP03", "COMP04", "COMP05", "COMP06", "COMP07", "COMP08", "COMP09", "COMP10"],
+      "requirements_source": "episodes/LOOKREEL01/production_plan_v5.json",
+      "source_pictures_are_not_exact_keyframes": true,
+      "assign_to_local_as_gpu_only": false
+    },
+    "COSTUME_STATES": {
+      "owner": "REMOTE_PREPARATION",
+      "state": "INDEPENDENT_SHEETS_NOT_COMPLETED",
+      "crop_options_are_not_new_model_sheets": true,
+      "no_automatic_formal_to_daily_mapping": true
+    }
+  },
+  "verified": {
+    "python": "3.13.5",
+    "environment": "assistant CPU container, not user PC",
+    "unit_tests_passed": 80,
+    "real_first_import_files": 32,
+    "repeat_import_already_present": 32,
+    "all_32_hashes_verified": true,
+    "original_approval_files_unchanged": true,
+    "user_gpu_executed": false
+  }
+}
