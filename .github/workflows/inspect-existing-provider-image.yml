@@ -1,11 +1,8 @@
 name: Inspect existing provider image
 on:
   workflow_dispatch:
-  pull_request:
-    paths:
-      - scripts/collect_openart_result.py
-      - tasks/openart/OA001_WARD_W_DAILY_result.json
-      - .github/workflows/inspect-existing-provider-image.yml
+  push:
+    branches: [codex/oa001-byte-review]
 permissions:
   contents: read
 jobs:
