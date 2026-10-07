@@ -1,0 +1,27 @@
+{
+  "request_id": "OA001_WARD_W_DAILY",
+  "history_id": "XOYmjAm3VZzPsZPb6ZZS",
+  "related_task": "WARD_W_DAILY",
+  "date_checked": "2026-10-07",
+  "provider": "OpenArt",
+  "capability_id": "nano-banana-2:image2image",
+  "provider_status": "COMPLETED",
+  "resource_id": "P5EW8KJLb0whshiv5mIJ",
+  "resource_url": "https://cdn.openart.ai/watermarked_images/UnUC2OldJIjagbwDQQVT/thumbnail_dbe05ed8_1791384899255.webp",
+  "provider_reported": {"width": 768, "height": 1376, "format": "png", "resolution": "1K"},
+  "content_review": {
+    "status": "PENDING_BYTE_RECEIPT_AND_VISUAL_REVIEW",
+    "reason": "Returned URL is under watermarked_images and has a thumbnail name. Do not call this a clean original based on COMPLETED status.",
+    "actual_file_sha256": null,
+    "actual_file_format": null,
+    "identity_accepted": false,
+    "costume_accepted": false
+  },
+  "request_quote_credits": 20,
+  "actual_job_charge": null,
+  "new_generation_requested_this_turn": false,
+  "automatic_paid_upgrade": false,
+  "approval_status": "NOT_USER_APPROVED",
+  "qualified_production_asset": false,
+  "note": "Preserve the earlier pre-submission request snapshot. This is the separate terminal provider receipt, not final art approval. The job result does not make EP001 or LOOKREEL ready."
+}
