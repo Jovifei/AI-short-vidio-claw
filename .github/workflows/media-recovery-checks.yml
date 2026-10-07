@@ -1,0 +1,19 @@
+name: Media recovery offline checks
+on:
+  pull_request:
+  push:
+    branches: [main]
+permissions:
+  contents: read
+jobs:
+  offline:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+      - name: Python version
+        run: python --version
+      - name: V5 contracts and media recovery tests
+        run: python -m unittest discover -s tests -p 'test_*.py' -v
+      - name: Compile new tools
+        run: python -m py_compile scripts/receive_media_v5.py scripts/apply_media_feedback_v5.py
