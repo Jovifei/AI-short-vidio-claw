@@ -1,21 +1,23 @@
-# 本地执行先读此页
+# 本地先接收这批真实PNG
 
-## 现在可以做什么
+本轮用户明确要求图片直接入Git。**本分支/提交实际有32个PNG**，不再要求聊天附件ZIP或OpenArt账号。
 
-接收素材、离线检查、查看本机ComfyUI环境。**不能把仓库有计划当作当前可批量开拍。** 新增单图OA001已经返回并取到实际文件，但中心有OpenArt大水印，未进入生产参考。
-
-## 唯一详细操作入口
-
-[本地开拍执行书](docs/preproduction/LOCAL_SHOOTING_RUNBOOK.md)：代码/媒体接收 → 全镜输入检查 → 具体批准 → 本地环境探活 → 49帧T1独立试拍 → 81帧生产参数验证 → 27秒Look Reel → 60秒EP001 → 声音与最终验收。
-
-新增图像通道政策：`config/image_channel_policy.json`。默认ChatGPT Images，第三方不自动扣积分；视频仍是本机Wan2.2-TI2V-5B。
+入口：[图片接收与试拍交接](docs/preproduction/GIT_MEDIA_HANDOFF.md)。
 
 ```powershell
-python scripts/launch_readiness.py --project all
+git status --short
+git fetch origin
+git pull --ff-only
+python scripts/sync_repo_media.py --apply
+python scripts/sync_repo_media.py --check
+python scripts/source_pilot.py review
+Start-Process local/production/T1_SOURCE_PILOT/review.html
 ```
 
-报告区分 `t1_input_threshold_met`、`whole_project_inputs_ready` 和未验证的本机运行；静态镜头同样检查。只有缺口真的补齐才推进，不让本地Agent猜脸或替远端补尚未交付的图。
+先保留本地未提交修改，禁止reset/clean。以上不启动GPU，不修改原30镜审批。
 
-测试：`python -m unittest discover -s tests -p "test_launch_readiness.py" -v`。
+三张现有完整源图已备齐供具体审片。独立`T1_SOURCE_PILOT`仅用于49帧同源保真诊断；经用户逐卡确认后可按交接文件prepare及dry-run，再明确执行。不是原LOOKREEL/EP001的精确剧情镜头，也不替代原产品T1验收。
 
-实际进度及责任：`tasks/shooting_handoff_status.json`。本页不是自动生产批准。
+原27秒LOOKREEL、60秒EP001计划和30镜审批不改；仍由远端补精确关键帧/服装状态，不让本地以旧来源凑剧情。
+
+完整正式生产流程仍读`docs/preproduction/LOCAL_SHOOTING_RUNBOOK.md`。旧文档中“git pull不传PNG/必须ZIP”对本次`assets/media/source_library`不再成立；仅此有界例外，权重和批量成片仍不提交。

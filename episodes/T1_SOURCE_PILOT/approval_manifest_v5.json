@@ -1,0 +1,8 @@
+{
+ "schema_version":5,"project_id":"T1_SOURCE_PILOT","visual_target_id":"T1_SOURCE_REVIEW_20261008",
+ "shots":{
+ "SH901":{"characters":["DAIYU","WUKONG"],"status":"DRAFT","approved_by_user":false,"approved_keyframe":null,"sha256":null,"approval_evidence":null,"identity_refs":{},"costume_refs":{}},
+ "SH902":{"characters":["DAIYU","WUKONG"],"status":"DRAFT","approved_by_user":false,"approved_keyframe":null,"sha256":null,"approval_evidence":null,"identity_refs":{},"costume_refs":{}},
+ "SH903":{"characters":["DAIYU","WUKONG"],"status":"DRAFT","approved_by_user":false,"approved_keyframe":null,"sha256":null,"approval_evidence":null,"identity_refs":{},"costume_refs":{}}
+ }
+}
