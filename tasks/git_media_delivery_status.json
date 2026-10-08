@@ -1,0 +1,11 @@
+{
+ "delivery_id":"GIT_MEDIA_20261008","actual_pngs_in_git":32,"png_bytes":54044452,
+ "original_v5_files_restored":17,"additional_existing_composition_sources":9,"new_deterministic_costume_rois":6,
+ "new_generated_episode_frames":0,"local_requires_chat_zip":false,"local_requires_openart_or_cdn":false,"generation_credit_spend_this_turn":0,
+ "original_30_shot_approvals_changed":0,
+ "source_pilot":{"project_id":"T1_SOURCE_PILOT","candidate_shots":["SH901","SH902","SH903"],"status":"REAL_SOURCES_AVAILABLE_WAITING_EXPLICIT_TRIAL_REVIEW","scope":"T1_SOURCE_ONLY","frames_each":49,"fps":24,"counts_as_EP001_or_LOOKREEL_completion":false,"grants_original_production_T1_pass":false},
+ "tests_run_in_assistant_container":{"python":"3.13.5","pillow":"12.3.0","new":34,"legacy_v5":53,"launch":31,"total_selected":118,"actual_32_file_import_and_repeat":true,"test_approval_fixtures_discarded":true},
+ "full_remote_artwork_complete":false,"full_product_ready":false,"user_gpu_run_this_turn":false,
+ "remaining_remote_owned":["EP001:20 exact story keyframes","LOOKREEL:source-to-current-plan rework","independent HOME/RAIN/injured costume-state references"],
+ "handoff_doc":"docs/preproduction/GIT_MEDIA_HANDOFF.md"
+}

@@ -1,70 +1,61 @@
 # AI-short-vidio-claw
 
-> RTX 4070 Super 12GB + ComfyUI + Codex 的角色一致 AI 竖屏短剧生产线。
+角色一致、可追溯的9:16 AI短剧生产线：Windows、RTX4070 Super12GB、ComfyUI、Wan2.2-TI2V-5B。人物方向为古装孙悟空与林黛玉的生活感CP。
 
-## 当前实际接收入口
+## 本轮实际图片已入Git
 
-本轮已通过对话链接提供 `AI_short_drama_MEDIA_READY.zip`，54,937,113 bytes，26项真实PNG与27秒静态候选审片。先读 [当前素材接收说明](docs/preproduction/CURRENT_MEDIA_RECEIPT.md)。复用已有V5导入器，不再安装新接收版本。新只读registry是 `assets/registry/received_sources_20261007.json`。
+**不再只提交文件名和图片链接。** `assets/media/source_library/`有32个真实PNG、约54MB：原V5 17项、9张旧构图来源、6张确定性服装细节裁片。
 
-**不是26张新出图，也不是30镜开拍包。** EP001精确关键帧等仍由远端补齐，`remote_request_complete=false`、`production_ready=false`。Git不含图片，git pull不等于附件传输。历史FIX2说明保留，仅供接收那个特定旧包，不能混用其hash验证本包。
+[查看真实图片目录](assets/media/README.md) · [本地接收与试拍步骤](docs/preproduction/GIT_MEDIA_HANDOFF.md) · [给本地Codex的交接Prompt](docs/preproduction/LOCAL_CODEX_HANDOFF_PROMPT.md)
 
-## 当前状态与唯一入口
-
-人物方向已获“感觉可以，可以继续前期工作”的认可，记录为 `PREPROD_MODEL_DIRECTION_APPROVED`，不是所有新图/权重/三维模型已经最终批准。
-
-**保留V2技术路线、V3创作圣经和V5执行合同。** 不覆盖已有摄影、表演、服装、第一季、声音、WBS与Schema。
-
-技术执行读 [整合与执行索引](docs/51_PREPRODUCTION_INTEGRATION_V5.md) → [详细任务与Gate](docs/30_PREPRODUCTION_V5_EXECUTION.md) → [本地逐条命令](docs/preproduction/LOCAL_COMMANDS_V5.md)。实体素材接收以本文顶部当前入口为准。
-
-## 产品路线
-
-```text
-当前人物方向
- → 真实参考/具体批准/哈希
- → 逐镜关键帧
- → approved-keyframe I2V小样
- → 静动态混剪Look Reel
- → EP001故事片
- → 需要时再优化本地身份训练、配音与自动化
-```
-
-脸、服装、解剖与情侣关系优先于动作和清晰度；场景可以现代，人物保持批准古装；主角生产镜头禁止无参考T2V，Lab结果不能顶替生产Gate。
-
-## V5已完成的可检查内容
-
-- 3张角色/组合板、10张最近样图、4张确定性裁片：原17项均包括在当前附件。
-- LOOKREEL01：10镜、648帧/24fps=27秒；EP001：20镜、1440帧/24fps=60秒。
-- 两集机器执行计划、逐镜阅读版、未冒签的批准表；EP001台词/环境音表和字幕草稿。
-- 53项既有V5离线回归、逐资产hash、实际I2V连线检查、冻结任务包、默认dry-run提交器。
-- CPU静态参考审片不是正式剧情成片。
-
-详细验证见 `docs/preproduction/VALIDATION_V5.md` 与当前接收说明。没有新跑用户GPU，没有训练LoRA，没有三维拓扑/骨骼产物。
-
-## 保留的V3创作知识
-
-| 主题 | 位置 |
-|---|---|
-| 人物Canonical Visual、表情、斗战胜佛FORMAL/DAILY/HOME | `assets/characters/` |
-| 美术/摄影/表演 | `docs/30_VISUAL_DIRECTION_BIBLE.md`、31、32；`assets/style/`、`assets/relationship/` |
-| 第一季十集与资产复用 | `episodes/SEASON01/`、38号文档 |
-| LoRA/声音/后期/QA/恢复 | 33–39号文档 |
-| 分工/准备度/容量/WBS/风险/验收/批次/Prompt/Reference/Agent | 40–50号文档 |
-| Schema与管理工具 | `schemas/`、`project_preflight.py`、`register_asset.py`、`validate_schema.py` |
-
-V3服装alias继续有效。COMP09明确FORMAL，日常市场/公交使用DAILY。具体执行参数只认各集`production_plan_v5.json`，不与旧YAML双写。
-
-## 快速离线检查
+本次用户明确要求直接提交图片，因此有界源图库进入Git；大模型、密钥和批量成片仍不入Git。旧文档“git pull不传PNG/另收ZIP”对这个目录已过时。本地不再需要聊天附件或OpenArt/CDN登录。
 
 ```powershell
-python -m unittest discover -s tests -p "test_*.py" -v
-python scripts/validate_production_package.py --project-dir episodes/EP001
-python scripts/validate_production_package.py --project-dir episodes/LOOKREEL01
+git status --short
+git fetch origin
+git pull --ff-only
+python scripts/sync_repo_media.py --apply
+python scripts/sync_repo_media.py --check
+python scripts/source_pilot.py review
 ```
 
-`contract_ok=true`不等于素材已获批；具体关键帧未批准时`production_ready=false`是正确状态。
+保留本地未提交修改，不reset/clean。初次32项复制，重复跳过，冲突不覆盖，审批不改。完整命令先读START_HERE_LOCAL.md。
 
-## 数据与执行
+## 三张具体源图试拍候选
 
-Git保存文档、代码、计划、hash与批准证据；不上传大模型。原图经已有V5导入器校验后导入local，不覆盖冲突文件、不自动批准。只读received_sources登记不能替换生产generated_assets登记。
+草坡SH901、石阶SH902、山水SH903，原图及人物/服装引用已经到位。`T1_SOURCE_PILOT`是独立的49帧同源保真诊断：用户具体审片批准后，离线prepare、默认dry-run、再明确执行；沿用已有Wan2.2-TI2V-5B。
 
-新任务先 `preproduction.py prepare` 冻结输入；不联网。`submit_prepared.py` 默认仅打印命令，明确 `--execute` 才调用已有ComfyUI probe。严格串行，状态未知先查history，不重复POST。
+**这不是30镜已完成，也不直接授予原产品T1通过。** 不改LOOKREEL01/EP001的计划和审批，不把这些来源图冒名成剧情SH001/COMP09。完整剧情关键帧仍由远端制作。
+
+## 正式目标和路线不变
+
+V0参考/视觉锁定 → K1逐镜批准 → 获批图生产T1验证 → 27秒LOOKREEL01 → 60秒EP001《大圣今天受伤了》 → 声音、后期、最终验收 → 第一季扩展。
+
+V2是产品路线；V3是创作圣经；V5是逐帧计划、资产、审批与执行合同。图像默认ChatGPT Images参考编辑，第三方不自动扣积分；视频不换14B，不把LoRA或三维模型设为首片前置。
+
+## 事实源
+
+- `assets/registry/generated_assets_v5.json`：原17项路径/hash/用途/批准；本轮不改。
+- `assets/media/git_media_manifest.json`：本轮32项Git与local路径/hash。
+- `episodes/LOOKREEL01/production_plan_v5.json`：10镜648帧/24fps=27秒。
+- `episodes/EP001/production_plan_v5.json`：20镜1440帧/24fps=60秒。
+- 对应`approval_manifest_v5.json`：原具体镜头批准，不因source试验而提升。
+- `tasks/git_media_delivery_status.json`：本轮实际交付与剩余工作。
+
+## 保留的创作和工程资料
+
+人物Canonical/斗战胜佛FORMAL、DAILY、HOME：`assets/characters/`。
+摄影/美术/表演：V3 30–32号文档；第一季：`episodes/SEASON01/`。
+声音/训练/后期/QA/资产/恢复：33–39号文档；执行管理：40–50号文档。
+V5总执行：`docs/51_PREPRODUCTION_INTEGRATION_V5.md`和`docs/preproduction/LOCAL_SHOOTING_RUNBOOK.md`。
+
+## 离线测试
+
+```powershell
+python -m unittest discover -s tests -p test_git_media_delivery.py -v
+python -m unittest discover -s tests -p test_preproduction_v5.py -v
+python -m unittest discover -s tests -p test_launch_readiness.py -v
+python scripts/launch_readiness.py --project all
+```
+
+原30镜0/30与`production_ready=false`目前仍可成立：它报告精确剧情输入未批准，不再表示源图传输缺失。测试成功不代替用户Windows/GPU运行和视觉验收。
