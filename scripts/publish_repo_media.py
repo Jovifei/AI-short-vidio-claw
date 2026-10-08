@@ -53,9 +53,12 @@ def build(root, get_bytes=fetch):
     for aid, a in sorted(entries.items(), key=lambda v: ('parent_asset' in v[1], v[0])):
         need(re.fullmatch(r'[A-Z0-9_]+', aid) is not None, 'unsafe asset ID')
         path = a['path']
-        need(path.startswith(('local/references/generated/20261005_v5/', 'local/references/received_sources_20261007/')), 'not an approved local destination')
+        need(path.startswith(('local/references/generated/20261005_v5/', 'local/references/received_sources_20261007/', 'local/references/pilot_source_crops/')), 'not an approved local destination')
         need('..' not in path.split('/') and '\\' not in path and ':' not in path, 'unsafe path')
-        if 'parent_asset' in a:
+        existing = root/f'{MEDIA}/{aid}.png'
+        if existing.is_file() and sha(existing.read_bytes()) == a['sha256']:
+            data = existing.read_bytes()
+        elif 'parent_asset' in a:
             parent = a['parent_asset']; need(parent in images, 'missing crop parent')
             need(sha(images[parent]) == a['parent_sha256'], 'wrong crop parent bytes')
             with Image.open(io.BytesIO(images[parent])) as im:
