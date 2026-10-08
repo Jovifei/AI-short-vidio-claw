@@ -1,0 +1,20 @@
+{
+  "delivery_id": "GIT_MEDIA_20261008",
+  "scope": "One-time source transfer into Git. No image generation or credit-consuming API call. User requested actual PNGs committed; this does not approve them or grant commercial rights.",
+  "sources": {
+    "MODEL_COUPLE": "5dd7edcf4f326dcd4ed57e879e0388e5ceae62ba0814afdfbe7505a9d5ea99d3.png",
+    "MODEL_DAIYU": "b72b6d7002e41cce3a1e19424450310334b7f6770d2b5d6c0dc236b4afd7de60.png",
+    "MODEL_WUKONG": "5321aed7aa7cd0365e5f90d9e55935df616b8478999ffe022d96b730658bdaa7.png",
+    "REFB02_01": "a19d589047d29e04f966bb09d029af8690030ac74357610d7e2e26ea578455b6.png",
+    "REFB02_02": "6fe44fee788b5362262fc19e7d16dfbd26d852576544bab5f717aa7481a7c101.png",
+    "REFB02_03": "67bfd4b1b6bdf68faa7ca5437284aeb69a7c00143016861e70e98a72f56dec16.png",
+    "REFB02_04": "c3f6d2f335c6fddfbab6cec8609fa2f2b4cdced5bcd40581b0fce41822ebe164.png",
+    "REFB02_05": "b2d400952d86bc2749366b7b14c3a42a7c07a9ec92a88ef9fb0dc1114ab2b26f.png",
+    "REFB02_06": "f8dfa39b0ee8183bc9c62573a198875d627897e7231d314eb3e52315f702a238.png",
+    "REFB02_07": "17f9e6aa77f0d8408bc674c54cce9aa35e101594ee992e33c157872ec054bbb6.png",
+    "REFB02_08": "257c117dd532200d033fc9f13fdc1f63f8691143edc2bdec10176a97cf4ac59d.png",
+    "REFB02_09": "79fe740e822f5233c7f4f9199cfcaf84c4b021bc43a7598da0cfa4e65b7fa19a.png",
+    "REFB02_10": "f7553ee254f469c7b19cfe53268265f2ef9befeff2cf92bde438ed7dec5a69af.png"
+  },
+  "additional_sources": {}
+}
