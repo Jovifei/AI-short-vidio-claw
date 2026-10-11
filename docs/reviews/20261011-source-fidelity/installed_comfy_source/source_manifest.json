@@ -1,0 +1,28 @@
+{
+  "upstream": "Comfy-Org/ComfyUI",
+  "commit": "6b747c0428c343e1417219641db93a4fb7cb69ae",
+  "purpose": "READ_ONLY_INSTALLED_SOURCE_AUDIT",
+  "license": "GPL-3.0; see included LICENSE",
+  "copies": [
+    {
+      "path": "comfy_extras/nodes_wan.py",
+      "sha256": "9ae0b3b3c1384b50860b6ebfadff13ae1b012fa5db045c756372aa5979a21985"
+    },
+    {
+      "path": "comfy/latent_formats.py",
+      "sha256": "198f3ae01189fd7dc8e3cba9e38d8b4ebf6438aa48db72d2000013462176d7ec"
+    },
+    {
+      "path": "comfy/samplers.py",
+      "sha256": "2850b400e0c07ddb73429f35e5da3de01952e7ee58f4c050124ea948cbda53ae"
+    },
+    {
+      "path": "comfy/sample.py",
+      "sha256": "d19263c4aa14262bf6f2462ca0256c038396640ee3d88c9a4a5c0c2c219311ee"
+    },
+    {
+      "path": "LICENSE",
+      "sha256": "230184f60bae2feaf244f10a8bac053c8ff33a183bcc365b4d8b876d2b7f4809"
+    }
+  ]
+}
