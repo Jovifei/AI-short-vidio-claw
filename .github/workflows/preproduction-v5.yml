@@ -15,6 +15,8 @@ jobs:
         run: python3 --version
       - name: Offline unit tests (no GPU, no downloads)
         run: python3 -m unittest discover -s tests -p 'test_preproduction_v5.py' -v
+      - name: FID1 latent contract tests
+        run: python3 -m unittest discover -s tests -p '*fid1*unittest.py' -v
       - name: Exact timeline validation
         run: |
           python3 scripts/preproduction.py plan --plan episodes/EP001/production_plan_v5.json
