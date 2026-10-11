@@ -1,9 +1,14 @@
 import unittest
-import torch
+
+try:
+    import torch
+except ImportError:
+    torch = None
 
 from scripts.fid1_wan_latent_anchor_node import merge_source_roi
 
 
+@unittest.skipUnless(torch is not None, "real torch tensor validation requires torch")
 class TestFID1WanLatentAnchorNode(unittest.TestCase):
     def test_preserves_non_roi_generation(self):
         source = torch.zeros((1, 48, 13, 8, 8))
