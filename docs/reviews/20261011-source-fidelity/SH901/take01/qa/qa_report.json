@@ -1,0 +1,64 @@
+{
+  "shot_id": "SH901",
+  "scope": "T1_SOURCE_ONLY",
+  "eligible_for_final_cut": false,
+  "input_path": "workspace:/local/production/T1_SOURCE_PILOT/video/SH901/jobs/take01/T1_SOURCE_PILOT_SH901_09da40f244a0_2026100801.png",
+  "input_sha256": "09da40f244a0e3867627a3d6d6ba1a5d7b4c91110a3ec615fcd0234b35d85db5",
+  "workflow_path": "workspace:/local/production/T1_SOURCE_PILOT/video/SH901/jobs/take01/workflow.json",
+  "workflow_sha256": "2b15d4e6fe9a40756af10d9ddf50e8e782d00aedcf0282a4cdca283c7294e2be",
+  "model": "wan2.2_ti2v_5B_fp16.safetensors",
+  "seed": 2026100801,
+  "prompt_id": "2dad1dd2-a327-4e0b-8b90-4acba56dd486",
+  "video_path": "workspace:/local/production/T1_SOURCE_PILOT/video/SH901/jobs/take01/run_record_media/2026100801_00001_.mp4",
+  "video_sha256": "df4151c5e506cbe3dbf7e7d5804b85e53acd91b30ede1a06f7ced63f0d6b9ebb",
+  "video_bytes": 572841,
+  "width": 480,
+  "height": 832,
+  "frames": 49,
+  "fps": "24/1",
+  "duration_seconds": 2.041667,
+  "elapsed_seconds": 658.392,
+  "resources": {
+    "sample_count": 123,
+    "sample_interval_seconds": 5.0,
+    "nvidia_smi_memory_used_mib_first": 4676,
+    "nvidia_smi_memory_used_mib_peak": 11441,
+    "nvidia_smi_memory_used_mib_last": 4295,
+    "ram_avail_bytes_min": 4100096,
+    "ram_total_bytes": 34164097024,
+    "comfy_vram_free_bytes_min": null,
+    "note": "nvidia-smi memory.used is a sample peak, not a continuous hardware maximum"
+  },
+  "technical_profile_matches": true,
+  "visual_qa": {
+    "state": "CHANGES_REQUIRED",
+    "user_feedback_source": "Jovi group feedback 2026-10-09",
+    "user_quote": "你都模糊的不对了，显然是不对的",
+    "scope": "Output quality feedback, not source-input approval revocation",
+    "issues": [
+      "Insufficient clarity; previous broad resemblance judgment was too lenient"
+    ],
+    "user_visual_acceptance": "NOT_ACCEPTED"
+  },
+  "user_final_approved": false,
+  "submitted_graph_sha256": "8dd90dac3988364aad3191b87ac1d771ca6ae2bd79c82a17ad2b5ff267b8e7f3",
+  "sampling": {
+    "steps": 20,
+    "cfg": 5,
+    "sampler_name": "uni_pc",
+    "scheduler": "simple",
+    "denoise": 1
+  },
+  "prior_assistant_qa": {
+    "state": "ASSISTANT_REVIEWED_CANDIDATE",
+    "method": "All 49 frames contact sheet; full first/middle/last frames; browser playback reached ended at 2.041667s",
+    "identity": "No obvious identity swap or species collapse observed",
+    "costume": "Source main colors, beads, hat and sleeves retained",
+    "anatomy": "Seated poses and chin-supporting hands remain stable; fine fingers limited by 480x832",
+    "motion": "Restrained small body/head motion and environmental drift",
+    "issues": [
+      "Minor face/texture micro-variation; fine hat text and ornaments not an exact-pixel fidelity guarantee"
+    ],
+    "user_visual_acceptance": "PENDING"
+  }
+}

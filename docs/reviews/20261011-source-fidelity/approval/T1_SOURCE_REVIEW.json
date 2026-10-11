@@ -1,0 +1,33 @@
+{
+  "scope": "T1_SOURCE_ONLY",
+  "bundle_sha256": "feeaf35f9e54b643c3955d39a9b0eae60c3f7c5337ed2f69d439a9b01b8a6c42",
+  "items": [
+    {
+      "shot_id": "SH901",
+      "sha256": "09da40f244a0e3867627a3d6d6ba1a5d7b4c91110a3ec615fcd0234b35d85db5",
+      "decision": "approve_trial",
+      "scope": "T1_SOURCE_ONLY",
+      "user_quote": "我批准本卡原图及展示的两个人脸参考、两张服装裁片，仅用于同源保真试拍；不批准EP001、LOOKREEL01或最终定妆。",
+      "notes": "",
+      "recorded_at": "2026-10-09T14:07:32.677Z"
+    },
+    {
+      "shot_id": "SH902",
+      "sha256": "3629ba824aa49640f0f72c7d47b3eb0dddf16b3a9357d2a62c04573efa90e0ad",
+      "decision": "approve_trial",
+      "scope": "T1_SOURCE_ONLY",
+      "user_quote": "我批准本卡原图及展示的两个人脸参考、两张服装裁片，仅用于同源保真试拍；不批准EP001、LOOKREEL01或最终定妆。",
+      "notes": "",
+      "recorded_at": "2026-10-09T14:07:32.678Z"
+    },
+    {
+      "shot_id": "SH903",
+      "sha256": "6476cf1e17105b3589095918a46546baced0db35ef2a6ca235551f4b7002149f",
+      "decision": "approve_trial",
+      "scope": "T1_SOURCE_ONLY",
+      "user_quote": "我批准本卡原图及展示的两个人脸参考、两张服装裁片，仅用于同源保真试拍；不批准EP001、LOOKREEL01或最终定妆。",
+      "notes": "",
+      "recorded_at": "2026-10-09T14:07:32.678Z"
+    }
+  ]
+}

@@ -1,0 +1,64 @@
+{
+  "shot_id": "SH902",
+  "scope": "T1_SOURCE_ONLY",
+  "eligible_for_final_cut": false,
+  "input_path": "workspace:/local/production/T1_SOURCE_PILOT/video/SH902/jobs/take01/T1_SOURCE_PILOT_SH902_3629ba824aa4_2026100802.png",
+  "input_sha256": "3629ba824aa49640f0f72c7d47b3eb0dddf16b3a9357d2a62c04573efa90e0ad",
+  "workflow_path": "workspace:/local/production/T1_SOURCE_PILOT/video/SH902/jobs/take01/workflow.json",
+  "workflow_sha256": "37b7067adfb3870316161d140860cce169a86ab37e979b1b29d6e60b295e5685",
+  "submitted_graph_sha256": "406fe38b3deb720a492abecdfecb3e145cbc6214512d9a78d9f17027e3899207",
+  "sampling": {
+    "steps": 20,
+    "cfg": 5,
+    "sampler_name": "uni_pc",
+    "scheduler": "simple",
+    "denoise": 1
+  },
+  "model": "wan2.2_ti2v_5B_fp16.safetensors",
+  "seed": 2026100802,
+  "prompt_id": "773d7ee5-33d2-4e30-9bb8-8be457ff3469",
+  "video_path": "workspace:/local/production/T1_SOURCE_PILOT/video/SH902/jobs/take01/run_record_media/2026100802_00001_.mp4",
+  "video_sha256": "c219b618b9b78b3aec428b2c7d00ba0f8872b2a006fbdcc5160f2cb0804fd954",
+  "video_bytes": 426510,
+  "width": 480,
+  "height": 832,
+  "frames": 49,
+  "fps": "24/1",
+  "duration_seconds": 2.041667,
+  "elapsed_seconds": 387.572,
+  "resources": {
+    "sample_count": 77,
+    "sample_interval_seconds": 5.0,
+    "nvidia_smi_memory_used_mib_first": 4370,
+    "nvidia_smi_memory_used_mib_peak": 11497,
+    "nvidia_smi_memory_used_mib_last": 4443,
+    "ram_avail_bytes_min": 7577600,
+    "ram_total_bytes": 34164097024,
+    "comfy_vram_free_bytes_min": null,
+    "note": "nvidia-smi memory.used is a sample peak, not a continuous hardware maximum"
+  },
+  "technical_profile_matches": true,
+  "visual_qa": {
+    "state": "CHANGES_REQUIRED",
+    "user_feedback_source": "Jovi group feedback 2026-10-09",
+    "user_quote": "你都模糊的不对了，显然是不对的",
+    "scope": "Output quality feedback, not source-input approval revocation",
+    "issues": [
+      "Insufficient clarity; previous broad resemblance judgment was too lenient"
+    ],
+    "user_visual_acceptance": "NOT_ACCEPTED"
+  },
+  "user_final_approved": false,
+  "prior_assistant_qa": {
+    "state": "ASSISTANT_REVIEWED_CANDIDATE",
+    "method": "All49 contact sheet; first/middle/last full frames; full browser playback ended at 2.041667s",
+    "identity": "No obvious identity swap/species collapse",
+    "costume": "Yellow-gray costume, gold head ornament, beads and pale dress retained",
+    "anatomy": "Chin-supporting hands and foreground/background placement retained; fine fingers limited by resolution",
+    "motion": "Small restrained head/body drift and petals/environment motion",
+    "issues": [
+      "Minor face and ornament texture variation; exact pixels are not preserved"
+    ],
+    "user_visual_acceptance": "PENDING"
+  }
+}

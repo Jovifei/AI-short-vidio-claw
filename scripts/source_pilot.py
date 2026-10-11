@@ -13,11 +13,12 @@ import io
 import json
 import os
 from pathlib import Path
+import re
 import shutil
 import tempfile
 from PIL import Image
 from approve_asset import approve_reference, approve_keyframe
-from preproduction import read_json, write_json, check_plan, prepare, validate_graph, validate_keyframe
+from preproduction import read_json, write_json, check_plan, prepare, validate_graph, validate_keyframe, _unique
 from sync_repo_media import safe, digest, need, verify
 
 PROJECT = 'T1_SOURCE_PILOT'
@@ -132,7 +133,28 @@ def apply_review(root, feedback_path, apply=False):
         lock.unlink(missing_ok=True)
 
 
-def prepare_trial(root,sid,seed,out):
+def load_trial_profile(root, sid, kit, relative):
+    if relative is None:
+        return None
+    need(isinstance(relative,str) and relative.startswith('config/source_fidelity_trials/') and relative.endswith('.json'),
+         'trial profile must be a reviewed config/source_fidelity_trials JSON')
+    raw=safe(root,relative).read_bytes()
+    profile=json.loads(raw.decode('utf-8-sig'),object_pairs_hook=_unique)
+    fields={'schema_version','profile_id','scope','shot_id','input_sha256','width','height','frames','fps',
+            'positive_prompt','negative_prompt','hypothesis'}
+    need(set(profile)==fields,'unexpected/missing trial profile fields; model and sampler overrides are not allowed')
+    need(profile['schema_version']==1 and profile['scope']==SCOPE,'wrong trial profile schema/scope')
+    need(profile['shot_id']==sid and profile['input_sha256']==kit['shots'][sid]['sha256'],'profile belongs to other approved pixels')
+    need(isinstance(profile['profile_id'],str) and re.fullmatch(r'[A-Z0-9_]{1,64}',profile['profile_id']),'invalid profile_id')
+    need(all(type(profile[k]) is int for k in ('width','height','frames','fps')),'profile sizes must be integers')
+    need((profile['width'],profile['height']) in {(480,832),(576,1024)},'only existing 5B candidate size tiers are allowed')
+    need(profile['frames']==49 and profile['fps']==24,'source trial remains 49 frames / 24 fps')
+    need(all(isinstance(profile[k],str) and 0<len(profile[k].strip())<=4096
+             for k in ('positive_prompt','negative_prompt','hypothesis')),'missing/oversized quality experiment text')
+    return profile, hashlib.sha256(raw).hexdigest()
+
+
+def prepare_trial(root,sid,seed,out,trial_profile=None):
     root=Path(root).resolve();kit,plan,_,_=inputs(root)
     pointer=read_json(safe(root,POINTER));need(pointer.get('scope')==SCOPE,'missing scoped review')
     need(pointer['snapshot'].startswith(LOCAL+'/reviews/'),'wrong review path');snap=safe(root,pointer['snapshot'])
@@ -141,22 +163,56 @@ def prepare_trial(root,sid,seed,out):
     choices(root,read_json(snap/'feedback.json'))
     registry=read_json(snap/'registry.json');manifest=read_json(snap/'approval.json')
     for s in kit['shots']:validate_keyframe(root,plan,manifest,registry,s)
-    job=prepare(root,safe(root,kit['plan_path']),snap/'approval.json',snap/'registry.json',safe(root,'workflows/video/production/VID_wan22_5b_i2v_prod_v001.json'),sid,seed,safe(root,out))
-    directory=safe(root,out);graph=read_json(directory/'workflow.json');ids=validate_graph(graph,['DAIYU','WUKONG'])
-    graph[ids['save']]['inputs']['filename_prefix']='video/T1_SOURCE_ONLY/'+sid+'/'+str(seed)
-    write_json(directory/'workflow.json',graph)
-    job.update(purpose=SCOPE,eligible_for_final_cut=False,workflow_sha256=digest(directory/'workflow.json'))
-    for rel in (POINTER,KIT,kit['registry_path'],pointer['snapshot']+'/feedback.json'):
-        job['sources'][rel]=digest(safe(root,rel))
-    write_json(directory/'job.json',job);return {'prepared':True,'submitted':False,'scope':SCOPE,'job_dir':out,'eligible_for_final_cut':False}
+    need(sid in kit['shots'],'unknown source trial shot')
+    loaded_profile=load_trial_profile(root,sid,kit,trial_profile)
+    profile,profile_hash=loaded_profile if loaded_profile else (None,None)
+    destination=safe(root,out)
+    need(destination.is_relative_to(root/LOCAL),'job outside source pilot')
+    need(not destination.exists(),'job directory already exists; choose a new take')
+    stage=None
+    if profile:
+        destination.parent.mkdir(parents=True,exist_ok=True)
+        stage=Path(tempfile.mkdtemp(prefix='.quality-prepare-',dir=destination.parent))
+    directory=stage/'job' if stage else destination
+    try:
+        job=prepare(root,safe(root,kit['plan_path']),snap/'approval.json',snap/'registry.json',safe(root,'workflows/video/production/VID_wan22_5b_i2v_prod_v001.json'),sid,seed,directory)
+        graph=read_json(directory/'workflow.json');ids=validate_graph(graph,['DAIYU','WUKONG'])
+        prefix='video/T1_SOURCE_ONLY/'+sid+'/'
+        if profile:
+            graph[ids['latent']]['inputs'].update(width=profile['width'],height=profile['height'],length=profile['frames'])
+            graph[ids['positive']]['inputs']['text']=profile['positive_prompt']
+            negative=str(graph[ids['sampler']]['inputs']['negative'][0])
+            graph[negative]['inputs']['text']=profile['negative_prompt']
+            graph[ids['video']]['inputs']['fps']=profile['fps']
+            prefix+=profile['profile_id']+'/'
+            validate_graph(graph,['DAIYU','WUKONG'])
+            job['trial_profile']=profile
+            job['original_render_profile']=next(s['i2v'] for s in plan['shots'] if s['shot_id']==sid)
+            need(digest(safe(root,trial_profile))==profile_hash,'trial profile changed during preparation')
+            job['sources'][trial_profile]=profile_hash
+            job['sources']['scripts/source_pilot.py']=digest(safe(root,'scripts/source_pilot.py'))
+        graph[ids['save']]['inputs']['filename_prefix']=prefix+str(seed)
+        write_json(directory/'workflow.json',graph)
+        job.update(purpose=SCOPE,eligible_for_final_cut=False,workflow_sha256=digest(directory/'workflow.json'))
+        for rel in (POINTER,KIT,kit['registry_path'],pointer['snapshot']+'/feedback.json'):
+            job['sources'][rel]=digest(safe(root,rel))
+        write_json(directory/'job.json',job)
+        if stage:
+            need(digest(safe(root,trial_profile))==profile_hash,'trial profile changed before publication')
+            need(not destination.exists(),'concurrent quality job writer')
+            os.rename(directory,destination)
+        return {'prepared':True,'submitted':False,'scope':SCOPE,'job_dir':out,'eligible_for_final_cut':False,
+                'trial_profile':profile['profile_id'] if profile else None}
+    finally:
+        if stage and stage.exists():shutil.rmtree(stage)
 
 
 def main():
-    p=argparse.ArgumentParser(description=__doc__);p.add_argument('command',choices=['review','apply','prepare']);p.add_argument('--root',default='.');p.add_argument('--feedback');p.add_argument('--apply',action='store_true');p.add_argument('--shot');p.add_argument('--seed',type=int,default=2026100801);p.add_argument('--out');a=p.parse_args()
+    p=argparse.ArgumentParser(description=__doc__);p.add_argument('command',choices=['review','apply','prepare']);p.add_argument('--root',default='.');p.add_argument('--feedback');p.add_argument('--apply',action='store_true');p.add_argument('--shot');p.add_argument('--seed',type=int,default=2026100801);p.add_argument('--out');p.add_argument('--trial-profile',help='Reviewed source-only quality experiment config; never changes the original plan');a=p.parse_args()
     try:
         if a.command=='review':r=review(a.root)
         elif a.command=='apply':need(bool(a.feedback),'--feedback required');r=apply_review(a.root,a.feedback,a.apply)
-        else:need(bool(a.shot) and bool(a.out),'--shot and --out required');r=prepare_trial(a.root,a.shot,a.seed,a.out)
+        else:need(bool(a.shot) and bool(a.out),'--shot and --out required');r=prepare_trial(a.root,a.shot,a.seed,a.out,a.trial_profile)
         print(json.dumps(r,ensure_ascii=False,indent=2));return 0
     except Exception as e:print(json.dumps({'ok':False,'error':str(e),'production_ready':False},ensure_ascii=False));return 2
 if __name__=='__main__':raise SystemExit(main())

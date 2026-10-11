@@ -1,0 +1,24 @@
+{
+  "new_profile": {
+    "tests": 9,
+    "passed": 9
+  },
+  "git_media": {
+    "tests": 34,
+    "passed": 33,
+    "skipped": 1,
+    "skip_reason": "Windows symlink permission"
+  },
+  "preproduction_v5": {
+    "tests": 53,
+    "passed": 53
+  },
+  "launch_readiness": {
+    "tests": 31,
+    "passed": 31
+  },
+  "git_diff_check": "PASS",
+  "original_30_approval_diff": "UNCHANGED",
+  "code_review": "PASS after profile parse/hash race repair",
+  "test_fixtures_are_human_approvals": false
+}
