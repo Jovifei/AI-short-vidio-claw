@@ -1,5 +1,15 @@
 # Jovi：新对话的一次完整远端工程阶段
 
+## 2026-10-13 分工更新与本地恢复点
+
+Jovi随后明确：先用同一短剧Project的ChatGPT网页端核验真实执行能力；网页端不能完成完整执行时，由它给方案/复审，E盘Codex负责实施。网页端已确认缺少可运行ComfyUI、Wan 5B权重与GPU，也不能保证Actions运行/修复闭环，并已明确停止PR12写入；它继续作为方案咨询和接收固定SHA后的独立复审方。以下2026-10-11“远端全权实施”段落是历史授权记录，不覆盖这次角色更新。
+
+本地已安全快进到远端当时提交`c2d58e1c40563c8c588ac12e08cd421ea8b4d46f`，分支`codex/fid1-remote-repair`；不含本地`tasks/`笔记。工作开始前独立核对Wan源码快照和当前项目Comfy实例：当前Comfy根`local/comfyui/image/ComfyUI`、Python `local/comfyui/image/venv/Scripts/python.exe`、源码SHA`6b747c0428c343e1417219641db93a4fb7cb69ae`；`nodes_wan.py`、`latent_formats.py`、`samplers.py`、`sample.py`与审核manifest全部逐字节匹配。F盘`F:\ComfyUI`只是模型/桌面数据目录，不是本项目源码根。
+
+**必须遵从的实测mask极性：** ComfyUI `noise_mask=1`表示采样/denoise，`0`表示保持传入latent。Wan22image latent对49视频帧输出`[1,48,13,H,W]`，首时间格mask为0、未来12格mask为1；采样节点把该mask当denoise mask。故source ROI锚定必须使用独立anchor mask A，未来ROI复制首latent后令`D = D_base * (1-A)`；绝不能把A直接当noise_mask。`1`全denoise，`0`全冻结。
+
+本地实现进度与后续证据更新见`tasks/todo.md`、`local/reports/fid1_*`及Obsidian工作笔记`E:/AI_Tools/Obsidian/data/notes-work/codex_prj/AI-short-vidio-claw/11-远端保真修复接力与PR12验收.md`。SH903 take04仍是单次新任务，`visual_accepted`及正式30镜批准不会由单测、ffprobe或试拍自动授予。
+
 这是同一保真修复目标的接续。2026-10-11，Jovi明确要求保留旧聊天和GPT-6极高，在既有短剧Project新开对话。工具核对成功后，一次完成审核、修复、下一阶段规划与实施、完整测试复审及GitHub固定提交；本地在E:/project/AI-short-vidio-claw按最终SHA验证。不交付只审计/辅助helper/待下一步的中间结果。
 
 ## 角色与交付

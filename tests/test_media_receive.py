@@ -67,7 +67,11 @@ class TestMediaReceive(unittest.TestCase):
         self.make_zip(extra=[('PACK/MEDIA_MANIFEST.JSON',self.raw)])
         with self.assertRaises(m.DeliveryError):m.receive(self.root,self.z,True)
     def test_target_symlink_rejected(self):
-        external=self.base/'external';external.mkdir();(self.root/'local').symlink_to(external,target_is_directory=True)
+        external=self.base/'external';external.mkdir()
+        try:
+            (self.root/'local').symlink_to(external,target_is_directory=True)
+        except OSError:
+            self.skipTest('symlink privilege not present')
         with self.assertRaises(m.DeliveryError):m.receive(self.root,self.z,True)
         self.assertFalse(list(external.iterdir()))
     def test_missing_repository_registry(self):

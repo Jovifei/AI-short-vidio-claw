@@ -18,6 +18,47 @@
 
 保留`p1_comfy_probe.py`作为底层工具。正式流程不能用它绕过失败的guard；新入口通过任务包调用它。V5批准表不兼容旧空字段格式，必须显式按真实资产迁移，不自动赋予批准。
 
+## FID1 Wan2.2 source-only trial
+
+FID1 is isolated to `T1_SOURCE_ONLY`. The API graph is `LoadImage -> Wan22ImageToVideoLatent -> FID1WanSourceROIAnchor -> KSampler -> VAEDecode -> Video`; the FID1 validator checks those live ports, frozen ROI JSON, shot profile, sampler budget, source approval/hash and dependency hashes. Ordinary V5 graphs still require their original 12-node path and cannot contain an unprofiled FID1 node.
+
+ComfyUI's `noise_mask` is a **denoise mask**: `1` allows denoising, `0` preserves the latent. The FID1 node copies the encoded first latent into only the profile's future face/head ROIs and sets `denoise_mask = base_mask * (1 - anchor_mask)`. It preserves Wan's first-slot mask and leaves pixels outside the selected ROIs denoisable. It can create static face patches or seams; it does not claim identity locking or visual acceptance.
+
+The shot-specific profiles freeze their approved source hash, size, frame count, fps, seed, ROI rectangles, prompts, and anchor strategy:
+
+- `config/source_fidelity_trials/SH903_FID1_V002.json`: SH903, seed `2026100803`.
+- `config/source_fidelity_trials/SH901_FID1_V001.json`: SH901, seed `2026100801`.
+- `config/source_fidelity_trials/SH902_FID1_V001.json`: SH902, seed `2026100802`.
+
+Local commands for the first trial:
+
+```powershell
+python -m unittest discover -s tests -p 'test_*.py' -v
+python scripts/fid1_deploy.py deploy --root . --comfy-root local/comfyui/image/ComfyUI
+python scripts/fid1_deploy.py verify --root . --comfy-root local/comfyui/image/ComfyUI
+python scripts/source_pilot.py prepare --root . --shot SH903 --seed 2026100803 --out local/production/T1_SOURCE_PILOT/video/SH903/jobs/take04 --trial-profile config/source_fidelity_trials/SH903_FID1_V002.json
+python scripts/submit_prepared.py --root . --job-dir local/production/T1_SOURCE_PILOT/video/SH903/jobs/take04 --url http://127.0.0.1:8188
+python scripts/submit_prepared.py --root . --job-dir local/production/T1_SOURCE_PILOT/video/SH903/jobs/take04 --url http://127.0.0.1:8188 --comfy-root local/comfyui/image/ComfyUI --execute
+python scripts/fid1_qa_report.py --root . --job-dir local/production/T1_SOURCE_PILOT/video/SH903/jobs/take04
+```
+
+The submit command without `--execute` is a dry-run. Execute also verifies the deployed node hash, local ComfyUI `/object_info` socket schema, and an empty queue; the existing probe rechecks the queue before POST. Unknown submissions are reconciled through ComfyUI history and never automatically retried. Each take path is immutable.
+
+`fid1_qa_report.py` runs ffprobe, decodes the full MP4, extracts all 49 frames, makes first/middle/last and all-frame contact sheets, verifies the output hash, and records probe resources. Its `visual_review_template.json` leaves every criterion `PENDING`, the reviewer blank, and the quote blank. After Jovi actually watches the whole clip, copy/fill that template under `local/review_evidence/` with the exact review and preview/apply it with:
+
+```powershell
+python scripts/fid1_qa_report.py record-review --root . --job-dir local/production/T1_SOURCE_PILOT/video/SH903/jobs/take04 --feedback local/review_evidence/FID1_SH903_TAKE04_VISUAL_REVIEW.json
+python scripts/fid1_qa_report.py record-review --root . --job-dir local/production/T1_SOURCE_PILOT/video/SH903/jobs/take04 --feedback local/review_evidence/FID1_SH903_TAKE04_VISUAL_REVIEW.json --apply
+```
+
+SH901 requires a hash-bound Jovi acceptance of SH903 take04; SH902 requires the same for SH901's new take. Source-pilot input approval remains separate from output visual acceptance. All three results remain ineligible for the original LOOKREEL01/EP001 cut.
+
+Rollback only removes the exact FID1 package installed by this tool, and refuses if its bytes or ownership changed:
+
+```powershell
+python scripts/fid1_deploy.py rollback --root . --comfy-root local/comfyui/image/ComfyUI
+```
+
 测试：`python -m unittest discover -s tests -p "test_preproduction_v5.py" -v`，不需要GPU/Pillow。审片序列另需Pillow及FFmpeg。
 
 ## 保留的V3管理工具

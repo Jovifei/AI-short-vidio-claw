@@ -1,25 +1,25 @@
 import json
 from pathlib import Path
-
-PROFILE = Path('config/source_fidelity_trials/SH903_FID1_V001.json')
-
-
-def test_fid1_profile_is_source_trial_only():
-    data = json.loads(PROFILE.read_text(encoding='utf-8'))
-    assert data['scope'] == 'T1_SOURCE_ONLY'
-    assert data['shot_id'] == 'SH903'
-    assert data['frames'] == 49
-    assert data['fps'] == 24
+import unittest
 
 
-def test_fid1_does_not_expand_production_scope():
-    data = json.loads(PROFILE.read_text(encoding='utf-8'))
-    assert 'EP001' not in data['shot_id']
-    assert 'LOOKREEL' not in data['scope']
+ROOT = Path(__file__).resolve().parents[1]
+LEGACY_PROFILE = ROOT / "config/source_fidelity_trials/SH903_FID1_V001.json"
 
 
-def test_fid1_keeps_wan5b_boundary_in_metadata_contract():
-    text = PROFILE.read_text(encoding='utf-8')
-    assert '14B' not in text
-    assert 'LoRA' not in text
-    assert 'platform' not in text.lower()
+class FID1TrialProfileContractTests(unittest.TestCase):
+    def test_legacy_quality_profile_remains_source_trial_only(self):
+        profile = json.loads(LEGACY_PROFILE.read_text(encoding="utf-8"))
+        self.assertEqual(profile["scope"], "T1_SOURCE_ONLY")
+        self.assertEqual(profile["shot_id"], "SH903")
+        self.assertEqual((profile["frames"], profile["fps"]), (49, 24))
+        self.assertNotIn("EP001", profile["shot_id"])
+        self.assertNotIn("LOOKREEL", profile["scope"])
+        text = LEGACY_PROFILE.read_text(encoding="utf-8")
+        self.assertNotIn("14B", text)
+        self.assertNotIn("LoRA", text)
+        self.assertNotIn("platform", text.lower())
+
+
+if __name__ == "__main__":
+    unittest.main()

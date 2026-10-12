@@ -130,6 +130,48 @@ Invoke-RestMethod "$ComfyUrl/object_info/VAELoader"
 
 记录驱动、Comfy版本、GPU空闲、RAM空闲、磁盘、队列；本轮助手CPU/云端检查不能代替这些数值。
 
+## L3.5：FID1 T1_SOURCE_ONLY保真诊断
+
+FID1只针对已批准的源图小样，不是LOOKREEL01/EP001生产镜头。当前接口使用本项目现有ComfyUI源码/venv：`local/comfyui/image/ComfyUI`、`local/comfyui/image/venv/Scripts/python.exe`，模型仍从`F:/ComfyUI/models`映射读取。部署前确认源码依赖哈希与`docs/reviews/20261011-source-fidelity/installed_comfy_source/source_manifest.json`一致；不改Comfy核心文件、不安装新生成平台/权重。
+
+先跑回归和真实CPU张量检查，再安装单一custom node：
+
+```powershell
+python -m unittest discover -s tests -p 'test_*.py' -v
+python scripts/fid1_deploy.py deploy --root . --comfy-root local/comfyui/image/ComfyUI
+python scripts/fid1_deploy.py verify --root . --comfy-root local/comfyui/image/ComfyUI
+```
+
+FID1的Wan2.2 mask语义固定为`1=denoise、0=preserve`。节点从Wan首个编码latent把小ROI复制到未来12个latent时间格，并乘用基准`noise_mask`；首格mask保持为0，ROI外未来区域保持为1。完整ROI、空mask、非有限值、错通道/时间/设备/shape均拒绝。49视频帧必须是13个latent时间格。
+
+确认当前8188实例由这份Comfy源码启动，并且`/object_info/FID1WanSourceROIAnchor`含`LATENT`和ROI JSON输入、`LATENT`输出；实际执行还要求Comfy队列为空。若当前服务未运行，用已核对的本地venv启动单实例，监听仅限环回地址：
+
+```powershell
+Set-Location E:\project\AI-short-vidio-claw\local\comfyui\image\ComfyUI
+..\venv\Scripts\python.exe main.py --listen 127.0.0.1 --port 8188
+```
+
+按SH903 take04先prepare及dry-run：
+
+```powershell
+Set-Location E:\project\AI-short-vidio-claw
+python scripts/source_pilot.py prepare --root . --shot SH903 --seed 2026100803 --out local/production/T1_SOURCE_PILOT/video/SH903/jobs/take04 --trial-profile config/source_fidelity_trials/SH903_FID1_V002.json
+python scripts/submit_prepared.py --root . --job-dir local/production/T1_SOURCE_PILOT/video/SH903/jobs/take04 --url http://127.0.0.1:8188
+```
+
+检查批准快照、输入/ROI/profile/节点依赖/工作流哈希、真实Comfy node schema、GPU与RAM、queue空闲和模型文件；仅在所有门禁通过后才单次加`--comfy-root ... --execute`。出现attempt marker或状态不明时先查Comfy history，绝不自动重POST。
+
+执行成功后运行`python scripts/fid1_qa_report.py --root . --job-dir local/production/T1_SOURCE_PILOT/video/SH903/jobs/take04`。它用ffprobe核对49帧/24fps/576×1024和输出hash，完整解码、生成all49及首中尾图，并记录资源数据。打开`qa/review.html`完整播放，逐项看身份、服装、手足、背景和ROI接缝；报告中的人工审片字段默认PENDING。不能由Comfy运行成功或自动分数写视觉通过。
+
+只有Jovi明确给出这条输出的视觉结论后，才把`qa/visual_review_template.json`复制到`local/review_evidence/FID1_SH903_TAKE04_VISUAL_REVIEW.json`并填写：output SHA必须不变、reviewer=`Jovi`、user_quote为Jovi原话、full_playback/identity/costume/limbs分别填`PASS`或`CHANGES_REQUIRED`/`NOT_RUN`。若确认可继续同源试拍，decision=`ACCEPTED_FOR_NEXT_SOURCE_ONLY_TRIAL`且四项全为PASS；否则填`CHANGES_REQUIRED`。先预览再记录：
+
+```powershell
+python scripts/fid1_qa_report.py record-review --root . --job-dir local/production/T1_SOURCE_PILOT/video/SH903/jobs/take04 --feedback local/review_evidence/FID1_SH903_TAKE04_VISUAL_REVIEW.json
+python scripts/fid1_qa_report.py record-review --root . --job-dir local/production/T1_SOURCE_PILOT/video/SH903/jobs/take04 --feedback local/review_evidence/FID1_SH903_TAKE04_VISUAL_REVIEW.json --apply
+```
+
+只有Jovi明确接受SH903 take04才记录哈希绑定的视觉review，随后才可准备SH901 take02；SH901也获接受后才可准备SH902 take02。原take01和SH903 take02/take03均不覆盖。任何一镜的视觉问题都阻断后续试拍；这三张图仍只属于T1_SOURCE_ONLY。
+
 ## 7. L4：T1试拍，不改27秒/60秒生产时间线
 
 先得到三张合适的获批I2V输入。按本项目先考虑COMP09、COMP04、COMP05/COMP01，由实际合格图决定；不要以抱起/镜像/打闹作为首条。
