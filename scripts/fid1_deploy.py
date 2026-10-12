@@ -86,13 +86,21 @@ def comfy_contract(root: Path, comfy_root: Path):
     for item in copies:
         relative = item.get("path")
         expected = item.get("sha256")
+        expected_lf = item.get("sha256_lf")
         require(isinstance(relative, str) and isinstance(expected, str) and len(expected) == 64,
                 "invalid ComfyUI dependency entry")
+        require(isinstance(expected_lf, str) and len(expected_lf) == 64,
+                "missing LF-normalized ComfyUI dependency hash")
         installed = resolve_comfy_path(comfy_root, Path(relative))
         require(installed.is_file(), "ComfyUI dependency missing: " + relative)
-        actual = file_sha(installed)
-        require(actual == expected, "ComfyUI dependency hash mismatch: " + relative)
-        checked[relative] = actual
+        payload = installed.read_bytes()
+        actual = hashlib.sha256(payload).hexdigest()
+        actual_lf = hashlib.sha256(payload.replace(b"\r\n", b"\n")).hexdigest()
+        require(actual == expected or actual_lf == expected_lf,
+                "ComfyUI dependency hash mismatch: " + relative)
+        # Keep the dependency identity based on the original measured hash so
+        # existing deployment receipts remain valid across line-ending checks.
+        checked[relative] = expected
     return {
         "commit": manifest["commit"],
         "manifest_sha256": file_sha(manifest_path),

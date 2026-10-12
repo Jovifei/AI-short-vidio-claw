@@ -83,6 +83,20 @@ class FID1DeployTests(unittest.TestCase):
                 deploy.deploy(root, comfy)
             self.assertFalse((comfy / "custom_nodes/fid1_wan_roi_anchor").exists())
 
+    def test_comfy_contract_accepts_lf_checkout_of_same_audited_source(self):
+        deploy = self.module()
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp) / "project"
+            root.mkdir()
+            shutil.copytree(ROOT / "scripts", root / "scripts")
+            shutil.copytree(ROOT / "docs/reviews/20261011-source-fidelity/installed_comfy_source", root / "docs/reviews/20261011-source-fidelity/installed_comfy_source")
+            comfy = make_comfy_root(Path(tmp))
+            installed = comfy / "comfy_extras/nodes_wan.py"
+            installed.write_bytes(installed.read_bytes().replace(b"\r\n", b"\n"))
+            contract = deploy.comfy_contract(root, comfy)
+            expected = deploy.read_json(root / deploy.SOURCE_MANIFEST)["copies"][0]["sha256"]
+            self.assertEqual(contract["files"]["comfy_extras/nodes_wan.py"], expected)
+
     def test_rollback_refuses_to_remove_a_modified_node(self):
         deploy = self.module()
         with tempfile.TemporaryDirectory() as tmp:
