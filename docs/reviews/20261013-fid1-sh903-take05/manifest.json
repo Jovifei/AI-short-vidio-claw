@@ -1,0 +1,109 @@
+{
+  "schema_version": 1,
+  "scope": "T1_SOURCE_ONLY",
+  "shot_id": "SH903",
+  "take": "take05",
+  "control_take": "take03",
+  "files": [
+    {
+      "path": "all49.png",
+      "bytes": 3958405,
+      "sha256": "2782ee602844ac351f3617d806788ec33dd60b9ec479ef0d156dd6975cac09bd"
+    },
+    {
+      "path": "first_middle_last.png",
+      "bytes": 884299,
+      "sha256": "90ca928e14e702c696303eeb0c41a8d5ec3f94e776f27d74ca339c662f80b53e"
+    },
+    {
+      "path": "job.json",
+      "bytes": 6417,
+      "sha256": "0e58ebbcf39efe5ab8e179616cbb32fb23079cf5b5da4323f7430a053a6f5b58"
+    },
+    {
+      "path": "job_integrity.json",
+      "bytes": 285,
+      "sha256": "56e90ba31f05b7702f7033d9d8c6a3fd74c021cadc8230e1d6e89d8803a746b2"
+    },
+    {
+      "path": "output.mp4",
+      "bytes": 820667,
+      "sha256": "68bd4119f675628358244d27e81d867ed69983895f4168a6819a330958ef4403"
+    },
+    {
+      "path": "profile.json",
+      "bytes": 1622,
+      "sha256": "cc689afb6edb8be5a05adbc645a46c5bd31cf6aea38671a5ba31979b4fdfc694"
+    },
+    {
+      "path": "qa_report.json",
+      "bytes": 1777,
+      "sha256": "508f5a9e45630cf1d27cbdb527486286588d08a95818e819c9080c9ed27bb62c"
+    },
+    {
+      "path": "README.md",
+      "bytes": 1831,
+      "sha256": "80fc56befeab0e8341e54bb5f52496ff5588c5eaf78fd6d19a1c7c81f9918b5e"
+    },
+    {
+      "path": "review.html",
+      "bytes": 1291,
+      "sha256": "6e9f0a17e05bc436d65a10f3cef987d74395b8837308acdd41c4cf59adb669eb"
+    },
+    {
+      "path": "runtime_evidence.json",
+      "bytes": 2022,
+      "sha256": "2ccff99a6079bbe27b51233110fce130009117283fb25ea9fe18d8005adbb23a"
+    },
+    {
+      "path": "take03_control.json",
+      "bytes": 2793,
+      "sha256": "9b86e3111a9b24df66f166c2f9423e18f25f30eda8572d2991b3de526d13cfd7"
+    },
+    {
+      "path": "take03_control.mp4",
+      "bytes": 819035,
+      "sha256": "433c63b311adee879d011aabbeedce2cc08f192e4395e036d0f2deffba796ed1"
+    },
+    {
+      "path": "take03_control_all49.png",
+      "bytes": 3937550,
+      "sha256": "ac8a97d112225dd4c91be56c292b515a399704c1c830ba5a15d06092098acd73"
+    },
+    {
+      "path": "take03_control_first.png",
+      "bytes": 804777,
+      "sha256": "05bfdf64fb51cc44ca049d74b9e36bba39606530ed9033a67b11ab80fc126812"
+    },
+    {
+      "path": "take03_control_last.png",
+      "bytes": 870540,
+      "sha256": "ee204a33f5637dfb572c6b41ec4c9457c89c15dcf226b538e661a4c264c1270d"
+    },
+    {
+      "path": "take03_control_middle.png",
+      "bytes": 866123,
+      "sha256": "7865bcde07e08e6b311e7047574c2f3d2c21d5fb280fefc1e260f0f436c9b396"
+    },
+    {
+      "path": "take03_control_qa_report.json",
+      "bytes": 3797,
+      "sha256": "db763be4024f7084afbd676a322f81193aaba8eb751079cf70436829765bc124"
+    },
+    {
+      "path": "take03_control_workflow.json",
+      "bytes": 3211,
+      "sha256": "4b6172484b33c3de3998a986118250deced15f9743b036c781d8d29188947d9c"
+    },
+    {
+      "path": "visual_review_template.json",
+      "bytes": 384,
+      "sha256": "75c8b7a616ccec90454737f16481d68c6f6bd7c1a6dfe9f3e6687293acf974ea"
+    },
+    {
+      "path": "workflow.json",
+      "bytes": 3518,
+      "sha256": "aba20f18c03bdec6f9bcd99bc26bef19867810a9bfa7260edde6eab71a199ff2"
+    }
+  ]
+}

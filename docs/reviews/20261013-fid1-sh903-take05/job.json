@@ -1,0 +1,97 @@
+{
+  "schema_version": 5,
+  "status": "PREPARED_NOT_SUBMITTED",
+  "project_id": "T1_SOURCE_PILOT",
+  "shot_id": "SH903",
+  "seed": 2026100803,
+  "input_file": "T1_SOURCE_PILOT_SH903_6476cf1e1710_2026100803.png",
+  "input_sha256": "6476cf1e17105b3589095918a46546baced0db35ef2a6ca235551f4b7002149f",
+  "workflow_sha256": "aba20f18c03bdec6f9bcd99bc26bef19867810a9bfa7260edde6eab71a199ff2",
+  "sources": {
+    "episodes/T1_SOURCE_PILOT/production_plan_v5.json": "25732a3427a7ed8cca0309e6a051a9bf6a5223dedaf4d7a42803886d593906ca",
+    "local/production/T1_SOURCE_PILOT/reviews/8595793296b8834da535fbba20b58b8f4e288a44cbadb33cb0a0c5524ec39622/approval.json": "6fee1294cd7cbe8b0998a6ffcb2d66971dc8b58cc992d8e9f30312c832683692",
+    "local/production/T1_SOURCE_PILOT/reviews/8595793296b8834da535fbba20b58b8f4e288a44cbadb33cb0a0c5524ec39622/registry.json": "3d6d0beb7749502b1f572647f1c6025fbf18c0b90d58edf3f8bbe8d7b92bd31e",
+    "workflows/video/production/VID_wan22_5b_i2v_prod_v001.json": "7ff433edf8ac154d9cd9ec8d8f08af5ac2316bbdcca9f88b64dc5b9f6b9e0c22",
+    "config/source_fidelity_trials/SH903_FID1_V003.json": "cc689afb6edb8be5a05adbc645a46c5bd31cf6aea38671a5ba31979b4fdfc694",
+    "scripts/source_pilot.py": "1e7d3b48166125af35a741b98405521397b4298fc51df4a6c57ce0871b99b313",
+    "scripts/preproduction.py": "0671671219b836293beae324c5275e5ae6cf4ab654b234aabb2a56a4cba8d8d1",
+    "scripts/fid1_wan_latent_anchor_node.py": "45ba213feaaa337eb8dfbea4f730d54432801bd29052a169e9e4c3dd2b2218e9",
+    "scripts/fid1_graph_audit.py": "d869b62f76c056b7342d4d9272ce5f333df4b01683a08d84b693fa9bcb8ed262",
+    "scripts/submit_prepared.py": "3c4317abcafac34923017619d6fdb0c9c69a2c6093c44ecc8c761d00a3c12681",
+    "scripts/p1_comfy_probe.py": "08bc9e26a442b6b512f66fd7aa9d83673bdab629c367d907e7281158a6885768",
+    "scripts/fid1_deploy.py": "5c2ba161e52ea4cf5aa1d1b6da50145e5305295a103d6feece08833cdf372b10",
+    "scripts/fid1_qa_report.py": "31e8351eb0091fc25b4820bfa64e1ea035c00d39adfb4aa985da154d0713d303",
+    "docs/reviews/20261011-source-fidelity/installed_comfy_source/source_manifest.json": "49b00d1287d877af49f84b835808edd998c09538c2227d882bb817c948047c30",
+    "local/production/T1_SOURCE_PILOT/current_review.json": "a4be87f7ad0ca73967a50d257f4ffc5e936b8f650a330305907383e2607b146e",
+    "episodes/T1_SOURCE_PILOT/source_kit.json": "a3b71f31d2dc143f0fbd8ce6399206e21d4ab92b99f8ae9f241d86b9b11a6c74",
+    "episodes/T1_SOURCE_PILOT/reference_registry_candidate.json": "ba28d4a80c1901dde40548ce7cb119fef38a3a4fa3a68af4fbcd36e18f1f4559",
+    "local/production/T1_SOURCE_PILOT/reviews/8595793296b8834da535fbba20b58b8f4e288a44cbadb33cb0a0c5524ec39622/feedback.json": "b42a0c2111303a5bc8a5b74d6334fd60f13e5fcb7cdfcf0de6e1774ef25efd95"
+  },
+  "created_at": "2026-10-12T18:03:04.643740+00:00",
+  "note": "Offline preparation only. No POST /prompt was sent.",
+  "characters": [
+    "DAIYU",
+    "WUKONG"
+  ],
+  "trial_profile": {
+    "schema_version": 2,
+    "profile_id": "SH903_FID1_V003",
+    "scope": "T1_SOURCE_ONLY",
+    "shot_id": "SH903",
+    "input_sha256": "6476cf1e17105b3589095918a46546baced0db35ef2a6ca235551f4b7002149f",
+    "width": 576,
+    "height": 1024,
+    "frames": 49,
+    "fps": 24,
+    "seed": 2026100803,
+    "positive_prompt": "An almost motionless portrait of the same two subjects in the reference image. The red-and-gold dressed monkey subject on the left keeps the original left-facing side profile and gaze. The lavender-dressed woman on the right keeps the original right-facing side profile and gaze. Their joined hands, facial proportions, clothing and ornaments hold the starting pose throughout. Locked camera. Motion limited to faint water ripples and tiny fabric breathing.",
+    "negative_prompt": "head rotation, front-facing face, looking at camera, moving lips, talking, opening mouth, pose changes, hand movement, walking, identity drift, face redesign, facial proportion change, humanized monkey face, species change, costume changes, extra people, extra limbs, deformed hands, unstable background",
+    "hypothesis": "Controlled comparison with SH903 take03. Keep the approved source/hash, positive and negative prompts, seed, size, frames/fps, Wan2.2-TI2V-5B sampler budget and schedule fixed; add only the FID1 approved-face future-ROI anchor. Diagnostic source-only trial; not visual acceptance.",
+    "anchor_strategy": "wan22_first_latent_future_roi_v1",
+    "anchor_rois": [
+      {
+        "id": "WUKONG_FACE",
+        "x0": 0.11,
+        "y0": 0.2,
+        "x1": 0.36,
+        "y1": 0.36
+      },
+      {
+        "id": "DAIYU_FACE",
+        "x0": 0.69,
+        "y0": 0.2,
+        "x1": 0.89,
+        "y1": 0.37
+      }
+    ]
+  },
+  "trial_profile_path": "config/source_fidelity_trials/SH903_FID1_V003.json",
+  "original_render_profile": {
+    "width": 480,
+    "height": 832,
+    "frames": 49,
+    "fps": 24
+  },
+  "fid1_contract": {
+    "schema_version": 1,
+    "strategy": "wan22_first_latent_future_roi_v1",
+    "node_class": "FID1WanSourceROIAnchor",
+    "node_source_sha256": "45ba213feaaa337eb8dfbea4f730d54432801bd29052a169e9e4c3dd2b2218e9",
+    "profile_sha256": "cc689afb6edb8be5a05adbc645a46c5bd31cf6aea38671a5ba31979b4fdfc694",
+    "dependency_sha256": "bf3166ed3a3bbe97d592a0f89b36198dd919e768329a678404196d67eafb787a",
+    "dependency_files": {
+      "scripts/fid1_wan_latent_anchor_node.py": "45ba213feaaa337eb8dfbea4f730d54432801bd29052a169e9e4c3dd2b2218e9",
+      "scripts/fid1_graph_audit.py": "d869b62f76c056b7342d4d9272ce5f333df4b01683a08d84b693fa9bcb8ed262",
+      "scripts/preproduction.py": "0671671219b836293beae324c5275e5ae6cf4ab654b234aabb2a56a4cba8d8d1",
+      "scripts/source_pilot.py": "1e7d3b48166125af35a741b98405521397b4298fc51df4a6c57ce0871b99b313",
+      "scripts/submit_prepared.py": "3c4317abcafac34923017619d6fdb0c9c69a2c6093c44ecc8c761d00a3c12681",
+      "scripts/p1_comfy_probe.py": "08bc9e26a442b6b512f66fd7aa9d83673bdab629c367d907e7281158a6885768",
+      "scripts/fid1_deploy.py": "5c2ba161e52ea4cf5aa1d1b6da50145e5305295a103d6feece08833cdf372b10",
+      "scripts/fid1_qa_report.py": "31e8351eb0091fc25b4820bfa64e1ea035c00d39adfb4aa985da154d0713d303",
+      "docs/reviews/20261011-source-fidelity/installed_comfy_source/source_manifest.json": "49b00d1287d877af49f84b835808edd998c09538c2227d882bb817c948047c30"
+    },
+    "noise_mask_semantics": "1=denoise;0=preserve"
+  },
+  "purpose": "T1_SOURCE_ONLY",
+  "eligible_for_final_cut": false
+}

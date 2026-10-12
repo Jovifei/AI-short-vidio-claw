@@ -1,0 +1,63 @@
+{
+  "scope": "T1_SOURCE_ONLY",
+  "take": "take03",
+  "prompt_id": "97189ca1-9178-4646-a71f-403520fc80b9",
+  "seed": 2026100803,
+  "profile": {
+    "schema_version": 1,
+    "profile_id": "POSE_V2_576",
+    "scope": "T1_SOURCE_ONLY",
+    "shot_id": "SH903",
+    "input_sha256": "6476cf1e17105b3589095918a46546baced0db35ef2a6ca235551f4b7002149f",
+    "width": 576,
+    "height": 1024,
+    "frames": 49,
+    "fps": 24,
+    "positive_prompt": "An almost motionless portrait of the same two subjects in the reference image. The red-and-gold dressed monkey subject on the left keeps the original left-facing side profile and gaze. The lavender-dressed woman on the right keeps the original right-facing side profile and gaze. Their joined hands, facial proportions, clothing and ornaments hold the starting pose throughout. Locked camera. Motion limited to faint water ripples and tiny fabric breathing.",
+    "negative_prompt": "head rotation, front-facing face, looking at camera, moving lips, talking, opening mouth, pose changes, hand movement, walking, identity drift, face redesign, facial proportion change, humanized monkey face, species change, costume changes, extra people, extra limbs, deformed hands, unstable background",
+    "hypothesis": "Compared with POSE_V2_480, only resolution increases to the existing 5B candidate tier. Test whether native pixel and VAE detail improve without identity drift."
+  },
+  "input_path": "E:\\project\\AI-short-vidio-claw\\local\\production\\T1_SOURCE_PILOT\\video\\SH903\\jobs\\take03\\T1_SOURCE_PILOT_SH903_6476cf1e1710_2026100803.png",
+  "input_sha256": "6476cf1e17105b3589095918a46546baced0db35ef2a6ca235551f4b7002149f",
+  "workflow_path": "E:\\project\\AI-short-vidio-claw\\local\\production\\T1_SOURCE_PILOT\\video\\SH903\\jobs\\take03\\workflow.json",
+  "workflow_sha256": "4b6172484b33c3de3998a986118250deced15f9743b036c781d8d29188947d9c",
+  "video_path": "E:\\project\\AI-short-vidio-claw\\local\\production\\T1_SOURCE_PILOT\\video\\SH903\\jobs\\take03\\run_record_media\\2026100803_00001_.mp4",
+  "video_sha256": "433c63b311adee879d011aabbeedce2cc08f192e4395e036d0f2deffba796ed1",
+  "dimensions": [
+    576,
+    1024
+  ],
+  "frames": 49,
+  "fps": "24/1",
+  "duration": 2.041667,
+  "elapsed_seconds": 698.443,
+  "resources": {
+    "sample_count": 139,
+    "sample_interval_seconds": 5.0,
+    "nvidia_smi_memory_used_mib_first": 3997,
+    "nvidia_smi_memory_used_mib_peak": 11613,
+    "nvidia_smi_memory_used_mib_last": 2045,
+    "ram_avail_bytes_min": 13938688,
+    "ram_total_bytes": 34164097024,
+    "comfy_vram_free_bytes_min": null,
+    "note": "nvidia-smi memory.used is a sample peak, not a continuous hardware maximum"
+  },
+  "visual_qa": {
+    "state": "IMPROVED_NOT_ACCEPTED",
+    "method": "All49 contact sheet, equal display face crops, first/middle/last; full playback evidence added after browser verification",
+    "identity": "Wukong remains left-facing with monkey muzzle and fur; avoids take01 pronounced front-facing humanization. Daiyu right-facing pose stable. Fine muzzle/lip and eye details still vary; exact identity not certified",
+    "costume": "Armour/dress color and layout preserved; fine ornament detail varies",
+    "anatomy": "Joined hands remain joined; no obvious extra limbs, fine fingers not certified",
+    "motion": "Subtle water/fabric motion, small head/mouth changes; no take01-scale full head rotation",
+    "clarity": "576 native output improves fine face detail over 480 but remains below approved 941x1672 source",
+    "user_visual_accepted": false,
+    "full_playback": {
+      "ended": true,
+      "time": 2.041667,
+      "width": 576,
+      "height": 1024
+    }
+  },
+  "user_visual_accepted": false,
+  "eligible_for_final_cut": false
+}

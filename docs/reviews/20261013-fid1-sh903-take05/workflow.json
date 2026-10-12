@@ -1,0 +1,157 @@
+{
+  "3": {
+    "class_type": "KSampler",
+    "inputs": {
+      "model": [
+        "48",
+        0
+      ],
+      "positive": [
+        "6",
+        0
+      ],
+      "negative": [
+        "7",
+        0
+      ],
+      "latent_image": [
+        "59",
+        0
+      ],
+      "seed": 2026100803,
+      "steps": 20,
+      "cfg": 5,
+      "sampler_name": "uni_pc",
+      "scheduler": "simple",
+      "denoise": 1
+    }
+  },
+  "6": {
+    "class_type": "CLIPTextEncode",
+    "_meta": {
+      "title": "CLIP Text Encode (Positive Prompt)"
+    },
+    "inputs": {
+      "text": "An almost motionless portrait of the same two subjects in the reference image. The red-and-gold dressed monkey subject on the left keeps the original left-facing side profile and gaze. The lavender-dressed woman on the right keeps the original right-facing side profile and gaze. Their joined hands, facial proportions, clothing and ornaments hold the starting pose throughout. Locked camera. Motion limited to faint water ripples and tiny fabric breathing.",
+      "clip": [
+        "38",
+        0
+      ]
+    }
+  },
+  "7": {
+    "class_type": "CLIPTextEncode",
+    "_meta": {
+      "title": "CLIP Text Encode (Negative Prompt)"
+    },
+    "inputs": {
+      "text": "head rotation, front-facing face, looking at camera, moving lips, talking, opening mouth, pose changes, hand movement, walking, identity drift, face redesign, facial proportion change, humanized monkey face, species change, costume changes, extra people, extra limbs, deformed hands, unstable background",
+      "clip": [
+        "38",
+        0
+      ]
+    }
+  },
+  "8": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "3",
+        0
+      ],
+      "vae": [
+        "39",
+        0
+      ]
+    }
+  },
+  "37": {
+    "class_type": "UNETLoader",
+    "inputs": {
+      "unet_name": "wan2.2_ti2v_5B_fp16.safetensors",
+      "weight_dtype": "default"
+    }
+  },
+  "38": {
+    "class_type": "CLIPLoader",
+    "inputs": {
+      "clip_name": "umt5_xxl_fp8_e4m3fn_scaled.safetensors",
+      "type": "wan",
+      "device": "default"
+    }
+  },
+  "39": {
+    "class_type": "VAELoader",
+    "inputs": {
+      "vae_name": "wan2.2_vae.safetensors"
+    }
+  },
+  "48": {
+    "class_type": "ModelSamplingSD3",
+    "inputs": {
+      "model": [
+        "37",
+        0
+      ],
+      "shift": 8
+    }
+  },
+  "55": {
+    "class_type": "Wan22ImageToVideoLatent",
+    "inputs": {
+      "vae": [
+        "39",
+        0
+      ],
+      "width": 576,
+      "height": 1024,
+      "length": 49,
+      "batch_size": 1,
+      "start_image": [
+        "56",
+        0
+      ]
+    }
+  },
+  "56": {
+    "class_type": "LoadImage",
+    "_meta": {
+      "title": "APPROVED_KEYFRAME_REQUIRED"
+    },
+    "inputs": {
+      "image": "T1_SOURCE_PILOT_SH903_6476cf1e1710_2026100803.png"
+    }
+  },
+  "57": {
+    "class_type": "CreateVideo",
+    "inputs": {
+      "images": [
+        "8",
+        0
+      ],
+      "fps": 24
+    }
+  },
+  "58": {
+    "class_type": "SaveVideo",
+    "inputs": {
+      "video": [
+        "57",
+        0
+      ],
+      "filename_prefix": "video/T1_SOURCE_ONLY/SH903/SH903_FID1_V003/2026100803",
+      "format": "auto",
+      "format.codec": "auto"
+    }
+  },
+  "59": {
+    "class_type": "FID1WanSourceROIAnchor",
+    "inputs": {
+      "latent": [
+        "55",
+        0
+      ],
+      "roi_boxes_json": "[{\"id\":\"WUKONG_FACE\",\"x0\":0.11,\"x1\":0.36,\"y0\":0.2,\"y1\":0.36},{\"id\":\"DAIYU_FACE\",\"x0\":0.69,\"x1\":0.89,\"y0\":0.2,\"y1\":0.37}]"
+    }
+  }
+}
