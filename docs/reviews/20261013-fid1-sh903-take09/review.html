@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>SH903 FID1 take05 / take07 / take09</title>
+<style>
+body{font:16px/1.5 system-ui,sans-serif;max-width:1200px;margin:2rem auto;padding:0 1rem;color:#222}h1,h2{line-height:1.2}.status{padding:1rem;background:#fff4ce;border-left:4px solid #d49b00}video{display:block;width:min(100%,420px);max-height:75vh;background:#111}figure{margin:1rem 0 2rem}img{max-width:100%;height:auto;border:1px solid #ccc}.clips{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1rem}.clip{min-width:0}code{overflow-wrap:anywhere}
+</style>
+</head>
+<body>
+<h1>SH903 FID1 source-only comparison</h1>
+<p class="status"><strong>Jovi review pending.</strong> Runtime and full decode passed for take09. Please watch the full take09 clip and review identity, costume, hands/limbs, motion and scene quality. This page does not record acceptance.</p>
+<p>Same approved source, prompts, seed, Wan2.2-TI2V-5B, dimensions, frame rate, sampler and feather ROI are used across the comparison; take09 changes the timestep-aware anchor path.</p>
+<div class="clips">
+<section class="clip"><h2>take05 · hard ROI</h2><video controls preload="metadata" src="take05_control.mp4"></video><p>Control output: scene-wide mosaic / fixed face tiles.</p></section>
+<section class="clip"><h2>take07 · feather ROI</h2><video controls preload="metadata" src="take07_control.mp4"></video><p>Control output: softer edges, but scene-wide pseudo-text remains.</p></section>
+<section class="clip"><h2>take09 · timestep-aware ROI</h2><video controls preload="metadata" src="take09.mp4"></video><p>Candidate output SHA256: <code>dbdd44e4bdd39b13c8881c3f413a7889f0823c052b99df41698b1d5f61be2db8</code></p></section>
+</div>
+<h2>First / middle / last frames</h2>
+<figure><figcaption>take05 control</figcaption><img src="take05_control_first_middle_last.png" alt="take05 first, middle, last"></figure>
+<figure><figcaption>take07 control</figcaption><img src="take07_control_first_middle_last.png" alt="take07 first, middle, last"></figure>
+<figure><figcaption>take09 candidate</figcaption><img src="take09_first_middle_last.png" alt="take09 first, middle, last"></figure>
+<h2>All 49 frames</h2>
+<figure><figcaption>take05 control</figcaption><img src="take05_control_all49.png" alt="take05 all frames"></figure>
+<figure><figcaption>take07 control</figcaption><img src="take07_control_all49.png" alt="take07 all frames"></figure>
+<figure><figcaption>take09 candidate</figcaption><img src="take09_all49.png" alt="take09 all frames"></figure>
+</body>
+</html>

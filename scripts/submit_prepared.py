@@ -33,8 +33,8 @@ def validate_fid1_job(root, directory, job, graph):
     require(job.get('project_id') == source_pilot.PROJECT and job.get('purpose') == source_pilot.SCOPE
             and job.get('eligible_for_final_cut') is False,
             'FID1 jobs must remain isolated source-only trials')
-    require(contract.get('strategy') == 'wan22_first_latent_future_roi_v1'
-            and contract.get('node_class') == 'FID1WanSourceROIAnchor'
+    expected_node_class = source_pilot.FID1_NODE_CLASS_BY_STRATEGY.get(contract.get('strategy'))
+    require(expected_node_class is not None and contract.get('node_class') == expected_node_class
             and contract.get('noise_mask_semantics') == '1=denoise;0=preserve',
             'FID1 execution contract changed')
 
@@ -59,7 +59,8 @@ def validate_fid1_job(root, directory, job, graph):
     require(isinstance(profile_path, str) and profile_path.startswith('config/source_fidelity_trials/'),
             'FID1 trial profile path is missing or outside the trial config')
     profile, profile_hash = source_pilot.load_trial_profile(root, shot_id, kit, profile_path)
-    require(profile.get('anchor_strategy') == 'wan22_first_latent_future_roi_v1', 'FID1 profile has no supported anchor')
+    require(profile.get('anchor_strategy') in source_pilot.FID1_NODE_CLASS_BY_STRATEGY,
+            'FID1 profile has no supported anchor')
     require(job.get('trial_profile') == profile, 'prepared FID1 profile differs from its current file')
     require(job.get('seed') == profile.get('seed'), 'FID1 seed differs from the shot-specific frozen profile')
     require(job.get('sources', {}).get(profile_path) == profile_hash
@@ -89,16 +90,32 @@ def validate_fid1_job(root, directory, job, graph):
     return True
 
 
-def validate_fid1_object_info(payload):
+def validate_fid1_object_info(payload, node_class='FID1WanSourceROIAnchor'):
     require(isinstance(payload, dict), 'ComfyUI object_info response is not an object')
-    info = payload.get('FID1WanSourceROIAnchor')
-    require(isinstance(info, dict), 'FID1WanSourceROIAnchor is not loaded in the running ComfyUI')
+    require(node_class in {'FID1WanSourceROIAnchor', 'FID1WanTimestepAwareROIAnchor'},
+            'unsupported FID1 ComfyUI node class')
+    info = payload.get(node_class)
+    require(isinstance(info, dict), node_class + ' is not loaded in the running ComfyUI')
     required = (info.get('input') or {}).get('required')
-    require(isinstance(required, dict)
+    if node_class == 'FID1WanSourceROIAnchor':
+        valid_inputs = (
+            isinstance(required, dict)
+            and set(required) == {'latent', 'roi_boxes_json'}
             and (required.get('latent') or [None])[0] == 'LATENT'
-            and (required.get('roi_boxes_json') or [None])[0] == 'STRING',
-            'loaded FID1 node sockets do not match the prepared graph')
-    require(info.get('output') == ['LATENT'], 'loaded FID1 node output does not match the prepared graph')
+            and (required.get('roi_boxes_json') or [None])[0] == 'STRING'
+        )
+        expected_outputs = ['LATENT']
+    else:
+        valid_inputs = (
+            isinstance(required, dict)
+            and set(required) == {'model', 'latent', 'roi_boxes_json'}
+            and (required.get('model') or [None])[0] == 'MODEL'
+            and (required.get('latent') or [None])[0] == 'LATENT'
+            and (required.get('roi_boxes_json') or [None])[0] == 'STRING'
+        )
+        expected_outputs = ['MODEL', 'LATENT']
+    require(valid_inputs, 'loaded FID1 node sockets do not match the prepared graph')
+    require(info.get('output') == expected_outputs, 'loaded FID1 node output does not match the prepared graph')
     return True
 
 
@@ -118,6 +135,9 @@ def validate_fid1_runtime(root, comfy_root, job, url):
             and not parsed.query and not parsed.fragment,
             'FID1 runtime checks are restricted to a local ComfyUI endpoint')
     contract = job.get('fid1_contract') or {}
+    node_class = contract.get('node_class')
+    require(node_class in {'FID1WanSourceROIAnchor', 'FID1WanTimestepAwareROIAnchor'},
+            'FID1 job node class is missing or unsupported')
     try:
         from .fid1_deploy import verify_installed
     except ImportError:
@@ -131,15 +151,15 @@ def validate_fid1_runtime(root, comfy_root, job, url):
     except Exception as exc:
         raise ValueError(f'cannot verify that the ComfyUI queue is empty: {exc}') from exc
     queue_state = validate_fid1_queue(queue)
-    request = Request(url.rstrip('/') + '/object_info/FID1WanSourceROIAnchor', headers={'Accept': 'application/json'})
+    request = Request(url.rstrip('/') + '/object_info/' + node_class, headers={'Accept': 'application/json'})
     try:
         with urlopen(request, timeout=15) as response:
             require(response.status == 200, 'ComfyUI FID1 object_info request failed')
             payload = json.loads(response.read(1024 * 1024).decode('utf-8'))
     except Exception as exc:
         raise ValueError(f'cannot verify the loaded FID1 ComfyUI node: {exc}') from exc
-    validate_fid1_object_info(payload)
-    return {'installed_node_sha256': contract['node_source_sha256'], 'loaded_node_class': 'FID1WanSourceROIAnchor',
+    validate_fid1_object_info(payload, node_class)
+    return {'installed_node_sha256': contract['node_source_sha256'], 'loaded_node_class': node_class,
             'queue': queue_state}
 
 
@@ -157,7 +177,7 @@ def job_command(root, directory, url):
     checked_asset(directory, job['input_file'], job['input_sha256'])
     checked_asset(directory, 'workflow.json', job['workflow_sha256'])
     graph = read_json(directory / 'workflow.json')
-    has_fid1_node = any(node.get('class_type') == 'FID1WanSourceROIAnchor' for node in graph.values())
+    has_fid1_node = any(node.get('class_type') in {'FID1WanSourceROIAnchor', 'FID1WanTimestepAwareROIAnchor'} for node in graph.values())
     if job.get('fid1_contract') is not None:
         validate_fid1_job(root, directory, job, graph)
     else:

@@ -22,6 +22,7 @@ REPORT = "local/reports/fid1_deployment.json"
 PLUGIN_DIR = Path("custom_nodes/fid1_wan_roi_anchor")
 PLUGIN_FILE = "__init__.py"
 PLUGIN_MANIFEST = "FID1_DEPLOYMENT.json"
+FID1_NODE_CLASSES = ["FID1WanSourceROIAnchor", "FID1WanTimestepAwareROIAnchor"]
 EXPECTED_COMFY_COMMIT = "6b747c0428c343e1417219641db93a4fb7cb69ae"
 
 
@@ -135,7 +136,8 @@ def deploy(root: Path | str, comfy_root: Path | str):
         require_safe_owned_file(target_dir, package_manifest_path, "FID1 ownership manifest")
         require_safe_owned_file(target_dir, installed_path, "FID1 installed node")
         installed_manifest = read_json(package_manifest_path)
-        require(installed_manifest.get("schema_version") == 1
+        require(installed_manifest.get("schema_version") == 2
+                and installed_manifest.get("node_classes") == FID1_NODE_CLASSES
                 and installed_manifest.get("source_rel") == NODE_SOURCE
                 and installed_manifest.get("comfy_commit") == contract["commit"],
                 "existing FID1 plugin ownership manifest conflicts")
@@ -167,8 +169,8 @@ def deploy(root: Path | str, comfy_root: Path | str):
         installed_hash = file_sha(installed_path)
         require(installed_hash == source_hash, "installed FID1 node failed byte verification")
         installed_manifest = {
-            "schema_version": 1,
-            "node_class": "FID1WanSourceROIAnchor",
+            "schema_version": 2,
+            "node_classes": FID1_NODE_CLASSES,
             "source_rel": NODE_SOURCE,
             "source_sha256": source_hash,
             "installed_sha256": installed_hash,
@@ -215,7 +217,8 @@ def verify_installed(root: Path | str, comfy_root: Path | str, expected_node_sha
             "FID1 deployment belongs to another ComfyUI root")
     require(package_manifest.get("source_sha256") == actual == package_manifest.get("installed_sha256"),
             "installed FID1 node source hash mismatch")
-    require(package_manifest.get("node_class") == "FID1WanSourceROIAnchor"
+    require(package_manifest.get("schema_version") == 2
+            and package_manifest.get("node_classes") == FID1_NODE_CLASSES
             and package_manifest.get("source_rel") == NODE_SOURCE
             and package_manifest.get("comfy_commit") == contract["commit"]
             and package_manifest.get("dependency_sha256") == contract["dependency_sha256"],

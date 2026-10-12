@@ -1,0 +1,78 @@
+{
+  "schema_version": 1,
+  "scope": "T1_SOURCE_ONLY",
+  "shot_id": "SH903",
+  "candidate_take": "take09",
+  "control_takes": [
+    {
+      "take": "take05",
+      "profile": "SH903_FID1_V003",
+      "output_sha256": "68bd4119f675628358244d27e81d867ed69983895f4168a6819a330958ef4403",
+      "visual_result": "CHANGES_REQUIRED"
+    },
+    {
+      "take": "take07",
+      "profile": "SH903_FID1_V004",
+      "output_sha256": "f802325c659be0c72861c6360527818f9aa43ce356ef323f7c2b817bfd437062",
+      "visual_result": "CHANGES_REQUIRED"
+    }
+  ],
+  "candidate": {
+    "profile_id": "SH903_FID1_V005",
+    "strategy": "wan22_timestep_aware_future_roi_v2",
+    "input_sha256": "6476cf1e17105b3589095918a46546baced0db35ef2a6ca235551f4b7002149f",
+    "positive_prompt_sha256": "7106401db65e1bb21492ca63605e29f640530a3550ad9fbd681546c1451e21b4",
+    "negative_prompt_sha256": "06092ec35f26ee16ef3a0b9584133d1483390ca5a2ea1c5b334e8f726d70a3d9",
+    "seed": 2026100803,
+    "model": "Wan2.2-TI2V-5B",
+    "width": 576,
+    "height": 1024,
+    "frames": 49,
+    "fps": 24,
+    "sampler": {
+      "steps": 20,
+      "cfg": 5,
+      "sampler_name": "uni_pc",
+      "scheduler": "simple",
+      "denoise": 1
+    },
+    "roi_boxes": [
+      {
+        "id": "WUKONG_FACE",
+        "x0": 0.11,
+        "y0": 0.2,
+        "x1": 0.36,
+        "y1": 0.36,
+        "feather_latent": 4
+      },
+      {
+        "id": "DAIYU_FACE",
+        "x0": 0.69,
+        "y0": 0.2,
+        "x1": 0.89,
+        "y1": 0.37,
+        "feather_latent": 4
+      }
+    ],
+    "prompt_id": "1edc8f9a-e40b-445e-b67e-a969a83d53d6",
+    "elapsed_seconds": 719.809,
+    "peak_vram_mib": 11808,
+    "min_ram_available_bytes": 10821632,
+    "output_sha256": "dbdd44e4bdd39b13c8881c3f413a7889f0823c052b99df41698b1d5f61be2db8",
+    "media_contract_ok": true,
+    "full_decode": "PASS"
+  },
+  "preliminary_contact_sheet_scan": "All 49 frames keep a coherent scene and no scene-wide mosaic is apparent. This is not human visual acceptance.",
+  "visual_review": {
+    "full_playback": "PENDING",
+    "identity": "PENDING",
+    "costume": "PENDING",
+    "limbs": "PENDING",
+    "decision": "PENDING",
+    "reviewer": null,
+    "reviewed_at": null,
+    "user_quote": null
+  },
+  "next_shot_gate": "WAITING_JOVI_VISUAL_ACCEPTANCE",
+  "take08_failure": "See take08_attempt_summary.json. It failed at KSampler before producing video and was not retried."
+}

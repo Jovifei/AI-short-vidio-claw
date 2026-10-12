@@ -5,6 +5,28 @@ import submit_prepared
 
 
 class FID1SubmitRuntimeTests(unittest.TestCase):
+    def test_comfy_object_info_validates_timestep_aware_model_and_latent_ports(self):
+        validate = submit_prepared.validate_fid1_object_info
+        payload = {
+            "FID1WanTimestepAwareROIAnchor": {
+                "input": {"required": {
+                    "model": ["MODEL"],
+                    "latent": ["LATENT"],
+                    "roi_boxes_json": ["STRING", {"default": "[]"}],
+                }},
+                "output": ["MODEL", "LATENT"],
+            }
+        }
+        try:
+            self.assertTrue(validate(payload, "FID1WanTimestepAwareROIAnchor"))
+        except TypeError as exc:
+            self.fail(f"runtime schema validator must select the contract's node class: {exc}")
+        with self.assertRaisesRegex(ValueError, "MODEL|schema|socket|FID1"):
+            validate({"FID1WanTimestepAwareROIAnchor": {
+                "input": {"required": {"model": ["IMAGE"], "latent": ["LATENT"], "roi_boxes_json": ["STRING"]}},
+                "output": ["MODEL", "LATENT"],
+            }}, "FID1WanTimestepAwareROIAnchor")
+
     def test_comfy_object_info_must_expose_the_real_fid1_node_contract(self):
         validate = getattr(submit_prepared, "validate_fid1_object_info", None)
         self.assertTrue(callable(validate), "FID1 execute must verify the loaded ComfyUI node schema")

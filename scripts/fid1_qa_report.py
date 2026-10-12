@@ -17,15 +17,24 @@ import tempfile
 from PIL import Image, ImageDraw, ImageOps
 
 try:
-    from .preproduction import read_json, require, write_json
+    from .preproduction import FID1_NODE_CLASS_BY_STRATEGY, read_json, require, write_json
     from .sync_repo_media import safe as safe_project_path
 except ImportError:
-    from preproduction import read_json, require, write_json
+    from preproduction import FID1_NODE_CLASS_BY_STRATEGY, read_json, require, write_json
     from sync_repo_media import safe as safe_project_path
 
 
 SCOPE = "T1_SOURCE_ONLY"
 PROJECT = "T1_SOURCE_PILOT"
+
+
+def validate_fid1_job_contract(job):
+    contract = job.get("fid1_contract") if isinstance(job, dict) else None
+    require(isinstance(contract, dict), "FID1 QA job contract is missing")
+    expected_node = FID1_NODE_CLASS_BY_STRATEGY.get(contract.get("strategy"))
+    require(expected_node is not None and contract.get("node_class") == expected_node,
+            "FID1 QA strategy and node class do not match")
+    return True
 
 
 def sha256_file(path: Path) -> str:
@@ -250,8 +259,7 @@ def create_report(root: Path | str, job_dir: Path | str, ffprobe: str | None = N
     job = read_json(directory / "job.json")
     require(job.get("project_id") == PROJECT and job.get("purpose") == SCOPE
             and job.get("eligible_for_final_cut") is False, "QA only accepts isolated T1_SOURCE_ONLY jobs")
-    require(job.get("fid1_contract", {}).get("strategy") == "wan22_first_latent_future_roi_v1",
-            "QA job has no frozen FID1 source-ROI contract")
+    validate_fid1_job_contract(job)
     run_record = read_json(directory / "run_record.json")
     require(run_record.get("result") == "success" and run_record.get("queued_new_job") is True
             and bool(run_record.get("prompt_id")), "run record does not prove a successful new ComfyUI execution")

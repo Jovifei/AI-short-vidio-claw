@@ -156,6 +156,26 @@ class FidelityProfileTests(DeliveryFixture):
         self.assertEqual(command_job['trial_profile'],profile)
         self.assertEqual(command_job['status'],'PREPARED_NOT_SUBMITTED')
 
+    def test_fid1_timestep_aware_profile_wires_model_and_latent_through_prepare_and_submit(self):
+        self.approve();profile=self.profile(schema_version=4,profile_id='SH903_FID1_TIME_TEST_V005',seed=2026100803,
+            anchor_strategy='wan22_timestep_aware_future_roi_v2',
+            anchor_rois=[{'id':'WUKONG_FACE','x0':0.14,'y0':0.20,'x1':0.29,'y1':0.31,'feather_latent':4},
+                         {'id':'DAIYU_FACE','x0':0.72,'y0':0.20,'x1':0.85,'y1':0.31,'feather_latent':4}])
+        result=self.prepare()
+        self.assertTrue(result['prepared'])
+        job=read_json(self.root/self.out/'job.json');graph=read_json(self.root/self.out/'workflow.json')
+        fid1_id,node=next((node_id,node) for node_id,node in graph.items()
+                          if node['class_type']=='FID1WanTimestepAwareROIAnchor')
+        sampler=next(node for node in graph.values() if node['class_type']=='KSampler')
+        self.assertEqual(node['inputs']['model'],['48',0])
+        self.assertEqual(node['inputs']['latent'],['55',0])
+        self.assertEqual(sampler['inputs']['model'],[fid1_id,0])
+        self.assertEqual(sampler['inputs']['latent_image'],[fid1_id,1])
+        self.assertEqual(job['fid1_contract']['strategy'],'wan22_timestep_aware_future_roi_v2')
+        self.assertEqual(job['fid1_contract']['node_class'],'FID1WanTimestepAwareROIAnchor')
+        _,command_job=job_command(self.root,self.root/self.out,'http://127.0.0.1:8188')
+        self.assertEqual(command_job['fid1_contract'],job['fid1_contract'])
+
     def test_fid1_soft_profile_rejects_invalid_feather_before_job(self):
         self.approve();self.profile(schema_version=3,profile_id='SH903_FID1_BAD_FEATHER_TEST_V3',seed=2026100803,
             anchor_strategy='wan22_first_latent_future_roi_v1',
@@ -178,6 +198,30 @@ class FidelityProfileTests(DeliveryFixture):
 
     def test_fid1_offline_prepare_succeeds_when_torch_is_unavailable(self):
         self.approve();self.fid1_profile()
+        code=textwrap.dedent('''
+            import builtins, sys
+            original = builtins.__import__
+            def no_torch(name, *args, **kwargs):
+                if name == "torch" or name.startswith("torch."):
+                    raise ImportError("Torch intentionally unavailable for offline-prepare test")
+                return original(name, *args, **kwargs)
+            builtins.__import__ = no_torch
+            root, out, seed, profile = sys.argv[1:]
+            sys.path.insert(0, root + "/scripts")
+            import source_pilot
+            result = source_pilot.prepare_trial(root, "SH903", int(seed), out, trial_profile=profile)
+            assert result["prepared"] and not result["submitted"]
+        ''')
+        result=subprocess.run([sys.executable,'-c',code,str(self.root),self.out,'2026100803',self.profile_path],
+                              cwd=ROOT,capture_output=True,text=True)
+        self.assertEqual(result.returncode,0,result.stdout+result.stderr)
+        self.assertFalse((self.root/self.out/'submission_intent.json').exists())
+
+    def test_v005_offline_prepare_succeeds_when_torch_is_unavailable(self):
+        self.approve();self.profile(schema_version=4,profile_id='SH903_FID1_OFFLINE_V005',seed=2026100803,
+            anchor_strategy='wan22_timestep_aware_future_roi_v2',
+            anchor_rois=[{'id':'WUKONG_FACE','x0':0.14,'y0':0.20,'x1':0.29,'y1':0.31,'feather_latent':4},
+                         {'id':'DAIYU_FACE','x0':0.72,'y0':0.20,'x1':0.85,'y1':0.31,'feather_latent':4}])
         code=textwrap.dedent('''
             import builtins, sys
             original = builtins.__import__

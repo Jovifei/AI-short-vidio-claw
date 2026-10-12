@@ -41,7 +41,61 @@ def base_graph():
     return graph
 
 
+def timestep_profile():
+    profile = json.loads(json.dumps(PROFILE))
+    profile.update(
+        schema_version=4,
+        profile_id="SH903_FID1_V005",
+        anchor_strategy="wan22_timestep_aware_future_roi_v2",
+        hypothesis="Keep the Wan condition mask unchanged and noise the source ROI at each sampler sigma.",
+    )
+    profile["anchor_rois"] = [dict(roi, feather_latent=4) for roi in profile["anchor_rois"]]
+    return profile
+
+
 class TestFID1GraphAudit(unittest.TestCase):
+    def test_timestep_aware_node_interposes_both_model_and_latent_edges(self):
+        profile = timestep_profile()
+        base = base_graph()
+        candidate = base_graph()
+
+        try:
+            node_id = fid1_graph_audit.attach_fid1_anchor(candidate, CAST, profile)
+        except ValueError as exc:
+            self.fail(f"timestep-aware FID1 graph strategy is missing: {exc}")
+
+        self.assertEqual(candidate[node_id]["class_type"], "FID1WanTimestepAwareROIAnchor")
+        self.assertEqual(candidate[node_id]["inputs"]["model"], base["3"]["inputs"]["model"])
+        self.assertEqual(candidate[node_id]["inputs"]["latent"], ["55", 0])
+        self.assertEqual(candidate["3"]["inputs"]["model"], [node_id, 0])
+        self.assertEqual(candidate["3"]["inputs"]["latent_image"], [node_id, 1])
+        report = fid1_graph_audit.audit_fid1_graph(base, candidate, CAST, profile)
+        self.assertTrue(report["fid1_graph_valid"])
+        self.assertEqual(len(report["active_edges"]), 4)
+
+    def test_timestep_aware_audit_rejects_model_or_latent_bypass(self):
+        profile = timestep_profile()
+        base = base_graph()
+        audit = fid1_graph_audit.audit_fid1_graph
+
+        bypass_model = base_graph()
+        try:
+            fid1_graph_audit.attach_fid1_anchor(bypass_model, CAST, profile)
+        except ValueError as exc:
+            self.fail(f"timestep-aware FID1 graph strategy is missing: {exc}")
+        bypass_model["3"]["inputs"]["model"] = base["3"]["inputs"]["model"]
+        with self.assertRaisesRegex(ValueError, "model|connection|FID1"):
+            audit(base, bypass_model, CAST, profile)
+
+        bypass_latent = base_graph()
+        try:
+            fid1_graph_audit.attach_fid1_anchor(bypass_latent, CAST, profile)
+        except ValueError as exc:
+            self.fail(f"timestep-aware FID1 graph strategy is missing: {exc}")
+        bypass_latent["3"]["inputs"]["latent_image"] = ["55", 0]
+        with self.assertRaisesRegex(ValueError, "latent|connection|FID1"):
+            audit(base, bypass_latent, CAST, profile)
+
     def test_anchor_node_is_on_the_live_wan_to_sampler_path(self):
         graph = base_graph()
         attach = getattr(fid1_graph_audit, "attach_fid1_anchor", None)
@@ -62,6 +116,19 @@ class TestFID1GraphAudit(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "sampler|steps|CFG|denoise"):
             from scripts.preproduction import validate_graph
             validate_graph(graph, CAST, fid1_profile=PROFILE)
+
+    def test_source_trial_graph_rejects_wan_flow_shift_drift(self):
+        from scripts.preproduction import validate_graph
+        mutations = (("shift", 4.0), ("sampling", "img_to_img_velocity"), ("multiplier", 500))
+        for profile in (PROFILE, timestep_profile()):
+            for field, value in mutations:
+                with self.subTest(strategy=profile["anchor_strategy"], field=field):
+                    graph = base_graph()
+                    fid1_graph_audit.attach_fid1_anchor(graph, CAST, profile)
+                    sampling_node = next(node for node in graph.values() if node["class_type"] == "ModelSamplingSD3")
+                    sampling_node["inputs"][field] = value
+                    with self.assertRaisesRegex(ValueError, "shift|sampling|multiplier"):
+                        validate_graph(graph, CAST, fid1_profile=profile)
 
     def test_source_trial_graph_rejects_length_seed_and_prompt_drift(self):
         from scripts.preproduction import validate_graph

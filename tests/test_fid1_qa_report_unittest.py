@@ -14,6 +14,19 @@ VALID_PROBE = {
 
 
 class FID1QAReportTests(unittest.TestCase):
+    def test_accepts_timestep_aware_job_contract_but_rejects_mismatched_node(self):
+        qa = self.module()
+        validate = getattr(qa, "validate_fid1_job_contract", None)
+        self.assertTrue(callable(validate), "FID1 QA must bind strategy to its actual Comfy node class")
+        job = {"fid1_contract": {
+            "strategy": "wan22_timestep_aware_future_roi_v2",
+            "node_class": "FID1WanTimestepAwareROIAnchor",
+        }}
+        self.assertTrue(validate(job))
+        job["fid1_contract"]["node_class"] = "FID1WanSourceROIAnchor"
+        with self.assertRaisesRegex(ValueError, "strategy|node class|contract"):
+            validate(job)
+
     def module(self):
         self.assertTrue((ROOT / "scripts/fid1_qa_report.py").is_file(), "FID1 output QA must be a real ffprobe/decode report tool")
         return importlib.import_module("scripts.fid1_qa_report")

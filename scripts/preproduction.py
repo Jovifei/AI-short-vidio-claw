@@ -14,6 +14,10 @@ from pathlib import Path, PureWindowsPath
 
 CAST = {"DAIYU", "WUKONG"}
 APPROVED = {"USER_APPROVED", "PRODUCTION_READY"}
+FID1_NODE_CLASS_BY_STRATEGY = {
+    "wan22_first_latent_future_roi_v1": "FID1WanSourceROIAnchor",
+    "wan22_timestep_aware_future_roi_v2": "FID1WanTimestepAwareROIAnchor",
+}
 
 class ContractError(ValueError):
     pass
@@ -177,7 +181,7 @@ def validate_keyframe(root, plan, manifest, registry, sid):
 def validate_graph(graph, cast, fid1_profile=None):
     """Check the executed source→sampler→decode→save chain, not an unused LoadImage."""
     require(isinstance(graph, dict) and "nodes" not in graph, "expected API graph, not UI graph")
-    allowed = {"UNETLoader", "CLIPLoader", "VAELoader", "ModelSamplingSD3", "CLIPTextEncode", "LoadImage", "Wan22ImageToVideoLatent", "FID1WanSourceROIAnchor", "KSampler", "VAEDecode", "CreateVideo", "SaveVideo"}
+    allowed = {"UNETLoader", "CLIPLoader", "VAELoader", "ModelSamplingSD3", "CLIPTextEncode", "LoadImage", "Wan22ImageToVideoLatent", *FID1_NODE_CLASS_BY_STRATEGY.values(), "KSampler", "VAEDecode", "CreateVideo", "SaveVideo"}
     require(all(isinstance(n, dict) and n.get("class_type") in allowed for n in graph.values()), "unexpected production node; explicit review required")
     def node(kind):
         found = [(str(k), v) for k, v in graph.items() if v.get("class_type") == kind]
@@ -204,34 +208,51 @@ def validate_graph(graph, cast, fid1_profile=None):
     model_id, model = node("UNETLoader")
     sample_model_id, sample_model = node("ModelSamplingSD3")
     linked(sample_model, "model", model_id)
-    linked(sampler, "model", sample_model_id)
     require(model["inputs"].get("unet_name") == "wan2.2_ti2v_5B_fp16.safetensors", "unexpected diffusion model")
     require(latent["inputs"].get("batch_size") == 1, "batch_size must be one")
 
-    fid1_ids = [str(k) for k, value in graph.items() if value.get("class_type") == "FID1WanSourceROIAnchor"]
+    fid1_ids = [str(k) for k, value in graph.items() if value.get("class_type") in FID1_NODE_CLASS_BY_STRATEGY.values()]
     if fid1_profile is None:
         require(not fid1_ids, "FID1 node requires an explicit source-trial profile")
         require(len(graph) == 12, "unexpected extra production nodes")
+        linked(sampler, "model", sample_model_id)
         linked(sampler, "latent_image", latent_id)
         fid1_id = None
     else:
         require(isinstance(fid1_profile, dict), "FID1 profile must be an object")
         require(fid1_profile.get("scope") == "T1_SOURCE_ONLY", "FID1 graph is source-trial only")
-        require(fid1_profile.get("anchor_strategy") == "wan22_first_latent_future_roi_v1", "unsupported FID1 anchor strategy")
+        strategy = fid1_profile.get("anchor_strategy")
+        fid1_node_class = FID1_NODE_CLASS_BY_STRATEGY.get(strategy)
+        require(fid1_node_class is not None, "unsupported FID1 anchor strategy")
         require(fid1_profile.get("frames") == 49 and fid1_profile.get("frames") == latent["inputs"].get("length")
                 and fid1_profile.get("width") == latent["inputs"].get("width")
                 and fid1_profile.get("height") == latent["inputs"].get("height"), "FID1 profile dimensions/frames mismatch")
         require(fid1_profile.get("fps") == video["inputs"].get("fps"), "FID1 profile fps mismatch")
         require(fid1_profile.get("seed") == sampler["inputs"].get("seed"), "FID1 profile seed mismatch")
+        require(sample_model["inputs"].get("shift") == 8
+                and sample_model["inputs"].get("sampling", "flow") == "flow"
+                and sample_model["inputs"].get("multiplier", 1000) == 1000,
+                "unexpected FID1 Wan2.2 flow sampling schedule")
         require(isinstance(fid1_profile.get("anchor_rois"), list) and bool(fid1_profile["anchor_rois"]), "FID1 profile needs explicit anchor ROIs")
         require((sampler["inputs"].get("steps"), sampler["inputs"].get("cfg"), sampler["inputs"].get("denoise"),
                  sampler["inputs"].get("sampler_name"), sampler["inputs"].get("scheduler"))
                 == (20, 5, 1, "uni_pc", "simple"), "unexpected FID1 sampler budget")
         require(len(fid1_ids) == 1 and len(graph) == 13, "FID1 trial graph must contain exactly one anchor node")
-        fid1_id, fid1 = node("FID1WanSourceROIAnchor")
-        require(set(fid1.get("inputs", {})) == {"latent", "roi_boxes_json"}, "unexpected FID1 node inputs")
+        fid1_id, fid1 = node(fid1_node_class)
+        expected_inputs = {"latent", "roi_boxes_json"}
+        if strategy == "wan22_timestep_aware_future_roi_v2":
+            expected_inputs.add("model")
+        require(set(fid1.get("inputs", {})) == expected_inputs, "unexpected FID1 node inputs")
         linked(fid1, "latent", latent_id)
-        linked(sampler, "latent_image", fid1_id)
+        if strategy == "wan22_first_latent_future_roi_v1":
+            linked(sampler, "model", sample_model_id)
+            linked(sampler, "latent_image", fid1_id)
+            require(fid1["inputs"].get("model") is None, "legacy FID1 node must not patch MODEL")
+        else:
+            linked(fid1, "model", sample_model_id)
+            linked(sampler, "model", fid1_id)
+            require(sampler.get("inputs", {}).get("latent_image") == [fid1_id, 1],
+                    "timestep-aware FID1 LATENT output must feed KSampler.latent_image")
         roi_json = json.dumps(fid1_profile["anchor_rois"], sort_keys=True, separators=(",", ":"), ensure_ascii=False)
         require(fid1["inputs"].get("roi_boxes_json") == roi_json, "FID1 graph ROI differs from frozen profile")
 
@@ -250,7 +271,7 @@ def validate_graph(graph, cast, fid1_profile=None):
     require(not any(x in texts["positive"].lower() for x in ("subway musician", "1970", "地铁乐手")), "benchmark prompt in production graph")
     if len(cast) > 1:
         require(not any(x in texts["negative"].lower() for x in ("second person", "第二个人", "human face", "人脸", "人类五官")), "single-character/human-face exclusion in a two-character shot")
-    ids = {"load": load_id, "latent": latent_id, "sampler": sampler_id, "video": video_id,
+    ids = {"load": load_id, "latent": latent_id, "sampler": sampler_id, "sample_model": sample_model_id, "video": video_id,
            "save": node("SaveVideo")[0], "positive": str(sampler["inputs"]["positive"][0])}
     if fid1_profile is not None:
         ids["fid1"] = fid1_id

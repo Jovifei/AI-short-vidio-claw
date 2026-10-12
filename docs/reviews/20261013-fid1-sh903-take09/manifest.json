@@ -1,0 +1,121 @@
+{
+  "schema_version": 1,
+  "bundle": "SH903_FID1_TAKE09_REVIEW",
+  "files": [
+    {
+      "path": "comparison_summary.json",
+      "bytes": 2476,
+      "sha256": "ebdc7b4900e24b986200327a25fd04f2998061b8825bd2c43972c3f980b88d46"
+    },
+    {
+      "path": "job.json",
+      "bytes": 6562,
+      "sha256": "f5b0963312443aeee83674f033452ce084e408b4d061c7191aa1938fbe7d3331"
+    },
+    {
+      "path": "job_integrity.json",
+      "bytes": 285,
+      "sha256": "9262dc3822c4b1dd259379f540b0332748521ca8e5b6c535c0128ff053611794"
+    },
+    {
+      "path": "profile.json",
+      "bytes": 1742,
+      "sha256": "3eb067676b3cc885eacd2723744056452b22780a66c51fc5cb009227298ff02e"
+    },
+    {
+      "path": "qa_report.json",
+      "bytes": 1777,
+      "sha256": "b14968f2d2840f7a75cb40e6c6ff87a28d584014e46a92ad099a8e62365f9ca0"
+    },
+    {
+      "path": "README.md",
+      "bytes": 3083,
+      "sha256": "7b359b6a49ca0c2296dc161cb15a633de0353fab1c231b1537f0e1d65294ff7e"
+    },
+    {
+      "path": "review.html",
+      "bytes": 2656,
+      "sha256": "7ccbb16e00791fd075a7af47ae78c728631e15d3a21725574c7d701217911869"
+    },
+    {
+      "path": "run_record.json",
+      "bytes": 69545,
+      "sha256": "83ad8e1a0ada4fd139104787e92a4dae645d9882679e4608cee37d7babd2ba9c"
+    },
+    {
+      "path": "take05_control.mp4",
+      "bytes": 820667,
+      "sha256": "68bd4119f675628358244d27e81d867ed69983895f4168a6819a330958ef4403"
+    },
+    {
+      "path": "take05_control_all49.png",
+      "bytes": 3958405,
+      "sha256": "2782ee602844ac351f3617d806788ec33dd60b9ec479ef0d156dd6975cac09bd"
+    },
+    {
+      "path": "take05_control_first_middle_last.png",
+      "bytes": 884299,
+      "sha256": "90ca928e14e702c696303eeb0c41a8d5ec3f94e776f27d74ca339c662f80b53e"
+    },
+    {
+      "path": "take05_control_qa_report.json",
+      "bytes": 1777,
+      "sha256": "508f5a9e45630cf1d27cbdb527486286588d08a95818e819c9080c9ed27bb62c"
+    },
+    {
+      "path": "take05_control_runtime_evidence.json",
+      "bytes": 2022,
+      "sha256": "2ccff99a6079bbe27b51233110fce130009117283fb25ea9fe18d8005adbb23a"
+    },
+    {
+      "path": "take07_control.mp4",
+      "bytes": 700441,
+      "sha256": "f802325c659be0c72861c6360527818f9aa43ce356ef323f7c2b817bfd437062"
+    },
+    {
+      "path": "take07_control_all49.png",
+      "bytes": 4173730,
+      "sha256": "783238032267b862671b650268fc0b40f4bec5545e8a03a3ae8180b4c8cb0b8e"
+    },
+    {
+      "path": "take07_control_first_middle_last.png",
+      "bytes": 904036,
+      "sha256": "b3662c4ad86cf5b886b4ee1f15fcf181579de2bca971a146b708d4da39586063"
+    },
+    {
+      "path": "take07_control_qa_report.json",
+      "bytes": 1777,
+      "sha256": "0b594812277c5378af1526e07de10d3532d4c084f8a3593291286e81190ed1f4"
+    },
+    {
+      "path": "take07_control_runtime_evidence.json",
+      "bytes": 2022,
+      "sha256": "44136a4f653f5568ad264c043c44962e2e39f19f0603a23aa665393718113845"
+    },
+    {
+      "path": "take08_attempt_summary.json",
+      "bytes": 737,
+      "sha256": "1e9be57baaab3c743f23b6fc4d2f5fa7469088c30976abfbc7c757a486a416c0"
+    },
+    {
+      "path": "take09.mp4",
+      "bytes": 830179,
+      "sha256": "dbdd44e4bdd39b13c8881c3f413a7889f0823c052b99df41698b1d5f61be2db8"
+    },
+    {
+      "path": "take09_all49.png",
+      "bytes": 4037586,
+      "sha256": "816f869c3ccfdeec44f51569a906b5dc4f3b450d20997589ab2675be14d405ef"
+    },
+    {
+      "path": "take09_first_middle_last.png",
+      "bytes": 1029536,
+      "sha256": "0288829ba3a5f53642174fa87930dd3d86365f77349239199fb0899122660177"
+    },
+    {
+      "path": "workflow.json",
+      "bytes": 3617,
+      "sha256": "31f0e48ac7c65ed0d853678fbb7ef95dfd24e667af9202dcd31922f34568840e"
+    }
+  ]
+}

@@ -142,7 +142,9 @@ python scripts/fid1_deploy.py deploy --root . --comfy-root local/comfyui/image/C
 python scripts/fid1_deploy.py verify --root . --comfy-root local/comfyui/image/ComfyUI
 ```
 
-FID1的Wan2.2 mask语义固定为`1=denoise、0=preserve`。节点把Wan首个编码latent按anchor alpha混合到未来12个latent时间格，并设实际`noise_mask=base_mask*(1-alpha)`；首格mask保持为0，ROI外未来区域保持为1。Schema-v2旧profile不含羽化、仍按硬0/1运行；schema-v3可为ROI指定`feather_latent` 1–4，羽化宽度只在获批ROI框内向中心渐强，不扩展框外区域。V004取4格，alpha从边界0、内侧0.25/0.5/0.75到中心1；锁定版KSampler将连续mask值用于加权混合。完整ROI、空mask、非有限值、错通道/时间/设备/shape及非法羽化宽度均拒绝。49视频帧必须是13个latent时间格。
+FID1的Wan2.2 mask语义固定为`1=denoise、0=preserve`。schema-v2/v3旧策略把ROI写入`LATENT.noise_mask=base_mask*(1-alpha)`；本机take05/take07显示该局部mask与全画面伪文字/马赛克同现。源码审查确认`WAN22.process_timestep`按每个时间格的denoise-mask空间均值缩放整格timestep，因此不能继续把局部ROI传给Wan条件编码。Schema-v2使用硬ROI；schema-v3可设置`feather_latent` 1–4且不扩框，V004/take07为4格。
+
+schema-v4/V005保留Wan原始`noise_mask`（slot0=0、future=1），FID1节点同时输出克隆的`MODEL`和`LATENT`：模型上的`denoise_mask_function`只为KSampler的ROI保留区生成mask；实例级`scale_latent_inpaint`调用ModelSamplingSD3当前生效的`model_sampling.noise_scaling(sigma, noise, source_latent)`，让未来ROI按当前sigma与同一噪声轨迹对齐，首格保持干净。对feather alpha>0的格点，LATENT保存完整source，由KSampler按alpha只混合一次；ROI外不改，Wan flow schedule固定为基础workflow的shift=8、sampling=flow、multiplier=1000。Comfy `ModelPatcher.unpatch_model`必须恢复原方法；不改Comfy核心或进程全局。49视频帧对应13个latent时间格。V005只是SH903同源诊断，自动/runtime成功不表示视觉通过；SH901/SH902与正式30镜仍锁定。
 
 ## 2026-10-13 take04/take05视觉失败后的受控续测
 
@@ -150,7 +152,7 @@ SH903 take04同时修改提示词和增加anchor，不能单因归因；take05�
 
 take05复审建议下一轮只测试ROI边缘：新profile `SH903_FID1_V004`保留同条件，`feather_latent=4`让ROI边界alpha为0、向内逐格升至0.25/0.5/0.75/1。take06已有旧的PREPARED job且节点SHA已过期，不覆盖；当前实际新运行目录选择take07。完成软mask数学/prepare/submit测试、CI、精准回滚和单节点重部署/重启后，先prepare与dry-run，再用空队列和重新读取的GPU/RAM/磁盘数据决定是否执行一次。此诊断不批准输出；SH901/SH902继续保持前镜Jovi接受门禁。
 
-确认当前8188实例由这份Comfy源码启动，并且`/object_info/FID1WanSourceROIAnchor`含`LATENT`和ROI JSON输入、`LATENT`输出；实际执行还要求Comfy队列为空。若当前服务未运行，用已核对的本地venv启动单实例，监听仅限环回地址：
+确认当前8188实例由这份Comfy源码启动。schema-v2/v3须确认`/object_info/FID1WanSourceROIAnchor`的LATENT输入/输出；schema-v4/V005须确认`/object_info/FID1WanTimestepAwareROIAnchor`有MODEL、LATENT、ROI JSON输入及MODEL、LATENT输出。实际执行还要求Comfy队列为空。若当前服务未运行，用已核对的本地venv启动单实例，监听仅限环回地址：
 
 ```powershell
 Set-Location E:\project\AI-short-vidio-claw\local\comfyui\image\ComfyUI
@@ -164,6 +166,16 @@ Set-Location E:\project\AI-short-vidio-claw
 python scripts/source_pilot.py prepare --root . --shot SH903 --seed 2026100803 --out local/production/T1_SOURCE_PILOT/video/SH903/jobs/take04 --trial-profile config/source_fidelity_trials/SH903_FID1_V002.json
 python scripts/submit_prepared.py --root . --job-dir local/production/T1_SOURCE_PILOT/video/SH903/jobs/take04 --url http://127.0.0.1:8188
 ```
+
+take08曾按旧的单通道守卫提交一次，Comfy把denoise mask扩为48通道后在KSampler入口报shape error，没有视频且没有重发。修正守卫以保留并验证Comfy的1→48通道复制后，新的不可覆盖任务目录为take09；它使用take07同一条件和ROI feather，只有anchor机制改为schema-v4/V005：
+
+```powershell
+Set-Location E:\project\AI-short-vidio-claw
+python scripts/source_pilot.py prepare --root . --shot SH903 --seed 2026100803 --out local/production/T1_SOURCE_PILOT/video/SH903/jobs/take09 --trial-profile config/source_fidelity_trials/SH903_FID1_V005.json
+python scripts/submit_prepared.py --root . --job-dir local/production/T1_SOURCE_PILOT/video/SH903/jobs/take09 --url http://127.0.0.1:8188
+```
+
+只有准备、hash、依赖、真实`/object_info`、空队列、模型和GPU/RAM/磁盘门禁均通过后才允许为这条job追加`--comfy-root ... --execute`。take09不覆盖take01–08；未知状态先查history，不重POST。完整解码、首中尾、all49和完整看片后，分别写runtime、视觉审查及Jovi接受状态。
 
 检查批准快照、输入/ROI/profile/节点依赖/工作流哈希、真实Comfy node schema、GPU与RAM、queue空闲和模型文件；仅在所有门禁通过后才单次加`--comfy-root ... --execute`。出现attempt marker或状态不明时先查Comfy history，绝不自动重POST。
 

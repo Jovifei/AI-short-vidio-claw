@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import json
 import math
+from types import MethodType
 
 import torch
 
@@ -42,7 +43,7 @@ def _validate_rois(rois, width, height):
     return parsed
 
 
-def anchor_future_rois(latent, rois):
+def _anchor_future_rois(latent, rois, *, blend_alpha=True):
     """Blend the encoded first latent into future ROIs and freeze only that alpha.
 
     ComfyUI treats ``noise_mask`` as a denoise mask: 1 samples the model output;
@@ -94,7 +95,10 @@ def anchor_future_rois(latent, rois):
         target = anchor_mask[:, :, 1:, top:bottom, left:right]
         anchor_mask[:, :, 1:, top:bottom, left:right] = torch.maximum(target, region_mask)
 
-    anchored_samples = samples * (1 - anchor_mask) + source_first * anchor_mask
+    if blend_alpha:
+        anchored_samples = samples * (1 - anchor_mask) + source_first * anchor_mask
+    else:
+        anchored_samples = torch.where(anchor_mask > 0, source_first, samples)
 
     anchored_noise_mask = noise_mask * (1 - anchor_mask)
     if not bool((anchored_noise_mask[:, :, 1:] > 0).any()):
@@ -105,7 +109,93 @@ def anchor_future_rois(latent, rois):
     result = dict(latent)
     result["samples"] = anchored_samples
     result["noise_mask"] = anchored_noise_mask
-    return result
+    return result, anchor_mask
+
+
+def anchor_future_rois(latent, rois):
+    return _anchor_future_rois(latent, rois)[0]
+
+
+def anchor_future_rois_timestep_aware(model, latent, rois):
+    """Prepare a Wan2.2 source ROI anchor without changing Wan's condition mask.
+
+    The latent keeps the approved source values in future ROI cells, while the
+    original Wan noise_mask remains untouched for process_timestep/conditions.
+    A cloned MODEL applies the ROI mask only inside KSamplerX0Inpaint and uses
+    the active model sampling schedule to place the source on the same noisy
+    trajectory at each sigma.
+    """
+    prepared, anchor_mask = _anchor_future_rois(latent, rois, blend_alpha=False)
+    prepared["noise_mask"] = latent["noise_mask"]
+
+    model_impl = getattr(model, "model", None)
+    if model_impl is None or model_impl.__class__.__name__ != "WAN22":
+        raise ValueError("timestep-aware FID1 anchor requires a WAN22/Wan2.2 model")
+    get_model_object = getattr(model, "get_model_object", None)
+    if not callable(get_model_object):
+        raise ValueError("ComfyUI MODEL get_model_object() is required to honor ModelSamplingSD3 patches")
+    model_sampling = get_model_object("model_sampling")
+    if not callable(getattr(model_sampling, "noise_scaling", None)):
+        raise ValueError("WAN22 model_sampling.noise_scaling is required")
+    original_scale = getattr(model_impl, "scale_latent_inpaint", None)
+    if not callable(original_scale):
+        raise ValueError("WAN22 scale_latent_inpaint is required")
+    if not callable(getattr(model, "clone", None)):
+        raise ValueError("ComfyUI MODEL clone() is required")
+    if not callable(getattr(model, "set_model_denoise_mask_function", None)):
+        raise ValueError("ComfyUI MODEL denoise-mask hook is required")
+    if not callable(getattr(model, "add_object_patch", None)):
+        raise ValueError("ComfyUI MODEL object-patch API is required")
+
+    patched_model = model.clone()
+    if patched_model is model or getattr(patched_model, "model", None) is not model_impl:
+        raise ValueError("ComfyUI MODEL clone must isolate options while sharing its loaded WAN22 model")
+    if getattr(patched_model, "model_options", None) is getattr(model, "model_options", None):
+        raise ValueError("ComfyUI MODEL clone must isolate model_options")
+
+    def denoise_mask_function(sigma, denoise_mask, extra_options=None):
+        del sigma, extra_options
+        if not isinstance(denoise_mask, torch.Tensor) or denoise_mask.ndim != 5:
+            raise ValueError("KSampler denoise_mask must be a rank-5 tensor")
+        if (denoise_mask.shape[0] != anchor_mask.shape[0]
+                or tuple(denoise_mask.shape[2:]) != tuple(anchor_mask.shape[2:])):
+            raise ValueError("KSampler denoise_mask batch/time/spatial shape changed from the prepared Wan mask")
+        if denoise_mask.shape[1] not in (1, EXPECTED_CHANNELS):
+            raise ValueError("KSampler denoise_mask channel count must be 1 or 48 for Wan")
+        if denoise_mask.shape[1] == EXPECTED_CHANNELS:
+            repeated = denoise_mask[:, :1].expand_as(denoise_mask)
+            if not torch.equal(denoise_mask, repeated):
+                raise ValueError("KSampler 48-channel denoise_mask must be a repeated single-channel mask")
+        if not denoise_mask.is_floating_point() or not bool(torch.isfinite(denoise_mask).all()):
+            raise ValueError("KSampler denoise_mask must be finite floating-point values")
+        if bool((denoise_mask < 0).any()) or bool((denoise_mask > 1).any()):
+            raise ValueError("KSampler denoise_mask values must be within [0,1]")
+        if not bool((denoise_mask[:, :, 0] == 0).all()) or not bool((denoise_mask[:, :, 1:] == 1).all()):
+            raise ValueError("KSampler base mask changed from Wan source/future semantics")
+        alpha = anchor_mask.to(device=denoise_mask.device, dtype=denoise_mask.dtype)
+        return denoise_mask * (1.0 - alpha)
+
+    def scale_latent_inpaint(self, sigma, noise, latent_image, **kwargs):
+        if not isinstance(latent_image, torch.Tensor) or latent_image.ndim != 5:
+            raise ValueError("KSampler latent_image must be a rank-5 Wan tensor")
+        if not isinstance(noise, torch.Tensor) or tuple(noise.shape) != tuple(latent_image.shape):
+            raise ValueError("KSampler noise shape must match latent_image")
+        if noise.device != latent_image.device or noise.dtype != latent_image.dtype:
+            raise ValueError("KSampler noise dtype/device must match latent_image")
+        if tuple(latent_image.shape) != tuple(anchor_mask.shape[:1] + (EXPECTED_CHANNELS,) + anchor_mask.shape[2:]):
+            raise ValueError("KSampler latent_image shape changed from the prepared Wan latent")
+        clean_latent = original_scale(sigma, noise, latent_image, **kwargs)
+        if not isinstance(clean_latent, torch.Tensor) or tuple(clean_latent.shape) != tuple(latent_image.shape):
+            raise ValueError("WAN22 scale_latent_inpaint returned an invalid latent")
+        noised_source = model_sampling.noise_scaling(sigma, noise, latent_image)
+        if not isinstance(noised_source, torch.Tensor) or tuple(noised_source.shape) != tuple(latent_image.shape):
+            raise ValueError("WAN22 model_sampling.noise_scaling returned an invalid latent")
+        future_roi = (anchor_mask > 0).to(device=latent_image.device)
+        return torch.where(future_roi, noised_source, clean_latent)
+
+    patched_model.set_model_denoise_mask_function(denoise_mask_function)
+    patched_model.add_object_patch("scale_latent_inpaint", MethodType(scale_latent_inpaint, model_impl))
+    return patched_model, prepared
 
 
 class FID1WanSourceROIAnchor:
@@ -130,5 +220,34 @@ class FID1WanSourceROIAnchor:
         return (anchor_future_rois(latent, rois),)
 
 
-NODE_CLASS_MAPPINGS = {"FID1WanSourceROIAnchor": FID1WanSourceROIAnchor}
-NODE_DISPLAY_NAME_MAPPINGS = {"FID1WanSourceROIAnchor": "FID1 Wan Source ROI Anchor"}
+class FID1WanTimestepAwareROIAnchor:
+    @classmethod
+    def INPUT_TYPES(cls):
+        return {
+            "required": {
+                "model": ("MODEL",),
+                "latent": ("LATENT",),
+                "roi_boxes_json": ("STRING", {"default": "[]", "multiline": False}),
+            }
+        }
+
+    RETURN_TYPES = ("MODEL", "LATENT")
+    FUNCTION = "anchor"
+    CATEGORY = "FID1/Source Fidelity"
+
+    def anchor(self, model, latent, roi_boxes_json):
+        try:
+            rois = json.loads(roi_boxes_json)
+        except (TypeError, json.JSONDecodeError) as exc:
+            raise ValueError("roi_boxes_json must be valid JSON") from exc
+        return anchor_future_rois_timestep_aware(model, latent, rois)
+
+
+NODE_CLASS_MAPPINGS = {
+    "FID1WanSourceROIAnchor": FID1WanSourceROIAnchor,
+    "FID1WanTimestepAwareROIAnchor": FID1WanTimestepAwareROIAnchor,
+}
+NODE_DISPLAY_NAME_MAPPINGS = {
+    "FID1WanSourceROIAnchor": "FID1 Wan Source ROI Anchor",
+    "FID1WanTimestepAwareROIAnchor": "FID1 Wan Timestep-aware ROI Anchor",
+}

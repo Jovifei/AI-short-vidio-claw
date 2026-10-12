@@ -19,7 +19,7 @@ import shutil
 import tempfile
 from PIL import Image
 from approve_asset import approve_reference, approve_keyframe
-from preproduction import read_json, write_json, check_plan, prepare, validate_graph, validate_keyframe, _unique
+from preproduction import FID1_NODE_CLASS_BY_STRATEGY, read_json, write_json, check_plan, prepare, validate_graph, validate_keyframe, _unique
 from sync_repo_media import safe, digest, need, verify
 from fid1_graph_audit import attach_fid1_anchor
 try:
@@ -220,7 +220,7 @@ def load_trial_profile(root, sid, kit, relative):
     need(type(schema) is int,'trial profile schema_version must be an integer')
     if schema==1:
         need(set(profile)==base_fields,'unexpected/missing trial profile fields; model and sampler overrides are not allowed')
-    elif schema in (2,3):
+    elif schema in (2,3,4):
         need(set(profile)==base_fields|{'seed','anchor_strategy','anchor_rois'},
              'unexpected/missing FID1 profile fields; model and sampler overrides are not allowed')
     else:
@@ -233,21 +233,22 @@ def load_trial_profile(root, sid, kit, relative):
     need(profile['frames']==49 and profile['fps']==24,'source trial remains 49 frames / 24 fps')
     need(all(isinstance(profile[k],str) and 0<len(profile[k].strip())<=4096
              for k in ('positive_prompt','negative_prompt','hypothesis')),'missing/oversized quality experiment text')
-    if schema in (2,3):
+    if schema in (2,3,4):
         need(type(profile['seed']) is int and 0<=profile['seed']<2**63,'FID1 profile seed must be a non-negative 63-bit integer')
-        need(profile['anchor_strategy']=='wan22_first_latent_future_roi_v1','unsupported FID1 anchor strategy')
+        expected_strategy = 'wan22_timestep_aware_future_roi_v2' if schema==4 else 'wan22_first_latent_future_roi_v1'
+        need(profile['anchor_strategy']==expected_strategy,'unsupported FID1 anchor strategy')
         rois=profile['anchor_rois'];need(isinstance(rois,list) and 1<=len(rois)<=8,'FID1 profile needs 1–8 explicit ROI boxes')
         seen=set();area=0.0
         for roi in rois:
             roi_fields={'id','x0','y0','x1','y1'}
-            if schema==3:roi_fields.add('feather_latent')
+            if schema in (3,4):roi_fields.add('feather_latent')
             need(isinstance(roi,dict) and set(roi)==roi_fields,'FID1 ROI fields do not match the profile schema')
             name=roi['id'];need(isinstance(name,str) and re.fullmatch(r'[A-Z0-9_]{1,32}',name) and name not in seen,'invalid/duplicate FID1 ROI id');seen.add(name)
             coords=[roi[k] for k in ('x0','y0','x1','y1')]
             need(all(type(v) in (int,float) and math.isfinite(v) for v in coords),'FID1 ROI coordinates must be finite numbers')
             x0,y0,x1,y1=coords
             need(0<=x0<x1<=1 and 0<=y0<y1<=1,'FID1 ROI bounds must be ordered within [0,1]')
-            if schema==3:
+            if schema in (3,4):
                 need(type(roi['feather_latent']) is int and 1<=roi['feather_latent']<=4,
                      'FID1 feather_latent must be an integer from 1 to 4')
             area+=(x1-x0)*(y1-y0)
@@ -311,7 +312,7 @@ def prepare_trial(root,sid,seed,out,trial_profile=None):
                 job['fid1_contract']={
                     'schema_version':1,
                     'strategy':profile['anchor_strategy'],
-                    'node_class':'FID1WanSourceROIAnchor',
+                    'node_class':FID1_NODE_CLASS_BY_STRATEGY[profile['anchor_strategy']],
                     'node_source_sha256':dependency_hashes['scripts/fid1_wan_latent_anchor_node.py'],
                     'profile_sha256':profile_hash,
                     'dependency_sha256':dependency_hash,

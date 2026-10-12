@@ -20,15 +20,16 @@
 
 ## FID1 Wan2.2 source-only trial
 
-FID1 is isolated to `T1_SOURCE_ONLY`. The API graph is `LoadImage -> Wan22ImageToVideoLatent -> FID1WanSourceROIAnchor -> KSampler -> VAEDecode -> Video`; the FID1 validator checks those live ports, frozen ROI JSON, shot profile, sampler budget, source approval/hash and dependency hashes. Ordinary V5 graphs still require their original 12-node path and cannot contain an unprofiled FID1 node.
+FID1 is isolated to `T1_SOURCE_ONLY`. Legacy schema-v2/v3 profiles use `LoadImage -> Wan22ImageToVideoLatent -> FID1WanSourceROIAnchor -> KSampler`; schema-v4 uses `ModelSamplingSD3 -> FID1WanTimestepAwareROIAnchor -> KSampler.model` and `Wan22ImageToVideoLatent -> FID1WanTimestepAwareROIAnchor -> KSampler.latent_image`. The validator checks these exact live ports, frozen ROI JSON, shot profile, sampler budget, source approval/hash and dependency hashes. Ordinary V5 graphs still require their original 12-node path and cannot contain an unprofiled FID1 node.
 
-ComfyUI's `noise_mask` is a **denoise mask**: `1` allows denoising, `0` preserves the latent. The FID1 node blends the encoded first latent into only the profile's future face/head ROIs and sets `denoise_mask = base_mask * (1 - anchor_alpha)`. It preserves Wan's first-slot mask and leaves pixels outside the selected ROIs denoisable. Legacy schema-v2 profiles use a hard 0/1 anchor; schema-v3 may set per-ROI `feather_latent` (1–4 latent cells). With `feather_latent=4`, alpha is 0 at the ROI boundary, then 0.25/0.5/0.75 inward, and 1 in the core. The pinned KSampler performs continuous mask blending. Both modes are diagnostics and can create patches/seams; neither claims identity locking or visual acceptance.
+ComfyUI's `noise_mask` is a **denoise mask**: `1` allows denoising, `0` preserves the latent. Legacy schema-v2/v3 profiles write `base_mask * (1 - anchor_alpha)` into `LATENT.noise_mask`; the resulting spatial mean changes Wan22's timestep for the entire time slot, and take05/take07 both failed visually. Schema-v4 leaves Wan's original `noise_mask` untouched so condition encoding retains slot0=0/future=1, applies ROI preservation only through the cloned MODEL's KSampler `denoise_mask_function`, and uses the instance-patched `scale_latent_inpaint` to place the source ROI on the current flow-noise trajectory at each sigma. For each future cell with alpha>0, LATENT carries the complete source value; KSampler applies feather alpha once. It keeps the source first slot clean, preserves latent metadata, and leaves non-ROI future cells denoisable. V005 keeps V004's ROI boxes and four-cell feather exactly, changing only the anchor strategy. The graph validator freezes ModelSamplingSD3 to shift 8, flow sampling and multiplier 1000. All versions remain diagnostic and do not claim identity locking or visual acceptance.
 
 The shot-specific profiles freeze their approved source hash, size, frame count, fps, seed, ROI rectangles, prompts, and anchor strategy:
 
 - `config/source_fidelity_trials/SH903_FID1_V002.json`: SH903, seed `2026100803`.
 - `config/source_fidelity_trials/SH903_FID1_V003.json`: controlled SH903 take05 profile matching take03 prompts and sampling values.
-- `config/source_fidelity_trials/SH903_FID1_V004.json`: soft-edge ROI take06 profile; differs from V003 only by `feather_latent=4` per approved face ROI.
+- `config/source_fidelity_trials/SH903_FID1_V004.json`: soft-edge ROI profile used by take07; differs from V003 only by `feather_latent=4` per approved face ROI.
+- `config/source_fidelity_trials/SH903_FID1_V005.json`: corrected timestep-aware candidate used by take09; identical to V004 for source, prompts, seed, sampler values, ROI bounds and feather, changing only the anchor strategy. Take08 is preserved as one failed attempt caused by Comfy's 1→48 mask-channel expansion.
 - `config/source_fidelity_trials/SH901_FID1_V001.json`: SH901, seed `2026100801`.
 - `config/source_fidelity_trials/SH902_FID1_V001.json`: SH902, seed `2026100802`.
 
@@ -38,10 +39,10 @@ Local commands for the first trial:
 python -m unittest discover -s tests -p 'test_*.py' -v
 python scripts/fid1_deploy.py deploy --root . --comfy-root local/comfyui/image/ComfyUI
 python scripts/fid1_deploy.py verify --root . --comfy-root local/comfyui/image/ComfyUI
-python scripts/source_pilot.py prepare --root . --shot SH903 --seed 2026100803 --out local/production/T1_SOURCE_PILOT/video/SH903/jobs/take04 --trial-profile config/source_fidelity_trials/SH903_FID1_V002.json
-python scripts/submit_prepared.py --root . --job-dir local/production/T1_SOURCE_PILOT/video/SH903/jobs/take04 --url http://127.0.0.1:8188
-python scripts/submit_prepared.py --root . --job-dir local/production/T1_SOURCE_PILOT/video/SH903/jobs/take04 --url http://127.0.0.1:8188 --comfy-root local/comfyui/image/ComfyUI --execute
-python scripts/fid1_qa_report.py --root . --job-dir local/production/T1_SOURCE_PILOT/video/SH903/jobs/take04
+python scripts/source_pilot.py prepare --root . --shot SH903 --seed 2026100803 --out local/production/T1_SOURCE_PILOT/video/SH903/jobs/take09 --trial-profile config/source_fidelity_trials/SH903_FID1_V005.json
+python scripts/submit_prepared.py --root . --job-dir local/production/T1_SOURCE_PILOT/video/SH903/jobs/take09 --url http://127.0.0.1:8188
+python scripts/submit_prepared.py --root . --job-dir local/production/T1_SOURCE_PILOT/video/SH903/jobs/take09 --url http://127.0.0.1:8188 --comfy-root local/comfyui/image/ComfyUI --execute
+python scripts/fid1_qa_report.py --root . --job-dir local/production/T1_SOURCE_PILOT/video/SH903/jobs/take09
 ```
 
 The submit command without `--execute` is a dry-run. Execute also verifies the deployed node hash, local ComfyUI `/object_info` socket schema, and an empty queue; the existing probe rechecks the queue before POST. Unknown submissions are reconciled through ComfyUI history and never automatically retried. Each take path is immutable.

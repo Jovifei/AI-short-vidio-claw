@@ -1,5 +1,6 @@
 import hashlib
 import importlib
+import json
 from pathlib import Path
 import shutil
 import tempfile
@@ -43,6 +44,9 @@ class FID1DeployTests(unittest.TestCase):
             target = comfy / "custom_nodes/fid1_wan_roi_anchor/__init__.py"
             self.assertEqual(first["status"], "INSTALLED")
             self.assertEqual(target.read_bytes(), (root / "scripts/fid1_wan_latent_anchor_node.py").read_bytes())
+            package_manifest = json.loads((target.parent / deploy.PLUGIN_MANIFEST).read_text(encoding="utf-8"))
+            self.assertEqual(package_manifest["schema_version"], 2)
+            self.assertEqual(package_manifest["node_classes"], ["FID1WanSourceROIAnchor", "FID1WanTimestepAwareROIAnchor"])
             first_hash = hashlib.sha256(target.read_bytes()).hexdigest()
             second = deploy.deploy(root, comfy)
             self.assertEqual(second["status"], "ALREADY_INSTALLED")
