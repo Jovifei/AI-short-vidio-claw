@@ -141,6 +141,30 @@ class FidelityProfileTests(DeliveryFixture):
         self.assertEqual(job['fid1_contract']['strategy'],'wan22_first_latent_future_roi_v1')
         job_command(self.root,self.root/self.out,'http://127.0.0.1:8188')
 
+    def test_fid1_soft_profile_is_serialized_through_prepare_and_submit(self):
+        self.approve();profile=self.profile(schema_version=3,profile_id='SH903_FID1_SOFT_TEST_V3',seed=2026100803,
+            anchor_strategy='wan22_first_latent_future_roi_v1',
+            anchor_rois=[{'id':'WUKONG_FACE','x0':0.14,'y0':0.20,'x1':0.29,'y1':0.31,'feather_latent':4},
+                         {'id':'DAIYU_FACE','x0':0.72,'y0':0.20,'x1':0.85,'y1':0.31,'feather_latent':4}])
+        result=self.prepare()
+        self.assertTrue(result['prepared'])
+        job=read_json(self.root/self.out/'job.json');graph=read_json(self.root/self.out/'workflow.json')
+        anchor=next(node for node in graph.values() if node['class_type']=='FID1WanSourceROIAnchor')
+        self.assertEqual(json.loads(anchor['inputs']['roi_boxes_json']),profile['anchor_rois'])
+        self.assertEqual(job['trial_profile'],profile)
+        _,command_job=job_command(self.root,self.root/self.out,'http://127.0.0.1:8188')
+        self.assertEqual(command_job['trial_profile'],profile)
+        self.assertEqual(command_job['status'],'PREPARED_NOT_SUBMITTED')
+
+    def test_fid1_soft_profile_rejects_invalid_feather_before_job(self):
+        self.approve();self.profile(schema_version=3,profile_id='SH903_FID1_BAD_FEATHER_TEST_V3',seed=2026100803,
+            anchor_strategy='wan22_first_latent_future_roi_v1',
+            anchor_rois=[{'id':'WUKONG_FACE','x0':0.14,'y0':0.20,'x1':0.29,'y1':0.31,'feather_latent':5},
+                         {'id':'DAIYU_FACE','x0':0.72,'y0':0.20,'x1':0.85,'y1':0.31,'feather_latent':4}])
+        with self.assertRaisesRegex(ValueError,'feather_latent'):
+            self.prepare()
+        self.assertFalse((self.root/self.out).exists())
+
     def test_fid1_prepare_records_integrity_for_the_immutable_job_manifest(self):
         self.approve();self.fid1_profile();self.prepare()
         job_path=self.root/self.out/'job.json'

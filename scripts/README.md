@@ -22,11 +22,13 @@
 
 FID1 is isolated to `T1_SOURCE_ONLY`. The API graph is `LoadImage -> Wan22ImageToVideoLatent -> FID1WanSourceROIAnchor -> KSampler -> VAEDecode -> Video`; the FID1 validator checks those live ports, frozen ROI JSON, shot profile, sampler budget, source approval/hash and dependency hashes. Ordinary V5 graphs still require their original 12-node path and cannot contain an unprofiled FID1 node.
 
-ComfyUI's `noise_mask` is a **denoise mask**: `1` allows denoising, `0` preserves the latent. The FID1 node copies the encoded first latent into only the profile's future face/head ROIs and sets `denoise_mask = base_mask * (1 - anchor_mask)`. It preserves Wan's first-slot mask and leaves pixels outside the selected ROIs denoisable. It can create static face patches or seams; it does not claim identity locking or visual acceptance.
+ComfyUI's `noise_mask` is a **denoise mask**: `1` allows denoising, `0` preserves the latent. The FID1 node blends the encoded first latent into only the profile's future face/head ROIs and sets `denoise_mask = base_mask * (1 - anchor_alpha)`. It preserves Wan's first-slot mask and leaves pixels outside the selected ROIs denoisable. Legacy schema-v2 profiles use a hard 0/1 anchor; schema-v3 may set per-ROI `feather_latent` (1–4 latent cells). With `feather_latent=4`, alpha is 0 at the ROI boundary, then 0.25/0.5/0.75 inward, and 1 in the core. The pinned KSampler performs continuous mask blending. Both modes are diagnostics and can create patches/seams; neither claims identity locking or visual acceptance.
 
 The shot-specific profiles freeze their approved source hash, size, frame count, fps, seed, ROI rectangles, prompts, and anchor strategy:
 
 - `config/source_fidelity_trials/SH903_FID1_V002.json`: SH903, seed `2026100803`.
+- `config/source_fidelity_trials/SH903_FID1_V003.json`: controlled SH903 take05 profile matching take03 prompts and sampling values.
+- `config/source_fidelity_trials/SH903_FID1_V004.json`: soft-edge ROI take06 profile; differs from V003 only by `feather_latent=4` per approved face ROI.
 - `config/source_fidelity_trials/SH901_FID1_V001.json`: SH901, seed `2026100801`.
 - `config/source_fidelity_trials/SH902_FID1_V001.json`: SH902, seed `2026100802`.
 

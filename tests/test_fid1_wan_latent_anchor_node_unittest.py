@@ -19,6 +19,35 @@ def sample_latent():
 
 
 class TestFID1WanLatentAnchorNode(unittest.TestCase):
+    def test_feathered_roi_blends_latent_and_sampler_mask_by_distance(self):
+        latent = sample_latent()
+        latent["samples"] = torch.full((1, 48, 13, 14, 14), 99.0, dtype=torch.float32)
+        latent["samples"][:, :, 0] = 7.0
+        latent["noise_mask"] = torch.ones((1, 1, 13, 14, 14), dtype=torch.float32)
+        latent["noise_mask"][:, :, 0] = 0.0
+        original = latent["samples"].clone()
+        rois = [{"id": "face", "x0": 1/14, "y0": 1/14, "x1": 13/14, "y1": 13/14,
+                 "feather_latent": 4}]
+
+        result = fid1.anchor_future_rois(latent, rois)
+
+        self.assertTrue(torch.equal(result["samples"][:, :, 0], original[:, :, 0]))
+        self.assertTrue(torch.allclose(result["samples"][0, 0, 1, 6, 1:6], torch.tensor([99.0, 76.0, 53.0, 30.0, 7.0])))
+        self.assertTrue(torch.allclose(result["noise_mask"][0, 0, 1, 6, 1:6], torch.tensor([1.0, .75, .5, .25, 0.0])))
+        self.assertEqual(float(result["samples"][0, 0, 1, 0, 0]), 99.0)
+        self.assertEqual(float(result["noise_mask"][0, 0, 1, 0, 0]), 1.0)
+        self.assertTrue(torch.equal(latent["samples"], original))
+        self.assertEqual(result["batch_index"], latent["batch_index"])
+        self.assertEqual(result["fid1_test_metadata"], latent["fid1_test_metadata"])
+
+    def test_rejects_invalid_feather_width(self):
+        for feather in (0.5, -1, 5, True):
+            with self.subTest(feather=feather), self.assertRaisesRegex(ValueError, "feather_latent"):
+                fid1.anchor_future_rois(sample_latent(), [{
+                    "id": "face", "x0": 0.2, "y0": 0.2, "x1": 0.6, "y1": 0.6,
+                    "feather_latent": feather,
+                }])
+
     def test_copies_first_source_roi_to_future_latents_and_freezes_only_that_roi(self):
         latent = sample_latent()
         original = latent["samples"].clone()

@@ -55,6 +55,18 @@ class FID1TrialProfileTests(unittest.TestCase):
         for field in ("input_sha256", "width", "height", "frames", "fps", "seed", "anchor_strategy", "anchor_rois"):
             self.assertEqual(profile[field], v2[field], f"controlled comparison changed {field}")
 
+    def test_sh903_v004_changes_only_the_roi_feather_from_v003(self):
+        kit = read_json(ROOT / source_pilot.KIT)
+        v4, _ = source_pilot.load_trial_profile(ROOT, "SH903", kit, "config/source_fidelity_trials/SH903_FID1_V004.json")
+        v3 = read_json(ROOT / "config/source_fidelity_trials/SH903_FID1_V003.json")
+        self.assertEqual(v4["schema_version"], 3)
+        for field in ("input_sha256", "width", "height", "frames", "fps", "seed", "positive_prompt", "negative_prompt", "anchor_strategy"):
+            self.assertEqual(v4[field], v3[field], f"soft-feather comparison changed {field}")
+        self.assertEqual(len(v4["anchor_rois"]), len(v3["anchor_rois"]))
+        for soft, hard in zip(v4["anchor_rois"], v3["anchor_rois"]):
+            self.assertEqual({key: value for key, value in soft.items() if key != "feather_latent"}, hard)
+            self.assertEqual(soft["feather_latent"], 4)
+
 
 if __name__ == "__main__":
     unittest.main()

@@ -18,8 +18,12 @@ def _validate_rois(rois, width, height):
     parsed = []
     seen = set()
     for roi in rois:
-        if not isinstance(roi, dict) or set(roi) != {"id", "x0", "y0", "x1", "y1"}:
-            raise ValueError("ROI must contain exactly id, x0, y0, x1, y1")
+        base_fields = {"id", "x0", "y0", "x1", "y1"}
+        if not isinstance(roi, dict) or set(roi) not in (base_fields, base_fields | {"feather_latent"}):
+            raise ValueError("ROI must contain id and bounds, with optional feather_latent")
+        feather = roi.get("feather_latent", 0)
+        if type(feather) is not int or not 0 <= feather <= 4:
+            raise ValueError("feather_latent must be an integer from 0 to 4")
         name = roi["id"]
         if not isinstance(name, str) or not name.strip() or name in seen:
             raise ValueError("ROI ids must be non-empty and unique")
@@ -34,18 +38,20 @@ def _validate_rois(rois, width, height):
         top = max(0, min(height - 1, math.floor(y0 * height)))
         right = max(left + 1, min(width, math.ceil(x1 * width)))
         bottom = max(top + 1, min(height, math.ceil(y1 * height)))
-        parsed.append((left, top, right, bottom))
+        parsed.append((left, top, right, bottom, feather))
     return parsed
 
 
 def anchor_future_rois(latent, rois):
-    """Copy the encoded first latent into future ROIs and freeze only those cells.
+    """Blend the encoded first latent into future ROIs and freeze only that alpha.
 
     ComfyUI treats ``noise_mask`` as a denoise mask: 1 samples the model output;
     0 preserves the latent. Wan22ImageToVideoLatent provides a zero first slot
     and ones for the future slots. This operation keeps that first-slot lock,
-    writes source values into selected future cells, and multiplies the base
-    denoise mask by the inverse anchor mask.
+    blends source values into selected future cells, and multiplies the base
+    denoise mask by the inverse anchor alpha. Legacy ROIs without
+    ``feather_latent`` remain binary; feathered ROIs use a distance ramp
+    inside the approved box and never expand its bounds.
     """
     if not isinstance(latent, dict):
         raise ValueError("expected a ComfyUI LATENT dictionary")
@@ -73,13 +79,22 @@ def anchor_future_rois(latent, rois):
 
     regions = _validate_rois(rois, samples.shape[4], samples.shape[3])
     anchor_mask = torch.zeros_like(noise_mask)
-    anchored_samples = samples.clone()
     source_first = samples[:, :, :1]
-    for left, top, right, bottom in regions:
-        anchor_mask[:, :, 1:, top:bottom, left:right] = 1
-        anchored_samples[:, :, 1:, top:bottom, left:right] = source_first[:, :, :, top:bottom, left:right].expand(
-            -1, -1, EXPECTED_TIME_SLOTS - 1, -1, -1
-        )
+    for left, top, right, bottom, feather in regions:
+        if feather == 0:
+            alpha = torch.ones((bottom - top, right - left), device=samples.device, dtype=samples.dtype)
+        else:
+            ys = torch.arange(top, bottom, device=samples.device)
+            xs = torch.arange(left, right, device=samples.device)
+            distance_y = torch.minimum(ys - top, bottom - 1 - ys)
+            distance_x = torch.minimum(xs - left, right - 1 - xs)
+            distance = torch.minimum(distance_y[:, None], distance_x[None, :])
+            alpha = (distance.to(dtype=samples.dtype) / feather).clamp(0, 1)
+        region_mask = alpha.view(1, 1, 1, bottom - top, right - left)
+        target = anchor_mask[:, :, 1:, top:bottom, left:right]
+        anchor_mask[:, :, 1:, top:bottom, left:right] = torch.maximum(target, region_mask)
+
+    anchored_samples = samples * (1 - anchor_mask) + source_first * anchor_mask
 
     anchored_noise_mask = noise_mask * (1 - anchor_mask)
     if not bool((anchored_noise_mask[:, :, 1:] > 0).any()):

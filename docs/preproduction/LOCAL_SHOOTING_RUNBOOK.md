@@ -142,7 +142,13 @@ python scripts/fid1_deploy.py deploy --root . --comfy-root local/comfyui/image/C
 python scripts/fid1_deploy.py verify --root . --comfy-root local/comfyui/image/ComfyUI
 ```
 
-FID1的Wan2.2 mask语义固定为`1=denoise、0=preserve`。节点从Wan首个编码latent把小ROI复制到未来12个latent时间格，并乘用基准`noise_mask`；首格mask保持为0，ROI外未来区域保持为1。完整ROI、空mask、非有限值、错通道/时间/设备/shape均拒绝。49视频帧必须是13个latent时间格。
+FID1的Wan2.2 mask语义固定为`1=denoise、0=preserve`。节点把Wan首个编码latent按anchor alpha混合到未来12个latent时间格，并设实际`noise_mask=base_mask*(1-alpha)`；首格mask保持为0，ROI外未来区域保持为1。Schema-v2旧profile不含羽化、仍按硬0/1运行；schema-v3可为ROI指定`feather_latent` 1–4，羽化宽度只在获批ROI框内向中心渐强，不扩展框外区域。V004取4格，alpha从边界0、内侧0.25/0.5/0.75到中心1；锁定版KSampler将连续mask值用于加权混合。完整ROI、空mask、非有限值、错通道/时间/设备/shape及非法羽化宽度均拒绝。49视频帧必须是13个latent时间格。
+
+## 2026-10-13 take04/take05视觉失败后的受控续测
+
+SH903 take04同时修改提示词和增加anchor，不能单因归因；take05使用与take03完全相同的正/负提示词、源哈希、seed、576×1024、49/24和采样预算，仅增加硬ROI anchor，仍从第2帧起出现全场景马赛克/噪点与静止脸块。两条都为`CHANGES_REQUIRED`，不得进入LOOKREEL/EP001。
+
+take05复审建议下一轮只测试ROI边缘：新profile `SH903_FID1_V004`保留同条件，`feather_latent=4`让ROI边界alpha为0、向内逐格升至0.25/0.5/0.75/1。take06已有旧的PREPARED job且节点SHA已过期，不覆盖；当前实际新运行目录选择take07。完成软mask数学/prepare/submit测试、CI、精准回滚和单节点重部署/重启后，先prepare与dry-run，再用空队列和重新读取的GPU/RAM/磁盘数据决定是否执行一次。此诊断不批准输出；SH901/SH902继续保持前镜Jovi接受门禁。
 
 确认当前8188实例由这份Comfy源码启动，并且`/object_info/FID1WanSourceROIAnchor`含`LATENT`和ROI JSON输入、`LATENT`输出；实际执行还要求Comfy队列为空。若当前服务未运行，用已核对的本地venv启动单实例，监听仅限环回地址：
 
