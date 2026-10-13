@@ -12,6 +12,7 @@ import source_pilot as pilot
 from preproduction import read_json, write_json
 from submit_prepared import job_command
 from sync_repo_media import digest
+from test_fid1_predecessor_unittest import completed_predecessor_fixture
 
 class FidelityProfileTests(DeliveryFixture):
     def setUp(self):
@@ -20,6 +21,7 @@ class FidelityProfileTests(DeliveryFixture):
         for rel in ('scripts/approve_asset.py','scripts/sync_repo_media.py','scripts/preproduction.py','scripts/fid1_graph_audit.py','scripts/fid1_wan_latent_anchor_node.py',
                     'scripts/submit_prepared.py','scripts/p1_comfy_probe.py','scripts/fid1_deploy.py',
                     'scripts/fid1_qa_report.py',
+                    'scripts/fid1_predecessor.py','scripts/fid1_review_contract.py',
                     'docs/reviews/20261011-source-fidelity/installed_comfy_source/source_manifest.json'):
             target=self.root/rel;target.parent.mkdir(parents=True,exist_ok=True);shutil.copyfile(ROOT/rel,target)
         self.profile_path='config/source_fidelity_trials/test_profile.json'
@@ -55,6 +57,101 @@ class FidelityProfileTests(DeliveryFixture):
             'workflow_sha256':job['workflow_sha256'],
             'input_sha256':job['input_sha256'],
         })
+
+    def downstream_fixture(self):
+        self.approve()
+        kit=read_json(self.root/pilot.KIT)
+        self.profile_path='config/source_fidelity_trials/SH901_FID1_TEST_V2.json'
+        self.profile(schema_version=2,profile_id='SH901_FID1_TEST_V2',shot_id='SH901',
+                     input_sha256=kit['shots']['SH901']['sha256'],seed=2026100801,
+                     anchor_strategy='wan22_first_latent_future_roi_v1',
+                     anchor_rois=[{'id':'WUKONG_FACE','x0':0.31,'y0':0.20,'x1':0.53,'y1':0.41},
+                                  {'id':'DAIYU_FACE','x0':0.60,'y0':0.25,'x1':0.84,'y1':0.45}])
+        self.out=pilot.LOCAL+'/video/SH901/jobs/take02'
+        return completed_predecessor_fixture(self.root)
+
+    def test_predecessor_changed_during_prepare_is_not_published(self):
+        previous_rel=self.downstream_fixture()
+        original=pilot.prepare
+        def drift_predecessor(*args,**kwargs):
+            result=original(*args,**kwargs)
+            path=self.root/previous_rel/'run_record.json'
+            path.write_bytes(path.read_bytes()+b' ')
+            return result
+        with patch.object(pilot,'prepare',side_effect=drift_predecessor):
+            with self.assertRaisesRegex(ValueError,'predecessor receipt changed'):
+                pilot.prepare_trial(self.root,'SH901',2026100801,self.out,self.profile_path,previous_rel)
+        self.assertFalse((self.root/self.out).exists())
+
+    def test_resealed_downstream_job_cannot_tamper_predecessor_receipt(self):
+        previous_rel=self.downstream_fixture()
+        pilot.prepare_trial(self.root,'SH901',2026100801,self.out,self.profile_path,previous_rel)
+        job=read_json(self.root/self.out/'job.json')
+        job['fid1_contract']['predecessor']['prompt_id']='fabricated prompt'
+        self.reseal_job(job)
+        with self.assertRaisesRegex(ValueError,'predecessor receipt changed'):
+            job_command(self.root,self.root/self.out,'http://127.0.0.1:8188')
+
+    def test_legacy_downstream_job_fails_closed_without_overwriting_it(self):
+        previous_rel=self.downstream_fixture()
+        pilot.prepare_trial(self.root,'SH901',2026100801,self.out,self.profile_path,previous_rel)
+        job=read_json(self.root/self.out/'job.json')
+        job['fid1_contract']['schema_version']=1
+        del job['fid1_contract']['predecessor']
+        self.reseal_job(job)
+        before=digest(self.root/self.out/'job.json')
+        with self.assertRaisesRegex(ValueError,'legacy downstream|new take'):
+            job_command(self.root,self.root/self.out,'http://127.0.0.1:8188')
+        self.assertEqual(digest(self.root/self.out/'job.json'),before)
+
+    def test_legacy_sh903_contract_remains_valid(self):
+        self.approve();self.fid1_profile();self.prepare()
+        job=read_json(self.root/self.out/'job.json')
+        job['fid1_contract']['schema_version']=1
+        del job['fid1_contract']['predecessor']
+        self.reseal_job(job)
+        job_command(self.root,self.root/self.out,'http://127.0.0.1:8188')
+
+    def test_execute_checks_predecessor_again_under_lock_before_attempt_marker(self):
+        import submit_prepared
+        previous_rel=self.downstream_fixture()
+        pilot.prepare_trial(self.root,'SH901',2026100801,self.out,self.profile_path,previous_rel)
+        real=submit_prepared.job_command
+        calls=[]
+        def drift_after_first_check(*args,**kwargs):
+            result=real(*args,**kwargs); calls.append(True)
+            if len(calls)==1:
+                path=self.root/previous_rel/'run_record.json'
+                path.write_bytes(path.read_bytes()+b' ')
+            return result
+        with patch.object(sys,'argv',['submit_prepared.py','--root',str(self.root),'--job-dir',self.out,
+                                      '--url','http://127.0.0.1:8188','--comfy-root',str(self.root),'--execute']), \
+             patch.object(submit_prepared,'job_command',side_effect=drift_after_first_check), \
+             patch.object(submit_prepared,'validate_fid1_runtime') as runtime, \
+             patch.object(submit_prepared.subprocess,'run') as execute:
+            self.assertEqual(submit_prepared.main(),2)
+            runtime.assert_not_called();execute.assert_not_called()
+        self.assertFalse((self.root/self.out/'submission_intent.json').exists())
+        self.assertFalse((self.root/self.out/'run_record.json').exists())
+        self.assertFalse((self.root/'local/production/.gpu_submission.lock').exists())
+
+    def test_execute_rechecks_predecessor_after_network_runtime_checks(self):
+        import submit_prepared
+        previous_rel=self.downstream_fixture()
+        pilot.prepare_trial(self.root,'SH901',2026100801,self.out,self.profile_path,previous_rel)
+        def drift_during_runtime(*args,**kwargs):
+            path=self.root/previous_rel/'run_record.json'
+            path.write_bytes(path.read_bytes()+b' ')
+            return {'test_fixture_runtime':'no network or GPU was used'}
+        with patch.object(sys,'argv',['submit_prepared.py','--root',str(self.root),'--job-dir',self.out,
+                                      '--url','http://127.0.0.1:8188','--comfy-root',str(self.root),'--execute']), \
+             patch.object(submit_prepared,'validate_fid1_runtime',side_effect=drift_during_runtime) as runtime, \
+             patch.object(submit_prepared.subprocess,'run') as execute:
+            self.assertEqual(submit_prepared.main(),2)
+            runtime.assert_called_once();execute.assert_not_called()
+        self.assertFalse((self.root/self.out/'submission_intent.json').exists())
+        self.assertFalse((self.root/self.out/'run_record.json').exists())
+        self.assertFalse((self.root/'local/production/.gpu_submission.lock').exists())
 
     def test_quality_profile_changes_graph_without_touching_source_plan_or_approvals(self):
         self.approve();profile=self.profile()
@@ -241,6 +338,36 @@ class FidelityProfileTests(DeliveryFixture):
         self.assertEqual(result.returncode,0,result.stdout+result.stderr)
         self.assertFalse((self.root/self.out/'submission_intent.json').exists())
 
+    def test_downstream_prepare_and_dry_run_need_no_torch(self):
+        previous_rel=self.downstream_fixture()
+        profile=read_json(self.root/self.profile_path)
+        profile.update(schema_version=4,anchor_strategy='wan22_timestep_aware_future_roi_v2')
+        for roi in profile['anchor_rois']:roi['feather_latent']=4
+        write_json(self.root/self.profile_path,profile)
+        code=textwrap.dedent('''
+            import builtins, pathlib, sys
+            original = builtins.__import__
+            def no_torch(name, *args, **kwargs):
+                if name == "torch" or name.startswith("torch."):
+                    raise ImportError("Torch intentionally unavailable for downstream test")
+                return original(name, *args, **kwargs)
+            builtins.__import__ = no_torch
+            root, out, profile, predecessor = sys.argv[1:]
+            sys.path.insert(0, root + "/scripts")
+            import source_pilot, submit_prepared
+            result = source_pilot.prepare_trial(root, "SH901", 2026100801, out,
+                                               trial_profile=profile, previous_job=predecessor)
+            assert result["prepared"] and not result["submitted"]
+            command, job = submit_prepared.job_command(root, pathlib.Path(root) / out,
+                                                       "http://127.0.0.1:8188")
+            assert job["fid1_contract"]["predecessor"]["job_dir"] == predecessor
+        ''')
+        result=subprocess.run([sys.executable,'-c',code,str(self.root),self.out,self.profile_path,previous_rel],
+                              cwd=ROOT,capture_output=True,text=True)
+        self.assertEqual(result.returncode,0,result.stdout+result.stderr)
+        self.assertFalse((self.root/self.out/'submission_intent.json').exists())
+        self.assertFalse((self.root/self.out/'run_record.json').exists())
+
     def test_fid1_implementation_drift_during_prepare_is_not_published(self):
         self.approve();self.fid1_profile()
         original=pilot.prepare
@@ -254,7 +381,7 @@ class FidelityProfileTests(DeliveryFixture):
                 self.prepare()
         self.assertFalse((self.root/self.out).exists())
 
-    def test_sh901_cannot_prepare_before_jovi_accepts_sh903_take04(self):
+    def test_sh901_requires_explicit_accepted_previous_job(self):
         self.approve()
         kit=read_json(self.root/pilot.KIT)
         profile_path='config/source_fidelity_trials/SH901_FID1_TEST_V2.json'
@@ -267,7 +394,7 @@ class FidelityProfileTests(DeliveryFixture):
         with self.assertRaisesRegex(ValueError,'SH903|visual|review|accept'):
             pilot.prepare_trial(self.root,'SH901',2026100801,pilot.LOCAL+'/video/SH901/jobs/take02',profile_path)
 
-    def test_sh901_opens_only_after_hash_bound_jovi_review_of_sh903_take04(self):
+    def test_sh901_opens_only_after_hash_bound_review_of_selected_take09(self):
         self.approve()
         kit=read_json(self.root/pilot.KIT)
         profile_path='config/source_fidelity_trials/SH901_FID1_TEST_V2.json'
@@ -278,35 +405,21 @@ class FidelityProfileTests(DeliveryFixture):
                                           {'id':'DAIYU_FACE','x0':0.60,'y0':0.25,'x1':0.84,'y1':0.45}])
         write_json(self.root/profile_path,profile)
 
-        previous=self.root/pilot.LOCAL/'video/SH903/jobs/take04'
-        (previous/'qa').mkdir(parents=True)
-        media_dir=previous/'run_record_media';media_dir.mkdir()
-        output_path=media_dir/'fixture.mp4';output_path.write_bytes(b'fixture video bytes')
-        output_sha=digest(output_path);output_bytes=output_path.stat().st_size
-        write_json(previous/'job.json',{'shot_id':'SH903','purpose':pilot.SCOPE,'eligible_for_final_cut':False,
-                                        'trial_profile':{'profile_id':'SH903_FID1_V002'}})
-        write_json(previous/'run_record.json',{'result':'success','prompt_id':'fixture-prompt',
-                                               'outputs':[{'saved_path':str(output_path),'bytes':output_bytes,'sha256':output_sha}]})
-        evidence_rel='local/review_evidence/FID1_SH903_SH903_FID1_V002_fixture_VISUAL_REVIEW.json'
-        evidence={
-            'schema_version':1,'scope':pilot.SCOPE,'shot_id':'SH903','profile_id':'SH903_FID1_V002',
-            'output_sha256':output_sha,'decision':'ACCEPTED_FOR_NEXT_SOURCE_ONLY_TRIAL',
-            'full_playback':'PASS','identity':'PASS','costume':'PASS','limbs':'PASS',
-            'reviewer':'Jovi','user_quote':'TEST FIXTURE ONLY: advance to the next source-only trial.',
-            'recorded_at':'2026-10-13T10:00:00+08:00',
-        }
-        evidence_path=self.root/evidence_rel;write_json(evidence_path,evidence)
-        write_json(previous/'qa/qa_report.json',{
-            'scope':pilot.SCOPE,'shot_id':'SH903','profile_id':'SH903_FID1_V002','runtime_success':True,
-            'media_contract_ok':True,'full_decode':'PASS','output':{'path':'run_record_media/fixture.mp4','bytes':output_bytes,'sha256':output_sha},
-            'visual_review':{key:evidence[key] for key in ('decision','full_playback','identity','costume','limbs','reviewer','user_quote','recorded_at')}
-                         | {'evidence_path':evidence_rel,'evidence_sha256':digest(evidence_path)},
-        })
-        result=pilot.prepare_trial(self.root,'SH901',2026100801,pilot.LOCAL+'/video/SH901/jobs/take02',profile_path)
+        previous_rel=completed_predecessor_fixture(self.root)
+        output_path=self.root/previous_rel/'run_record_media/fixture.mp4'
+        destination=pilot.LOCAL+'/video/SH901/jobs/take02'
+        result=pilot.prepare_trial(self.root,'SH901',2026100801,destination,profile_path,previous_rel)
         self.assertTrue(result['prepared'])
+        job=read_json(self.root/destination/'job.json')
+        self.assertEqual(job['fid1_contract']['schema_version'],2)
+        self.assertEqual(job['fid1_contract']['predecessor']['job_dir'],previous_rel)
+        self.assertTrue(all(job['sources'][rel]==sha for rel,sha in job['fid1_contract']['predecessor']['files'].items()))
+        job_command(self.root,self.root/destination,'http://127.0.0.1:8188')
         output_path.write_bytes(b'changed after review')
-        with self.assertRaisesRegex(ValueError,'current output bytes'):
-            pilot.prepare_trial(self.root,'SH901',2026100801,pilot.LOCAL+'/video/SH901/jobs/take02',profile_path)
+        with self.assertRaises(ValueError):
+            job_command(self.root,self.root/destination,'http://127.0.0.1:8188')
+        with self.assertRaises(ValueError):
+            pilot.prepare_trial(self.root,'SH901',2026100801,pilot.LOCAL+'/video/SH901/jobs/take03',profile_path,previous_rel)
 
     def test_submit_rejects_sampler_bypass_even_with_updated_workflow_hash(self):
         self.approve();self.fid1_profile();self.prepare()

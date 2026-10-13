@@ -3,7 +3,6 @@
 from __future__ import annotations
 
 import argparse
-from datetime import datetime
 from fractions import Fraction
 import hashlib
 import html
@@ -156,30 +155,14 @@ def record_visual_review(root: Path | str, job_dir: Path | str, feedback_path: P
     feedback_file=Path(feedback_path).resolve(strict=True)
     require(feedback_file.is_relative_to(root/"local"/"review_evidence"),"human review evidence must be stored under local/review_evidence")
     review=read_json(feedback_file)
-    required={"schema_version","scope","shot_id","profile_id","output_sha256","decision","full_playback",
-              "identity","costume","limbs","reviewer","user_quote","recorded_at"}
-    require(set(review)==required and review.get("schema_version")==1,"visual review fields/schema are invalid")
-    require(review.get("scope")==SCOPE and review.get("shot_id")==report.get("shot_id")
-            and review.get("profile_id")==report.get("profile_id"),"visual review belongs to another source trial")
-    require(review.get("output_sha256")==report.get("output",{}).get("sha256"),"visual review is not bound to this output hash")
-    require(review.get("reviewer")=="Jovi" and isinstance(review.get("user_quote"),str)
-            and 0<len(review["user_quote"].strip())<=2048,"review requires Jovi's explicit words")
     try:
-        recorded=datetime.fromisoformat(review["recorded_at"].replace("Z","+00:00"))
-    except (TypeError,ValueError) as exc:
-        raise ValueError("visual review timestamp must be ISO-8601 with timezone") from exc
-    require(recorded.tzinfo is not None,"visual review timestamp must include timezone")
-    allowed={"PASS","CHANGES_REQUIRED","NOT_RUN"}
-    require(all(review.get(key) in allowed for key in ("full_playback","identity","costume","limbs")),
-            "visual review statuses must be PASS, CHANGES_REQUIRED, or NOT_RUN")
+        from .fid1_review_contract import validate_visual_review_payload
+    except ImportError:
+        from fid1_review_contract import validate_visual_review_payload
+    validate_visual_review_payload(review, scope=SCOPE, shot_id=report.get("shot_id"),
+                                   profile_id=report.get("profile_id"),
+                                   output_sha256=report.get("output",{}).get("sha256"))
     decision=review.get("decision")
-    require(decision in {"ACCEPTED_FOR_NEXT_SOURCE_ONLY_TRIAL","CHANGES_REQUIRED"},"invalid visual review decision")
-    if decision=="ACCEPTED_FOR_NEXT_SOURCE_ONLY_TRIAL":
-        require(all(review[key]=="PASS" for key in ("full_playback","identity","costume","limbs")),
-                "next source-only trial requires PASS for full playback, identity, costume, and limbs")
-    else:
-        require(any(review[key]!="PASS" for key in ("full_playback","identity","costume","limbs")),
-                "CHANGES_REQUIRED needs at least one unresolved or failed visual criterion")
 
     raw=feedback_file.read_bytes()
     evidence_sha=hashlib.sha256(raw).hexdigest()
@@ -330,20 +313,30 @@ def create_report(root: Path | str, job_dir: Path | str, ffprobe: str | None = N
 
 def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("command", choices=("create", "record-review"), nargs="?", default="create")
+    parser.add_argument("command", choices=("create", "record-review", "review-page"), nargs="?", default="create")
     parser.add_argument("--root", default=".")
     parser.add_argument("--job-dir", required=True)
     parser.add_argument("--ffprobe")
     parser.add_argument("--ffmpeg")
     parser.add_argument("--feedback")
     parser.add_argument("--apply", action="store_true")
+    parser.add_argument("--out", help="New source-pilot review_sessions directory for review-page")
     args = parser.parse_args(argv)
     try:
-        if args.command=="record-review":
+        if args.command=="review-page":
+            require(args.out and not args.apply and not args.feedback,
+                    "review-page requires --out and does not accept --feedback/--apply")
+            try:
+                from .fid1_visual_feedback import build_review_page
+            except ImportError:
+                from fid1_visual_feedback import build_review_page
+            report=build_review_page(args.root,args.job_dir,args.out)
+        elif args.command=="record-review":
+            require(not args.out,"--out only applies to review-page")
             require(bool(args.feedback),"--feedback is required for record-review")
             report=record_visual_review(args.root,args.job_dir,args.feedback,args.apply)
         else:
-            require(not args.apply and not args.feedback,"--feedback/--apply only apply to record-review")
+            require(not args.out and not args.apply and not args.feedback,"--feedback/--apply only apply to record-review; --out only to review-page")
             report = create_report(args.root, args.job_dir, args.ffprobe, args.ffmpeg)
         print(json.dumps(report, indent=2, ensure_ascii=False))
         return 0

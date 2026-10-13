@@ -9,6 +9,22 @@ from preproduction import read_json, write_json
 
 
 class FID1ProfileSchemaTests(unittest.TestCase):
+    def test_next_shot_v002_profiles_preserve_each_own_source_seed_prompts_and_roi(self):
+        kit = read_json(ROOT / pilot.KIT)
+        for shot in ("SH901", "SH902"):
+            with self.subTest(shot=shot):
+                previous = read_json(ROOT / f"config/source_fidelity_trials/{shot}_FID1_V001.json")
+                rel = f"config/source_fidelity_trials/{shot}_FID1_V002.json"
+                profile, digest = pilot.load_trial_profile(ROOT, shot, kit, rel)
+                self.assertEqual(profile["schema_version"], 4)
+                self.assertEqual(profile["anchor_strategy"], "wan22_timestep_aware_future_roi_v2")
+                for key in ("shot_id", "input_sha256", "seed", "positive_prompt", "negative_prompt", "width", "height", "frames", "fps", "scope"):
+                    self.assertEqual(profile[key], previous[key])
+                self.assertEqual(profile["input_sha256"], kit["shots"][shot]["sha256"])
+                self.assertEqual([{k:v for k,v in roi.items() if k!="feather_latent"} for roi in profile["anchor_rois"]], previous["anchor_rois"])
+                self.assertTrue(all(roi["feather_latent"] == 4 for roi in profile["anchor_rois"]))
+                self.assertEqual(len(digest), 64)
+
     def test_v005_freezes_take07_inputs_and_changes_only_anchor_strategy(self):
         previous = json.loads((ROOT / "config/source_fidelity_trials/SH903_FID1_V004.json").read_text(encoding="utf-8"))
         candidate = json.loads((ROOT / "config/source_fidelity_trials/SH903_FID1_V005.json").read_text(encoding="utf-8"))

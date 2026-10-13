@@ -159,7 +159,7 @@ Set-Location E:\project\AI-short-vidio-claw\local\comfyui\image\ComfyUI
 ..\venv\Scripts\python.exe main.py --listen 127.0.0.1 --port 8188
 ```
 
-按SH903 take04先prepare及dry-run：
+历史SH903 take04准备记录（目录已存在、视觉失败，不重新执行）：
 
 ```powershell
 Set-Location E:\project\AI-short-vidio-claw
@@ -179,16 +179,23 @@ python scripts/submit_prepared.py --root . --job-dir local/production/T1_SOURCE_
 
 检查批准快照、输入/ROI/profile/节点依赖/工作流哈希、真实Comfy node schema、GPU与RAM、queue空闲和模型文件；仅在所有门禁通过后才单次加`--comfy-root ... --execute`。出现attempt marker或状态不明时先查Comfy history，绝不自动重POST。
 
-执行成功后运行`python scripts/fid1_qa_report.py --root . --job-dir local/production/T1_SOURCE_PILOT/video/SH903/jobs/take04`。它用ffprobe核对49帧/24fps/576×1024和输出hash，完整解码、生成all49及首中尾图，并记录资源数据。打开`qa/review.html`完整播放，逐项看身份、服装、手足、背景和ROI接缝；报告中的人工审片字段默认PENDING。不能由Comfy运行成功或自动分数写视觉通过。
+对于新任务，执行成功后用`fid1_qa_report.py create`生成一次QA；已有take09的QA已经生成，不覆盖。QA用ffprobe核对49帧/24fps/576×1024和输出hash，完整解码、生成all49及首中尾图，并记录资源数据。当前take09使用新的独立审片页显示实际输入、视频、人物与服装参考及49帧；所有选择为空，播放不会自动批准。
 
-只有Jovi明确给出这条输出的视觉结论后，才把`qa/visual_review_template.json`复制到`local/review_evidence/FID1_SH903_TAKE04_VISUAL_REVIEW.json`并填写：output SHA必须不变、reviewer=`Jovi`、user_quote为Jovi原话、full_playback/identity/costume/limbs分别填`PASS`或`CHANGES_REQUIRED`/`NOT_RUN`。若确认可继续同源试拍，decision=`ACCEPTED_FOR_NEXT_SOURCE_ONLY_TRIAL`且四项全为PASS；否则填`CHANGES_REQUIRED`。先预览再记录：
+用独立审片页导出Jovi实际填写的反馈，保存到`local/review_evidence/FID1_SH903_TAKE09_FEEDBACK.json`。output SHA必须不变、reviewer=`Jovi`、user_quote为实际原话、full_playback/identity/costume/limbs分别填`PASS`或`CHANGES_REQUIRED`/`NOT_RUN`。若确认可继续同源试拍，decision=`ACCEPTED_FOR_NEXT_SOURCE_ONLY_TRIAL`且四项全为PASS；否则填`CHANGES_REQUIRED`。先预览再记录：
 
 ```powershell
-python scripts/fid1_qa_report.py record-review --root . --job-dir local/production/T1_SOURCE_PILOT/video/SH903/jobs/take04 --feedback local/review_evidence/FID1_SH903_TAKE04_VISUAL_REVIEW.json
-python scripts/fid1_qa_report.py record-review --root . --job-dir local/production/T1_SOURCE_PILOT/video/SH903/jobs/take04 --feedback local/review_evidence/FID1_SH903_TAKE04_VISUAL_REVIEW.json --apply
+python scripts/fid1_qa_report.py review-page --root . --job-dir local/production/T1_SOURCE_PILOT/video/SH903/jobs/take09 --out local/production/T1_SOURCE_PILOT/review_sessions/SH903_take09_NEW
+python scripts/fid1_qa_report.py record-review --root . --job-dir local/production/T1_SOURCE_PILOT/video/SH903/jobs/take09 --feedback local/review_evidence/FID1_SH903_TAKE09_FEEDBACK.json
+python scripts/fid1_qa_report.py record-review --root . --job-dir local/production/T1_SOURCE_PILOT/video/SH903/jobs/take09 --feedback local/review_evidence/FID1_SH903_TAKE09_FEEDBACK.json --apply
 ```
 
-只有Jovi明确接受SH903 take04才记录哈希绑定的视觉review，随后才可准备SH901 take02；SH901也获接受后才可准备SH902 take02。原take01和SH903 take02/take03均不覆盖。任何一镜的视觉问题都阻断后续试拍；这三张图仍只属于T1_SOURCE_ONLY。
+`SH903_take09_NEW`须替换为未使用的审片目录。当前take09仍PENDING。只有具体SH903视频获真实接受后才准备SH901；只有具体SH901视频获接受后才准备SH902。新准备命令用显式`--previous-job`指定已接受的前镜job，不自动找最新take，也不回退到失败take04。SH901/SH902的新`FID1_V002`候选均为schema-4，使用各自源图/hash、seed、提示词和ROI。
+
+```powershell
+python scripts/source_pilot.py prepare --root . --shot SH901 --seed 2026100801 --out local/production/T1_SOURCE_PILOT/video/SH901/jobs/take02 --trial-profile config/source_fidelity_trials/SH901_FID1_V002.json --previous-job local/production/T1_SOURCE_PILOT/video/SH903/jobs/take09
+```
+
+`take02`仅在未存在且前镜真实接受时使用；否则选择新目录。新job的FID1合同schema-2冻结前镜的job、完整性收据、workflow、输入、run、QA、视频和审片证据。prepare发布前和submit（含锁内及运行环境检查之后、创建标记之前）重验当前字节与receipt。旧job只读保留，不写入新receipt；缺失receipt的旧下游schema-1任务拒绝执行。原take与正式30镜批准表保持原样。任何一镜视觉不接受都阻断后续试拍，范围仍为T1_SOURCE_ONLY。
 
 ## 7. L4：T1试拍，不改27秒/60秒生产时间线
 

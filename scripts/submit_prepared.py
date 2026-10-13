@@ -18,7 +18,8 @@ def validate_fid1_job(root, directory, job, graph):
         from scripts import source_pilot
 
     contract = job.get('fid1_contract')
-    require(isinstance(contract, dict) and contract.get('schema_version') == 1,
+    require(isinstance(contract, dict) and type(contract.get('schema_version')) is int
+            and contract.get('schema_version') in (1,2),
             'FID1 job contract is missing or unsupported')
     integrity_path = directory / 'job_integrity.json'
     require(integrity_path.is_file(), 'FID1 immutable job-integrity receipt is missing')
@@ -54,6 +55,15 @@ def validate_fid1_job(root, directory, job, graph):
     source_pilot.choices(root, feedback)
     shot_id = job.get('shot_id')
     require(shot_id in kit['shots'], 'unknown FID1 shot')
+    if contract['schema_version'] == 1:
+        require(shot_id == 'SH903',
+                'legacy downstream FID1 job has no frozen predecessor; prepare a new take with --previous-job')
+    else:
+        require('predecessor' in contract, 'FID1 predecessor receipt field is missing')
+        predecessor = source_pilot.validate_predecessor_receipt(root, shot_id, contract['predecessor'])
+        if predecessor is not None:
+            require(all(job.get('sources', {}).get(rel) == sha for rel,sha in predecessor['files'].items()),
+                    'FID1 predecessor files are not frozen in job sources')
     shot, entry, image = source_pilot.validate_keyframe(root, plan, approval, registry, shot_id)
     profile_path = job.get('trial_profile_path')
     require(isinstance(profile_path, str) and profile_path.startswith('config/source_fidelity_trials/'),
@@ -224,6 +234,9 @@ def main():
                 runtime = validate_fid1_runtime(root, Path(a.comfy_root), job, a.url)
             else:
                 runtime = None
+            fresh_command, fresh_job = job_command(root, directory, a.url)
+            require(fresh_command == command and fresh_job == job,
+                    'prepared job changed during runtime validation; prepare a new take')
             intent = directory / 'submission_intent.json'
             with intent.open('x', encoding='utf-8') as stream:
                 json.dump({'state':'ATTEMPT_STARTED', 'pid':os.getpid(), 'probe_sha256':sha256_file(root/'scripts/p1_comfy_probe.py'),

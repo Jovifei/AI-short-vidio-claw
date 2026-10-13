@@ -1,0 +1,21 @@
+{
+  "schema_version": 1,
+  "bundle": "FID1_NEXT_SOURCE_ENGINEERING",
+  "files": [
+    {
+      "path": "browser_check.json",
+      "bytes": 914,
+      "sha256": "cd4fdaf527fe43bece38f388c9c07ad62929cb15f8b80be245c3deae6633cd46"
+    },
+    {
+      "path": "profile_receipts.json",
+      "bytes": 3044,
+      "sha256": "1843dc66e1829a99b7739fac822aed3ee2ac6b04ede2ebf675cfb2fad63eb3b9"
+    },
+    {
+      "path": "README.md",
+      "bytes": 4898,
+      "sha256": "951f175447c5d2492b8cc7d0d6f07adad94d73d81607ffd31c7d32fac273b32d"
+    }
+  ]
+}

@@ -23,9 +23,9 @@ from preproduction import FID1_NODE_CLASS_BY_STRATEGY, read_json, write_json, ch
 from sync_repo_media import safe, digest, need, verify
 from fid1_graph_audit import attach_fid1_anchor
 try:
-    from .fid1_qa_report import verified_run_output
+    from .fid1_predecessor import validate_predecessor, validate_predecessor_receipt
 except ImportError:
-    from fid1_qa_report import verified_run_output
+    from fid1_predecessor import validate_predecessor, validate_predecessor_receipt
 
 PROJECT = 'T1_SOURCE_PILOT'
 BASE = 'episodes/' + PROJECT
@@ -43,12 +43,10 @@ FID1_DEPENDENCY_FILES = (
     'scripts/p1_comfy_probe.py',
     'scripts/fid1_deploy.py',
     'scripts/fid1_qa_report.py',
+    'scripts/fid1_predecessor.py',
+    'scripts/fid1_review_contract.py',
     'docs/reviews/20261011-source-fidelity/installed_comfy_source/source_manifest.json',
 )
-FID1_PREVIOUS_TRIAL = {
-    'SH901': ('SH903', 'take04'),
-    'SH902': ('SH901', 'take02'),
-}
 
 
 def fid1_dependency_hash(root):
@@ -57,51 +55,8 @@ def fid1_dependency_hash(root):
     return hashes,combined
 
 
-def require_previous_fid1_visual_acceptance(root, sid):
-    previous=FID1_PREVIOUS_TRIAL.get(sid)
-    if previous is None:return
-    previous_shot,previous_take=previous
-    job_rel=f'{LOCAL}/video/{previous_shot}/jobs/{previous_take}'
-    report_path=safe(root,job_rel+'/qa/qa_report.json')
-    need(report_path.is_file(),f'{previous_shot} {previous_take} QA and Jovi visual review are required before {sid}')
-    need(safe(root,job_rel+'/job.json').is_file() and safe(root,job_rel+'/run_record.json').is_file(),
-         f'{previous_shot} {previous_take} prepared job and ComfyUI run record are required before {sid}')
-    report=read_json(report_path);review=report.get('visual_review',{})
-    previous_job=read_json(safe(root,job_rel+'/job.json'))
-    run_record=read_json(safe(root,job_rel+'/run_record.json'))
-    output_path, output_record=verified_run_output(root,safe(root,job_rel),run_record)
-    need(report.get('scope')==SCOPE and report.get('shot_id')==previous_shot
-         and report.get('runtime_success') is True and report.get('media_contract_ok') is True
-         and report.get('full_decode')=='PASS',f'{previous_shot} {previous_take} runtime/media QA is not complete')
-    need(previous_job.get('shot_id')==previous_shot and previous_job.get('purpose')==SCOPE
-         and report.get('profile_id')==previous_job.get('trial_profile',{}).get('profile_id'),
-         f'{previous_shot} {previous_take} QA is not bound to its prepared source-only job')
-    outputs=run_record.get('outputs')
-    need(run_record.get('result')=='success' and run_record.get('prompt_id')
-         and isinstance(outputs,list) and len(outputs)==1
-         and report.get('output',{}).get('sha256')==outputs[0].get('sha256')==output_record.get('sha256')
-         and report.get('output',{}).get('bytes')==output_record.get('bytes')
-         and report.get('output',{}).get('path')==output_path.relative_to(safe(root,job_rel)).as_posix(),
-         f'{previous_shot} {previous_take} QA does not match a successful ComfyUI output')
-    need(review.get('decision')=='ACCEPTED_FOR_NEXT_SOURCE_ONLY_TRIAL'
-         and review.get('reviewer')=='Jovi'
-         and all(review.get(key)=='PASS' for key in ('full_playback','identity','costume','limbs')),
-         f'{previous_shot} {previous_take} requires Jovi visual acceptance before {sid}')
-    evidence_path=review.get('evidence_path');evidence_sha=review.get('evidence_sha256')
-    need(isinstance(evidence_path,str) and evidence_path.startswith('local/review_evidence/FID1_')
-         and isinstance(evidence_sha,str) and len(evidence_sha)==64,'Jovi visual review evidence is missing')
-    evidence_file=safe(root,evidence_path)
-    need(digest(evidence_file)==evidence_sha,'Jovi visual review evidence hash changed')
-    evidence=read_json(evidence_file)
-    need(evidence.get('scope')==SCOPE and evidence.get('shot_id')==previous_shot
-         and evidence.get('profile_id')==report.get('profile_id')
-         and evidence.get('decision')=='ACCEPTED_FOR_NEXT_SOURCE_ONLY_TRIAL'
-         and evidence.get('reviewer')=='Jovi'
-         and all(evidence.get(key)=='PASS' for key in ('full_playback','identity','costume','limbs'))
-         and evidence.get('user_quote')==review.get('user_quote')
-         and evidence.get('recorded_at')==review.get('recorded_at')
-         and evidence.get('output_sha256')==report.get('output',{}).get('sha256'),
-         'visual review is not bound to the actual output')
+def require_previous_fid1_visual_acceptance(root, sid, previous_job=None):
+    return validate_predecessor(root, sid, previous_job)
 
 
 def inputs(root):
@@ -256,7 +211,7 @@ def load_trial_profile(root, sid, kit, relative):
     return profile, hashlib.sha256(raw).hexdigest()
 
 
-def prepare_trial(root,sid,seed,out,trial_profile=None):
+def prepare_trial(root,sid,seed,out,trial_profile=None,previous_job=None):
     root=Path(root).resolve();kit,plan,_,_=inputs(root)
     pointer=read_json(safe(root,POINTER));need(pointer.get('scope')==SCOPE,'missing scoped review')
     need(pointer['snapshot'].startswith(LOCAL+'/reviews/'),'wrong review path');snap=safe(root,pointer['snapshot'])
@@ -270,10 +225,13 @@ def prepare_trial(root,sid,seed,out,trial_profile=None):
     loaded_profile=load_trial_profile(root,sid,kit,trial_profile)
     profile,profile_hash=loaded_profile if loaded_profile else (None,None)
     fid1_dependencies_at_start=None
+    predecessor=None
     if profile and profile.get('anchor_strategy'):
         need(seed==profile['seed'],'FID1 run seed differs from the shot-specific frozen profile')
-        require_previous_fid1_visual_acceptance(root,sid)
+        predecessor=require_previous_fid1_visual_acceptance(root,sid,previous_job)
         fid1_dependencies_at_start=fid1_dependency_hash(root)
+    else:
+        need(previous_job is None,'--previous-job requires an explicit FID1 profile')
     destination=safe(root,out)
     need(destination.is_relative_to(root/LOCAL),'job outside source pilot')
     need(not destination.exists(),'job directory already exists; choose a new take')
@@ -310,7 +268,7 @@ def prepare_trial(root,sid,seed,out,trial_profile=None):
                 dependency_hashes,dependency_hash=fid1_dependencies_at_start
                 job['sources'].update(dependency_hashes)
                 job['fid1_contract']={
-                    'schema_version':1,
+                    'schema_version':2,
                     'strategy':profile['anchor_strategy'],
                     'node_class':FID1_NODE_CLASS_BY_STRATEGY[profile['anchor_strategy']],
                     'node_source_sha256':dependency_hashes['scripts/fid1_wan_latent_anchor_node.py'],
@@ -318,7 +276,10 @@ def prepare_trial(root,sid,seed,out,trial_profile=None):
                     'dependency_sha256':dependency_hash,
                     'dependency_files':dependency_hashes,
                     'noise_mask_semantics':'1=denoise;0=preserve',
+                    'predecessor':predecessor,
                 }
+                if predecessor is not None:
+                    job['sources'].update(predecessor['files'])
         graph[ids['save']]['inputs']['filename_prefix']=prefix+str(seed)
         write_json(directory/'workflow.json',graph)
         job.update(purpose=SCOPE,eligible_for_final_cut=False,workflow_sha256=digest(directory/'workflow.json'))
@@ -337,6 +298,7 @@ def prepare_trial(root,sid,seed,out,trial_profile=None):
             if fid1_dependencies_at_start is not None:
                 need(fid1_dependency_hash(root)==fid1_dependencies_at_start,
                      'FID1 implementation/dependency changed during preparation')
+                validate_predecessor_receipt(root,sid,predecessor)
             need(not destination.exists(),'concurrent quality job writer')
             os.rename(directory,destination)
         return {'prepared':True,'submitted':False,'scope':SCOPE,'job_dir':out,'eligible_for_final_cut':False,
@@ -346,11 +308,11 @@ def prepare_trial(root,sid,seed,out,trial_profile=None):
 
 
 def main():
-    p=argparse.ArgumentParser(description=__doc__);p.add_argument('command',choices=['review','apply','prepare']);p.add_argument('--root',default='.');p.add_argument('--feedback');p.add_argument('--apply',action='store_true');p.add_argument('--shot');p.add_argument('--seed',type=int,default=2026100801);p.add_argument('--out');p.add_argument('--trial-profile',help='Reviewed source-only quality experiment config; never changes the original plan');a=p.parse_args()
+    p=argparse.ArgumentParser(description=__doc__);p.add_argument('command',choices=['review','apply','prepare']);p.add_argument('--root',default='.');p.add_argument('--feedback');p.add_argument('--apply',action='store_true');p.add_argument('--shot');p.add_argument('--seed',type=int,default=2026100801);p.add_argument('--out');p.add_argument('--trial-profile',help='Reviewed source-only quality experiment config; never changes the original plan');p.add_argument('--previous-job',help='Exact reviewed predecessor take under the source pilot; required for SH901/SH902 FID1');a=p.parse_args()
     try:
         if a.command=='review':r=review(a.root)
         elif a.command=='apply':need(bool(a.feedback),'--feedback required');r=apply_review(a.root,a.feedback,a.apply)
-        else:need(bool(a.shot) and bool(a.out),'--shot and --out required');r=prepare_trial(a.root,a.shot,a.seed,a.out,a.trial_profile)
+        else:need(bool(a.shot) and bool(a.out),'--shot and --out required');r=prepare_trial(a.root,a.shot,a.seed,a.out,a.trial_profile,a.previous_job)
         print(json.dumps(r,ensure_ascii=False,indent=2));return 0
     except Exception as e:print(json.dumps({'ok':False,'error':str(e),'production_ready':False},ensure_ascii=False));return 2
 if __name__=='__main__':raise SystemExit(main())

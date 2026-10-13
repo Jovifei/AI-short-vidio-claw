@@ -32,8 +32,9 @@ The shot-specific profiles freeze their approved source hash, size, frame count,
 - `config/source_fidelity_trials/SH903_FID1_V005.json`: corrected timestep-aware candidate used by take09; identical to V004 for source, prompts, seed, sampler values, ROI bounds and feather, changing only the anchor strategy. Take08 is preserved as one failed attempt caused by Comfy's 1→48 mask-channel expansion.
 - `config/source_fidelity_trials/SH901_FID1_V001.json`: SH901, seed `2026100801`.
 - `config/source_fidelity_trials/SH902_FID1_V001.json`: SH902, seed `2026100802`.
+- `config/source_fidelity_trials/SH901_FID1_V002.json` and `SH902_FID1_V002.json`: independent schema-4 candidates preserving each shot's own source, seed, prompt and V001 ROI bounds with feather=4.
 
-Local commands for the first trial:
+Historical take09 commands (already executed; existing jobs and QA must not be recreated):
 
 ```powershell
 python -m unittest discover -s tests -p 'test_*.py' -v
@@ -50,11 +51,20 @@ The submit command without `--execute` is a dry-run. Execute also verifies the d
 `fid1_qa_report.py` runs ffprobe, decodes the full MP4, extracts all 49 frames, makes first/middle/last and all-frame contact sheets, verifies the output hash, and records probe resources. Its `visual_review_template.json` leaves every criterion `PENDING`, the reviewer blank, and the quote blank. After Jovi actually watches the whole clip, copy/fill that template under `local/review_evidence/` with the exact review and preview/apply it with:
 
 ```powershell
-python scripts/fid1_qa_report.py record-review --root . --job-dir local/production/T1_SOURCE_PILOT/video/SH903/jobs/take04 --feedback local/review_evidence/FID1_SH903_TAKE04_VISUAL_REVIEW.json
-python scripts/fid1_qa_report.py record-review --root . --job-dir local/production/T1_SOURCE_PILOT/video/SH903/jobs/take04 --feedback local/review_evidence/FID1_SH903_TAKE04_VISUAL_REVIEW.json --apply
+python scripts/fid1_qa_report.py review-page --root . --job-dir local/production/T1_SOURCE_PILOT/video/SH903/jobs/take09 --out local/production/T1_SOURCE_PILOT/review_sessions/SH903_take09_NEW
+python scripts/fid1_qa_report.py record-review --root . --job-dir local/production/T1_SOURCE_PILOT/video/SH903/jobs/take09 --feedback local/review_evidence/FID1_SH903_TAKE09_FEEDBACK.json
+python scripts/fid1_qa_report.py record-review --root . --job-dir local/production/T1_SOURCE_PILOT/video/SH903/jobs/take09 --feedback local/review_evidence/FID1_SH903_TAKE09_FEEDBACK.json --apply
 ```
 
-SH901 requires a hash-bound Jovi acceptance of SH903 take04; SH902 requires the same for SH901's new take. Source-pilot input approval remains separate from output visual acceptance. All three results remain ineligible for the original LOOKREEL01/EP001 cut.
+The standalone review page embeds the actual approved input, output video, frozen face/costume references and QA sheets. All selections and the reviewer/quote start blank. Export records only the user's actual selections; playback events never select PASS. Copy Jovi's actual export into the feedback path before preview/apply. Creating the page does not change the old job, QA or approvals. Use a new unused review session directory.
+
+SH901 requires an explicitly selected accepted SH903 job; SH902 requires an explicitly selected accepted SH901 job. No latest scan or hardcoded take fallback is used. After real acceptance, prepare a new unused downstream take with its independent profile and `--previous-job`:
+
+```powershell
+python scripts/source_pilot.py prepare --root . --shot SH901 --seed 2026100801 --out local/production/T1_SOURCE_PILOT/video/SH901/jobs/take02 --trial-profile config/source_fidelity_trials/SH901_FID1_V002.json --previous-job local/production/T1_SOURCE_PILOT/video/SH903/jobs/take09
+```
+
+New FID1 contract schema 2 freezes the selected predecessor's job/integrity/workflow/input/run/QA/output/review evidence and identities. Prepare rechecks before publication; submit rechecks during dry-run, under the submission lock, and after runtime checks before writing an attempt marker. Completed historical jobs remain reviewable using their frozen bytes; they are not required to match current implementation files. Legacy downstream schema-1 jobs cannot execute and must use a new take with a frozen predecessor receipt. The receipt covers the direct predecessor; SH902 embeds SH901's frozen ancestor receipt through SH901 job bytes rather than rehashing every completed historical ancestor. Source-pilot input approval remains separate from output visual acceptance. All results remain ineligible for the original LOOKREEL01/EP001 cut.
 
 Rollback only removes the exact FID1 package installed by this tool, and refuses if its bytes or ownership changed:
 
