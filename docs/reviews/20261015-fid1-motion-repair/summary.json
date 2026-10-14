@@ -1,0 +1,46 @@
+{
+  "version": "0.2.0",
+  "plan_sha": "fea10412233353a2931d338cc30832accccf0d66",
+  "scope": "T1_SOURCE_ONLY",
+  "A": {
+    "profile": "SH903_FID1_V006",
+    "take": "take10",
+    "runtime": "SUCCESS",
+    "output_sha256": "32e93baca62c6a95d63433a526f85dc78fec239f9e8f09b64cd34509a6663435",
+    "prompt_id": "cb0a1e46-3422-477b-93a4-1805ec4869bd",
+    "elapsed_seconds": 117.773,
+    "code_observation": "CHANGES_REQUIRED: no clearly observable natural head motion; ghosting and background detail loss remain",
+    "jovi_visual_review": "PENDING",
+    "memory_management_change": "reserve-vram1/fast-disk; same model/dtype/sampler. Environment differs from historic run, so no exclusive prompt-causality claim"
+  },
+  "B": {
+    "profile": "SH903_FID1_V007",
+    "prepared_take": "take13",
+    "GPU": "NOT_RUN",
+    "deployment": "NOT_DONE",
+    "stale_prepared_preserved": [
+      "take11",
+      "take12"
+    ],
+    "source_change_policy": "never reseal or overwrite, fresh unused directory after code freeze",
+    "blocked_by": [
+      "A available physicalRAM sample minimum42385408bytes",
+      "current old plugin lacks v3 class/contract"
+    ],
+    "runtime_resource_floor": {
+      "available_ram_bytes": 8589934592,
+      "free_vram_mib": 8192
+    }
+  },
+  "tests": {
+    "collected": 349,
+    "passed": 346,
+    "skipped": 3,
+    "comfy_cpu_passed": 107
+  },
+  "actual_take09_jovi": "CHANGES_REQUIRED",
+  "SH901_SH902": "BLOCKED",
+  "production_approval": "UNCHANGED_NOT_GRANTED",
+  "CI": "PENDING_FIXED_HEAD",
+  "remote_review": "PENDING_FIXED_HEAD"
+}

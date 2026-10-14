@@ -22,7 +22,7 @@ REPORT = "local/reports/fid1_deployment.json"
 PLUGIN_DIR = Path("custom_nodes/fid1_wan_roi_anchor")
 PLUGIN_FILE = "__init__.py"
 PLUGIN_MANIFEST = "FID1_DEPLOYMENT.json"
-FID1_NODE_CLASSES = ["FID1WanSourceROIAnchor", "FID1WanTimestepAwareROIAnchor"]
+FID1_NODE_CLASSES = ["FID1WanSourceROIAnchor", "FID1WanTimestepAwareROIAnchor", "FID1WanTemporalROIAnchor", "FID1WanStrengthROIAnchor"]
 EXPECTED_COMFY_COMMIT = "6b747c0428c343e1417219641db93a4fb7cb69ae"
 
 

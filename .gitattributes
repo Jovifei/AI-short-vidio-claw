@@ -1,0 +1,2 @@
+# Comfy部署载荷必须保持固定字节，避免跨系统换行转换改变冻结的节点hash。
+/scripts/fid1_wan_latent_anchor_node.py -text whitespace=cr-at-eol

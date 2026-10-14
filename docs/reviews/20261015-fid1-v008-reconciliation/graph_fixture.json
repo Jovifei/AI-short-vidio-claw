@@ -1,0 +1,206 @@
+{
+  "evidence_layer": "SYNTHETIC_FIXTURE_REAL_PREPARE_NO_GPU",
+  "graph": {
+    "3": {
+      "class_type": "KSampler",
+      "inputs": {
+        "model": [
+          "59",
+          0
+        ],
+        "positive": [
+          "6",
+          0
+        ],
+        "negative": [
+          "7",
+          0
+        ],
+        "latent_image": [
+          "59",
+          1
+        ],
+        "seed": 2026100803,
+        "steps": 20,
+        "cfg": 5,
+        "sampler_name": "uni_pc",
+        "scheduler": "simple",
+        "denoise": 1
+      }
+    },
+    "6": {
+      "class_type": "CLIPTextEncode",
+      "_meta": {
+        "title": "CLIP Text Encode (Positive Prompt)"
+      },
+      "inputs": {
+        "text": "The same two subjects from the reference image remain in their original side-profile orientations: the red-and-gold dressed monkey subject on the left and the lavender-dressed woman on the right. Preserve their facial identity, proportions, headdresses, ornaments, clothing and joined-hand relationship. Allow small observable natural nods, subtle gaze movement and breathing without changing their overall stance. Keep the camera locked. Retain clear background landscape edges, water texture and clothing detail, with gentle local water ripples and fabric motion.",
+        "clip": [
+          "38",
+          0
+        ]
+      }
+    },
+    "7": {
+      "class_type": "CLIPTextEncode",
+      "_meta": {
+        "title": "CLIP Text Encode (Negative Prompt)"
+      },
+      "inputs": {
+        "text": "large head rotation, frontal face redesign, looking at camera, moving lips, talking, opening mouth, dramatic body turn, walking, unexpected hand separation, identity drift, face redesign, facial proportion change, humanized monkey face, species change, wardrobe change, extra people, extra limbs, deformed hands, camera movement, reconstructed landscape, blurry background, unstable background, mosaic, pseudo-text, hard pasted face patches",
+        "clip": [
+          "38",
+          0
+        ]
+      }
+    },
+    "8": {
+      "class_type": "VAEDecode",
+      "inputs": {
+        "samples": [
+          "3",
+          0
+        ],
+        "vae": [
+          "39",
+          0
+        ]
+      }
+    },
+    "37": {
+      "class_type": "UNETLoader",
+      "inputs": {
+        "unet_name": "wan2.2_ti2v_5B_fp16.safetensors",
+        "weight_dtype": "default"
+      }
+    },
+    "38": {
+      "class_type": "CLIPLoader",
+      "inputs": {
+        "clip_name": "umt5_xxl_fp8_e4m3fn_scaled.safetensors",
+        "type": "wan",
+        "device": "default"
+      }
+    },
+    "39": {
+      "class_type": "VAELoader",
+      "inputs": {
+        "vae_name": "wan2.2_vae.safetensors"
+      }
+    },
+    "48": {
+      "class_type": "ModelSamplingSD3",
+      "inputs": {
+        "model": [
+          "37",
+          0
+        ],
+        "shift": 8
+      }
+    },
+    "55": {
+      "class_type": "Wan22ImageToVideoLatent",
+      "inputs": {
+        "vae": [
+          "39",
+          0
+        ],
+        "width": 576,
+        "height": 1024,
+        "length": 49,
+        "batch_size": 1,
+        "start_image": [
+          "56",
+          0
+        ]
+      }
+    },
+    "56": {
+      "class_type": "LoadImage",
+      "_meta": {
+        "title": "APPROVED_KEYFRAME_REQUIRED"
+      },
+      "inputs": {
+        "image": "T1_SOURCE_PILOT_SH903_f42bdc2ae0b3_2026100803.png"
+      }
+    },
+    "57": {
+      "class_type": "CreateVideo",
+      "inputs": {
+        "images": [
+          "8",
+          0
+        ],
+        "fps": 24
+      }
+    },
+    "58": {
+      "class_type": "SaveVideo",
+      "inputs": {
+        "video": [
+          "57",
+          0
+        ],
+        "filename_prefix": "video/T1_SOURCE_ONLY/SH903/SH903_FID1_V008/2026100803",
+        "format": "auto",
+        "format.codec": "auto"
+      }
+    },
+    "59": {
+      "class_type": "FID1WanStrengthROIAnchor",
+      "inputs": {
+        "latent": [
+          "55",
+          0
+        ],
+        "roi_boxes_json": "[{\"feather_latent\":4,\"id\":\"WUKONG_FACE\",\"preserve_strength\":0.55,\"x0\":0.11,\"x1\":0.36,\"y0\":0.2,\"y1\":0.36},{\"feather_latent\":4,\"id\":\"DAIYU_FACE\",\"preserve_strength\":0.55,\"x0\":0.69,\"x1\":0.89,\"y0\":0.2,\"y1\":0.37},{\"feather_latent\":4,\"id\":\"BACKGROUND_TREES\",\"preserve_strength\":0.65,\"x0\":0.39,\"x1\":0.64,\"y0\":0.18,\"y1\":0.3}]",
+        "model": [
+          "48",
+          0
+        ]
+      }
+    }
+  },
+  "anchor_nodes": {
+    "59": {
+      "class_type": "FID1WanStrengthROIAnchor",
+      "inputs": {
+        "latent": [
+          "55",
+          0
+        ],
+        "roi_boxes_json": "[{\"feather_latent\":4,\"id\":\"WUKONG_FACE\",\"preserve_strength\":0.55,\"x0\":0.11,\"x1\":0.36,\"y0\":0.2,\"y1\":0.36},{\"feather_latent\":4,\"id\":\"DAIYU_FACE\",\"preserve_strength\":0.55,\"x0\":0.69,\"x1\":0.89,\"y0\":0.2,\"y1\":0.37},{\"feather_latent\":4,\"id\":\"BACKGROUND_TREES\",\"preserve_strength\":0.65,\"x0\":0.39,\"x1\":0.64,\"y0\":0.18,\"y1\":0.3}]",
+        "model": [
+          "48",
+          0
+        ]
+      }
+    }
+  },
+  "graph_audit": {
+    "schema_version": 2,
+    "strategy": "wan22_timestep_aware_roi_strength_v4",
+    "node_class": "FID1WanStrengthROIAnchor",
+    "node_source_sha256": "5d9dc83774c7f0b400b7d82360cbcce70cde1a530c1a5f7f63af1f783e81f6ac",
+    "profile_sha256": "51a49d21571c5c467327644a18b1598ba9a510383a8a8307ba5a7e83cfd2e236",
+    "dependency_sha256": "28abe4026585b881a6ca17387551c0a29b52e7f36ebda31f3302f8907e2ddf89",
+    "dependency_files": {
+      "scripts/fid1_wan_latent_anchor_node.py": "5d9dc83774c7f0b400b7d82360cbcce70cde1a530c1a5f7f63af1f783e81f6ac",
+      "scripts/fid1_graph_audit.py": "227db42bfdeb88a1c312b95a76d10a9fde7082d2e529acfeed7b8c8a271b7832",
+      "scripts/preproduction.py": "0932dcd8ddd70ba772d25e3cf7353b86dd5c01e2e453187dd7a9363c977841e8",
+      "scripts/source_pilot.py": "f7cb55c2277b3399d38f9a576462c5631f89ddfeea127da6873fb37b758f40a6",
+      "scripts/submit_prepared.py": "e193ea69883eb31ac2220ce18a9e6bcc4161978ff81202a5a23fc9b3dbb3d3c4",
+      "scripts/p1_comfy_probe.py": "0d3adecc5938f392017473329432612a8223da0febf9cd479437620646013674",
+      "scripts/fid1_deploy.py": "08ce761a36c743eb8e0fd8dff4a648c372646f650cd8bd3dab57105307b215dc",
+      "scripts/fid1_qa_report.py": "3f55c1839cfe03e90ae6ac3122dbac8fce928542fae434ab457e6c7a2bcab402",
+      "scripts/fid1_predecessor.py": "5580439420faf16fb6325abfa3940c4d0c6e2e0f47e9b95e24e0523e69e1f990",
+      "scripts/fid1_review_contract.py": "d57290bdef507177663385c7633d4b91b8548bcd141b024776f42ad0d61cbf36",
+      "scripts/fid1_job_paths.py": "4bd52822b8b5e731ed670600ac8b582ceed423e2b827698002f0b580cbfb04ba",
+      "docs/reviews/20261011-source-fidelity/installed_comfy_source/source_manifest.json": "49b00d1287d877af49f84b835808edd998c09538c2227d882bb817c948047c30"
+    },
+    "noise_mask_semantics": "1=denoise;0=preserve",
+    "predecessor": null
+  },
+  "real_take14_prepared": false,
+  "human_acceptance": false
+}

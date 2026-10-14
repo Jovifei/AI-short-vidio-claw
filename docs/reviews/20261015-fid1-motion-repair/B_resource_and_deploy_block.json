@@ -1,0 +1,24 @@
+{
+  "B_GPU": "NOT_RUN",
+  "B_DEPLOYMENT": "NOT_DONE",
+  "ram": {
+    "ram_load_percent": 77,
+    "ram_total_bytes": 34164097024,
+    "ram_avail_bytes": 7774740480,
+    "pagefile_total_bytes": 91276083200,
+    "pagefile_avail_bytes": 15571243008
+  },
+  "gpu": {
+    "gpu_name": "NVIDIA GeForce RTX 4070 SUPER",
+    "gpu_memory_used_mib": 2164,
+    "gpu_memory_total_mib": 12282,
+    "driver_version": "595.97",
+    "gpu_utilization_percent": 40
+  },
+  "required_ram_available_bytes_before_B": 8589934592,
+  "reason": "A RAM sample minimum42385408bytes; unsafe margin; v3 plugin not installed",
+  "intent_exists": false,
+  "record_exists": false,
+  "runtime_guard": "REFUSED",
+  "runtime_error": "installed FID1 ComfyUI dependency contract changed"
+}

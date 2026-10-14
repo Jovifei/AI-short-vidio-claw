@@ -1,0 +1,1 @@
+{"exit_code":0,"stderr_bytes":0,"command":"ffmpeg -v error -i take10/run_record_media/2026100803_00001_.mp4 -f null -","human_acceptance":false}

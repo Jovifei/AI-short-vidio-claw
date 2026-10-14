@@ -5,6 +5,7 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import math
 import os
 import re
 import tempfile
@@ -15,6 +16,8 @@ from pathlib import Path, PureWindowsPath
 CAST = {"DAIYU", "WUKONG"}
 APPROVED = {"USER_APPROVED", "PRODUCTION_READY"}
 FID1_NODE_CLASS_BY_STRATEGY = {
+    "wan22_timestep_aware_roi_strength_v4": "FID1WanStrengthROIAnchor",
+    "wan22_timestep_aware_future_roi_v3": "FID1WanTemporalROIAnchor",
     "wan22_first_latent_future_roi_v1": "FID1WanSourceROIAnchor",
     "wan22_timestep_aware_future_roi_v2": "FID1WanTimestepAwareROIAnchor",
 }
@@ -240,8 +243,16 @@ def validate_graph(graph, cast, fid1_profile=None):
         require(len(fid1_ids) == 1 and len(graph) == 13, "FID1 trial graph must contain exactly one anchor node")
         fid1_id, fid1 = node(fid1_node_class)
         expected_inputs = {"latent", "roi_boxes_json"}
-        if strategy == "wan22_timestep_aware_future_roi_v2":
+        if strategy in {"wan22_timestep_aware_future_roi_v2", "wan22_timestep_aware_future_roi_v3", "wan22_timestep_aware_roi_strength_v4"}:
             expected_inputs.add("model")
+        if strategy == "wan22_timestep_aware_future_roi_v3":
+            expected_inputs.add("temporal_anchor_schedule_json")
+            validate_temporal_anchor_schedule(fid1_profile.get("temporal_anchor_schedule"))
+            schedule_json = json.dumps(fid1_profile["temporal_anchor_schedule"], separators=(",", ":"))
+            require(fid1["inputs"].get("temporal_anchor_schedule_json") == schedule_json, "FID1 temporal schedule differs from frozen profile")
+        if strategy == "wan22_timestep_aware_roi_strength_v4":
+            require(fid1_profile.get("schema_version") == 6 and "temporal_anchor_schedule" not in fid1_profile, "strength strategy requires independent schema6")
+            validate_strength_profile_rois(fid1_profile["anchor_rois"], fid1_profile["width"]//16, fid1_profile["height"]//16)
         require(set(fid1.get("inputs", {})) == expected_inputs, "unexpected FID1 node inputs")
         linked(fid1, "latent", latent_id)
         if strategy == "wan22_first_latent_future_roi_v1":
@@ -380,6 +391,39 @@ def main(argv=None):
     except (ContractError, OSError, KeyError, TypeError) as exc:
         print(json.dumps({"contract_ok": False, "error": str(exc)}, ensure_ascii=False))
         return 2
+
+
+def validate_temporal_anchor_schedule(schedule):
+    require(isinstance(schedule, list) and len(schedule) == 12, "temporal_anchor_schedule requires 12 future weights")
+    require(all(type(v) in (int, float) and math.isfinite(v) and .6 <= v <= 1 for v in schedule),
+            "temporal weights must be finite non-bool numbers in [0.6,1]")
+    require(schedule[0] == 1 and all(a >= b for a,b in zip(schedule,schedule[1:])),
+            "temporal weights must start at 1 and be non-increasing")
+    return schedule
+
+
+
+def validate_strength_profile_rois(rois,width,height):
+    require(isinstance(rois,list) and len(rois)==3, "schema6 requires three preregistered ROIs")
+    require({r.get('id') for r in rois if isinstance(r,dict)} == {'WUKONG_FACE','DAIYU_FACE','BACKGROUND_TREES'}, "schema6 ROI IDs differ")
+    regions=[];area=0
+    for roi in rois:
+        require(isinstance(roi,dict) and set(roi)=={'id','x0','y0','x1','y1','feather_latent','preserve_strength'}, "strength ROI fields must be exact")
+        strength=roi['preserve_strength']
+        require(type(strength) in (int,float) and math.isfinite(strength) and .25<=strength<=.80, "preserve_strength must be finite non-bool in [0.25,0.80]")
+        require(type(roi['feather_latent']) is int and 1<=roi['feather_latent']<=4, "strength feather must be 1-4")
+        coords=[roi[k] for k in ('x0','y0','x1','y1')]
+        require(all(type(v) in (int,float) and math.isfinite(v) for v in coords), "strength coordinates must be finite")
+        x0,y0,x1,y1=coords
+        require(0<=x0<x1<=1 and 0<=y0<y1<=1, "strength coordinates out of bounds")
+        area+=(x1-x0)*(y1-y0)
+        regions.append((math.floor(x0*width),math.floor(y0*height),math.ceil(x1*width),math.ceil(y1*height)))
+    require(area<.5, "strength ROI area too large")
+    for i,a in enumerate(regions):
+        for b in regions[i+1:]:
+            require(not (max(a[0],b[0])<min(a[2],b[2]) and max(a[1],b[1])<min(a[3],b[3])), "strength ROIs overlap in latent coordinates")
+    return rois
+
 
 if __name__ == "__main__":
     raise SystemExit(main())

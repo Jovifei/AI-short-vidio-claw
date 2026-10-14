@@ -28,8 +28,10 @@ def attach_fid1_anchor(graph, cast, profile):
         raise ValueError("Comfy graph node ids must be numeric strings") from exc
     roi_json = json.dumps(profile.get("anchor_rois"), sort_keys=True, separators=(",", ":"), ensure_ascii=False)
     inputs = {"latent": [ids["latent"], 0], "roi_boxes_json": roi_json}
-    if strategy == "wan22_timestep_aware_future_roi_v2":
+    if strategy in {"wan22_timestep_aware_future_roi_v2", "wan22_timestep_aware_future_roi_v3", "wan22_timestep_aware_roi_strength_v4"}:
         inputs["model"] = [ids["sample_model"], 0]
+        if strategy == "wan22_timestep_aware_future_roi_v3":
+            inputs["temporal_anchor_schedule_json"] = json.dumps(profile["temporal_anchor_schedule"], separators=(",", ":"))
         graph[next_id] = {"class_type": node_class, "inputs": inputs}
         graph[ids["sampler"]]["inputs"]["model"] = [next_id, 0]
         graph[ids["sampler"]]["inputs"]["latent_image"] = [next_id, 1]
@@ -78,7 +80,7 @@ def audit_fid1_graph(base, candidate, cast, profile):
             {"from": candidate_ids["latent"], "to": candidate_ids["fid1"], "input": "latent"},
             {"from": candidate_ids["fid1"], "to": candidate_ids["sampler"], "input": "latent_image"},
         ]
-    elif strategy == "wan22_timestep_aware_future_roi_v2":
+    elif strategy in {"wan22_timestep_aware_future_roi_v2", "wan22_timestep_aware_future_roi_v3", "wan22_timestep_aware_roi_strength_v4"}:
         require_live_edges = (
             anchor_edge == [candidate_ids["latent"], 0]
             and anchor["inputs"].get("model") == [candidate_ids["sample_model"], 0]

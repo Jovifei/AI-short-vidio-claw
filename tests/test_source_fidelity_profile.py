@@ -478,3 +478,29 @@ class FidelityProfileTests(DeliveryFixture):
         with self.assertRaisesRegex(ValueError,'canonical|shot|path'):
             job_command(self.root,moved,'http://127.0.0.1:8188')
         self.assertFalse((moved/'submission_intent.json').exists())
+
+    def test_temporal_v3_profile_prepares_frozen_schedule_and_uses_both_sampler_ports(self):
+        self.approve()
+        profile=read_json(ROOT/'config/source_fidelity_trials/SH903_FID1_V007.json')
+        profile['input_sha256']=read_json(self.root/pilot.KIT)['shots']['SH903']['sha256']
+        write_json(self.root/self.profile_path,profile)
+        self.prepare()
+        graph=read_json(self.root/self.out/'workflow.json')
+        anchor_id,anchor=next((k,v) for k,v in graph.items() if v['class_type']=='FID1WanTemporalROIAnchor')
+        sampler=next(n['inputs'] for n in graph.values() if n['class_type']=='KSampler')
+        self.assertEqual(sampler['model'],[anchor_id,0])
+        self.assertEqual(sampler['latent_image'],[anchor_id,1])
+        self.assertEqual(json.loads(anchor['inputs']['temporal_anchor_schedule_json']),profile['temporal_anchor_schedule'])
+        _,job=job_command(self.root,self.root/self.out,'http://127.0.0.1:8188')
+        self.assertEqual(job['fid1_contract']['node_class'],'FID1WanTemporalROIAnchor')
+        self.assertEqual(job['trial_profile'],profile)
+
+    def test_temporal_schedule_invalidates_existing_prepared_job_without_resubmission(self):
+        self.approve()
+        profile=read_json(ROOT/'config/source_fidelity_trials/SH903_FID1_V007.json')
+        profile['input_sha256']=read_json(self.root/pilot.KIT)['shots']['SH903']['sha256']
+        write_json(self.root/self.profile_path,profile);self.prepare()
+        profile['temporal_anchor_schedule']=[1]*12
+        write_json(self.root/self.profile_path,profile)
+        with self.assertRaises(ValueError):job_command(self.root,self.root/self.out,'http://127.0.0.1:8188')
+        self.assertFalse((self.root/self.out/'submission_intent.json').exists())

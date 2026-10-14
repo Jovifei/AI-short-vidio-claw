@@ -106,7 +106,7 @@ def validate_fid1_job(root, directory, job, graph):
 
 def validate_fid1_object_info(payload, node_class='FID1WanSourceROIAnchor'):
     require(isinstance(payload, dict), 'ComfyUI object_info response is not an object')
-    require(node_class in {'FID1WanSourceROIAnchor', 'FID1WanTimestepAwareROIAnchor'},
+    require(node_class in {'FID1WanSourceROIAnchor', 'FID1WanTimestepAwareROIAnchor', 'FID1WanTemporalROIAnchor', 'FID1WanStrengthROIAnchor'},
             'unsupported FID1 ComfyUI node class')
     info = payload.get(node_class)
     require(isinstance(info, dict), node_class + ' is not loaded in the running ComfyUI')
@@ -122,7 +122,8 @@ def validate_fid1_object_info(payload, node_class='FID1WanSourceROIAnchor'):
     else:
         valid_inputs = (
             isinstance(required, dict)
-            and set(required) == {'model', 'latent', 'roi_boxes_json'}
+            and set(required) == {'model', 'latent', 'roi_boxes_json'} | ({'temporal_anchor_schedule_json'} if node_class=='FID1WanTemporalROIAnchor' else set())
+            and (node_class!='FID1WanTemporalROIAnchor' or (required.get('temporal_anchor_schedule_json') or [None])[0]=='STRING')
             and (required.get('model') or [None])[0] == 'MODEL'
             and (required.get('latent') or [None])[0] == 'LATENT'
             and (required.get('roi_boxes_json') or [None])[0] == 'STRING'
@@ -150,7 +151,7 @@ def validate_fid1_runtime(root, comfy_root, job, url):
             'FID1 runtime checks are restricted to a local ComfyUI endpoint')
     contract = job.get('fid1_contract') or {}
     node_class = contract.get('node_class')
-    require(node_class in {'FID1WanSourceROIAnchor', 'FID1WanTimestepAwareROIAnchor'},
+    require(node_class in {'FID1WanSourceROIAnchor', 'FID1WanTimestepAwareROIAnchor', 'FID1WanTemporalROIAnchor', 'FID1WanStrengthROIAnchor'},
             'FID1 job node class is missing or unsupported')
     try:
         from .fid1_deploy import verify_installed
@@ -173,8 +174,25 @@ def validate_fid1_runtime(root, comfy_root, job, url):
     except Exception as exc:
         raise ValueError(f'cannot verify the loaded FID1 ComfyUI node: {exc}') from exc
     validate_fid1_object_info(payload, node_class)
+    resource_state = None
+    if node_class in {'FID1WanTemporalROIAnchor','FID1WanStrengthROIAnchor'}:
+        # take10 showed a 42 MB physical-RAM trough. The conditional follow-up
+        # may not rely on queue/node checks alone or an old resource snapshot.
+        try:
+            from .p1_comfy_probe import sample_ram, sample_gpu
+        except ImportError:
+            from p1_comfy_probe import sample_ram, sample_gpu
+        ram, gpu = sample_ram(), sample_gpu()
+        available = ram.get('ram_avail_bytes')
+        total, used = gpu.get('gpu_memory_total_mib'), gpu.get('gpu_memory_used_mib')
+        require(type(available) is int and available >= 8 * 1024**3,
+                'enhanced ROI trial requires at least 8 GiB available RAM; unknown/low resources refuse execution')
+        require(type(total) is int and type(used) is int and total > 0 and 0 <= used <= total and total-used >= 8192,
+                'enhanced ROI trial requires at least 8192 MiB free VRAM; unknown/low resources refuse execution')
+        resource_state = {'ram':ram, 'gpu':gpu, 'minimum_ram_available_bytes':8*1024**3,
+                          'minimum_gpu_free_mib':8192, 'snapshot_not_peak_guarantee':True}
     return {'installed_node_sha256': contract['node_source_sha256'], 'loaded_node_class': node_class,
-            'queue': queue_state}
+            'queue': queue_state, **({'resources':resource_state} if resource_state else {})}
 
 
 def job_command(root, directory, url):
@@ -200,7 +218,7 @@ def job_command(root, directory, url):
     checked_asset(directory, job['input_file'], job['input_sha256'])
     checked_asset(directory, 'workflow.json', job['workflow_sha256'])
     graph = read_json(directory / 'workflow.json')
-    has_fid1_node = any(node.get('class_type') in {'FID1WanSourceROIAnchor', 'FID1WanTimestepAwareROIAnchor'} for node in graph.values())
+    has_fid1_node = any(node.get('class_type') in {'FID1WanSourceROIAnchor', 'FID1WanTimestepAwareROIAnchor', 'FID1WanTemporalROIAnchor', 'FID1WanStrengthROIAnchor'} for node in graph.values())
     if job.get('fid1_contract') is not None:
         validate_fid1_job(root, directory, job, graph)
     else:

@@ -112,11 +112,94 @@ def _anchor_future_rois(latent, rois, *, blend_alpha=True):
     return result, anchor_mask
 
 
+def _validate_strength_rois(rois, width, height):
+    if not isinstance(rois, list) or not 1 <= len(rois) <= 8:
+        raise ValueError("strength anchor requires 1-8 ROI boxes")
+    fields = {'id','x0','y0','x1','y1','feather_latent','preserve_strength'}
+    clean = []
+    strengths = []
+    for roi in rois:
+        if not isinstance(roi, dict) or set(roi) != fields:
+            raise ValueError("strength ROI fields must be exact")
+        strength = roi['preserve_strength']
+        if type(strength) not in (int,float) or not math.isfinite(strength) or not .25 <= strength <= .80:
+            raise ValueError("preserve_strength must be a finite non-bool number in [0.25,0.80]")
+        if type(roi['feather_latent']) is not int or not 1 <= roi['feather_latent'] <= 4:
+            raise ValueError("strength feather_latent must be 1-4")
+        clean.append({k:v for k,v in roi.items() if k != 'preserve_strength'})
+        strengths.append(strength)
+    regions = _validate_rois(clean,width,height)
+    if sum((r['x1']-r['x0'])*(r['y1']-r['y0']) for r in rois) >= .5:
+        raise ValueError("strength ROI area must be less than half the frame")
+    for index,a in enumerate(regions):
+        for b in regions[index+1:]:
+            if max(a[0],b[0]) < min(a[2],b[2]) and max(a[1],b[1]) < min(a[3],b[3]):
+                raise ValueError("strength ROIs overlap in latent coordinates")
+    return strengths, regions
+
+
+def _anchor_future_rois_strength(latent, rois):
+    """Copy complete source ROI values and preserve the original Wan mask.
+
+    Fractional spatial alpha is returned for the cloned MODEL sampling hook;
+    the hook applies alpha once, while LATENT.noise_mask remains unchanged.
+    """
+    if not isinstance(latent, dict):
+        raise ValueError("expected a ComfyUI LATENT dictionary")
+    samples = latent.get("samples")
+    noise_mask = latent.get("noise_mask")
+    if not isinstance(samples, torch.Tensor) or samples.ndim != 5:
+        raise ValueError("samples must be a rank-5 Wan tensor [B,48,T,H,W]")
+    if samples.shape[0] != 1 or samples.shape[1] != EXPECTED_CHANNELS:
+        raise ValueError("FID1 requires batch 1 and 48 Wan latent channels")
+    if samples.shape[2] != EXPECTED_TIME_SLOTS:
+        raise ValueError("49 video frames must use 13 Wan latent time slots")
+    if not samples.is_floating_point() or not bool(torch.isfinite(samples).all()):
+        raise ValueError("samples must be finite floating-point values")
+    expected_mask_shape = (samples.shape[0], 1, samples.shape[2], samples.shape[3], samples.shape[4])
+    if not isinstance(noise_mask, torch.Tensor) or tuple(noise_mask.shape) != expected_mask_shape:
+        raise ValueError("Wan noise_mask shape must be [1,1,13,H,W]")
+    if noise_mask.device != samples.device or noise_mask.dtype != samples.dtype:
+        raise ValueError("samples and noise_mask dtype/device must match")
+    if not noise_mask.is_floating_point() or not bool(torch.isfinite(noise_mask).all()):
+        raise ValueError("noise_mask must contain finite floating-point values")
+    if bool((noise_mask < 0).any()) or bool((noise_mask > 1).any()):
+        raise ValueError("noise_mask values must be within [0,1]")
+    if not bool((noise_mask[:, :, 0] == 0).all()) or not bool((noise_mask[:, :, 1:] == 1).all()):
+        raise ValueError("Wan source mask must preserve time slot 0 and denoise future slots")
+
+    strengths, regions = _validate_strength_rois(rois, samples.shape[4], samples.shape[3])
+    anchor_mask = torch.zeros_like(noise_mask)
+    source_first = samples[:, :, :1]
+    for (left, top, right, bottom, feather), strength in zip(regions, strengths):
+        ys = torch.arange(top, bottom, device=samples.device)
+        xs = torch.arange(left, right, device=samples.device)
+        distance_y = torch.minimum(ys - top, bottom - 1 - ys)
+        distance_x = torch.minimum(xs - left, right - 1 - xs)
+        distance = torch.minimum(distance_y[:, None], distance_x[None, :])
+        alpha = (distance.to(dtype=samples.dtype) / feather).clamp(0, 1)
+        region_mask = (alpha * strength).view(1, 1, 1, bottom - top, right - left)
+        target = anchor_mask[:, :, 1:, top:bottom, left:right]
+        anchor_mask[:, :, 1:, top:bottom, left:right] = torch.maximum(target, region_mask)
+
+    anchored_samples = torch.where(anchor_mask > 0, source_first, samples)
+
+    anchored_noise_mask = noise_mask * (1 - anchor_mask)
+    if not bool((anchored_noise_mask[:, :, 1:] > 0).any()):
+        raise ValueError("ROI anchors would freeze all future denoise positions")
+    if not bool((anchor_mask[:, :, 1:] > 0).any()):
+        raise ValueError("strength ROI anchors have no positive future alpha")
+
+    result = dict(latent)
+    result["samples"] = anchored_samples
+    result["noise_mask"] = noise_mask
+    return result, anchor_mask
+
 def anchor_future_rois(latent, rois):
     return _anchor_future_rois(latent, rois)[0]
 
 
-def anchor_future_rois_timestep_aware(model, latent, rois):
+def _anchor_future_rois_timestep_aware(model, latent, rois, temporal_schedule=None, strength_mode=False):
     """Prepare a Wan2.2 source ROI anchor without changing Wan's condition mask.
 
     The latent keeps the approved source values in future ROI cells, while the
@@ -125,8 +208,13 @@ def anchor_future_rois_timestep_aware(model, latent, rois):
     the active model sampling schedule to place the source on the same noisy
     trajectory at each sigma.
     """
-    prepared, anchor_mask = _anchor_future_rois(latent, rois, blend_alpha=False)
+    prepared, anchor_mask = (_anchor_future_rois_strength(latent, rois) if strength_mode
+                             else _anchor_future_rois(latent, rois, blend_alpha=False))
     prepared["noise_mask"] = latent["noise_mask"]
+    if temporal_schedule is not None:
+        validate_temporal_schedule(temporal_schedule)
+        weights = torch.tensor([0, *temporal_schedule], device=anchor_mask.device, dtype=anchor_mask.dtype)
+        anchor_mask = anchor_mask * weights.view(1, 1, EXPECTED_TIME_SLOTS, 1, 1)
 
     model_impl = getattr(model, "model", None)
     if model_impl is None or model_impl.__class__.__name__ != "WAN22":
@@ -157,6 +245,8 @@ def anchor_future_rois_timestep_aware(model, latent, rois):
         del sigma, extra_options
         if not isinstance(denoise_mask, torch.Tensor) or denoise_mask.ndim != 5:
             raise ValueError("KSampler denoise_mask must be a rank-5 tensor")
+        if strength_mode and (denoise_mask.device != anchor_mask.device or denoise_mask.dtype != anchor_mask.dtype):
+            raise ValueError("strength KSampler denoise_mask dtype/device changed")
         if (denoise_mask.shape[0] != anchor_mask.shape[0]
                 or tuple(denoise_mask.shape[2:]) != tuple(anchor_mask.shape[2:])):
             raise ValueError("KSampler denoise_mask batch/time/spatial shape changed from the prepared Wan mask")
@@ -184,6 +274,9 @@ def anchor_future_rois_timestep_aware(model, latent, rois):
             raise ValueError("KSampler noise dtype/device must match latent_image")
         if tuple(latent_image.shape) != tuple(anchor_mask.shape[:1] + (EXPECTED_CHANNELS,) + anchor_mask.shape[2:]):
             raise ValueError("KSampler latent_image shape changed from the prepared Wan latent")
+        if strength_mode and (latent_image.device != anchor_mask.device or latent_image.dtype != anchor_mask.dtype
+                              or not bool(torch.isfinite(latent_image).all()) or not bool(torch.isfinite(noise).all())):
+            raise ValueError("strength KSampler latent/noise dtype/device/finite changed")
         clean_latent = original_scale(sigma, noise, latent_image, **kwargs)
         if not isinstance(clean_latent, torch.Tensor) or tuple(clean_latent.shape) != tuple(latent_image.shape):
             raise ValueError("WAN22 scale_latent_inpaint returned an invalid latent")
@@ -196,6 +289,32 @@ def anchor_future_rois_timestep_aware(model, latent, rois):
     patched_model.set_model_denoise_mask_function(denoise_mask_function)
     patched_model.add_object_patch("scale_latent_inpaint", MethodType(scale_latent_inpaint, model_impl))
     return patched_model, prepared
+
+
+def validate_temporal_schedule(schedule):
+    if not isinstance(schedule, list) or len(schedule) != 12:
+        raise ValueError("temporal_anchor_schedule requires 12 future weights")
+    if any(type(v) not in (int, float) or not math.isfinite(v) or not .6 <= v <= 1 for v in schedule):
+        raise ValueError("temporal weights must be finite non-bool numbers in [0.6,1]")
+    if schedule[0] != 1 or any(a < b for a, b in zip(schedule, schedule[1:])):
+        raise ValueError("temporal weights must start at 1 and be non-increasing")
+    return schedule
+
+
+def anchor_future_rois_timestep_aware(model, latent, rois):
+    return _anchor_future_rois_timestep_aware(model, latent, rois)
+
+
+def anchor_future_rois_temporal(model, latent, rois, temporal_schedule):
+    validate_temporal_schedule(temporal_schedule)
+    if not isinstance(rois, list) or not 1 <= len(rois) <= 8:
+        raise ValueError("temporal anchor requires 1-8 ROIs")
+    if not isinstance(latent, dict) or not isinstance(latent.get("samples"), torch.Tensor) or latent["samples"].ndim != 5:
+        raise ValueError("temporal anchor requires rank-5 Wan samples")
+    _validate_rois(rois, latent["samples"].shape[4], latent["samples"].shape[3])
+    if sum((r["x1"]-r["x0"])*(r["y1"]-r["y0"]) for r in rois) >= .5:
+        raise ValueError("temporal ROI area must be less than half the frame")
+    return _anchor_future_rois_timestep_aware(model, latent, rois, temporal_schedule)
 
 
 class FID1WanSourceROIAnchor:
@@ -243,11 +362,40 @@ class FID1WanTimestepAwareROIAnchor:
         return anchor_future_rois_timestep_aware(model, latent, rois)
 
 
+class FID1WanTemporalROIAnchor(FID1WanTimestepAwareROIAnchor):
+    @classmethod
+    def INPUT_TYPES(cls):
+        result = super().INPUT_TYPES()
+        result['required']['temporal_anchor_schedule_json'] = ('STRING', {'default': '[]', 'multiline': False})
+        return result
+
+    def anchor(self, model, latent, roi_boxes_json, temporal_anchor_schedule_json):
+        try:
+            rois = json.loads(roi_boxes_json)
+            schedule = json.loads(temporal_anchor_schedule_json)
+        except (TypeError, json.JSONDecodeError) as exc:
+            raise ValueError("ROI and temporal schedule must be valid JSON") from exc
+        return anchor_future_rois_temporal(model, latent, rois, schedule)
+
+
+class FID1WanStrengthROIAnchor(FID1WanTimestepAwareROIAnchor):
+    def anchor(self, model, latent, roi_boxes_json):
+        try:
+            rois = json.loads(roi_boxes_json)
+        except (TypeError,json.JSONDecodeError) as exc:
+            raise ValueError("strength roi_boxes_json must be valid JSON") from exc
+        return _anchor_future_rois_timestep_aware(model,latent,rois,strength_mode=True)
+
+
 NODE_CLASS_MAPPINGS = {
+    "FID1WanStrengthROIAnchor": FID1WanStrengthROIAnchor,
+    "FID1WanTemporalROIAnchor": FID1WanTemporalROIAnchor,
     "FID1WanSourceROIAnchor": FID1WanSourceROIAnchor,
     "FID1WanTimestepAwareROIAnchor": FID1WanTimestepAwareROIAnchor,
 }
 NODE_DISPLAY_NAME_MAPPINGS = {
+    "FID1WanStrengthROIAnchor": "FID1 Wan Strength ROI Anchor",
+    "FID1WanTemporalROIAnchor": "FID1 Wan Temporal ROI Anchor",
     "FID1WanSourceROIAnchor": "FID1 Wan Source ROI Anchor",
     "FID1WanTimestepAwareROIAnchor": "FID1 Wan Timestep-aware ROI Anchor",
 }

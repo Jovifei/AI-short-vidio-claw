@@ -1,0 +1,10 @@
+{
+  "command": [
+    "python",
+    "scripts/sync_repo_media.py",
+    "--check"
+  ],
+  "exit_code": 0,
+  "stdout": "{\n  \"mode\": \"CHECKED\",\n  \"repo_files\": 32,\n  \"missing_local\": 0,\n  \"copied\": 0,\n  \"already_present\": 32,\n  \"approvals_changed\": 0,\n  \"production_ready\": false,\n  \"network_used\": false\n}\n",
+  "stderr": ""
+}

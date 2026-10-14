@@ -1,0 +1,990 @@
+{
+  "scope": "T1_SOURCE_ONLY",
+  "purpose": "AUXILIARY_DIAGNOSTICS_NOT_ACCEPTANCE",
+  "job_dir": "local/production/T1_SOURCE_PILOT/video/SH903/jobs/take10",
+  "output_sha256": "32e93baca62c6a95d63433a526f85dc78fec239f9e8f09b64cd34509a6663435",
+  "source_alignment": "Wan center-crop geometry and PIL bilinear approximation; not bit-identical Torch interpolation",
+  "effective_visual_review": {
+    "decision": "PENDING",
+    "full_playback": "PENDING",
+    "identity": "PENDING",
+    "costume": "PENDING",
+    "limbs": "PENDING"
+  },
+  "regions": {
+    "WUKONG_FACE": {
+      "relative_box": [
+        0.11,
+        0.2,
+        0.36,
+        0.36
+      ],
+      "source_laplacian_variance": 1797.8293308749521,
+      "frames": [
+        {
+          "frame": 1,
+          "time_seconds": 0.0,
+          "laplacian_variance": 2501.181639414823,
+          "mean_abs_difference_vs_first": 0.0
+        },
+        {
+          "frame": 2,
+          "time_seconds": 0.041666666666666664,
+          "laplacian_variance": 2536.2622953203486,
+          "mean_abs_difference_vs_first": 3.5657181571815717
+        },
+        {
+          "frame": 3,
+          "time_seconds": 0.08333333333333333,
+          "laplacian_variance": 2349.6276405200415,
+          "mean_abs_difference_vs_first": 7.084264905149052
+        },
+        {
+          "frame": 4,
+          "time_seconds": 0.125,
+          "laplacian_variance": 2222.2385718827154,
+          "mean_abs_difference_vs_first": 10.80619071815718
+        },
+        {
+          "frame": 5,
+          "time_seconds": 0.16666666666666666,
+          "laplacian_variance": 1512.5858245631516,
+          "mean_abs_difference_vs_first": 12.964176829268293
+        },
+        {
+          "frame": 6,
+          "time_seconds": 0.20833333333333334,
+          "laplacian_variance": 1918.831168861306,
+          "mean_abs_difference_vs_first": 14.117716802168022
+        },
+        {
+          "frame": 7,
+          "time_seconds": 0.25,
+          "laplacian_variance": 1759.9533602239414,
+          "mean_abs_difference_vs_first": 15.173907520325203
+        },
+        {
+          "frame": 8,
+          "time_seconds": 0.2916666666666667,
+          "laplacian_variance": 1461.4771004118916,
+          "mean_abs_difference_vs_first": 15.692200203252032
+        },
+        {
+          "frame": 9,
+          "time_seconds": 0.3333333333333333,
+          "laplacian_variance": 1351.4667785884144,
+          "mean_abs_difference_vs_first": 15.864159891598916
+        },
+        {
+          "frame": 10,
+          "time_seconds": 0.375,
+          "laplacian_variance": 1888.0181613856605,
+          "mean_abs_difference_vs_first": 16.748136856368564
+        },
+        {
+          "frame": 11,
+          "time_seconds": 0.4166666666666667,
+          "laplacian_variance": 1773.907501053471,
+          "mean_abs_difference_vs_first": 17.210746951219512
+        },
+        {
+          "frame": 12,
+          "time_seconds": 0.4583333333333333,
+          "laplacian_variance": 1778.5904307793755,
+          "mean_abs_difference_vs_first": 17.355055894308943
+        },
+        {
+          "frame": 13,
+          "time_seconds": 0.5,
+          "laplacian_variance": 1790.9848312179558,
+          "mean_abs_difference_vs_first": 17.429751016260163
+        },
+        {
+          "frame": 14,
+          "time_seconds": 0.5416666666666666,
+          "laplacian_variance": 2070.6813570574664,
+          "mean_abs_difference_vs_first": 17.54437669376694
+        },
+        {
+          "frame": 15,
+          "time_seconds": 0.5833333333333334,
+          "laplacian_variance": 1880.5892235320275,
+          "mean_abs_difference_vs_first": 17.741023035230352
+        },
+        {
+          "frame": 16,
+          "time_seconds": 0.625,
+          "laplacian_variance": 1810.0872325421863,
+          "mean_abs_difference_vs_first": 17.97319613821138
+        },
+        {
+          "frame": 17,
+          "time_seconds": 0.6666666666666666,
+          "laplacian_variance": 1866.1033324842524,
+          "mean_abs_difference_vs_first": 18.01592140921409
+        },
+        {
+          "frame": 18,
+          "time_seconds": 0.7083333333333334,
+          "laplacian_variance": 2066.593629016565,
+          "mean_abs_difference_vs_first": 18.141768292682926
+        },
+        {
+          "frame": 19,
+          "time_seconds": 0.75,
+          "laplacian_variance": 1943.7694274783235,
+          "mean_abs_difference_vs_first": 18.107765921409214
+        },
+        {
+          "frame": 20,
+          "time_seconds": 0.7916666666666666,
+          "laplacian_variance": 1855.6192545014435,
+          "mean_abs_difference_vs_first": 18.11331300813008
+        },
+        {
+          "frame": 21,
+          "time_seconds": 0.8333333333333334,
+          "laplacian_variance": 1703.4040182555325,
+          "mean_abs_difference_vs_first": 18.08739837398374
+        },
+        {
+          "frame": 22,
+          "time_seconds": 0.875,
+          "laplacian_variance": 1987.7188201447868,
+          "mean_abs_difference_vs_first": 18.179793360433603
+        },
+        {
+          "frame": 23,
+          "time_seconds": 0.9166666666666666,
+          "laplacian_variance": 1796.5036736011316,
+          "mean_abs_difference_vs_first": 18.159087059620596
+        },
+        {
+          "frame": 24,
+          "time_seconds": 0.9583333333333334,
+          "laplacian_variance": 1882.035049106623,
+          "mean_abs_difference_vs_first": 18.360941734417345
+        },
+        {
+          "frame": 25,
+          "time_seconds": 1.0,
+          "laplacian_variance": 1524.5323945593248,
+          "mean_abs_difference_vs_first": 18.13452743902439
+        },
+        {
+          "frame": 26,
+          "time_seconds": 1.0416666666666667,
+          "laplacian_variance": 1648.5284260947897,
+          "mean_abs_difference_vs_first": 18.263761856368564
+        },
+        {
+          "frame": 27,
+          "time_seconds": 1.0833333333333333,
+          "laplacian_variance": 1754.5288602065411,
+          "mean_abs_difference_vs_first": 18.403158875338754
+        },
+        {
+          "frame": 28,
+          "time_seconds": 1.125,
+          "laplacian_variance": 1876.3703949723983,
+          "mean_abs_difference_vs_first": 18.556571815718158
+        },
+        {
+          "frame": 29,
+          "time_seconds": 1.1666666666666667,
+          "laplacian_variance": 1682.525204213651,
+          "mean_abs_difference_vs_first": 18.508172425474253
+        },
+        {
+          "frame": 30,
+          "time_seconds": 1.2083333333333333,
+          "laplacian_variance": 1669.9081753425448,
+          "mean_abs_difference_vs_first": 18.492378048780488
+        },
+        {
+          "frame": 31,
+          "time_seconds": 1.25,
+          "laplacian_variance": 1574.6339586870665,
+          "mean_abs_difference_vs_first": 18.610772357723576
+        },
+        {
+          "frame": 32,
+          "time_seconds": 1.2916666666666667,
+          "laplacian_variance": 1802.090981710604,
+          "mean_abs_difference_vs_first": 19.04632452574526
+        },
+        {
+          "frame": 33,
+          "time_seconds": 1.3333333333333333,
+          "laplacian_variance": 1492.7553677962942,
+          "mean_abs_difference_vs_first": 18.932418699186993
+        },
+        {
+          "frame": 34,
+          "time_seconds": 1.375,
+          "laplacian_variance": 1719.8796294765639,
+          "mean_abs_difference_vs_first": 18.898839769647697
+        },
+        {
+          "frame": 35,
+          "time_seconds": 1.4166666666666667,
+          "laplacian_variance": 1740.1652970032262,
+          "mean_abs_difference_vs_first": 18.959391937669377
+        },
+        {
+          "frame": 36,
+          "time_seconds": 1.4583333333333333,
+          "laplacian_variance": 1831.007445143619,
+          "mean_abs_difference_vs_first": 19.078548441734416
+        },
+        {
+          "frame": 37,
+          "time_seconds": 1.5,
+          "laplacian_variance": 1727.5429590677584,
+          "mean_abs_difference_vs_first": 19.011390582655828
+        },
+        {
+          "frame": 38,
+          "time_seconds": 1.5416666666666667,
+          "laplacian_variance": 1831.3083208526086,
+          "mean_abs_difference_vs_first": 19.071053523035232
+        },
+        {
+          "frame": 39,
+          "time_seconds": 1.5833333333333333,
+          "laplacian_variance": 1719.7987640276724,
+          "mean_abs_difference_vs_first": 19.15349762872629
+        },
+        {
+          "frame": 40,
+          "time_seconds": 1.625,
+          "laplacian_variance": 1695.4889105872012,
+          "mean_abs_difference_vs_first": 19.48043699186992
+        },
+        {
+          "frame": 41,
+          "time_seconds": 1.6666666666666667,
+          "laplacian_variance": 1631.734624720789,
+          "mean_abs_difference_vs_first": 19.399686653116532
+        },
+        {
+          "frame": 42,
+          "time_seconds": 1.7083333333333333,
+          "laplacian_variance": 1826.668977409174,
+          "mean_abs_difference_vs_first": 19.431741192411923
+        },
+        {
+          "frame": 43,
+          "time_seconds": 1.75,
+          "laplacian_variance": 1810.3360461193522,
+          "mean_abs_difference_vs_first": 19.602218834688347
+        },
+        {
+          "frame": 44,
+          "time_seconds": 1.7916666666666667,
+          "laplacian_variance": 1779.3142686966569,
+          "mean_abs_difference_vs_first": 19.597095189701896
+        },
+        {
+          "frame": 45,
+          "time_seconds": 1.8333333333333333,
+          "laplacian_variance": 1755.7533060390092,
+          "mean_abs_difference_vs_first": 19.58473069105691
+        },
+        {
+          "frame": 46,
+          "time_seconds": 1.875,
+          "laplacian_variance": 1836.1294839109426,
+          "mean_abs_difference_vs_first": 19.568682249322492
+        },
+        {
+          "frame": 47,
+          "time_seconds": 1.9166666666666667,
+          "laplacian_variance": 1790.1472932678298,
+          "mean_abs_difference_vs_first": 19.581258468834687
+        },
+        {
+          "frame": 48,
+          "time_seconds": 1.9583333333333333,
+          "laplacian_variance": 1758.922455957173,
+          "mean_abs_difference_vs_first": 19.582867547425476
+        },
+        {
+          "frame": 49,
+          "time_seconds": 2.0,
+          "laplacian_variance": 1720.561574125474,
+          "mean_abs_difference_vs_first": 19.51287262872629
+        }
+      ]
+    },
+    "DAIYU_FACE": {
+      "relative_box": [
+        0.69,
+        0.2,
+        0.89,
+        0.37
+      ],
+      "source_laplacian_variance": 589.6099835748438,
+      "frames": [
+        {
+          "frame": 1,
+          "time_seconds": 0.0,
+          "laplacian_variance": 835.7760117244337,
+          "mean_abs_difference_vs_first": 0.0
+        },
+        {
+          "frame": 2,
+          "time_seconds": 0.041666666666666664,
+          "laplacian_variance": 810.2222163726668,
+          "mean_abs_difference_vs_first": 2.3055390408244154
+        },
+        {
+          "frame": 3,
+          "time_seconds": 0.08333333333333333,
+          "laplacian_variance": 728.6065657074498,
+          "mean_abs_difference_vs_first": 5.681034482758621
+        },
+        {
+          "frame": 4,
+          "time_seconds": 0.125,
+          "laplacian_variance": 630.2691162846462,
+          "mean_abs_difference_vs_first": 8.559998018232264
+        },
+        {
+          "frame": 5,
+          "time_seconds": 0.16666666666666666,
+          "laplacian_variance": 371.50141121759646,
+          "mean_abs_difference_vs_first": 9.690844233055886
+        },
+        {
+          "frame": 6,
+          "time_seconds": 0.20833333333333334,
+          "laplacian_variance": 476.16495758471507,
+          "mean_abs_difference_vs_first": 10.366874752279033
+        },
+        {
+          "frame": 7,
+          "time_seconds": 0.25,
+          "laplacian_variance": 456.21581899560226,
+          "mean_abs_difference_vs_first": 11.15869005152596
+        },
+        {
+          "frame": 8,
+          "time_seconds": 0.2916666666666667,
+          "laplacian_variance": 391.5680221779768,
+          "mean_abs_difference_vs_first": 11.575158541418945
+        },
+        {
+          "frame": 9,
+          "time_seconds": 0.3333333333333333,
+          "laplacian_variance": 335.8785403101108,
+          "mean_abs_difference_vs_first": 11.915725326991677
+        },
+        {
+          "frame": 10,
+          "time_seconds": 0.375,
+          "laplacian_variance": 478.5297930003341,
+          "mean_abs_difference_vs_first": 12.195947284978201
+        },
+        {
+          "frame": 11,
+          "time_seconds": 0.4166666666666667,
+          "laplacian_variance": 400.57590873116345,
+          "mean_abs_difference_vs_first": 12.401852952833927
+        },
+        {
+          "frame": 12,
+          "time_seconds": 0.4583333333333333,
+          "laplacian_variance": 401.1754548862936,
+          "mean_abs_difference_vs_first": 12.680142687277051
+        },
+        {
+          "frame": 13,
+          "time_seconds": 0.5,
+          "laplacian_variance": 373.12990816452907,
+          "mean_abs_difference_vs_first": 12.735285374554103
+        },
+        {
+          "frame": 14,
+          "time_seconds": 0.5416666666666666,
+          "laplacian_variance": 475.806594648834,
+          "mean_abs_difference_vs_first": 12.834423305588585
+        },
+        {
+          "frame": 15,
+          "time_seconds": 0.5833333333333334,
+          "laplacian_variance": 418.7011400161859,
+          "mean_abs_difference_vs_first": 13.160126833135157
+        },
+        {
+          "frame": 16,
+          "time_seconds": 0.625,
+          "laplacian_variance": 407.77561823324265,
+          "mean_abs_difference_vs_first": 13.526902497027349
+        },
+        {
+          "frame": 17,
+          "time_seconds": 0.6666666666666666,
+          "laplacian_variance": 400.2228207729724,
+          "mean_abs_difference_vs_first": 13.491973840665874
+        },
+        {
+          "frame": 18,
+          "time_seconds": 0.7083333333333334,
+          "laplacian_variance": 485.21562702406584,
+          "mean_abs_difference_vs_first": 13.738258026159334
+        },
+        {
+          "frame": 19,
+          "time_seconds": 0.75,
+          "laplacian_variance": 435.4336513410708,
+          "mean_abs_difference_vs_first": 13.847156163297662
+        },
+        {
+          "frame": 20,
+          "time_seconds": 0.7916666666666666,
+          "laplacian_variance": 428.51244602283083,
+          "mean_abs_difference_vs_first": 13.972156163297662
+        },
+        {
+          "frame": 21,
+          "time_seconds": 0.8333333333333334,
+          "laplacian_variance": 341.41091155465983,
+          "mean_abs_difference_vs_first": 13.947086801426872
+        },
+        {
+          "frame": 22,
+          "time_seconds": 0.875,
+          "laplacian_variance": 459.5290772165867,
+          "mean_abs_difference_vs_first": 14.021749900911614
+        },
+        {
+          "frame": 23,
+          "time_seconds": 0.9166666666666666,
+          "laplacian_variance": 406.17890294561244,
+          "mean_abs_difference_vs_first": 14.267191835116924
+        },
+        {
+          "frame": 24,
+          "time_seconds": 0.9583333333333334,
+          "laplacian_variance": 454.78034223691327,
+          "mean_abs_difference_vs_first": 14.382728894173603
+        },
+        {
+          "frame": 25,
+          "time_seconds": 1.0,
+          "laplacian_variance": 395.03511863949154,
+          "mean_abs_difference_vs_first": 14.223444312326595
+        },
+        {
+          "frame": 26,
+          "time_seconds": 1.0416666666666667,
+          "laplacian_variance": 403.41109210278705,
+          "mean_abs_difference_vs_first": 14.468043995243757
+        },
+        {
+          "frame": 27,
+          "time_seconds": 1.0833333333333333,
+          "laplacian_variance": 418.10474953883966,
+          "mean_abs_difference_vs_first": 14.539387633769323
+        },
+        {
+          "frame": 28,
+          "time_seconds": 1.125,
+          "laplacian_variance": 456.0499983868856,
+          "mean_abs_difference_vs_first": 14.798801030519224
+        },
+        {
+          "frame": 29,
+          "time_seconds": 1.1666666666666667,
+          "laplacian_variance": 385.36146562173894,
+          "mean_abs_difference_vs_first": 14.818123265953231
+        },
+        {
+          "frame": 30,
+          "time_seconds": 1.2083333333333333,
+          "laplacian_variance": 372.724208415482,
+          "mean_abs_difference_vs_first": 14.759017043202537
+        },
+        {
+          "frame": 31,
+          "time_seconds": 1.25,
+          "laplacian_variance": 373.53841159585903,
+          "mean_abs_difference_vs_first": 15.008868410622275
+        },
+        {
+          "frame": 32,
+          "time_seconds": 1.2916666666666667,
+          "laplacian_variance": 449.8013594371967,
+          "mean_abs_difference_vs_first": 15.37584225128815
+        },
+        {
+          "frame": 33,
+          "time_seconds": 1.3333333333333333,
+          "laplacian_variance": 352.64089641260836,
+          "mean_abs_difference_vs_first": 15.409135949266746
+        },
+        {
+          "frame": 34,
+          "time_seconds": 1.375,
+          "laplacian_variance": 388.0570032463914,
+          "mean_abs_difference_vs_first": 15.354439159730479
+        },
+        {
+          "frame": 35,
+          "time_seconds": 1.4166666666666667,
+          "laplacian_variance": 376.3336278424522,
+          "mean_abs_difference_vs_first": 15.40210067380103
+        },
+        {
+          "frame": 36,
+          "time_seconds": 1.4583333333333333,
+          "laplacian_variance": 453.8716128629294,
+          "mean_abs_difference_vs_first": 15.481916369401507
+        },
+        {
+          "frame": 37,
+          "time_seconds": 1.5,
+          "laplacian_variance": 391.99112369631644,
+          "mean_abs_difference_vs_first": 15.353051922314705
+        },
+        {
+          "frame": 38,
+          "time_seconds": 1.5416666666666667,
+          "laplacian_variance": 458.23619748373716,
+          "mean_abs_difference_vs_first": 15.375198176773683
+        },
+        {
+          "frame": 39,
+          "time_seconds": 1.5833333333333333,
+          "laplacian_variance": 435.66415530349565,
+          "mean_abs_difference_vs_first": 15.367816091954023
+        },
+        {
+          "frame": 40,
+          "time_seconds": 1.625,
+          "laplacian_variance": 399.7829321048112,
+          "mean_abs_difference_vs_first": 15.633719778042014
+        },
+        {
+          "frame": 41,
+          "time_seconds": 1.6666666666666667,
+          "laplacian_variance": 365.6415305366664,
+          "mean_abs_difference_vs_first": 15.599385652001585
+        },
+        {
+          "frame": 42,
+          "time_seconds": 1.7083333333333333,
+          "laplacian_variance": 466.9613060623055,
+          "mean_abs_difference_vs_first": 15.667558462148236
+        },
+        {
+          "frame": 43,
+          "time_seconds": 1.75,
+          "laplacian_variance": 433.0550249782518,
+          "mean_abs_difference_vs_first": 15.773236226714229
+        },
+        {
+          "frame": 44,
+          "time_seconds": 1.7916666666666667,
+          "laplacian_variance": 425.05315228821496,
+          "mean_abs_difference_vs_first": 15.845669837495045
+        },
+        {
+          "frame": 45,
+          "time_seconds": 1.8333333333333333,
+          "laplacian_variance": 369.5958021379587,
+          "mean_abs_difference_vs_first": 15.73612762584225
+        },
+        {
+          "frame": 46,
+          "time_seconds": 1.875,
+          "laplacian_variance": 435.62990262968964,
+          "mean_abs_difference_vs_first": 15.74053705905668
+        },
+        {
+          "frame": 47,
+          "time_seconds": 1.9166666666666667,
+          "laplacian_variance": 379.93523638331703,
+          "mean_abs_difference_vs_first": 15.87960760998811
+        },
+        {
+          "frame": 48,
+          "time_seconds": 1.9583333333333333,
+          "laplacian_variance": 367.3027770245402,
+          "mean_abs_difference_vs_first": 15.98592944906857
+        },
+        {
+          "frame": 49,
+          "time_seconds": 2.0,
+          "laplacian_variance": 371.2263535819192,
+          "mean_abs_difference_vs_first": 15.91230677764566
+        }
+      ]
+    },
+    "BACKGROUND_TREES": {
+      "relative_box": [
+        0.39,
+        0.18,
+        0.64,
+        0.3
+      ],
+      "source_laplacian_variance": 119.81908797285115,
+      "frames": [
+        {
+          "frame": 1,
+          "time_seconds": 0.0,
+          "laplacian_variance": 140.99057017342702,
+          "mean_abs_difference_vs_first": 0.0
+        },
+        {
+          "frame": 2,
+          "time_seconds": 0.041666666666666664,
+          "laplacian_variance": 133.69291265214477,
+          "mean_abs_difference_vs_first": 1.785964317976513
+        },
+        {
+          "frame": 3,
+          "time_seconds": 0.08333333333333333,
+          "laplacian_variance": 121.36737921572306,
+          "mean_abs_difference_vs_first": 2.517953929539295
+        },
+        {
+          "frame": 4,
+          "time_seconds": 0.125,
+          "laplacian_variance": 115.17555022925798,
+          "mean_abs_difference_vs_first": 3.1732723577235773
+        },
+        {
+          "frame": 5,
+          "time_seconds": 0.16666666666666666,
+          "laplacian_variance": 106.77569570191055,
+          "mean_abs_difference_vs_first": 3.8302845528455283
+        },
+        {
+          "frame": 6,
+          "time_seconds": 0.20833333333333334,
+          "laplacian_variance": 114.95879236947827,
+          "mean_abs_difference_vs_first": 3.9400971093044266
+        },
+        {
+          "frame": 7,
+          "time_seconds": 0.25,
+          "laplacian_variance": 119.2267555759323,
+          "mean_abs_difference_vs_first": 4.066452122854562
+        },
+        {
+          "frame": 8,
+          "time_seconds": 0.2916666666666667,
+          "laplacian_variance": 118.85760992157188,
+          "mean_abs_difference_vs_first": 4.227642276422764
+        },
+        {
+          "frame": 9,
+          "time_seconds": 0.3333333333333333,
+          "laplacian_variance": 116.59592687208928,
+          "mean_abs_difference_vs_first": 4.318315266485998
+        },
+        {
+          "frame": 10,
+          "time_seconds": 0.375,
+          "laplacian_variance": 122.2677187557893,
+          "mean_abs_difference_vs_first": 4.302055103884372
+        },
+        {
+          "frame": 11,
+          "time_seconds": 0.4166666666666667,
+          "laplacian_variance": 116.12122692480501,
+          "mean_abs_difference_vs_first": 4.371894760614273
+        },
+        {
+          "frame": 12,
+          "time_seconds": 0.4583333333333333,
+          "laplacian_variance": 104.7509910740669,
+          "mean_abs_difference_vs_first": 4.3779358626919604
+        },
+        {
+          "frame": 13,
+          "time_seconds": 0.5,
+          "laplacian_variance": 91.78103691861833,
+          "mean_abs_difference_vs_first": 4.482271906052394
+        },
+        {
+          "frame": 14,
+          "time_seconds": 0.5416666666666666,
+          "laplacian_variance": 102.35932106267572,
+          "mean_abs_difference_vs_first": 4.394760614272809
+        },
+        {
+          "frame": 15,
+          "time_seconds": 0.5833333333333334,
+          "laplacian_variance": 82.33760463902306,
+          "mean_abs_difference_vs_first": 4.870200993676604
+        },
+        {
+          "frame": 16,
+          "time_seconds": 0.625,
+          "laplacian_variance": 78.17434949200992,
+          "mean_abs_difference_vs_first": 4.870031616982836
+        },
+        {
+          "frame": 17,
+          "time_seconds": 0.6666666666666666,
+          "laplacian_variance": 76.13036727344755,
+          "mean_abs_difference_vs_first": 4.900237127371274
+        },
+        {
+          "frame": 18,
+          "time_seconds": 0.7083333333333334,
+          "laplacian_variance": 79.27295615878761,
+          "mean_abs_difference_vs_first": 4.859247967479675
+        },
+        {
+          "frame": 19,
+          "time_seconds": 0.75,
+          "laplacian_variance": 72.13454282492333,
+          "mean_abs_difference_vs_first": 4.648148148148148
+        },
+        {
+          "frame": 20,
+          "time_seconds": 0.7916666666666666,
+          "laplacian_variance": 70.8712449587449,
+          "mean_abs_difference_vs_first": 4.555329719963867
+        },
+        {
+          "frame": 21,
+          "time_seconds": 0.8333333333333334,
+          "laplacian_variance": 70.65845237077276,
+          "mean_abs_difference_vs_first": 4.678748870822042
+        },
+        {
+          "frame": 22,
+          "time_seconds": 0.875,
+          "laplacian_variance": 72.6072042358324,
+          "mean_abs_difference_vs_first": 4.576558265582656
+        },
+        {
+          "frame": 23,
+          "time_seconds": 0.9166666666666666,
+          "laplacian_variance": 69.85585906786264,
+          "mean_abs_difference_vs_first": 4.613313008130081
+        },
+        {
+          "frame": 24,
+          "time_seconds": 0.9583333333333334,
+          "laplacian_variance": 69.58823007868502,
+          "mean_abs_difference_vs_first": 4.694557362240289
+        },
+        {
+          "frame": 25,
+          "time_seconds": 1.0,
+          "laplacian_variance": 68.30879093868636,
+          "mean_abs_difference_vs_first": 4.7411359530261965
+        },
+        {
+          "frame": 26,
+          "time_seconds": 1.0416666666666667,
+          "laplacian_variance": 69.56265320634712,
+          "mean_abs_difference_vs_first": 4.694613821138211
+        },
+        {
+          "frame": 27,
+          "time_seconds": 1.0833333333333333,
+          "laplacian_variance": 68.67542391715845,
+          "mean_abs_difference_vs_first": 4.681910569105691
+        },
+        {
+          "frame": 28,
+          "time_seconds": 1.125,
+          "laplacian_variance": 69.59117386193543,
+          "mean_abs_difference_vs_first": 4.684056007226739
+        },
+        {
+          "frame": 29,
+          "time_seconds": 1.1666666666666667,
+          "laplacian_variance": 65.71536320009405,
+          "mean_abs_difference_vs_first": 4.83519647696477
+        },
+        {
+          "frame": 30,
+          "time_seconds": 1.2083333333333333,
+          "laplacian_variance": 65.64888935251123,
+          "mean_abs_difference_vs_first": 4.889792231255646
+        },
+        {
+          "frame": 31,
+          "time_seconds": 1.25,
+          "laplacian_variance": 65.28171764565194,
+          "mean_abs_difference_vs_first": 4.988369467028003
+        },
+        {
+          "frame": 32,
+          "time_seconds": 1.2916666666666667,
+          "laplacian_variance": 66.03781328669422,
+          "mean_abs_difference_vs_first": 5.308660794941283
+        },
+        {
+          "frame": 33,
+          "time_seconds": 1.3333333333333333,
+          "laplacian_variance": 62.237497954245306,
+          "mean_abs_difference_vs_first": 5.469116982836495
+        },
+        {
+          "frame": 34,
+          "time_seconds": 1.375,
+          "laplacian_variance": 63.74971186682427,
+          "mean_abs_difference_vs_first": 5.151479223125564
+        },
+        {
+          "frame": 35,
+          "time_seconds": 1.4166666666666667,
+          "laplacian_variance": 64.73197815275576,
+          "mean_abs_difference_vs_first": 4.953647244805781
+        },
+        {
+          "frame": 36,
+          "time_seconds": 1.4583333333333333,
+          "laplacian_variance": 65.83440795042837,
+          "mean_abs_difference_vs_first": 4.882000903342367
+        },
+        {
+          "frame": 37,
+          "time_seconds": 1.5,
+          "laplacian_variance": 65.00294398987519,
+          "mean_abs_difference_vs_first": 4.83909214092141
+        },
+        {
+          "frame": 38,
+          "time_seconds": 1.5416666666666667,
+          "laplacian_variance": 65.88364331273259,
+          "mean_abs_difference_vs_first": 4.8193879855465225
+        },
+        {
+          "frame": 39,
+          "time_seconds": 1.5833333333333333,
+          "laplacian_variance": 65.51561737499516,
+          "mean_abs_difference_vs_first": 4.850553297199639
+        },
+        {
+          "frame": 40,
+          "time_seconds": 1.625,
+          "laplacian_variance": 65.84321948452443,
+          "mean_abs_difference_vs_first": 4.878387533875339
+        },
+        {
+          "frame": 41,
+          "time_seconds": 1.6666666666666667,
+          "laplacian_variance": 65.65745299445442,
+          "mean_abs_difference_vs_first": 4.887533875338754
+        },
+        {
+          "frame": 42,
+          "time_seconds": 1.7083333333333333,
+          "laplacian_variance": 66.0442589772133,
+          "mean_abs_difference_vs_first": 4.882057362240289
+        },
+        {
+          "frame": 43,
+          "time_seconds": 1.75,
+          "laplacian_variance": 66.1040685455828,
+          "mean_abs_difference_vs_first": 4.911020776874436
+        },
+        {
+          "frame": 44,
+          "time_seconds": 1.7916666666666667,
+          "laplacian_variance": 65.549149226869,
+          "mean_abs_difference_vs_first": 4.915932700993676
+        },
+        {
+          "frame": 45,
+          "time_seconds": 1.8333333333333333,
+          "laplacian_variance": 65.46853158448106,
+          "mean_abs_difference_vs_first": 4.929595754290876
+        },
+        {
+          "frame": 46,
+          "time_seconds": 1.875,
+          "laplacian_variance": 65.87044249584254,
+          "mean_abs_difference_vs_first": 4.8987691960252935
+        },
+        {
+          "frame": 47,
+          "time_seconds": 1.9166666666666667,
+          "laplacian_variance": 65.15984221034265,
+          "mean_abs_difference_vs_first": 4.902608401084011
+        },
+        {
+          "frame": 48,
+          "time_seconds": 1.9583333333333333,
+          "laplacian_variance": 64.7801964062707,
+          "mean_abs_difference_vs_first": 4.903060072267389
+        },
+        {
+          "frame": 49,
+          "time_seconds": 2.0,
+          "laplacian_variance": 65.46446332546311,
+          "mean_abs_difference_vs_first": 4.879516711833785
+        }
+      ]
+    }
+  },
+  "caveat": "Differences include lighting, blur and identity drift; they do not prove natural head motion.",
+  "decoded_frames_origin": "EXISTING_QA_FRAMES_BOUND_BY_HASH; no new independent MP4 pixel-provenance assertion",
+  "sources": {
+    "local/production/T1_SOURCE_PILOT/video/SH903/jobs/take10/job.json": "abffdc62d724a2c68275c90c062dc45ae5340a707142ff3a02dc54d17ebd24f5",
+    "local/production/T1_SOURCE_PILOT/video/SH903/jobs/take10/qa/qa_report.json": "c3b3bb57c1110bbb822fa3c2882e15f6df836a67afe8bf85197993d0a17130e7",
+    "local/production/T1_SOURCE_PILOT/video/SH903/jobs/take10/run_record.json": "0a91c2bb2408b3365c2e6488e806508ae8ebc6095871206457daa89d20ce7c72",
+    "local/production/T1_SOURCE_PILOT/video/SH903/jobs/take10/run_record_media/2026100803_00001_.mp4": "32e93baca62c6a95d63433a526f85dc78fec239f9e8f09b64cd34509a6663435",
+    "local/production/T1_SOURCE_PILOT/video/SH903/jobs/take10/T1_SOURCE_PILOT_SH903_6476cf1e1710_2026100803.png": "6476cf1e17105b3589095918a46546baced0db35ef2a6ca235551f4b7002149f",
+    "local/production/T1_SOURCE_PILOT/video/SH903/jobs/take10/qa/all49/frame_01.png": "e403ccbc4012b1fa798ee24a8a51be9f91ec6ae9c92c22b8100c7fa789053a0d",
+    "local/production/T1_SOURCE_PILOT/video/SH903/jobs/take10/qa/all49/frame_02.png": "c232bf929fc53029aeaeddee8ee9d0ba1fb324d590aa6cb34cd6192e9405be98",
+    "local/production/T1_SOURCE_PILOT/video/SH903/jobs/take10/qa/all49/frame_03.png": "f7598099d5b1c0613f9d294ff600e644463eec7f6cc330071928d671a0019f39",
+    "local/production/T1_SOURCE_PILOT/video/SH903/jobs/take10/qa/all49/frame_04.png": "8f60ffb0bd6f511619d387874c7e4ae24caf52c460ee5a5215d806d661cc08fe",
+    "local/production/T1_SOURCE_PILOT/video/SH903/jobs/take10/qa/all49/frame_05.png": "1de68bfb4ec402084f798667685784af33034a35252eaf5174984263205dfc78",
+    "local/production/T1_SOURCE_PILOT/video/SH903/jobs/take10/qa/all49/frame_06.png": "18a651cbdb5ae185c5b53146fc21b1748280ecafbf2aad92e7e2e19647d70c2b",
+    "local/production/T1_SOURCE_PILOT/video/SH903/jobs/take10/qa/all49/frame_07.png": "3d25226ae70e6bff1232940616c991c855e552d3aef6a1045a003b07d04a448d",
+    "local/production/T1_SOURCE_PILOT/video/SH903/jobs/take10/qa/all49/frame_08.png": "84591f1a543c9a97b18079bd5952d6e3e2e02fad84391f2625c2cee769421e09",
+    "local/production/T1_SOURCE_PILOT/video/SH903/jobs/take10/qa/all49/frame_09.png": "6b44e70c956a1ba18a0c37986714345a93fe410ee1fbd354ad87926d45f1447e",
+    "local/production/T1_SOURCE_PILOT/video/SH903/jobs/take10/qa/all49/frame_10.png": "2af46f615d5aeb9a037f567a7a995a29792cac000065bdc1b1df1027f255688e",
+    "local/production/T1_SOURCE_PILOT/video/SH903/jobs/take10/qa/all49/frame_11.png": "7a6c1d9bac2fde08221dbb098699a47d96fa8c2bb8605904fd6c2459855d8b07",
+    "local/production/T1_SOURCE_PILOT/video/SH903/jobs/take10/qa/all49/frame_12.png": "23b017612c38ae2959b900221851be0c1c5a8aba0dab1f7213783ed0613a1d24",
+    "local/production/T1_SOURCE_PILOT/video/SH903/jobs/take10/qa/all49/frame_13.png": "3473a6ab8b2ad49981f8cc7cb7bb9e83e6834ae507ac1e4533509acca6a35a22",
+    "local/production/T1_SOURCE_PILOT/video/SH903/jobs/take10/qa/all49/frame_14.png": "563895aac8f84812494517b76d9b34e15db86ca70edb5ebf5fbcbb2fa068f048",
+    "local/production/T1_SOURCE_PILOT/video/SH903/jobs/take10/qa/all49/frame_15.png": "d04d43564f5a0f376e71ee07524c8fe93dbc01c0a1ee895118edcb1218093946",
+    "local/production/T1_SOURCE_PILOT/video/SH903/jobs/take10/qa/all49/frame_16.png": "b760d0c07fbb8dba5b96e40871222e60e91bbecbdc3883d97680b3d620b2c3d8",
+    "local/production/T1_SOURCE_PILOT/video/SH903/jobs/take10/qa/all49/frame_17.png": "655f79284ade267f353b859ce34c9250b6bf84a59a91b80667d695d927e67fd5",
+    "local/production/T1_SOURCE_PILOT/video/SH903/jobs/take10/qa/all49/frame_18.png": "4ccc180978dbb908186065340011e826ed23d57cf7077b9c304bf9005c881304",
+    "local/production/T1_SOURCE_PILOT/video/SH903/jobs/take10/qa/all49/frame_19.png": "8ad59f42dc74f364030bf105050f0f67e452e89aed716f85de9d04e669e54ecf",
+    "local/production/T1_SOURCE_PILOT/video/SH903/jobs/take10/qa/all49/frame_20.png": "d852d2795f50fb86306d27eef530822f8ff31e11373bd9b669515572f3817d1a",
+    "local/production/T1_SOURCE_PILOT/video/SH903/jobs/take10/qa/all49/frame_21.png": "c39c1f31adb387c06044bccc3ed22540e7a720a7d3a6ef49591155f87f5c1002",
+    "local/production/T1_SOURCE_PILOT/video/SH903/jobs/take10/qa/all49/frame_22.png": "f4dee6a33ac833d3cb8c638c84d1ae870cd28515e567bf8f5eb5c6c0f5c61b42",
+    "local/production/T1_SOURCE_PILOT/video/SH903/jobs/take10/qa/all49/frame_23.png": "645280e5df7f5c2ffc568a7cee5d6e804ab034d9e2b26a086a396e03cbbafd86",
+    "local/production/T1_SOURCE_PILOT/video/SH903/jobs/take10/qa/all49/frame_24.png": "cb4d0a3e1ba94e943a4f4b27a0d0eba0517ae152e861435c5825427c085d4548",
+    "local/production/T1_SOURCE_PILOT/video/SH903/jobs/take10/qa/all49/frame_25.png": "99145d46ba7b0c241ce56ef0e796b86361aaccdfa424555d389760fec5d917ce",
+    "local/production/T1_SOURCE_PILOT/video/SH903/jobs/take10/qa/all49/frame_26.png": "3195e91fbdcec6a072b6404baa92b8a38d5e4c1ef78c825f13370d09c3a8431c",
+    "local/production/T1_SOURCE_PILOT/video/SH903/jobs/take10/qa/all49/frame_27.png": "06e0d756445942cfca7daaed942e70d48143b3a6ec19db0fca0ff48ab8267f6c",
+    "local/production/T1_SOURCE_PILOT/video/SH903/jobs/take10/qa/all49/frame_28.png": "9eeb186e09eb2cf633a3f284b7ce0e64f2557b9c62221f2e87bfd4e98309a138",
+    "local/production/T1_SOURCE_PILOT/video/SH903/jobs/take10/qa/all49/frame_29.png": "82e14bd0279277e46f0f647bdfa620bc18dbb5fff955cb9cecc8fd7bc1346315",
+    "local/production/T1_SOURCE_PILOT/video/SH903/jobs/take10/qa/all49/frame_30.png": "15b470c5c7a7e787619402d2f67b48761e9473fdace024c8bf81986f0d47415f",
+    "local/production/T1_SOURCE_PILOT/video/SH903/jobs/take10/qa/all49/frame_31.png": "ddc30b2cda1453bc2bc6efa904e901ff1d0836de095d31e52f29f0df2290218d",
+    "local/production/T1_SOURCE_PILOT/video/SH903/jobs/take10/qa/all49/frame_32.png": "093742d72820c5a9fd1c99e67c3c3f0266e643aa0bd0d37948aa4e03d44144df",
+    "local/production/T1_SOURCE_PILOT/video/SH903/jobs/take10/qa/all49/frame_33.png": "181c00d653a9c0e4786f304e357f345d2d5d599794e616baf8717a9115087fef",
+    "local/production/T1_SOURCE_PILOT/video/SH903/jobs/take10/qa/all49/frame_34.png": "e8190129bbd08ddce4debed4ae1d0a11931b6fc966f7f746f64347f7257b19ab",
+    "local/production/T1_SOURCE_PILOT/video/SH903/jobs/take10/qa/all49/frame_35.png": "45f0bc8225d21e0ac128dbd26f9cb9e7a1ecea1c6261200424e86f18c7129618",
+    "local/production/T1_SOURCE_PILOT/video/SH903/jobs/take10/qa/all49/frame_36.png": "04decd73d2cbe18a6910007477ad87ae5fe3c6105862024335ed4f03942fdc1b",
+    "local/production/T1_SOURCE_PILOT/video/SH903/jobs/take10/qa/all49/frame_37.png": "78821e84d95d5bb4d71dac5873dbdf2d2cfcf9949c40295419464a1061cbcd54",
+    "local/production/T1_SOURCE_PILOT/video/SH903/jobs/take10/qa/all49/frame_38.png": "f348d8b37e64fb6860f51e28e362fea1e24567cb7ddd28ff413a67648068b412",
+    "local/production/T1_SOURCE_PILOT/video/SH903/jobs/take10/qa/all49/frame_39.png": "c847a8bd8a4f21d8daf4986123743f609fe0def39224628780afcd4a9ebedc10",
+    "local/production/T1_SOURCE_PILOT/video/SH903/jobs/take10/qa/all49/frame_40.png": "1ffde84acdea4115ae4d481a9396049d876fa7a4ea79cbb09a007bdd99259a49",
+    "local/production/T1_SOURCE_PILOT/video/SH903/jobs/take10/qa/all49/frame_41.png": "7e161df23e8f973144a1b0b48d22a287012838a1165f1e0fbef9965d54708424",
+    "local/production/T1_SOURCE_PILOT/video/SH903/jobs/take10/qa/all49/frame_42.png": "3326e17d134ac6de05a369bcce45ee2cb550e89f95d759aebe6bafe3b727716c",
+    "local/production/T1_SOURCE_PILOT/video/SH903/jobs/take10/qa/all49/frame_43.png": "878eb4a897e8f1cb6cd08580278878466f712c2ddfda56b9c5fff230d55701bc",
+    "local/production/T1_SOURCE_PILOT/video/SH903/jobs/take10/qa/all49/frame_44.png": "45704239b315f942c760a042ae8178b3efebde868935ab8a51ba576654d249b2",
+    "local/production/T1_SOURCE_PILOT/video/SH903/jobs/take10/qa/all49/frame_45.png": "e1ce349b59828675b4682cbbc67ac35bb6c7f4ac917488a0b5c19bb6e68912a2",
+    "local/production/T1_SOURCE_PILOT/video/SH903/jobs/take10/qa/all49/frame_46.png": "67790803674a99a9c0ed908a0e2d21de0de14c414cdce92599a800278e86f440",
+    "local/production/T1_SOURCE_PILOT/video/SH903/jobs/take10/qa/all49/frame_47.png": "53ff6c9552de48931b37f198082c8b4fa706e5b94f924a16f48b15f3a41cab34",
+    "local/production/T1_SOURCE_PILOT/video/SH903/jobs/take10/qa/all49/frame_48.png": "3e027ed5e108dbb40f97b538139dfc606b909baacb44ac9bcf8022323876233b",
+    "local/production/T1_SOURCE_PILOT/video/SH903/jobs/take10/qa/all49/frame_49.png": "22d22023eb0e69ae8fb1fe84cb3bb911dc442f968db86e4fa20ee9d711faed69"
+  },
+  "approvals_changed": 0
+}

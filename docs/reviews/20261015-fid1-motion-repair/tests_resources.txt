@@ -1,0 +1,8 @@
+test_probe_import_without_timezone_database_has_current_utc8_timestamps (test_fid1_temporal_runtime_unittest.TemporalRuntimeTests.test_probe_import_without_timezone_database_has_current_utc8_timestamps) ... ok
+test_resource_floor_is_reported_after_real_guard_path (test_fid1_temporal_runtime_unittest.TemporalRuntimeTests.test_resource_floor_is_reported_after_real_guard_path) ... ok
+test_unknown_or_low_resources_fail_closed (test_fid1_temporal_runtime_unittest.TemporalRuntimeTests.test_unknown_or_low_resources_fail_closed) ... ok
+
+----------------------------------------------------------------------
+Ran 3 tests in 0.005s
+
+OK

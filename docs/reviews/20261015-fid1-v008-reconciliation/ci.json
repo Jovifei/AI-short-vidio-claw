@@ -1,0 +1,5 @@
+{
+  "status": "PENDING_FIXED_IMPLEMENTATION_SHA",
+  "final_results_path": "local/reports/fid2_v008_fixed_head_ci.json",
+  "note": "Do not infer new CI from historical349/107. Final exact-head runs collected after commit."
+}

@@ -26,11 +26,16 @@ import urllib.parse
 import urllib.request
 import uuid
 from copy import deepcopy
-from datetime import datetime
+from datetime import datetime, timezone, timedelta
 from pathlib import Path
-from zoneinfo import ZoneInfo
+from zoneinfo import ZoneInfo, ZoneInfoNotFoundError
 
-SHANGHAI = ZoneInfo("Asia/Shanghai")
+try:
+    SHANGHAI = ZoneInfo("Asia/Shanghai")
+except ZoneInfoNotFoundError:
+    # Current run timestamps only: Shanghai has used UTC+8 without DST since
+    # 1991. Minimal Windows venvs need not install tzdata to sample resources.
+    SHANGHAI = timezone(timedelta(hours=8), name="Asia/Shanghai (fixed UTC+8)")
 POLL_SECONDS = 2.0
 SAMPLE_SECONDS = 5.0
 WAIT_SECONDS = 7200.0

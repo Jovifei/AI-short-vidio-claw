@@ -1,0 +1,45 @@
+{
+  "schema_version": 6,
+  "profile_id": "SH903_FID1_V008",
+  "scope": "T1_SOURCE_ONLY",
+  "shot_id": "SH903",
+  "input_sha256": "6476cf1e17105b3589095918a46546baced0db35ef2a6ca235551f4b7002149f",
+  "width": 576,
+  "height": 1024,
+  "frames": 49,
+  "fps": 24,
+  "seed": 2026100803,
+  "positive_prompt": "The same two subjects from the reference image remain in their original side-profile orientations: the red-and-gold dressed monkey subject on the left and the lavender-dressed woman on the right. Preserve their facial identity, proportions, headdresses, ornaments, clothing and joined-hand relationship. Allow small observable natural nods, subtle gaze movement and breathing without changing their overall stance. Keep the camera locked. Retain clear background landscape edges, water texture and clothing detail, with gentle local water ripples and fabric motion.",
+  "negative_prompt": "large head rotation, frontal face redesign, looking at camera, moving lips, talking, opening mouth, dramatic body turn, walking, unexpected hand separation, identity drift, face redesign, facial proportion change, humanized monkey face, species change, wardrobe change, extra people, extra limbs, deformed hands, camera movement, reconstructed landscape, blurry background, unstable background, mosaic, pseudo-text, hard pasted face patches",
+  "hypothesis": "Pre-registered combined quality candidate versus V006: fractional per-ROI preservation plus one small static background ROI. This is not a single-variable ablation and cannot isolate either contribution. Preserve prompts, approved source/hash, seed, dimensions, frames/fps and sampler. Engineering only; no GPU or visual acceptance.",
+  "anchor_strategy": "wan22_timestep_aware_roi_strength_v4",
+  "anchor_rois": [
+    {
+      "id": "WUKONG_FACE",
+      "x0": 0.11,
+      "y0": 0.2,
+      "x1": 0.36,
+      "y1": 0.36,
+      "feather_latent": 4,
+      "preserve_strength": 0.55
+    },
+    {
+      "id": "DAIYU_FACE",
+      "x0": 0.69,
+      "y0": 0.2,
+      "x1": 0.89,
+      "y1": 0.37,
+      "feather_latent": 4,
+      "preserve_strength": 0.55
+    },
+    {
+      "id": "BACKGROUND_TREES",
+      "x0": 0.39,
+      "y0": 0.18,
+      "x1": 0.64,
+      "y1": 0.3,
+      "feather_latent": 4,
+      "preserve_strength": 0.65
+    }
+  ]
+}

@@ -6,6 +6,8 @@
 
 ## 最新入口及有界授权
 
+FID2并行计划以固定计划`b37edc51236cf0b340401c0141a2e7687f5b394b`的`docs/preproduction/FID1_FID2_PLAN_COLLISION_RECONCILIATION_20261015.md`为唯一新合同。V006/schema4/v2已运行take10，V007/schema5/v3只保留时间候选工程；V008/schema6/v4为独立逐ROI强度工程，不能混用身份。真实源图叠层发现V008预注册背景ROI穿过长翎，当前`GEOMETRY_BLOCKED`，不改框、不准备真实take14、不部署或GPU。旧两份计划原样保留，只读历史。take09保持Jovi真实CHANGES_REQUIRED，take10人审PENDING，下游SH901/902关闭。
+
 用户明确要求把缺失图片直接提交Git。本次`assets/media/source_library/`32项既有生成原件/裁片入库，这是旧“媒体不进Git”的有界例外。不要再要求用户寻找旧ZIP、OpenArt账号或CDN链接。大模型、密钥、第三方原始截图、批量成片仍不提交。
 
 先读START_HERE_LOCAL → docs/preproduction/GIT_MEDIA_HANDOFF → 当前PROJECT_STATE。正式生产流程仍读51号整合、30_PREPRODUCTION_V5_EXECUTION和LOCAL_SHOOTING_RUNBOOK；V3创作30–50号文件继续有效，不把source小样改成新剧本。

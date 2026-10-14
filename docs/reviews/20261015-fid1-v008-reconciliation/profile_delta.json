@@ -1,0 +1,24 @@
+{
+  "different_fields": [
+    "schema_version",
+    "profile_id",
+    "hypothesis",
+    "anchor_strategy",
+    "anchor_rois"
+  ],
+  "equal_fields": [
+    "scope",
+    "shot_id",
+    "input_sha256",
+    "width",
+    "height",
+    "frames",
+    "fps",
+    "seed",
+    "positive_prompt",
+    "negative_prompt"
+  ],
+  "combined_candidate": true,
+  "temporal_schedule_present": false,
+  "geometry": "BLOCKED"
+}

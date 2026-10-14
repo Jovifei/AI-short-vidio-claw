@@ -46,7 +46,7 @@ class FID1DeployTests(unittest.TestCase):
             self.assertEqual(target.read_bytes(), (root / "scripts/fid1_wan_latent_anchor_node.py").read_bytes())
             package_manifest = json.loads((target.parent / deploy.PLUGIN_MANIFEST).read_text(encoding="utf-8"))
             self.assertEqual(package_manifest["schema_version"], 2)
-            self.assertEqual(package_manifest["node_classes"], ["FID1WanSourceROIAnchor", "FID1WanTimestepAwareROIAnchor"])
+            self.assertEqual(package_manifest["node_classes"], ["FID1WanSourceROIAnchor", "FID1WanTimestepAwareROIAnchor", "FID1WanTemporalROIAnchor", "FID1WanStrengthROIAnchor"])
             first_hash = hashlib.sha256(target.read_bytes()).hexdigest()
             second = deploy.deploy(root, comfy)
             self.assertEqual(second["status"], "ALREADY_INSTALLED")
