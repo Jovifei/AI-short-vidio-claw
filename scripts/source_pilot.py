@@ -25,8 +25,10 @@ from fid1_graph_audit import attach_fid1_anchor
 from fid1_job_paths import canonical_job_directory
 try:
     from .fid1_predecessor import validate_predecessor, validate_predecessor_receipt
+    from .fid1_geometry_gate import verify_geometry_evidence
 except ImportError:
     from fid1_predecessor import validate_predecessor, validate_predecessor_receipt
+    from fid1_geometry_gate import verify_geometry_evidence
 
 PROJECT = 'T1_SOURCE_PILOT'
 BASE = 'episodes/' + PROJECT
@@ -49,10 +51,12 @@ FID1_DEPENDENCY_FILES = (
     'scripts/fid1_job_paths.py',
     'docs/reviews/20261011-source-fidelity/installed_comfy_source/source_manifest.json',
 )
+FID1_GEOMETRY_HELPER = 'scripts/fid1_geometry_gate.py'
 
 
-def fid1_dependency_hash(root):
-    hashes={rel:digest(safe(root,rel)) for rel in FID1_DEPENDENCY_FILES}
+def fid1_dependency_hash(root, profile_schema=None):
+    files = FID1_DEPENDENCY_FILES + ((FID1_GEOMETRY_HELPER,) if profile_schema == 6 else ())
+    hashes={rel:digest(safe(root,rel)) for rel in files}
     combined=hashlib.sha256(json.dumps(hashes,sort_keys=True,separators=(',',':')).encode()).hexdigest()
     return hashes,combined
 
@@ -233,11 +237,17 @@ def prepare_trial(root,sid,seed,out,trial_profile=None,previous_job=None):
     profile,profile_hash=loaded_profile if loaded_profile else (None,None)
     fid1_dependencies_at_start=None
     predecessor=None
+    geometry_receipt=None
     destination = canonical_job_directory(root,out,sid) if profile and profile.get('anchor_strategy') else safe(root,out)
     if profile and profile.get('anchor_strategy'):
         need(seed==profile['seed'],'FID1 run seed differs from the shot-specific frozen profile')
+        if profile['schema_version']==6:
+            # This is an input-geometry stop, separate from source approval and
+            # output visual acceptance. Fail before creating staging/job dirs.
+            geometry_receipt=verify_geometry_evidence(
+                root, trial_profile, profile, kit['shots'][sid]['repo_path'])
         predecessor=require_previous_fid1_visual_acceptance(root,sid,previous_job)
-        fid1_dependencies_at_start=fid1_dependency_hash(root)
+        fid1_dependencies_at_start=fid1_dependency_hash(root,profile['schema_version'])
     else:
         need(previous_job is None,'--previous-job requires an explicit FID1 profile')
     need(destination.is_relative_to(root/LOCAL),'job outside source pilot')
@@ -274,6 +284,8 @@ def prepare_trial(root,sid,seed,out,trial_profile=None,previous_job=None):
             if profile.get('anchor_strategy'):
                 dependency_hashes,dependency_hash=fid1_dependencies_at_start
                 job['sources'].update(dependency_hashes)
+                if geometry_receipt is not None:
+                    job['sources'].update(geometry_receipt['files'])
                 job['fid1_contract']={
                     'schema_version':2,
                     'strategy':profile['anchor_strategy'],
@@ -285,6 +297,8 @@ def prepare_trial(root,sid,seed,out,trial_profile=None,previous_job=None):
                     'noise_mask_semantics':'1=denoise;0=preserve',
                     'predecessor':predecessor,
                 }
+                if geometry_receipt is not None:
+                    job['fid1_contract']['geometry_receipt']=geometry_receipt
                 if predecessor is not None:
                     job['sources'].update(predecessor['files'])
         graph[ids['save']]['inputs']['filename_prefix']=prefix+str(seed)
@@ -303,8 +317,13 @@ def prepare_trial(root,sid,seed,out,trial_profile=None,previous_job=None):
         if stage:
             need(digest(safe(root,trial_profile))==profile_hash,'trial profile changed before publication')
             if fid1_dependencies_at_start is not None:
-                need(fid1_dependency_hash(root)==fid1_dependencies_at_start,
+                need(fid1_dependency_hash(root,profile['schema_version'])==fid1_dependencies_at_start,
                      'FID1 implementation/dependency changed during preparation')
+                if geometry_receipt is not None:
+                    current_geometry=verify_geometry_evidence(
+                        root, trial_profile, profile, kit['shots'][sid]['repo_path'])
+                    need(current_geometry==geometry_receipt,
+                         'FID1 geometry evidence changed during preparation')
                 validate_predecessor_receipt(root,sid,predecessor)
                 need(canonical_job_directory(root,out,sid)==destination,
                      'FID1 output path changed before publication')

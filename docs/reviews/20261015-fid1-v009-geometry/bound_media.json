@@ -1,0 +1,25 @@
+{
+  "media": [
+    {
+      "take": "take09",
+      "path": "local/production/T1_SOURCE_PILOT/video/SH903/jobs/take09/run_record_media/2026100803_00001_.mp4",
+      "sha256": "dbdd44e4bdd39b13c8881c3f413a7889f0823c052b99df41698b1d5f61be2db8",
+      "size_bytes": 830179
+    },
+    {
+      "take": "take10",
+      "path": "local/production/T1_SOURCE_PILOT/video/SH903/jobs/take10/run_record_media/2026100803_00001_.mp4",
+      "sha256": "32e93baca62c6a95d63433a526f85dc78fec239f9e8f09b64cd34509a6663435",
+      "size_bytes": 821029
+    }
+  ],
+  "take10_all49_verified": true,
+  "take09_crop_sha256": "c27d5164d2f84dad7332e19cb0e42a00bf84a2002edfcbe1703c0f785a852081",
+  "observer": "LOCAL_CODEX_GEOMETRY_REVIEW",
+  "status": "NO_SAFE_BACKGROUND_ROI",
+  "review_layer": "INPUT_GEOMETRY_ONLY",
+  "human_accepted": false,
+  "V009_profile_created": false,
+  "take15_created": false,
+  "GPU": "NOT_RUN"
+}

@@ -36,6 +36,13 @@ class TemporalRuntimeTests(unittest.TestCase):
         def get(request,**kwargs):
             return Response({'queue_running':[],'queue_pending':[]} if request.full_url.endswith('/queue') else info)
         job={'fid1_contract':{'node_class':name,'node_source_sha256':'0'*64}}
+        if name=='FID1WanStrengthROIAnchor':
+            # The mocked runtime exercises the REAL_SOURCE validation branch;
+            # this synthetic payload is test scaffolding, not user geometry evidence.
+            job['fid1_contract']['geometry_receipt']={
+                'source_type':'REAL_SOURCE','status':'LOCAL_GEOMETRY_PASS',
+                'review_layer':'INPUT_GEOMETRY_ONLY','human_accepted':False,
+            }
         with patch.object(fid1_deploy,'verify_installed',return_value={}), \
              patch.object(p1_comfy_probe,'sample_ram',return_value=ram), \
              patch.object(p1_comfy_probe,'sample_gpu',return_value=gpu), \

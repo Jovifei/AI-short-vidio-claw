@@ -1,0 +1,254 @@
+{
+  "source_path": "assets/media/source_library/REFB02_01.png",
+  "source_sha256": "6476cf1e17105b3589095918a46546baced0db35ef2a6ca235551f4b7002149f",
+  "take10_video_sha256": "32e93baca62c6a95d63433a526f85dc78fec239f9e8f09b64cd34509a6663435",
+  "all49_frames": [
+    {
+      "frame": 1,
+      "path": "local/production/T1_SOURCE_PILOT/video/SH903/jobs/take10/qa/all49/frame_01.png",
+      "sha256": "e403ccbc4012b1fa798ee24a8a51be9f91ec6ae9c92c22b8100c7fa789053a0d"
+    },
+    {
+      "frame": 2,
+      "path": "local/production/T1_SOURCE_PILOT/video/SH903/jobs/take10/qa/all49/frame_02.png",
+      "sha256": "c232bf929fc53029aeaeddee8ee9d0ba1fb324d590aa6cb34cd6192e9405be98"
+    },
+    {
+      "frame": 3,
+      "path": "local/production/T1_SOURCE_PILOT/video/SH903/jobs/take10/qa/all49/frame_03.png",
+      "sha256": "f7598099d5b1c0613f9d294ff600e644463eec7f6cc330071928d671a0019f39"
+    },
+    {
+      "frame": 4,
+      "path": "local/production/T1_SOURCE_PILOT/video/SH903/jobs/take10/qa/all49/frame_04.png",
+      "sha256": "8f60ffb0bd6f511619d387874c7e4ae24caf52c460ee5a5215d806d661cc08fe"
+    },
+    {
+      "frame": 5,
+      "path": "local/production/T1_SOURCE_PILOT/video/SH903/jobs/take10/qa/all49/frame_05.png",
+      "sha256": "1de68bfb4ec402084f798667685784af33034a35252eaf5174984263205dfc78"
+    },
+    {
+      "frame": 6,
+      "path": "local/production/T1_SOURCE_PILOT/video/SH903/jobs/take10/qa/all49/frame_06.png",
+      "sha256": "18a651cbdb5ae185c5b53146fc21b1748280ecafbf2aad92e7e2e19647d70c2b"
+    },
+    {
+      "frame": 7,
+      "path": "local/production/T1_SOURCE_PILOT/video/SH903/jobs/take10/qa/all49/frame_07.png",
+      "sha256": "3d25226ae70e6bff1232940616c991c855e552d3aef6a1045a003b07d04a448d"
+    },
+    {
+      "frame": 8,
+      "path": "local/production/T1_SOURCE_PILOT/video/SH903/jobs/take10/qa/all49/frame_08.png",
+      "sha256": "84591f1a543c9a97b18079bd5952d6e3e2e02fad84391f2625c2cee769421e09"
+    },
+    {
+      "frame": 9,
+      "path": "local/production/T1_SOURCE_PILOT/video/SH903/jobs/take10/qa/all49/frame_09.png",
+      "sha256": "6b44e70c956a1ba18a0c37986714345a93fe410ee1fbd354ad87926d45f1447e"
+    },
+    {
+      "frame": 10,
+      "path": "local/production/T1_SOURCE_PILOT/video/SH903/jobs/take10/qa/all49/frame_10.png",
+      "sha256": "2af46f615d5aeb9a037f567a7a995a29792cac000065bdc1b1df1027f255688e"
+    },
+    {
+      "frame": 11,
+      "path": "local/production/T1_SOURCE_PILOT/video/SH903/jobs/take10/qa/all49/frame_11.png",
+      "sha256": "7a6c1d9bac2fde08221dbb098699a47d96fa8c2bb8605904fd6c2459855d8b07"
+    },
+    {
+      "frame": 12,
+      "path": "local/production/T1_SOURCE_PILOT/video/SH903/jobs/take10/qa/all49/frame_12.png",
+      "sha256": "23b017612c38ae2959b900221851be0c1c5a8aba0dab1f7213783ed0613a1d24"
+    },
+    {
+      "frame": 13,
+      "path": "local/production/T1_SOURCE_PILOT/video/SH903/jobs/take10/qa/all49/frame_13.png",
+      "sha256": "3473a6ab8b2ad49981f8cc7cb7bb9e83e6834ae507ac1e4533509acca6a35a22"
+    },
+    {
+      "frame": 14,
+      "path": "local/production/T1_SOURCE_PILOT/video/SH903/jobs/take10/qa/all49/frame_14.png",
+      "sha256": "563895aac8f84812494517b76d9b34e15db86ca70edb5ebf5fbcbb2fa068f048"
+    },
+    {
+      "frame": 15,
+      "path": "local/production/T1_SOURCE_PILOT/video/SH903/jobs/take10/qa/all49/frame_15.png",
+      "sha256": "d04d43564f5a0f376e71ee07524c8fe93dbc01c0a1ee895118edcb1218093946"
+    },
+    {
+      "frame": 16,
+      "path": "local/production/T1_SOURCE_PILOT/video/SH903/jobs/take10/qa/all49/frame_16.png",
+      "sha256": "b760d0c07fbb8dba5b96e40871222e60e91bbecbdc3883d97680b3d620b2c3d8"
+    },
+    {
+      "frame": 17,
+      "path": "local/production/T1_SOURCE_PILOT/video/SH903/jobs/take10/qa/all49/frame_17.png",
+      "sha256": "655f79284ade267f353b859ce34c9250b6bf84a59a91b80667d695d927e67fd5"
+    },
+    {
+      "frame": 18,
+      "path": "local/production/T1_SOURCE_PILOT/video/SH903/jobs/take10/qa/all49/frame_18.png",
+      "sha256": "4ccc180978dbb908186065340011e826ed23d57cf7077b9c304bf9005c881304"
+    },
+    {
+      "frame": 19,
+      "path": "local/production/T1_SOURCE_PILOT/video/SH903/jobs/take10/qa/all49/frame_19.png",
+      "sha256": "8ad59f42dc74f364030bf105050f0f67e452e89aed716f85de9d04e669e54ecf"
+    },
+    {
+      "frame": 20,
+      "path": "local/production/T1_SOURCE_PILOT/video/SH903/jobs/take10/qa/all49/frame_20.png",
+      "sha256": "d852d2795f50fb86306d27eef530822f8ff31e11373bd9b669515572f3817d1a"
+    },
+    {
+      "frame": 21,
+      "path": "local/production/T1_SOURCE_PILOT/video/SH903/jobs/take10/qa/all49/frame_21.png",
+      "sha256": "c39c1f31adb387c06044bccc3ed22540e7a720a7d3a6ef49591155f87f5c1002"
+    },
+    {
+      "frame": 22,
+      "path": "local/production/T1_SOURCE_PILOT/video/SH903/jobs/take10/qa/all49/frame_22.png",
+      "sha256": "f4dee6a33ac833d3cb8c638c84d1ae870cd28515e567bf8f5eb5c6c0f5c61b42"
+    },
+    {
+      "frame": 23,
+      "path": "local/production/T1_SOURCE_PILOT/video/SH903/jobs/take10/qa/all49/frame_23.png",
+      "sha256": "645280e5df7f5c2ffc568a7cee5d6e804ab034d9e2b26a086a396e03cbbafd86"
+    },
+    {
+      "frame": 24,
+      "path": "local/production/T1_SOURCE_PILOT/video/SH903/jobs/take10/qa/all49/frame_24.png",
+      "sha256": "cb4d0a3e1ba94e943a4f4b27a0d0eba0517ae152e861435c5825427c085d4548"
+    },
+    {
+      "frame": 25,
+      "path": "local/production/T1_SOURCE_PILOT/video/SH903/jobs/take10/qa/all49/frame_25.png",
+      "sha256": "99145d46ba7b0c241ce56ef0e796b86361aaccdfa424555d389760fec5d917ce"
+    },
+    {
+      "frame": 26,
+      "path": "local/production/T1_SOURCE_PILOT/video/SH903/jobs/take10/qa/all49/frame_26.png",
+      "sha256": "3195e91fbdcec6a072b6404baa92b8a38d5e4c1ef78c825f13370d09c3a8431c"
+    },
+    {
+      "frame": 27,
+      "path": "local/production/T1_SOURCE_PILOT/video/SH903/jobs/take10/qa/all49/frame_27.png",
+      "sha256": "06e0d756445942cfca7daaed942e70d48143b3a6ec19db0fca0ff48ab8267f6c"
+    },
+    {
+      "frame": 28,
+      "path": "local/production/T1_SOURCE_PILOT/video/SH903/jobs/take10/qa/all49/frame_28.png",
+      "sha256": "9eeb186e09eb2cf633a3f284b7ce0e64f2557b9c62221f2e87bfd4e98309a138"
+    },
+    {
+      "frame": 29,
+      "path": "local/production/T1_SOURCE_PILOT/video/SH903/jobs/take10/qa/all49/frame_29.png",
+      "sha256": "82e14bd0279277e46f0f647bdfa620bc18dbb5fff955cb9cecc8fd7bc1346315"
+    },
+    {
+      "frame": 30,
+      "path": "local/production/T1_SOURCE_PILOT/video/SH903/jobs/take10/qa/all49/frame_30.png",
+      "sha256": "15b470c5c7a7e787619402d2f67b48761e9473fdace024c8bf81986f0d47415f"
+    },
+    {
+      "frame": 31,
+      "path": "local/production/T1_SOURCE_PILOT/video/SH903/jobs/take10/qa/all49/frame_31.png",
+      "sha256": "ddc30b2cda1453bc2bc6efa904e901ff1d0836de095d31e52f29f0df2290218d"
+    },
+    {
+      "frame": 32,
+      "path": "local/production/T1_SOURCE_PILOT/video/SH903/jobs/take10/qa/all49/frame_32.png",
+      "sha256": "093742d72820c5a9fd1c99e67c3c3f0266e643aa0bd0d37948aa4e03d44144df"
+    },
+    {
+      "frame": 33,
+      "path": "local/production/T1_SOURCE_PILOT/video/SH903/jobs/take10/qa/all49/frame_33.png",
+      "sha256": "181c00d653a9c0e4786f304e357f345d2d5d599794e616baf8717a9115087fef"
+    },
+    {
+      "frame": 34,
+      "path": "local/production/T1_SOURCE_PILOT/video/SH903/jobs/take10/qa/all49/frame_34.png",
+      "sha256": "e8190129bbd08ddce4debed4ae1d0a11931b6fc966f7f746f64347f7257b19ab"
+    },
+    {
+      "frame": 35,
+      "path": "local/production/T1_SOURCE_PILOT/video/SH903/jobs/take10/qa/all49/frame_35.png",
+      "sha256": "45f0bc8225d21e0ac128dbd26f9cb9e7a1ecea1c6261200424e86f18c7129618"
+    },
+    {
+      "frame": 36,
+      "path": "local/production/T1_SOURCE_PILOT/video/SH903/jobs/take10/qa/all49/frame_36.png",
+      "sha256": "04decd73d2cbe18a6910007477ad87ae5fe3c6105862024335ed4f03942fdc1b"
+    },
+    {
+      "frame": 37,
+      "path": "local/production/T1_SOURCE_PILOT/video/SH903/jobs/take10/qa/all49/frame_37.png",
+      "sha256": "78821e84d95d5bb4d71dac5873dbdf2d2cfcf9949c40295419464a1061cbcd54"
+    },
+    {
+      "frame": 38,
+      "path": "local/production/T1_SOURCE_PILOT/video/SH903/jobs/take10/qa/all49/frame_38.png",
+      "sha256": "f348d8b37e64fb6860f51e28e362fea1e24567cb7ddd28ff413a67648068b412"
+    },
+    {
+      "frame": 39,
+      "path": "local/production/T1_SOURCE_PILOT/video/SH903/jobs/take10/qa/all49/frame_39.png",
+      "sha256": "c847a8bd8a4f21d8daf4986123743f609fe0def39224628780afcd4a9ebedc10"
+    },
+    {
+      "frame": 40,
+      "path": "local/production/T1_SOURCE_PILOT/video/SH903/jobs/take10/qa/all49/frame_40.png",
+      "sha256": "1ffde84acdea4115ae4d481a9396049d876fa7a4ea79cbb09a007bdd99259a49"
+    },
+    {
+      "frame": 41,
+      "path": "local/production/T1_SOURCE_PILOT/video/SH903/jobs/take10/qa/all49/frame_41.png",
+      "sha256": "7e161df23e8f973144a1b0b48d22a287012838a1165f1e0fbef9965d54708424"
+    },
+    {
+      "frame": 42,
+      "path": "local/production/T1_SOURCE_PILOT/video/SH903/jobs/take10/qa/all49/frame_42.png",
+      "sha256": "3326e17d134ac6de05a369bcce45ee2cb550e89f95d759aebe6bafe3b727716c"
+    },
+    {
+      "frame": 43,
+      "path": "local/production/T1_SOURCE_PILOT/video/SH903/jobs/take10/qa/all49/frame_43.png",
+      "sha256": "878eb4a897e8f1cb6cd08580278878466f712c2ddfda56b9c5fff230d55701bc"
+    },
+    {
+      "frame": 44,
+      "path": "local/production/T1_SOURCE_PILOT/video/SH903/jobs/take10/qa/all49/frame_44.png",
+      "sha256": "45704239b315f942c760a042ae8178b3efebde868935ab8a51ba576654d249b2"
+    },
+    {
+      "frame": 45,
+      "path": "local/production/T1_SOURCE_PILOT/video/SH903/jobs/take10/qa/all49/frame_45.png",
+      "sha256": "e1ce349b59828675b4682cbbc67ac35bb6c7f4ac917488a0b5c19bb6e68912a2"
+    },
+    {
+      "frame": 46,
+      "path": "local/production/T1_SOURCE_PILOT/video/SH903/jobs/take10/qa/all49/frame_46.png",
+      "sha256": "67790803674a99a9c0ed908a0e2d21de0de14c414cdce92599a800278e86f440"
+    },
+    {
+      "frame": 47,
+      "path": "local/production/T1_SOURCE_PILOT/video/SH903/jobs/take10/qa/all49/frame_47.png",
+      "sha256": "53ff6c9552de48931b37f198082c8b4fa706e5b94f924a16f48b15f3a41cab34"
+    },
+    {
+      "frame": 48,
+      "path": "local/production/T1_SOURCE_PILOT/video/SH903/jobs/take10/qa/all49/frame_48.png",
+      "sha256": "3e027ed5e108dbb40f97b538139dfc606b909baacb44ac9bcf8022323876233b"
+    },
+    {
+      "frame": 49,
+      "path": "local/production/T1_SOURCE_PILOT/video/SH903/jobs/take10/qa/all49/frame_49.png",
+      "sha256": "22d22023eb0e69ae8fb1fe84cb3bb911dc442f968db86e4fa20ee9d711faed69"
+    }
+  ],
+  "status": "EXPLORATION_ONLY_NOT_A_PROFILE_NOT_APPROVAL",
+  "profile_created": false
+}

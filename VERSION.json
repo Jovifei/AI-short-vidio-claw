@@ -1,14 +1,15 @@
 {
   "schema_version": 1,
   "component": "FID1 工程工具",
-  "version": "0.2.0",
-  "git_tag": "fid1-v0.2.0",
-  "stage": "FID2 运动对照、时间候选保留与独立逐ROI强度工程",
-  "plan_sha": "b37edc51236cf0b340401c0141a2e7687f5b394b",
-  "implementation_base_sha": "1bd1c6e1cc5b47d4fccf18766f42fdb61c0221ad",
+  "version": "0.2.1",
+  "git_tag": "fid1-v0.2.1",
+  "stage": "FID2 哈希绑定几何门禁补修",
+  "plan_sha": "71ba6cb939c1e8fd5e468398f375008209ac0a51",
+  "implementation_base_sha": "111cb3fb07ab560cc88d346dcff02316f26e16c2",
   "scope": "T1_SOURCE_ONLY",
   "visual_accepted": false,
   "production_ready": false,
   "candidate_geometry": "GEOMETRY_BLOCKED",
-  "gpu": "NOT_RUN"
+  "gpu": "NOT_RUN",
+  "candidate_v009": "NO_SAFE_BACKGROUND_ROI"
 }

@@ -1,0 +1,15 @@
+{
+  "hash_basis": "raw_bytes_git_preserved",
+  "files": {
+    ".gitattributes": "f06202a408fef9b9ea69bb6b1cb8160dbb0378c5bb67a444d510d231813824c8",
+    "bound_media.json": "1b22a1f2a70ad76841b10bb2fb653c5b4a9f8111572a12d2caff3a916a2ff7bd",
+    "center_exploration_all49.png": "b1412a8ac100f58088db7e0358337210c0e07910ea7e0c9a4d250dd3f2459c36",
+    "GEOMETRY_REVIEW.md": "382ad02bbafdcf3c8ec61c0315cad9b6c6712992bc38057b59161b39d0cc4c4b",
+    "inspection_inputs.json": "bdc6c0c956388bb126e3351810597a75c4a11e0dbcf68b0b39aee51e627ea110",
+    "left_strip_all49.png": "5ff0f9531fd1a540bcc8801d2a29433c8adc0b778ffa2d5fd4ddbc22294bef13",
+    "narrow_exploration_all49.png": "5879adb2b2aedb539e60e6e29d4be1b45e60d21b1dc4b289a4725db6c07b8055",
+    "source_center_detail.png": "cb632c2be8884250bb39774bf8e1382616d65ca74a2db75165c27e614529a3b0",
+    "take09_BACKGROUND_TREES.png": "c27d5164d2f84dad7332e19cb0e42a00bf84a2002edfcbe1703c0f785a852081",
+    "upper_left_all49.png": "8f1178efa5b2970d3c5408e56045f66bab19ecf84a79ff0ea023a7e61c151052"
+  }
+}

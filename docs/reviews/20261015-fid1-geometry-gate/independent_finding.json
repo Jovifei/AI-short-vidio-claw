@@ -1,0 +1,12 @@
+{
+  "implementation_sha": "111cb3fb07ab560cc88d346dcff02316f26e16c2",
+  "finding": {
+    "priority": "P2",
+    "file": "scripts/source_pilot.py",
+    "line": 197,
+    "issue": "prepare validates numeric ROI but does not require hash-bound geometry release; documented V008 GEOMETRY_BLOCKED is not enforced by code.",
+    "recommendation": "Require hash-bound geometry release/deny record at preparation and submission; preserveV008/history; synthetic fixtures explicitly labeled."
+  },
+  "GPU": "NOT_RUN",
+  "real_take14_exists": false
+}

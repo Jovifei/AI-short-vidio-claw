@@ -1,0 +1,21 @@
+{
+  "command": [
+    "python",
+    "scripts/source_pilot.py",
+    "prepare",
+    "--shot",
+    "SH903",
+    "--seed",
+    "2026100803",
+    "--trial-profile",
+    "config/source_fidelity_trials/SH903_FID1_V008.json",
+    "--out",
+    "local/production/T1_SOURCE_PILOT/video/SH903/jobs/take14"
+  ],
+  "exit_code": 2,
+  "stdout": "{\"ok\": false, \"error\": \"geometry evidence is blocked; prepare refused\", \"production_ready\": false}\n",
+  "stderr": "",
+  "job_created": false,
+  "probe": "EXPECTED_GEOMETRY_REFUSAL_AFTER_EOL_FIX",
+  "GPU": "NOT_RUN"
+}

@@ -75,6 +75,18 @@ def validate_fid1_job(root, directory, job, graph):
     profile, profile_hash = source_pilot.load_trial_profile(root, shot_id, kit, profile_path)
     require(profile.get('anchor_strategy') in source_pilot.FID1_NODE_CLASS_BY_STRATEGY,
             'FID1 profile has no supported anchor')
+    geometry_receipt = None
+    if profile.get('schema_version') == 6:
+        geometry_receipt = source_pilot.verify_geometry_evidence(
+            root, profile_path, profile, kit['shots'][shot_id]['repo_path'])
+        require(contract.get('geometry_receipt') == geometry_receipt,
+                'FID1 geometry receipt changed or is not bound to this job')
+        require(all(job.get('sources', {}).get(rel) == sha
+                    for rel, sha in geometry_receipt['files'].items()),
+                'FID1 geometry evidence hashes are not frozen in job sources')
+    else:
+        require('geometry_receipt' not in contract,
+                'pre-schema6 FID1 jobs may not carry a schema6 geometry receipt')
     require(job.get('trial_profile') == profile, 'prepared FID1 profile differs from its current file')
     require(job.get('seed') == profile.get('seed'), 'FID1 seed differs from the shot-specific frozen profile')
     require(job.get('sources', {}).get(profile_path) == profile_hash
@@ -85,7 +97,7 @@ def validate_fid1_job(root, directory, job, graph):
     require(job.get('characters') == shot['characters'], 'FID1 character bindings changed')
     require(source_pilot.digest(directory / job['input_file']) == entry['sha256'], 'prepared FID1 image differs from approved source')
 
-    dependency_files, dependency_hash = source_pilot.fid1_dependency_hash(root)
+    dependency_files, dependency_hash = source_pilot.fid1_dependency_hash(root, profile['schema_version'])
     require(contract.get('dependency_files') == dependency_files
             and contract.get('dependency_sha256') == dependency_hash,
             'FID1 implementation dependency hash changed')
@@ -153,6 +165,13 @@ def validate_fid1_runtime(root, comfy_root, job, url):
     node_class = contract.get('node_class')
     require(node_class in {'FID1WanSourceROIAnchor', 'FID1WanTimestepAwareROIAnchor', 'FID1WanTemporalROIAnchor', 'FID1WanStrengthROIAnchor'},
             'FID1 job node class is missing or unsupported')
+    if node_class == 'FID1WanStrengthROIAnchor':
+        geometry = contract.get('geometry_receipt')
+        require(isinstance(geometry, dict) and geometry.get('status') == 'LOCAL_GEOMETRY_PASS'
+                and geometry.get('review_layer') == 'INPUT_GEOMETRY_ONLY'
+                and geometry.get('source_type') == 'REAL_SOURCE'
+                and geometry.get('human_accepted') is False,
+                'schema6 runtime preflight requires positive geometry-only evidence')
     try:
         from .fid1_deploy import verify_installed
     except ImportError:
@@ -265,6 +284,13 @@ def main():
             command, job = job_command(root, a.job_dir, a.url)
             if job.get('fid1_contract'):
                 require(bool(a.comfy_root), '--comfy-root is required to execute a FID1 job')
+                geometry = job['fid1_contract'].get('geometry_receipt')
+                if job['fid1_contract'].get('node_class') == 'FID1WanStrengthROIAnchor':
+                    require(isinstance(geometry, dict) and geometry.get('status') == 'LOCAL_GEOMETRY_PASS'
+                            and geometry.get('review_layer') == 'INPUT_GEOMETRY_ONLY'
+                            and geometry.get('source_type') == 'REAL_SOURCE'
+                            and geometry.get('human_accepted') is False,
+                            'schema6 GPU execution requires positive real-source geometry evidence; synthetic fixtures are never executable')
                 runtime = validate_fid1_runtime(root, Path(a.comfy_root), job, a.url)
             else:
                 runtime = None

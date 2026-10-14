@@ -21,7 +21,7 @@ class FidelityProfileTests(DeliveryFixture):
         for rel in ('scripts/approve_asset.py','scripts/sync_repo_media.py','scripts/preproduction.py','scripts/fid1_graph_audit.py','scripts/fid1_wan_latent_anchor_node.py',
                     'scripts/submit_prepared.py','scripts/p1_comfy_probe.py','scripts/fid1_deploy.py',
                     'scripts/fid1_qa_report.py',
-                    'scripts/fid1_predecessor.py','scripts/fid1_review_contract.py','scripts/fid1_job_paths.py',
+                    'scripts/fid1_predecessor.py','scripts/fid1_review_contract.py','scripts/fid1_job_paths.py','scripts/fid1_geometry_gate.py',
                     'docs/reviews/20261011-source-fidelity/installed_comfy_source/source_manifest.json'):
             target=self.root/rel;target.parent.mkdir(parents=True,exist_ok=True);shutil.copyfile(ROOT/rel,target)
         self.profile_path='config/source_fidelity_trials/test_profile.json'
