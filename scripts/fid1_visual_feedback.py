@@ -9,18 +9,23 @@ import os
 from pathlib import Path
 import re
 import shutil
+import subprocess
 import tempfile
+
+from PIL import Image
 
 try:
     from .fid1_deploy import is_junction
-    from .fid1_qa_report import PROJECT, SCOPE, pending_visual_review, sha256_file, validate_fid1_job_contract, verified_run_output
+    from .fid1_qa_report import PROJECT, SCOPE, _contact_sheet, pending_visual_review, sha256_file, validate_fid1_job_contract, verified_run_output
     from .preproduction import read_json, require, write_json
     from .sync_repo_media import safe
+    from .fid1_job_paths import safe_project_path, canonical_job_directory
 except ImportError:
     from fid1_deploy import is_junction
-    from fid1_qa_report import PROJECT, SCOPE, pending_visual_review, sha256_file, validate_fid1_job_contract, verified_run_output
+    from fid1_qa_report import PROJECT, SCOPE, _contact_sheet, pending_visual_review, sha256_file, validate_fid1_job_contract, verified_run_output
     from preproduction import read_json, require, write_json
     from sync_repo_media import safe
+    from fid1_job_paths import safe_project_path, canonical_job_directory
 
 
 SESSIONS = f"local/production/{PROJECT}/review_sessions"
@@ -28,16 +33,59 @@ KIT = f"episodes/{PROJECT}/source_kit.json"
 
 
 def _path(root, relative):
-    path = safe(root, relative)
-    current = root
-    for part in relative.split("/"):
-        current /= part
-        require(not is_junction(current), "review path contains a junction/reparse point")
-    return path
+    return safe_project_path(root,relative)
 
 
 def _data_url(raw, mime):
     return "data:" + mime + ";base64," + base64.b64encode(raw).decode("ascii")
+
+
+def _session_frames(root, job_rel, profile, output, stage, bound):
+    """Create derivatives in the new session, leaving historical QA bytes untouched."""
+    legacy_rel = job_rel + '/qa/all49'
+    legacy = _path(root, legacy_rel)
+    names = [f'frame_{number:02d}.png' for number in range(1, 50)]
+    existing = legacy.is_dir() and set(p.name for p in legacy.glob('frame_*.png')) == set(names)
+    if existing:
+        frames = []
+        for name in names:
+            relative = legacy_rel + '/' + name
+            bound(relative)
+            frames.append(_path(root, relative))
+        origin = 'EXISTING_QA_DECODED_FRAMES'
+    else:
+        ffmpeg = shutil.which('ffmpeg')
+        require(ffmpeg, 'ffmpeg is required when historical decoded frames are unavailable')
+        decoded = stage/'decoded_frames'
+        decoded.mkdir()
+        extract = subprocess.run([ffmpeg, '-v', 'error', '-i', str(output), '-vsync', '0',
+                                  str(decoded/'frame_%02d.png')],
+                                 capture_output=True, text=True, check=False, timeout=120)
+        require(extract.returncode == 0 and not extract.stderr.strip(),
+                'review session CPU frame extraction failed: ' + extract.stderr[-1200:])
+        require(set(p.name for p in decoded.glob('frame_*.png')) == set(names),
+                'review session CPU extraction did not return exactly 49 frames')
+        frames = [decoded/name for name in names]
+        origin = 'VERIFIED_MP4_CPU_DECODE'
+    mapping = []
+    for number, frame in enumerate(frames, 1):
+        with Image.open(frame) as picture:
+            require(picture.size == (profile['width'], profile['height']),
+                    'review frame dimensions differ from the frozen media contract')
+            picture.load()
+        mapping.append({'frame_number': number, 'time_seconds': (number-1)/profile['fps'],
+                        'path': (frame.relative_to(root).as_posix() if existing
+                                 else frame.relative_to(stage).as_posix()),
+                        'sha256': sha256_file(frame)})
+    numbers = [1, 25, 49]
+    _contact_sheet([frames[number-1] for number in numbers], stage/'first_middle_last.png',
+                   columns=3, tile_width=320, frame_numbers=numbers, fps=profile['fps'])
+    _contact_sheet(frames, stage/'all49.png', columns=7, tile_width=160,
+                   frame_numbers=list(range(1, 50)), fps=profile['fps'])
+    return {'origin': origin, 'fps': profile['fps'], 'source_frames': mapping,
+            'first_middle_last': [mapping[number-1] for number in numbers],
+            'derivatives': {name: sha256_file(stage/name)
+                            for name in ('first_middle_last.png', 'all49.png')}}
 
 
 def render_feedback_page(metadata, source_url, video_url, sheets, references):
@@ -62,7 +110,7 @@ def render_feedback_page(metadata, source_url, video_url, sheets, references):
 <p>同源保真小样。请完整播放，并与原图逐项比较。当前没有记录任何视觉批准。</p>
 <section><div class="compare"><figure><img src="{source_url}" alt="批准原图"><figcaption>批准原图</figcaption></figure><figure><video id="trial-video" controls preload="metadata" src="{video_url}"></video><figcaption>实际输出 · 49帧 / 24fps</figcaption><button id="play-video" type="button">从头播放整段视频</button><p id="playback-status">尚未播放到结尾；播放状态不会代替你的审片判断。</p></figure></div></section>
 <section><h2>人物与服装参考</h2><div class="refs">{detail_html}</div></section>
-<section><h2>首帧 / 中间帧 / 末帧</h2><img src="{sheets['first_middle_last']}" alt="首中尾实际帧"></section>
+<section><h2>首帧 / 中间帧 / 末帧</h2><p>实际帧号：1 / 25 / 49；帧时间：0 / 1 / 2 秒。片段结束约 2.041667 秒。</p><img src="{sheets['first_middle_last']}" alt="实际第1、25、49帧，时间0、1、2秒"></section>
 <section><details><summary>展开全部49帧</summary><img src="{sheets['all49']}" alt="全部49帧"></details></section>
 <section><h2>你的审片意见</h2><div class="fields">{choices}
 <label>本次结论<select id="decision"><option value="">请选择</option><option value="ACCEPTED_FOR_NEXT_SOURCE_ONLY_TRIAL">接受此视频，用于下一张源图试拍</option><option value="CHANGES_REQUIRED">需要修改，暂不进入下一张</option></select></label>
@@ -110,7 +158,9 @@ def build_review_page(root, job_dir, out):
         job_rel = Path(job_dir).relative_to(root).as_posix()
     match = re.fullmatch(f"local/production/{PROJECT}/video/(SH90[123])/jobs/(take[0-9]{{2,}})", job_rel)
     require(match is not None, "feedback job must name one canonical source-pilot take")
-    directory = _path(root, job_rel)
+    directory = canonical_job_directory(root, job_dir, match[1])
+    for marker in ('.fid1-review.lock','.fid1-review-recovery.json'):
+        require(not _path(root,job_rel+'/qa/'+marker).exists(), 'review transaction is active or RECOVERY_REQUIRED')
     hashes = {}
 
     def bound(relative, expected=None):
@@ -158,9 +208,6 @@ def build_review_page(root, job_dir, out):
             "feedback QA input is stale")
     source_raw = bound(job_rel + '/' + job['input_file'], job['input_sha256'])
     video_raw = bound(output.relative_to(root).as_posix(), record['sha256'])
-    sheets = {name: _data_url(bound(job_rel+'/'+rel), 'image/png')
-              for name, rel in [('first_middle_last', report['frames']['first_middle_last']),
-                                ('all49', report['frames']['all49_contact_sheet'])]}
 
     # References come from this completed job's frozen source-review registry.
     sources = job.get('sources', {})
@@ -180,18 +227,24 @@ def build_review_page(root, job_dir, out):
 
     metadata = {'schema_version': 1, 'scope': SCOPE, 'shot_id': job['shot_id'],
                 'profile_id': job['trial_profile']['profile_id'], 'output_sha256': record['sha256']}
-    page = render_feedback_page(metadata, _data_url(source_raw, 'image/png'),
-                                _data_url(video_raw, 'video/mp4'), sheets, references)
-    destination_rel = Path(out).as_posix()
+    destination_rel = str(out)
     require(destination_rel.startswith(SESSIONS+'/'), "feedback page must be under source-pilot review_sessions")
     destination = _path(root, destination_rel)
     require(not destination.exists(), "feedback session already exists; choose a new directory")
     destination.parent.mkdir(parents=True, exist_ok=True)
     stage = Path(tempfile.mkdtemp(prefix='.visual-feedback-', dir=destination.parent))
     try:
+        frame_receipt = _session_frames(root, job_rel, profile, output, stage, bound)
+        frame_receipt['output_sha256'] = record['sha256']
+        sheets = {name: _data_url((stage/filename).read_bytes(), 'image/png')
+                  for name, filename in [('first_middle_last', 'first_middle_last.png'),
+                                         ('all49', 'all49.png')]}
+        page = render_feedback_page(metadata, _data_url(source_raw, 'image/png'),
+                                    _data_url(video_raw, 'video/mp4'), sheets, references)
         (stage/'review.html').write_text(page, encoding='utf-8')
         receipt = {'schema_version': 1, 'scope': SCOPE, 'job_dir': job_rel,
                    'feedback_binding': metadata, 'sources': hashes,
+                   'frames': frame_receipt,
                    'page_sha256': sha256_file(stage/'review.html'),
                    'default_approvals': 0, 'approval_records_changed': 0}
         write_json(stage/'page_receipt.json', receipt)

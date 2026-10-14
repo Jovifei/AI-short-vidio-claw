@@ -12,15 +12,18 @@ from pathlib import Path
 import shutil
 import subprocess
 import tempfile
+from contextlib import contextmanager
+import uuid
+import re
 
 from PIL import Image, ImageDraw, ImageOps
 
 try:
-    from .preproduction import FID1_NODE_CLASS_BY_STRATEGY, read_json, require, write_json
-    from .sync_repo_media import safe as safe_project_path
+    from .preproduction import FID1_NODE_CLASS_BY_STRATEGY, read_json, require, write_json, _unique
+    from .fid1_job_paths import safe_project_path, canonical_job_directory
 except ImportError:
-    from preproduction import FID1_NODE_CLASS_BY_STRATEGY, read_json, require, write_json
-    from sync_repo_media import safe as safe_project_path
+    from preproduction import FID1_NODE_CLASS_BY_STRATEGY, read_json, require, write_json, _unique
+    from fid1_job_paths import safe_project_path, canonical_job_directory
 
 
 SCOPE = "T1_SOURCE_ONLY"
@@ -139,22 +142,77 @@ def visual_review_template(job, output_sha256):
     }
 
 
-def record_visual_review(root: Path | str, job_dir: Path | str, feedback_path: Path | str, apply=False):
+def _json_snapshot(raw):
+    return json.loads(raw.decode('utf-8-sig'), object_pairs_hook=_unique)
+
+
+@contextmanager
+def _review_lock(directory, apply):
+    """Only the creator may release this job's lock; stale locks fail closed."""
+    if not apply:
+        yield
+        return
+    lock = directory / 'qa' / '.fid1-review.lock'
+    token = uuid.uuid4().hex.encode('ascii')
+    try:
+        stream = lock.open('xb')
+    except FileExistsError as exc:
+        raise ValueError('RECOVERY_REQUIRED: review lock exists; inspect its owner, do not auto-delete') from exc
+    identity = os.fstat(stream.fileno())
+    try:
+        with stream:
+            stream.write(token); stream.flush(); os.fsync(stream.fileno())
+        yield
+    finally:
+        # Content equality alone is not proof of ownership.
+        if lock.exists():
+            current = lock.stat()
+            if (current.st_dev, current.st_ino) == (identity.st_dev, identity.st_ino) and lock.read_bytes() == token:
+                lock.unlink()
+
+
+def record_visual_review(root: Path | str, job_dir: Path | str, feedback_path: Path | str, apply=False,
+                         *, expected_feedback_sha256=None, expected_qa_sha256=None):
     root=Path(root).resolve(strict=True)
-    directory=Path(job_dir).resolve(strict=True)
+    directory=safe_project_path(root, job_dir).resolve(strict=True)
     require(directory.is_relative_to(root/"local"/"production"/PROJECT/"video"),"review job must stay inside the T1 source pilot")
+    admission=read_json(safe_project_path(root,(directory/'job.json').relative_to(root).as_posix()))
+    if admission.get('fid1_contract',{}).get('schema_version')==2:
+        canonical_job_directory(root,job_dir,admission.get('shot_id'))
+    with _review_lock(directory, apply):
+        return _record_review_snapshot(root, directory, feedback_path, apply,
+                                      expected_feedback_sha256, expected_qa_sha256)
+
+
+def _record_review_snapshot(root, directory, feedback_path, apply, expected_feedback_sha256, expected_qa_sha256):
     report_path=directory/"qa"/"qa_report.json"
     require(report_path.is_file(),"FID1 QA report is missing")
-    report=read_json(report_path)
+    snapshots = {}
+    def capture(path):
+        guarded=safe_project_path(root, path.relative_to(root).as_posix())
+        raw=guarded.read_bytes()
+        snapshots[guarded]=hashlib.sha256(raw).hexdigest()
+        return raw
+    report_raw=capture(report_path)
+    report=_json_snapshot(report_raw)
+    original_report_sha=hashlib.sha256(report_raw).hexdigest()
     output_path, output_record = verified_run_output(root, directory)
     expected_output_path = output_path.relative_to(directory).as_posix()
     require(report.get("output",{}).get("path")==expected_output_path
             and report.get("output",{}).get("sha256")==output_record.get("sha256")
             and report.get("output",{}).get("bytes")==output_record.get("bytes"),
             "QA report is stale or does not match the current run-record output")
-    feedback_file=Path(feedback_path).resolve(strict=True)
+    supplied=Path(feedback_path)
+    if not supplied.is_absolute():
+        supplied=root/supplied
+    feedback_file=safe_project_path(root, supplied.relative_to(root).as_posix()).resolve(strict=True)
     require(feedback_file.is_relative_to(root/"local"/"review_evidence"),"human review evidence must be stored under local/review_evidence")
-    review=read_json(feedback_file)
+    raw=capture(feedback_file)
+    review=_json_snapshot(raw)
+    evidence_sha=hashlib.sha256(raw).hexdigest()
+    for expected, actual, label in ((expected_feedback_sha256,evidence_sha,'feedback'),
+                                    (expected_qa_sha256,original_report_sha,'QA')):
+        require(expected is None or expected == actual, label+' snapshot differs from preview pin')
     try:
         from .fid1_review_contract import validate_visual_review_payload
     except ImportError:
@@ -163,41 +221,110 @@ def record_visual_review(root: Path | str, job_dir: Path | str, feedback_path: P
                                    profile_id=report.get("profile_id"),
                                    output_sha256=report.get("output",{}).get("sha256"))
     decision=review.get("decision")
+    require(review['shot_id'] in {'SH901','SH902','SH903'} and isinstance(review['profile_id'],str)
+            and re.fullmatch(re.escape(review['shot_id'])+r'_FID1_V[0-9]{3,}',review['profile_id']),
+            'invalid source review identity')
 
-    raw=feedback_file.read_bytes()
-    evidence_sha=hashlib.sha256(raw).hexdigest()
     evidence_name=f"FID1_{review['shot_id']}_{review['profile_id']}_{review['output_sha256'][:12]}_VISUAL_REVIEW.json"
     evidence_rel="local/review_evidence/"+evidence_name
     evidence_path=root/evidence_rel
     result={"mode":"DRY_RUN","decision":decision,"evidence_path":evidence_rel,"evidence_sha256":evidence_sha,
+            "feedback_sha256":evidence_sha,"qa_sha256":original_report_sha,
             "next_shot_gate":"OPEN_FOR_NEXT_SOURCE_ONLY_TRIAL" if decision=="ACCEPTED_FOR_NEXT_SOURCE_ONLY_TRIAL" else "BLOCKED_CHANGES_REQUIRED"}
+    require(not evidence_path.exists(),"RECOVERY_REQUIRED: visual review evidence already recorded; do not overwrite it")
+    require(report.get("visual_review")==pending_visual_review(),"QA report already has a human review record")
+    # Historic frozen files, not today's implementation hashes, bind this decision.
+    job=_json_snapshot(capture(directory/'job.json'))
+    integrity=_json_snapshot(capture(directory/'job_integrity.json'))
+    require(set(integrity)=={'schema_version','job_sha256','workflow_sha256','input_sha256'}
+            and integrity.get('schema_version')==1
+            and integrity.get('job_sha256')==snapshots[directory/'job.json'], 'historic job integrity changed')
+    validate_fid1_job_contract(job)
+    if job.get('fid1_contract',{}).get('schema_version') == 2:
+        try:
+            from .fid1_job_paths import canonical_job_directory
+        except ImportError:
+            from fid1_job_paths import canonical_job_directory
+        canonical_job_directory(root, directory, job['shot_id'])
+    require(job.get('project_id')==PROJECT and job.get('purpose')==SCOPE and job.get('eligible_for_final_cut') is False
+            and job.get('shot_id')==report.get('shot_id')
+            and report.get('scope')==SCOPE
+            and job['trial_profile']['profile_id']==report.get('profile_id'), 'QA is not bound to historic source job')
+    workflow=directory/'workflow.json'; capture(workflow)
+    image=safe_project_path(root,(directory/job['input_file']).relative_to(root).as_posix()); capture(image)
+    require(snapshots[workflow]==job.get('workflow_sha256')==integrity.get('workflow_sha256')
+            and snapshots[image]==job.get('input_sha256')==integrity.get('input_sha256'), 'historic workflow/input changed')
+    run=_json_snapshot(capture(directory/'run_record.json'))
+    require(run.get('queued_new_job') is True and run.get('prompt_id')
+            and run.get('workflow_sha256')==job['workflow_sha256']
+            and report.get('workflow_sha256')==job['workflow_sha256']
+            and report.get('seed')==job['seed'] and report.get('full_decode')=='PASS'
+            and report.get('runtime_success') is True and report.get('media_contract_ok') is True,
+            'QA/runtime binding is incomplete')
+    profile=job['trial_profile'];media=report.get('media',{})
+    require(report.get('input')=={'path':job['input_file'],'sha256':job['input_sha256']}
+            and (media.get('width'),media.get('height'),media.get('frame_count'),media.get('fps'))
+                == (profile.get('width'),profile.get('height'),49,24)
+            and (profile.get('frames'),profile.get('fps'))==(49,24), 'QA media/input binding is incomplete')
+    snapshots[output_path]=output_record['sha256']
+    if apply:
+        capture(directory/'qa/.fid1-review.lock')
+    def recheck(*, published=False):
+        for path, digest in snapshots.items():
+            if published and path==report_path:
+                continue
+            guarded=safe_project_path(root,path.relative_to(root).as_posix())
+            require(sha256_file(guarded)==digest, 'review snapshot changed during recording: '+path.name)
+        verified_run_output(root, directory)
+    recheck()
     if not apply:
         return result
-    require(not evidence_path.exists(),"visual review evidence already recorded; do not overwrite it")
-    require(report.get("visual_review")==pending_visual_review(),"QA report already has a human review record")
-    verified_run_output(root, directory)
-    original_report_sha=sha256_file(report_path)
     evidence_path.parent.mkdir(parents=True,exist_ok=True)
+    created=False
+    recovery=directory/'qa'/'.fid1-review-recovery.json'
+    require(not recovery.exists(), 'RECOVERY_REQUIRED: previous review publication interrupted')
     try:
         with evidence_path.open("xb") as stream:
+            created=True
             stream.write(raw)
-        require(sha256_file(report_path)==original_report_sha,"QA report changed during review recording")
-        verified_run_output(root, directory)
+            stream.flush(); os.fsync(stream.fileno())
+        write_json(recovery, {'state':'RECOVERY_REQUIRED','evidence_path':evidence_rel,'evidence_sha256':evidence_sha,
+                              'qa_before_sha256':original_report_sha})
         report["visual_review"]={
             **{key:review[key] for key in ("full_playback","identity","costume","limbs","decision","reviewer","user_quote","recorded_at")},
             "evidence_path":evidence_rel,
             "evidence_sha256":evidence_sha,
         }
         report["next_shot_gate"]=result["next_shot_gate"]
-        write_json(report_path,report)
+        # Serialize first, then recheck the initial snapshots immediately before replacement.
+        fd,name=tempfile.mkstemp(prefix='.review-qa-',dir=report_path.parent)
+        temp=Path(name)
+        try:
+            with os.fdopen(fd,'wb') as stream:
+                published=(json.dumps(report,ensure_ascii=False,indent=2)+'\n').encode('utf-8')
+                stream.write(published); stream.flush(); os.fsync(stream.fileno())
+            recheck()
+            require(sha256_file(evidence_path)==evidence_sha,'review evidence changed before publication')
+            os.replace(temp,report_path)
+            require(report_path.read_bytes()==published and evidence_path.read_bytes()==raw,
+                    'RECOVERY_REQUIRED: persisted review differs from validated snapshots')
+            recheck(published=True)
+            recovery.unlink()
+        finally:
+            if temp.exists():
+                temp.unlink()
     except Exception:
-        if evidence_path.is_file() and sha256_file(evidence_path)==evidence_sha:
-            evidence_path.unlink()
+        # Preserve owned evidence on interruption for explicit recovery. Never delete
+        # another writer's file, even if its bytes happen to have the same digest.
+        if created and not recovery.exists():
+            write_json(recovery, {'state':'RECOVERY_REQUIRED','evidence_path':evidence_rel,'evidence_sha256':evidence_sha})
         raise
     return {**result,"mode":"APPLIED"}
 
 
-def _contact_sheet(frames, target, columns, tile_width, label_height=28):
+def _contact_sheet(frames, target, columns, tile_width, label_height=28, *, frame_numbers=None, fps=24):
+    frame_numbers = list(frame_numbers) if frame_numbers is not None else list(range(1,len(frames)+1))
+    require(len(frame_numbers)==len(frames) and all(type(n) is int and n>0 for n in frame_numbers), 'invalid source frame mapping')
     with Image.open(frames[0]) as first:
         width, height = first.size
     tile_height = round(tile_width * height / width)
@@ -210,7 +337,8 @@ def _contact_sheet(frames, target, columns, tile_width, label_height=28):
             x = (index % columns) * tile_width
             y = (index // columns) * (tile_height + label_height)
             sheet.paste(frame, (x, y))
-            draw.text((x + 6, y + tile_height + 5), f"frame {index + 1:02d}", fill="white")
+            number=frame_numbers[index]
+            draw.text((x + 6, y + tile_height + 5), f"frame {number:02d} / {(number-1)/fps:g}s", fill="white")
     target.parent.mkdir(parents=True, exist_ok=True)
     sheet.save(target, format="PNG")
 
@@ -276,7 +404,9 @@ def create_report(root: Path | str, job_dir: Path | str, ffprobe: str | None = N
             with Image.open(frame_path) as frame:
                 require(frame.size == (media["width"], media["height"]), "decoded frame dimensions changed")
         _contact_sheet(frames, stage / "all49.png", columns=7, tile_width=160)
-        _contact_sheet([frames[0], frames[len(frames) // 2], frames[-1]], stage / "first_middle_last.png", columns=3, tile_width=320)
+        key_numbers=[1,len(frames)//2+1,len(frames)]
+        _contact_sheet([frames[n-1] for n in key_numbers], stage / "first_middle_last.png", columns=3, tile_width=320,
+                       frame_numbers=key_numbers, fps=media['fps'])
         relative_video = Path(os.path.relpath(output_path, directory / "qa"))
         report = {
             "schema_version": 1,
@@ -296,7 +426,8 @@ def create_report(root: Path | str, job_dir: Path | str, ffprobe: str | None = N
                        "bytes": output_path.stat().st_size, "sha256": output_hash},
             "resources": run_record.get("resources"),
             "frames": {"count": len(frames), "all49_contact_sheet": "qa/all49.png",
-                       "first_middle_last": "qa/first_middle_last.png"},
+                       "first_middle_last": "qa/first_middle_last.png",
+                       "first_middle_last_mapping": [{"frame":n,"time_seconds":(n-1)/media['fps']} for n in key_numbers]},
             "visual_review": pending_visual_review(),
             "next_shot_gate": "WAITING_JOVI_VISUAL_ACCEPTANCE",
         }
@@ -320,11 +451,14 @@ def main(argv=None):
     parser.add_argument("--ffmpeg")
     parser.add_argument("--feedback")
     parser.add_argument("--apply", action="store_true")
+    parser.add_argument("--expected-feedback-sha256", help="Exact feedback hash from prior dry-run")
+    parser.add_argument("--expected-qa-sha256", help="Exact QA hash from prior dry-run")
     parser.add_argument("--out", help="New source-pilot review_sessions directory for review-page")
     args = parser.parse_args(argv)
     try:
         if args.command=="review-page":
-            require(args.out and not args.apply and not args.feedback,
+            require(args.out and not args.apply and not args.feedback
+                    and not args.expected_feedback_sha256 and not args.expected_qa_sha256,
                     "review-page requires --out and does not accept --feedback/--apply")
             try:
                 from .fid1_visual_feedback import build_review_page
@@ -334,9 +468,13 @@ def main(argv=None):
         elif args.command=="record-review":
             require(not args.out,"--out only applies to review-page")
             require(bool(args.feedback),"--feedback is required for record-review")
-            report=record_visual_review(args.root,args.job_dir,args.feedback,args.apply)
+            report=record_visual_review(args.root,args.job_dir,args.feedback,args.apply,
+                                       expected_feedback_sha256=args.expected_feedback_sha256,
+                                       expected_qa_sha256=args.expected_qa_sha256)
         else:
-            require(not args.out and not args.apply and not args.feedback,"--feedback/--apply only apply to record-review; --out only to review-page")
+            require(not args.out and not args.apply and not args.feedback
+                    and not args.expected_feedback_sha256 and not args.expected_qa_sha256,
+                    "--feedback/--apply/pins only apply to record-review; --out only to review-page")
             report = create_report(args.root, args.job_dir, args.ffprobe, args.ffmpeg)
         print(json.dumps(report, indent=2, ensure_ascii=False))
         return 0

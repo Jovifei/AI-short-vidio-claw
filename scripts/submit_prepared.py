@@ -9,6 +9,7 @@ from pathlib import Path
 from urllib.parse import urlparse
 from urllib.request import Request, urlopen
 from preproduction import checked_asset, read_json, relative_file, require, sha256_file, validate_graph, write_json
+from fid1_job_paths import canonical_job_directory, safe_project_path
 
 
 def validate_fid1_job(root, directory, job, graph):
@@ -21,6 +22,9 @@ def validate_fid1_job(root, directory, job, graph):
     require(isinstance(contract, dict) and type(contract.get('schema_version')) is int
             and contract.get('schema_version') in (1,2),
             'FID1 job contract is missing or unsupported')
+    if contract['schema_version'] == 2:
+        require(canonical_job_directory(root, directory, job.get('shot_id')) == directory,
+                'FID1 job path changed')
     integrity_path = directory / 'job_integrity.json'
     require(integrity_path.is_file(), 'FID1 immutable job-integrity receipt is missing')
     integrity = read_json(integrity_path)
@@ -178,9 +182,18 @@ def job_command(root, directory, url):
     require(parsed.scheme == 'http' and parsed.hostname in {'127.0.0.1', 'localhost', '::1'}
             and not parsed.username and not parsed.password and parsed.path in {'', '/'}
             and not parsed.query and not parsed.fragment, 'only local ComfyUI endpoints are allowed')
-    root, directory = Path(root).resolve(), Path(directory).resolve()
+    root = Path(root).resolve()
+    raw_directory = directory
+    directory = Path(directory)
+    if not directory.is_absolute():
+        directory = root / directory
+    directory = directory.resolve()
     require(directory.is_relative_to(root / 'local' / 'production'), 'job outside production tree')
     job = read_json(directory / 'job.json')
+    contract = job.get('fid1_contract')
+    if isinstance(contract, dict) and contract.get('schema_version') == 2:
+        require(canonical_job_directory(root, raw_directory, job.get('shot_id')) == directory,
+                'FID1 job path changed')
     require(job.get('status') == 'PREPARED_NOT_SUBMITTED', 'invalid job state')
     for rel, digest in job['sources'].items():
         checked_asset(root, rel, digest)
@@ -217,8 +230,11 @@ def main():
     lock = None
     attempt_started = False
     try:
-        root = Path(a.root).resolve(); directory = relative_file(root, a.job_dir)
-        command, job = job_command(root, directory, a.url)
+        root = Path(a.root).resolve()
+        # Keep the generic CLI's original relative-path contract, but pass the
+        # spelling to FID1 validation before resolve can erase a link alias.
+        directory = relative_file(root, a.job_dir)
+        command, job = job_command(root, a.job_dir, a.url)
         if not a.execute:
             print(json.dumps({'submitted': False, 'command': command, 'note': 'Add --execute only after local review.'}, ensure_ascii=False, indent=2))
             return 0
@@ -228,13 +244,13 @@ def main():
         fd = os.open(lock, os.O_CREAT | os.O_EXCL | os.O_WRONLY)
         os.close(fd)
         try:
-            command, job = job_command(root, directory, a.url)
+            command, job = job_command(root, a.job_dir, a.url)
             if job.get('fid1_contract'):
                 require(bool(a.comfy_root), '--comfy-root is required to execute a FID1 job')
                 runtime = validate_fid1_runtime(root, Path(a.comfy_root), job, a.url)
             else:
                 runtime = None
-            fresh_command, fresh_job = job_command(root, directory, a.url)
+            fresh_command, fresh_job = job_command(root, a.job_dir, a.url)
             require(fresh_command == command and fresh_job == job,
                     'prepared job changed during runtime validation; prepare a new take')
             intent = directory / 'submission_intent.json'

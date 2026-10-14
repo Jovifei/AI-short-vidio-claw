@@ -22,6 +22,7 @@ from approve_asset import approve_reference, approve_keyframe
 from preproduction import FID1_NODE_CLASS_BY_STRATEGY, read_json, write_json, check_plan, prepare, validate_graph, validate_keyframe, _unique
 from sync_repo_media import safe, digest, need, verify
 from fid1_graph_audit import attach_fid1_anchor
+from fid1_job_paths import canonical_job_directory
 try:
     from .fid1_predecessor import validate_predecessor, validate_predecessor_receipt
 except ImportError:
@@ -45,6 +46,7 @@ FID1_DEPENDENCY_FILES = (
     'scripts/fid1_qa_report.py',
     'scripts/fid1_predecessor.py',
     'scripts/fid1_review_contract.py',
+    'scripts/fid1_job_paths.py',
     'docs/reviews/20261011-source-fidelity/installed_comfy_source/source_manifest.json',
 )
 
@@ -226,13 +228,13 @@ def prepare_trial(root,sid,seed,out,trial_profile=None,previous_job=None):
     profile,profile_hash=loaded_profile if loaded_profile else (None,None)
     fid1_dependencies_at_start=None
     predecessor=None
+    destination = canonical_job_directory(root,out,sid) if profile and profile.get('anchor_strategy') else safe(root,out)
     if profile and profile.get('anchor_strategy'):
         need(seed==profile['seed'],'FID1 run seed differs from the shot-specific frozen profile')
         predecessor=require_previous_fid1_visual_acceptance(root,sid,previous_job)
         fid1_dependencies_at_start=fid1_dependency_hash(root)
     else:
         need(previous_job is None,'--previous-job requires an explicit FID1 profile')
-    destination=safe(root,out)
     need(destination.is_relative_to(root/LOCAL),'job outside source pilot')
     need(not destination.exists(),'job directory already exists; choose a new take')
     stage=None
@@ -299,6 +301,8 @@ def prepare_trial(root,sid,seed,out,trial_profile=None,previous_job=None):
                 need(fid1_dependency_hash(root)==fid1_dependencies_at_start,
                      'FID1 implementation/dependency changed during preparation')
                 validate_predecessor_receipt(root,sid,predecessor)
+                need(canonical_job_directory(root,out,sid)==destination,
+                     'FID1 output path changed before publication')
             need(not destination.exists(),'concurrent quality job writer')
             os.rename(directory,destination)
         return {'prepared':True,'submitted':False,'scope':SCOPE,'job_dir':out,'eligible_for_final_cut':False,

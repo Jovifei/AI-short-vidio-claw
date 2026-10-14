@@ -8,6 +8,8 @@ import shutil
 import subprocess
 import tempfile
 import unittest
+import sys
+import textwrap
 from unittest.mock import patch
 
 from PIL import Image
@@ -41,6 +43,10 @@ class FeedbackPageTests(unittest.TestCase):
         (self.job_dir/'qa').mkdir()
         for name in ('first_middle_last.png', 'all49.png'):
             Image.new('RGB', (16, 28), 'blue').save(self.job_dir/'qa'/name)
+        decoded = self.job_dir/'qa/all49'
+        decoded.mkdir()
+        for number in range(1, 50):
+            Image.new('RGB', (576, 1024), (number, 0, 0)).save(decoded/f'frame_{number:02d}.png')
         registry_rel = f'local/production/{ui.PROJECT}/reviews/'+'a'*64+'/registry.json'
         refs = {name: {'path': self.job_rel+'/source.png', 'sha256': self.source_sha}
                 for name in ('WF','DF','WC','DC')}
@@ -98,6 +104,88 @@ class FeedbackPageTests(unittest.TestCase):
         self.build()
         with self.assertRaisesRegex(ValueError, 'already exists'):
             self.build()
+
+    def test_review_page_runs_in_subprocess_with_torch_import_blocked(self):
+        code=textwrap.dedent('''
+            import builtins,sys
+            original=builtins.__import__
+            def blocked(name,*args,**kwargs):
+                if name=='torch' or name.startswith('torch.'):
+                    raise ImportError('SYNTHETIC no-Torch contract')
+                return original(name,*args,**kwargs)
+            builtins.__import__=blocked
+            try:import torch
+            except ImportError:pass
+            else:raise AssertionError('Torch was not blocked')
+            from scripts.fid1_visual_feedback import build_review_page
+            result=build_review_page(sys.argv[1],sys.argv[2],sys.argv[3])
+            assert result['default_approvals']==0 and result['approval_records_changed']==0
+        ''')
+        result=subprocess.run([sys.executable,'-c',code,str(self.root),self.job_rel,self.out],
+                              cwd=Path(__file__).resolve().parents[1],capture_output=True,text=True)
+        self.assertEqual(result.returncode,0,result.stdout+result.stderr)
+
+    def test_real_first_middle_last_numbers_and_times_are_sent_to_drawing(self):
+        with patch.object(ui, '_contact_sheet', wraps=ui._contact_sheet) as draw:
+            result = self.build()
+        first, all_frames = draw.call_args_list
+        self.assertEqual(first.kwargs['frame_numbers'], [1, 25, 49])
+        self.assertEqual(first.kwargs['fps'], 24)
+        self.assertEqual([path.name for path in first.args[0]], ['frame_01.png','frame_25.png','frame_49.png'])
+        self.assertEqual(all_frames.kwargs['frame_numbers'], list(range(1,50)))
+        receipt = json.loads(Path(result['receipt']).read_text())
+        mapping = receipt['frames']['first_middle_last']
+        self.assertEqual([item['frame_number'] for item in mapping], [1,25,49])
+        self.assertEqual([item['time_seconds'] for item in mapping], [0,1,2])
+        self.assertEqual(receipt['frames']['output_sha256'], self.output_sha)
+        for item in receipt['frames']['source_frames']:
+            self.assertEqual(item['sha256'], ui.sha256_file(self.root/item['path']))
+        for name, digest in receipt['frames']['derivatives'].items():
+            self.assertEqual(digest, ui.sha256_file(Path(result['receipt']).parent/name))
+        page = Path(result['review_page']).read_text(encoding='utf-8')
+        self.assertIn('实际帧号：1 / 25 / 49', page)
+        self.assertIn('帧时间：0 / 1 / 2 秒', page)
+
+    def test_missing_legacy_frames_cpu_decode_verified_video_into_new_session_only(self):
+        shutil.rmtree(self.job_dir/'qa/all49')
+        before = {p.relative_to(self.root).as_posix():ui.sha256_file(p) for p in self.job_dir.rglob('*') if p.is_file()}
+        def decode(command, **kwargs):
+            self.assertEqual(Path(command[command.index('-i')+1]), self.output)
+            self.assertEqual(ui.sha256_file(self.output), self.output_sha)
+            self.assertNotIn('-hwaccel', command)
+            target = Path(command[-1]).parent
+            for number in range(1,50):
+                Image.new('RGB',(576,1024),(number,0,0)).save(target/f'frame_{number:02d}.png')
+            return subprocess.CompletedProcess(command,0,'','')
+        with patch.object(ui.shutil,'which',return_value='SYNTHETIC_ffmpeg'), patch.object(ui.subprocess,'run',side_effect=decode):
+            result = self.build()
+        receipt = json.loads(Path(result['receipt']).read_text())
+        self.assertEqual(receipt['frames']['origin'],'VERIFIED_MP4_CPU_DECODE')
+        for item in receipt['frames']['source_frames']:
+            self.assertEqual(item['sha256'],ui.sha256_file(Path(result['receipt']).parent/item['path']))
+        self.assertEqual(before,{p.relative_to(self.root).as_posix():ui.sha256_file(p) for p in self.job_dir.rglob('*') if p.is_file()})
+
+    def test_bad_decoded_frame_shape_or_failed_cpu_decode_cannot_publish(self):
+        Image.new('RGB',(16,28)).save(self.job_dir/'qa/all49/frame_25.png')
+        with self.assertRaisesRegex(ValueError,'dimensions'):
+            self.build()
+        self.assertFalse((self.root/self.out).exists())
+        shutil.rmtree(self.job_dir/'qa/all49')
+        with patch.object(ui.shutil,'which',return_value='SYNTHETIC_ffmpeg'), patch.object(ui.subprocess,'run',return_value=subprocess.CompletedProcess([],1,'','SYNTHETIC decode failure')):
+            with self.assertRaisesRegex(ValueError,'extraction failed'):
+                self.build()
+        self.assertFalse((self.root/self.out).exists())
+
+    def test_decoded_frame_drift_during_render_cannot_publish(self):
+        original = ui.render_feedback_page
+        def changed(*args):
+            page = original(*args)
+            (self.job_dir/'qa/all49/frame_25.png').write_bytes(b'SYNTHETIC FRAME DRIFT')
+            return page
+        with patch.object(ui,'render_feedback_page',side_effect=changed):
+            with self.assertRaisesRegex(ValueError,'changed during'):
+                self.build()
+        self.assertFalse((self.root/self.out).exists())
 
     def test_rejects_tampered_output_job_workflow_or_reference(self):
         for target in (self.output, self.job_dir/'job.json', self.job_dir/'workflow.json', self.source):

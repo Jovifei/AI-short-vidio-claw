@@ -77,3 +77,12 @@ python scripts/fid1_deploy.py rollback --root . --comfy-root local/comfyui/image
 ## 保留的V3管理工具
 
 `project_preflight.py`、`register_asset.py`、`validate_schema.py`及`schemas/`均保留；它们提供V3知识/台账检查。V5使用独立版本标记的计划/批准表，旧schema通过不能替代新的hash/live-chain guard。具体整合见docs/51_PREPRODUCTION_INTEGRATION_V5.md。
+
+### FID1 feedback transactions (R1–R4)
+`fid1_qa_report.py record-review` now reads one feedback/QA byte snapshot and reports `feedback_sha256` / `qa_sha256` in dry-run. Bind the reviewed preview when applying actual Jovi feedback:
+```powershell
+python scripts/fid1_qa_report.py record-review --root . --job-dir local/production/T1_SOURCE_PILOT/video/SH903/jobs/take09 --feedback local/review_evidence/FID1_SH903_TAKE09_FEEDBACK.json
+python scripts/fid1_qa_report.py record-review --root . --job-dir local/production/T1_SOURCE_PILOT/video/SH903/jobs/take09 --feedback local/review_evidence/FID1_SH903_TAKE09_FEEDBACK.json --expected-feedback-sha256 <preview-feedback-sha> --expected-qa-sha256 <preview-qa-sha> --apply
+```
+The job review lock is exclusive and ownership checked. Interrupted publication preserves evidence and `qa/.fid1-review-recovery.json`; lock/recovery markers close predecessor admission. Inspect saved bytes and actual writer status before any manual recovery; never delete markers or replay approval automatically. Hash pins are byte bindings, not reviewer authentication.
+New schema-2 FID1 jobs require `local/production/T1_SOURCE_PILOT/video/<shot>/jobs/takeNN`. Original non-FID1 preparation and completed historical jobs remain separate. New review sessions generate derived sheets labeled actual source frame numbers and times (49/24: 1/25/49 = 0/1/2 seconds). Historical QA/media are not rewritten. Review choices remain empty after playback.

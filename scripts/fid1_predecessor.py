@@ -8,12 +8,14 @@ try:
     from .fid1_deploy import is_junction
     from .fid1_qa_report import verified_run_output
     from .fid1_review_contract import validate_visual_review_payload, VISUAL_CRITERIA
+    from .fid1_job_paths import canonical_job_directory, safe_project_path
 except ImportError:
     from preproduction import FID1_NODE_CLASS_BY_STRATEGY, read_json, require
     from sync_repo_media import safe, digest
     from fid1_deploy import is_junction
     from fid1_qa_report import verified_run_output
     from fid1_review_contract import validate_visual_review_payload, VISUAL_CRITERIA
+    from fid1_job_paths import canonical_job_directory, safe_project_path
 
 
 PROJECT = 'T1_SOURCE_PILOT'
@@ -23,12 +25,7 @@ PREVIOUS_SHOT = {'SH901': 'SH903', 'SH902': 'SH901'}
 
 
 def _path(root, relative):
-    path = safe(root, relative)
-    current = root
-    for part in relative.split('/'):
-        current /= part
-        require(not is_junction(current), 'previous path contains a junction/reparse point')
-    return path
+    return safe_project_path(root, relative)
 
 
 def _recorded_path(root, directory, value):
@@ -57,8 +54,13 @@ def validate_predecessor(root, shot_id, previous_job):
     require(isinstance(previous_job, str)
             and re.fullmatch(re.escape(expected_prefix) + r'take[0-9]{2,}', previous_job),
             f'{shot_id} requires an explicit {previous_shot} takeNN previous job')
-    directory = _path(root, previous_job)
+    directory = canonical_job_directory(root, previous_job, previous_shot)
     require(directory.is_dir(), 'previous FID1 job does not exist')
+    def require_review_complete():
+        for marker in ('.fid1-review.lock','.fid1-review-recovery.json'):
+            path=_path(root,previous_job+'/qa/'+marker)
+            require(not path.exists(), 'previous review transaction is active or RECOVERY_REQUIRED')
+    require_review_complete()
     # safe() rejects links, junctions and traversal; keep the receipt paths canonical.
     files = {name: _path(root, previous_job + '/' + name) for name in (
         'job.json', 'job_integrity.json', 'workflow.json', 'run_record.json', 'qa/qa_report.json')}
@@ -158,6 +160,7 @@ def validate_predecessor(root, shot_id, previous_job):
     # Catch changes between initial parsing and receipt publication, including self-consistent reseals.
     require(all(digest(_path(root, rel)) == sha for rel, sha in hashes.items()),
             'previous FID1 files changed during validation')
+    require_review_complete()
     return {'schema_version': 1, 'shot_id': previous_shot, 'job_dir': previous_job,
             'profile_id': profile_id, 'prompt_id': run['prompt_id'],
             'output_sha256': output_record['sha256'], 'files': hashes}

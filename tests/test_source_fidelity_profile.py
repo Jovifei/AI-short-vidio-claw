@@ -21,11 +21,11 @@ class FidelityProfileTests(DeliveryFixture):
         for rel in ('scripts/approve_asset.py','scripts/sync_repo_media.py','scripts/preproduction.py','scripts/fid1_graph_audit.py','scripts/fid1_wan_latent_anchor_node.py',
                     'scripts/submit_prepared.py','scripts/p1_comfy_probe.py','scripts/fid1_deploy.py',
                     'scripts/fid1_qa_report.py',
-                    'scripts/fid1_predecessor.py','scripts/fid1_review_contract.py',
+                    'scripts/fid1_predecessor.py','scripts/fid1_review_contract.py','scripts/fid1_job_paths.py',
                     'docs/reviews/20261011-source-fidelity/installed_comfy_source/source_manifest.json'):
             target=self.root/rel;target.parent.mkdir(parents=True,exist_ok=True);shutil.copyfile(ROOT/rel,target)
         self.profile_path='config/source_fidelity_trials/test_profile.json'
-        self.out=pilot.LOCAL+'/video/SH903/jobs/quality_take02'
+        self.out=pilot.LOCAL+'/video/SH903/jobs/take02'
 
     def profile(self, **updates):
         kit=read_json(self.root/pilot.KIT)
@@ -461,3 +461,20 @@ class FidelityProfileTests(DeliveryFixture):
         self.assertEqual(result.returncode,2,result.stdout+result.stderr)
         self.assertIn('--comfy-root is required',result.stdout)
         self.assertFalse((self.root/self.out/'submission_intent.json').exists())
+
+    def test_new_fid1_prepare_refuses_noncanonical_or_wrong_shot_before_creation(self):
+        self.approve();self.fid1_profile()
+        for out in (pilot.LOCAL+'/video/SH903/jobs/quality_take02',
+                    pilot.LOCAL+'/video/SH902/jobs/take02',
+                    pilot.LOCAL+'/video/SH903/jobs/take02/../take03'):
+            with self.subTest(out=out),self.assertRaises(ValueError):
+                pilot.prepare_trial(self.root,'SH903',2026100803,out,self.profile_path)
+            self.assertFalse((self.root/out).exists())
+
+    def test_submit_refuses_moved_schema2_job_even_if_integrity_still_matches(self):
+        self.approve();self.fid1_profile();self.prepare()
+        moved=self.root/pilot.LOCAL/'video/SH902/jobs/take88';moved.parent.mkdir(parents=True,exist_ok=True)
+        shutil.move(self.root/self.out,moved)
+        with self.assertRaisesRegex(ValueError,'canonical|shot|path'):
+            job_command(self.root,moved,'http://127.0.0.1:8188')
+        self.assertFalse((moved/'submission_intent.json').exists())

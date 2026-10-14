@@ -1,0 +1,404 @@
+{
+  "schema_version": 1,
+  "scope": "T1_SOURCE_ONLY",
+  "job_dir": "local/production/T1_SOURCE_PILOT/video/SH903/jobs/take09",
+  "feedback_binding": {
+    "schema_version": 1,
+    "scope": "T1_SOURCE_ONLY",
+    "shot_id": "SH903",
+    "profile_id": "SH903_FID1_V005",
+    "output_sha256": "dbdd44e4bdd39b13c8881c3f413a7889f0823c052b99df41698b1d5f61be2db8"
+  },
+  "sources": {
+    "local/production/T1_SOURCE_PILOT/video/SH903/jobs/take09/job.json": "f5b0963312443aeee83674f033452ce084e408b4d061c7191aa1938fbe7d3331",
+    "local/production/T1_SOURCE_PILOT/video/SH903/jobs/take09/job_integrity.json": "9262dc3822c4b1dd259379f540b0332748521ca8e5b6c535c0128ff053611794",
+    "local/production/T1_SOURCE_PILOT/video/SH903/jobs/take09/workflow.json": "31f0e48ac7c65ed0d853678fbb7ef95dfd24e667af9202dcd31922f34568840e",
+    "local/production/T1_SOURCE_PILOT/video/SH903/jobs/take09/run_record.json": "83ad8e1a0ada4fd139104787e92a4dae645d9882679e4608cee37d7babd2ba9c",
+    "local/production/T1_SOURCE_PILOT/video/SH903/jobs/take09/qa/qa_report.json": "b14968f2d2840f7a75cb40e6c6ff87a28d584014e46a92ad099a8e62365f9ca0",
+    "local/production/T1_SOURCE_PILOT/video/SH903/jobs/take09/T1_SOURCE_PILOT_SH903_6476cf1e1710_2026100803.png": "6476cf1e17105b3589095918a46546baced0db35ef2a6ca235551f4b7002149f",
+    "local/production/T1_SOURCE_PILOT/video/SH903/jobs/take09/run_record_media/2026100803_00001_.mp4": "dbdd44e4bdd39b13c8881c3f413a7889f0823c052b99df41698b1d5f61be2db8",
+    "episodes/T1_SOURCE_PILOT/source_kit.json": "a3b71f31d2dc143f0fbd8ce6399206e21d4ab92b99f8ae9f241d86b9b11a6c74",
+    "local/production/T1_SOURCE_PILOT/reviews/8595793296b8834da535fbba20b58b8f4e288a44cbadb33cb0a0c5524ec39622/registry.json": "3d6d0beb7749502b1f572647f1c6025fbf18c0b90d58edf3f8bbe8d7b92bd31e",
+    "local/references/generated/20261005_v5/WUKONG_FACE_CROP.png": "eca18bbf5c0ae09ddee4d931ae10fd1e976b8c0b4e9d02ad7060a6f81a6d8da1",
+    "local/references/pilot_source_crops/T1_REFB02_01_WUKONG_COSTUME.png": "c6dfde55169e7cb5ab635360915045e2e00664666e348272127fbeb0d4b53bf2",
+    "local/references/generated/20261005_v5/DAIYU_FACE_CROP.png": "efef721eb958a5fe48c5ea0e9d10874cbaaf4b29ea68987ee5dadb429378e8d7",
+    "local/references/pilot_source_crops/T1_REFB02_01_DAIYU_COSTUME.png": "a06159e12694ce911df9b2cc9e0d0f02df65c81d9d5aabc7d2d7b8ea8ee6c79e",
+    "local/production/T1_SOURCE_PILOT/video/SH903/jobs/take09/qa/all49/frame_01.png": "7cf8e8960874f74ecdc8bd4f73498cae6d3c28a08944a3c77f4c99117ad7f982",
+    "local/production/T1_SOURCE_PILOT/video/SH903/jobs/take09/qa/all49/frame_02.png": "39205239818d8f71b7a92ffc14faa7836c9a0f4dcd6b798146cda3ec85f09315",
+    "local/production/T1_SOURCE_PILOT/video/SH903/jobs/take09/qa/all49/frame_03.png": "65404a2b81ebf874c3c72c9680df3b93d07a9d6793a7fbc886dcd32465e540ee",
+    "local/production/T1_SOURCE_PILOT/video/SH903/jobs/take09/qa/all49/frame_04.png": "6c5b2a48b924f91be893db037c825c6affad2c9d3b3d10bddcd05e7ace01eb06",
+    "local/production/T1_SOURCE_PILOT/video/SH903/jobs/take09/qa/all49/frame_05.png": "d8a29176f6e492e95f41fe9ac62eb004a0f369913f5802594763fb508f65d332",
+    "local/production/T1_SOURCE_PILOT/video/SH903/jobs/take09/qa/all49/frame_06.png": "4263a21002385d4edbbc0e045dc2c73277ee214ac92a4cca888cd8683b5fd6d8",
+    "local/production/T1_SOURCE_PILOT/video/SH903/jobs/take09/qa/all49/frame_07.png": "9ee129b0e905a1220f46bdf1c20f25a8417e404fbb59d8e8bfca45fcdba5197f",
+    "local/production/T1_SOURCE_PILOT/video/SH903/jobs/take09/qa/all49/frame_08.png": "c57e093a43039828e833e58a45cdd26a6123badd834cd8ccba3426ca8b6f4796",
+    "local/production/T1_SOURCE_PILOT/video/SH903/jobs/take09/qa/all49/frame_09.png": "012e810f7454eacac46453dfab87ece57c2a2ac3a1bda81ade801bbd1f77d51a",
+    "local/production/T1_SOURCE_PILOT/video/SH903/jobs/take09/qa/all49/frame_10.png": "71b9578be3cb04989767ee15c085483be8045e2e96f14017dbec92547bf9a9db",
+    "local/production/T1_SOURCE_PILOT/video/SH903/jobs/take09/qa/all49/frame_11.png": "64eeda9b8ebfcdae86e8c7b5456895656b4b8f05604c51444b5fdc310f21c995",
+    "local/production/T1_SOURCE_PILOT/video/SH903/jobs/take09/qa/all49/frame_12.png": "51ce1485075d20132c7073aa5acda26b1071be25c32e38ce64d657a2f90bf963",
+    "local/production/T1_SOURCE_PILOT/video/SH903/jobs/take09/qa/all49/frame_13.png": "fec7e9b28c8d662aa421e3450426dd17022f5ec1e9f56cdfb5d199661b5764cf",
+    "local/production/T1_SOURCE_PILOT/video/SH903/jobs/take09/qa/all49/frame_14.png": "8a70c8f43fea172f2e597cff7aa1034218c11e70e3de3f7941ef8dd46b3d98c5",
+    "local/production/T1_SOURCE_PILOT/video/SH903/jobs/take09/qa/all49/frame_15.png": "ae9a67bdddb0f182a9794a37720db6f02e0c7eb3fb87f4a9182ee8787dbb6ea7",
+    "local/production/T1_SOURCE_PILOT/video/SH903/jobs/take09/qa/all49/frame_16.png": "4826c50fb00bce2c8b431cc9621d6e7bfc2a977494165e8dcb0053ca6566d6e7",
+    "local/production/T1_SOURCE_PILOT/video/SH903/jobs/take09/qa/all49/frame_17.png": "3524a9b9687797b23d23f3aaa15cf3bcef6d4c0a658a106e02addaaf42c66db2",
+    "local/production/T1_SOURCE_PILOT/video/SH903/jobs/take09/qa/all49/frame_18.png": "318115e907a48f1f21d44dee04f6bced0dc5f7e3b2643fa9cb57c02830f121f9",
+    "local/production/T1_SOURCE_PILOT/video/SH903/jobs/take09/qa/all49/frame_19.png": "c86c2ee19a4729c4ff39f932f0cc47340e881b48a7cc6515f19fb68aa283f0f2",
+    "local/production/T1_SOURCE_PILOT/video/SH903/jobs/take09/qa/all49/frame_20.png": "8ce05a13c28ce80afda24650e7697eaa66e109b7cb58dc7caf72054dd672cb6d",
+    "local/production/T1_SOURCE_PILOT/video/SH903/jobs/take09/qa/all49/frame_21.png": "d3cf2eb2875ddd5280791e68566bc87aba2bb6fed9cb6d1333dfc93ee4661471",
+    "local/production/T1_SOURCE_PILOT/video/SH903/jobs/take09/qa/all49/frame_22.png": "25a7f3f5ed34f869537bbc18e2ae12123daa71cac9f305efbc0ee6f536daadde",
+    "local/production/T1_SOURCE_PILOT/video/SH903/jobs/take09/qa/all49/frame_23.png": "9aa4d4e9da913558c21ba333fdf729a8bca7f417b5870a09d55cf8cb73fe3034",
+    "local/production/T1_SOURCE_PILOT/video/SH903/jobs/take09/qa/all49/frame_24.png": "80b51661c2b07814f6e3a84b0525aec1c39cb7d9def3d8f6becbbfcc33022815",
+    "local/production/T1_SOURCE_PILOT/video/SH903/jobs/take09/qa/all49/frame_25.png": "bf797ad1617e67946742ffad252e1494ff05ef1f628edbdc18f7ee26e749592f",
+    "local/production/T1_SOURCE_PILOT/video/SH903/jobs/take09/qa/all49/frame_26.png": "340ee73d8244bcd0650f8cd9cf793c8771d3ff21cea638a4daf16cc3112bedf9",
+    "local/production/T1_SOURCE_PILOT/video/SH903/jobs/take09/qa/all49/frame_27.png": "d4a532315d2677e399ea0d739c2c094a3b1e2fc98f370440ae3dd2eaa690ffaa",
+    "local/production/T1_SOURCE_PILOT/video/SH903/jobs/take09/qa/all49/frame_28.png": "420f7ff9996e9d5916913d78abf311699ca94f1167d9670fc9f15617c635d233",
+    "local/production/T1_SOURCE_PILOT/video/SH903/jobs/take09/qa/all49/frame_29.png": "6d42fab8d472bc9af61fa25134b277fa53ea86ea1ebcaab2b4c40643c61ffb44",
+    "local/production/T1_SOURCE_PILOT/video/SH903/jobs/take09/qa/all49/frame_30.png": "51f29d1a5a1e680190933d35c2c1743ab0a12c24d20ff1527088ce127da24e52",
+    "local/production/T1_SOURCE_PILOT/video/SH903/jobs/take09/qa/all49/frame_31.png": "10d3b1f6a404ead159fc5ab3f8adb60098d88df7d28a9ad4fd83e747c533eff2",
+    "local/production/T1_SOURCE_PILOT/video/SH903/jobs/take09/qa/all49/frame_32.png": "62a5af2d8c70fe327df16d2edb203fa26c52537fee27865c3b89dc1539cfbc6b",
+    "local/production/T1_SOURCE_PILOT/video/SH903/jobs/take09/qa/all49/frame_33.png": "87513210d0cd54bf21e1ec219539f3b0fab8a8bb49d6c8b4d5e98ba3bbdb568d",
+    "local/production/T1_SOURCE_PILOT/video/SH903/jobs/take09/qa/all49/frame_34.png": "f79fe19b8ad0863b25c51f5b9a02333ffd7cdde9b7fb8df0c98b56582667d09b",
+    "local/production/T1_SOURCE_PILOT/video/SH903/jobs/take09/qa/all49/frame_35.png": "6619217b1e693f5a24a66704fe7912cd3e32eafbd9aaebc576126a7c9ef98ff0",
+    "local/production/T1_SOURCE_PILOT/video/SH903/jobs/take09/qa/all49/frame_36.png": "ac8c4adda4c42beca105af727cd091572fefc57becc7cda2827a00ee89af97b1",
+    "local/production/T1_SOURCE_PILOT/video/SH903/jobs/take09/qa/all49/frame_37.png": "511656e7315ce9ea0d5766e46350aa10f86744431fd2601d0ba39e5c77341ef5",
+    "local/production/T1_SOURCE_PILOT/video/SH903/jobs/take09/qa/all49/frame_38.png": "04cd30ebd6c3b9c85b7347126d58d1fa7a4fe55687d718f48ae840577a4169d7",
+    "local/production/T1_SOURCE_PILOT/video/SH903/jobs/take09/qa/all49/frame_39.png": "119122002c84ec7ebef1af6b6d9a8173fbee5f6166d0bc6980edebbbc096dc42",
+    "local/production/T1_SOURCE_PILOT/video/SH903/jobs/take09/qa/all49/frame_40.png": "469cb854eca57809bd745320781e56379d1956cfe995ab43f0991948825b1121",
+    "local/production/T1_SOURCE_PILOT/video/SH903/jobs/take09/qa/all49/frame_41.png": "4d12e5082a09b727a61e43fcd21d4280b91f54eb3cd00e33d5317e685f8cb8a7",
+    "local/production/T1_SOURCE_PILOT/video/SH903/jobs/take09/qa/all49/frame_42.png": "88a638d8980d0cb07c5a86b8b5aaaddbb0ca0516fc7fbb1948fc36a43d191ca5",
+    "local/production/T1_SOURCE_PILOT/video/SH903/jobs/take09/qa/all49/frame_43.png": "44de9a6d67d0b401a77da01db7b7dfd1fae32ab5038cfa000cf0d16505b92725",
+    "local/production/T1_SOURCE_PILOT/video/SH903/jobs/take09/qa/all49/frame_44.png": "8cfcaef0e5c16f2b4bb5aec9c9dbb17045a54b66c233cb4a4a47b60912f2ebe2",
+    "local/production/T1_SOURCE_PILOT/video/SH903/jobs/take09/qa/all49/frame_45.png": "a6736a4936c448e532131d1a2fbe2b6a581779cbec0b75340170e59cb37798bb",
+    "local/production/T1_SOURCE_PILOT/video/SH903/jobs/take09/qa/all49/frame_46.png": "cbfe47f5ac7ec67b0cc5657755342ecb6f80bd7e30c230842313ae57c99c2f80",
+    "local/production/T1_SOURCE_PILOT/video/SH903/jobs/take09/qa/all49/frame_47.png": "a1cc6b1d75ee96486d3fd6143490b8bdf04608ee46b3ba31109b61189e6a6239",
+    "local/production/T1_SOURCE_PILOT/video/SH903/jobs/take09/qa/all49/frame_48.png": "361438b523cef3733ffbcba16e8e18ec682fa106644cef46ea1030a32d6ee976",
+    "local/production/T1_SOURCE_PILOT/video/SH903/jobs/take09/qa/all49/frame_49.png": "b9e187e28ae7c37bedb95f9fd8b361740d6ff7c0daf5d3a076a0def3138fd33c"
+  },
+  "frames": {
+    "origin": "EXISTING_QA_DECODED_FRAMES",
+    "fps": 24,
+    "source_frames": [
+      {
+        "frame_number": 1,
+        "time_seconds": 0.0,
+        "path": "local/production/T1_SOURCE_PILOT/video/SH903/jobs/take09/qa/all49/frame_01.png",
+        "sha256": "7cf8e8960874f74ecdc8bd4f73498cae6d3c28a08944a3c77f4c99117ad7f982"
+      },
+      {
+        "frame_number": 2,
+        "time_seconds": 0.041666666666666664,
+        "path": "local/production/T1_SOURCE_PILOT/video/SH903/jobs/take09/qa/all49/frame_02.png",
+        "sha256": "39205239818d8f71b7a92ffc14faa7836c9a0f4dcd6b798146cda3ec85f09315"
+      },
+      {
+        "frame_number": 3,
+        "time_seconds": 0.08333333333333333,
+        "path": "local/production/T1_SOURCE_PILOT/video/SH903/jobs/take09/qa/all49/frame_03.png",
+        "sha256": "65404a2b81ebf874c3c72c9680df3b93d07a9d6793a7fbc886dcd32465e540ee"
+      },
+      {
+        "frame_number": 4,
+        "time_seconds": 0.125,
+        "path": "local/production/T1_SOURCE_PILOT/video/SH903/jobs/take09/qa/all49/frame_04.png",
+        "sha256": "6c5b2a48b924f91be893db037c825c6affad2c9d3b3d10bddcd05e7ace01eb06"
+      },
+      {
+        "frame_number": 5,
+        "time_seconds": 0.16666666666666666,
+        "path": "local/production/T1_SOURCE_PILOT/video/SH903/jobs/take09/qa/all49/frame_05.png",
+        "sha256": "d8a29176f6e492e95f41fe9ac62eb004a0f369913f5802594763fb508f65d332"
+      },
+      {
+        "frame_number": 6,
+        "time_seconds": 0.20833333333333334,
+        "path": "local/production/T1_SOURCE_PILOT/video/SH903/jobs/take09/qa/all49/frame_06.png",
+        "sha256": "4263a21002385d4edbbc0e045dc2c73277ee214ac92a4cca888cd8683b5fd6d8"
+      },
+      {
+        "frame_number": 7,
+        "time_seconds": 0.25,
+        "path": "local/production/T1_SOURCE_PILOT/video/SH903/jobs/take09/qa/all49/frame_07.png",
+        "sha256": "9ee129b0e905a1220f46bdf1c20f25a8417e404fbb59d8e8bfca45fcdba5197f"
+      },
+      {
+        "frame_number": 8,
+        "time_seconds": 0.2916666666666667,
+        "path": "local/production/T1_SOURCE_PILOT/video/SH903/jobs/take09/qa/all49/frame_08.png",
+        "sha256": "c57e093a43039828e833e58a45cdd26a6123badd834cd8ccba3426ca8b6f4796"
+      },
+      {
+        "frame_number": 9,
+        "time_seconds": 0.3333333333333333,
+        "path": "local/production/T1_SOURCE_PILOT/video/SH903/jobs/take09/qa/all49/frame_09.png",
+        "sha256": "012e810f7454eacac46453dfab87ece57c2a2ac3a1bda81ade801bbd1f77d51a"
+      },
+      {
+        "frame_number": 10,
+        "time_seconds": 0.375,
+        "path": "local/production/T1_SOURCE_PILOT/video/SH903/jobs/take09/qa/all49/frame_10.png",
+        "sha256": "71b9578be3cb04989767ee15c085483be8045e2e96f14017dbec92547bf9a9db"
+      },
+      {
+        "frame_number": 11,
+        "time_seconds": 0.4166666666666667,
+        "path": "local/production/T1_SOURCE_PILOT/video/SH903/jobs/take09/qa/all49/frame_11.png",
+        "sha256": "64eeda9b8ebfcdae86e8c7b5456895656b4b8f05604c51444b5fdc310f21c995"
+      },
+      {
+        "frame_number": 12,
+        "time_seconds": 0.4583333333333333,
+        "path": "local/production/T1_SOURCE_PILOT/video/SH903/jobs/take09/qa/all49/frame_12.png",
+        "sha256": "51ce1485075d20132c7073aa5acda26b1071be25c32e38ce64d657a2f90bf963"
+      },
+      {
+        "frame_number": 13,
+        "time_seconds": 0.5,
+        "path": "local/production/T1_SOURCE_PILOT/video/SH903/jobs/take09/qa/all49/frame_13.png",
+        "sha256": "fec7e9b28c8d662aa421e3450426dd17022f5ec1e9f56cdfb5d199661b5764cf"
+      },
+      {
+        "frame_number": 14,
+        "time_seconds": 0.5416666666666666,
+        "path": "local/production/T1_SOURCE_PILOT/video/SH903/jobs/take09/qa/all49/frame_14.png",
+        "sha256": "8a70c8f43fea172f2e597cff7aa1034218c11e70e3de3f7941ef8dd46b3d98c5"
+      },
+      {
+        "frame_number": 15,
+        "time_seconds": 0.5833333333333334,
+        "path": "local/production/T1_SOURCE_PILOT/video/SH903/jobs/take09/qa/all49/frame_15.png",
+        "sha256": "ae9a67bdddb0f182a9794a37720db6f02e0c7eb3fb87f4a9182ee8787dbb6ea7"
+      },
+      {
+        "frame_number": 16,
+        "time_seconds": 0.625,
+        "path": "local/production/T1_SOURCE_PILOT/video/SH903/jobs/take09/qa/all49/frame_16.png",
+        "sha256": "4826c50fb00bce2c8b431cc9621d6e7bfc2a977494165e8dcb0053ca6566d6e7"
+      },
+      {
+        "frame_number": 17,
+        "time_seconds": 0.6666666666666666,
+        "path": "local/production/T1_SOURCE_PILOT/video/SH903/jobs/take09/qa/all49/frame_17.png",
+        "sha256": "3524a9b9687797b23d23f3aaa15cf3bcef6d4c0a658a106e02addaaf42c66db2"
+      },
+      {
+        "frame_number": 18,
+        "time_seconds": 0.7083333333333334,
+        "path": "local/production/T1_SOURCE_PILOT/video/SH903/jobs/take09/qa/all49/frame_18.png",
+        "sha256": "318115e907a48f1f21d44dee04f6bced0dc5f7e3b2643fa9cb57c02830f121f9"
+      },
+      {
+        "frame_number": 19,
+        "time_seconds": 0.75,
+        "path": "local/production/T1_SOURCE_PILOT/video/SH903/jobs/take09/qa/all49/frame_19.png",
+        "sha256": "c86c2ee19a4729c4ff39f932f0cc47340e881b48a7cc6515f19fb68aa283f0f2"
+      },
+      {
+        "frame_number": 20,
+        "time_seconds": 0.7916666666666666,
+        "path": "local/production/T1_SOURCE_PILOT/video/SH903/jobs/take09/qa/all49/frame_20.png",
+        "sha256": "8ce05a13c28ce80afda24650e7697eaa66e109b7cb58dc7caf72054dd672cb6d"
+      },
+      {
+        "frame_number": 21,
+        "time_seconds": 0.8333333333333334,
+        "path": "local/production/T1_SOURCE_PILOT/video/SH903/jobs/take09/qa/all49/frame_21.png",
+        "sha256": "d3cf2eb2875ddd5280791e68566bc87aba2bb6fed9cb6d1333dfc93ee4661471"
+      },
+      {
+        "frame_number": 22,
+        "time_seconds": 0.875,
+        "path": "local/production/T1_SOURCE_PILOT/video/SH903/jobs/take09/qa/all49/frame_22.png",
+        "sha256": "25a7f3f5ed34f869537bbc18e2ae12123daa71cac9f305efbc0ee6f536daadde"
+      },
+      {
+        "frame_number": 23,
+        "time_seconds": 0.9166666666666666,
+        "path": "local/production/T1_SOURCE_PILOT/video/SH903/jobs/take09/qa/all49/frame_23.png",
+        "sha256": "9aa4d4e9da913558c21ba333fdf729a8bca7f417b5870a09d55cf8cb73fe3034"
+      },
+      {
+        "frame_number": 24,
+        "time_seconds": 0.9583333333333334,
+        "path": "local/production/T1_SOURCE_PILOT/video/SH903/jobs/take09/qa/all49/frame_24.png",
+        "sha256": "80b51661c2b07814f6e3a84b0525aec1c39cb7d9def3d8f6becbbfcc33022815"
+      },
+      {
+        "frame_number": 25,
+        "time_seconds": 1.0,
+        "path": "local/production/T1_SOURCE_PILOT/video/SH903/jobs/take09/qa/all49/frame_25.png",
+        "sha256": "bf797ad1617e67946742ffad252e1494ff05ef1f628edbdc18f7ee26e749592f"
+      },
+      {
+        "frame_number": 26,
+        "time_seconds": 1.0416666666666667,
+        "path": "local/production/T1_SOURCE_PILOT/video/SH903/jobs/take09/qa/all49/frame_26.png",
+        "sha256": "340ee73d8244bcd0650f8cd9cf793c8771d3ff21cea638a4daf16cc3112bedf9"
+      },
+      {
+        "frame_number": 27,
+        "time_seconds": 1.0833333333333333,
+        "path": "local/production/T1_SOURCE_PILOT/video/SH903/jobs/take09/qa/all49/frame_27.png",
+        "sha256": "d4a532315d2677e399ea0d739c2c094a3b1e2fc98f370440ae3dd2eaa690ffaa"
+      },
+      {
+        "frame_number": 28,
+        "time_seconds": 1.125,
+        "path": "local/production/T1_SOURCE_PILOT/video/SH903/jobs/take09/qa/all49/frame_28.png",
+        "sha256": "420f7ff9996e9d5916913d78abf311699ca94f1167d9670fc9f15617c635d233"
+      },
+      {
+        "frame_number": 29,
+        "time_seconds": 1.1666666666666667,
+        "path": "local/production/T1_SOURCE_PILOT/video/SH903/jobs/take09/qa/all49/frame_29.png",
+        "sha256": "6d42fab8d472bc9af61fa25134b277fa53ea86ea1ebcaab2b4c40643c61ffb44"
+      },
+      {
+        "frame_number": 30,
+        "time_seconds": 1.2083333333333333,
+        "path": "local/production/T1_SOURCE_PILOT/video/SH903/jobs/take09/qa/all49/frame_30.png",
+        "sha256": "51f29d1a5a1e680190933d35c2c1743ab0a12c24d20ff1527088ce127da24e52"
+      },
+      {
+        "frame_number": 31,
+        "time_seconds": 1.25,
+        "path": "local/production/T1_SOURCE_PILOT/video/SH903/jobs/take09/qa/all49/frame_31.png",
+        "sha256": "10d3b1f6a404ead159fc5ab3f8adb60098d88df7d28a9ad4fd83e747c533eff2"
+      },
+      {
+        "frame_number": 32,
+        "time_seconds": 1.2916666666666667,
+        "path": "local/production/T1_SOURCE_PILOT/video/SH903/jobs/take09/qa/all49/frame_32.png",
+        "sha256": "62a5af2d8c70fe327df16d2edb203fa26c52537fee27865c3b89dc1539cfbc6b"
+      },
+      {
+        "frame_number": 33,
+        "time_seconds": 1.3333333333333333,
+        "path": "local/production/T1_SOURCE_PILOT/video/SH903/jobs/take09/qa/all49/frame_33.png",
+        "sha256": "87513210d0cd54bf21e1ec219539f3b0fab8a8bb49d6c8b4d5e98ba3bbdb568d"
+      },
+      {
+        "frame_number": 34,
+        "time_seconds": 1.375,
+        "path": "local/production/T1_SOURCE_PILOT/video/SH903/jobs/take09/qa/all49/frame_34.png",
+        "sha256": "f79fe19b8ad0863b25c51f5b9a02333ffd7cdde9b7fb8df0c98b56582667d09b"
+      },
+      {
+        "frame_number": 35,
+        "time_seconds": 1.4166666666666667,
+        "path": "local/production/T1_SOURCE_PILOT/video/SH903/jobs/take09/qa/all49/frame_35.png",
+        "sha256": "6619217b1e693f5a24a66704fe7912cd3e32eafbd9aaebc576126a7c9ef98ff0"
+      },
+      {
+        "frame_number": 36,
+        "time_seconds": 1.4583333333333333,
+        "path": "local/production/T1_SOURCE_PILOT/video/SH903/jobs/take09/qa/all49/frame_36.png",
+        "sha256": "ac8c4adda4c42beca105af727cd091572fefc57becc7cda2827a00ee89af97b1"
+      },
+      {
+        "frame_number": 37,
+        "time_seconds": 1.5,
+        "path": "local/production/T1_SOURCE_PILOT/video/SH903/jobs/take09/qa/all49/frame_37.png",
+        "sha256": "511656e7315ce9ea0d5766e46350aa10f86744431fd2601d0ba39e5c77341ef5"
+      },
+      {
+        "frame_number": 38,
+        "time_seconds": 1.5416666666666667,
+        "path": "local/production/T1_SOURCE_PILOT/video/SH903/jobs/take09/qa/all49/frame_38.png",
+        "sha256": "04cd30ebd6c3b9c85b7347126d58d1fa7a4fe55687d718f48ae840577a4169d7"
+      },
+      {
+        "frame_number": 39,
+        "time_seconds": 1.5833333333333333,
+        "path": "local/production/T1_SOURCE_PILOT/video/SH903/jobs/take09/qa/all49/frame_39.png",
+        "sha256": "119122002c84ec7ebef1af6b6d9a8173fbee5f6166d0bc6980edebbbc096dc42"
+      },
+      {
+        "frame_number": 40,
+        "time_seconds": 1.625,
+        "path": "local/production/T1_SOURCE_PILOT/video/SH903/jobs/take09/qa/all49/frame_40.png",
+        "sha256": "469cb854eca57809bd745320781e56379d1956cfe995ab43f0991948825b1121"
+      },
+      {
+        "frame_number": 41,
+        "time_seconds": 1.6666666666666667,
+        "path": "local/production/T1_SOURCE_PILOT/video/SH903/jobs/take09/qa/all49/frame_41.png",
+        "sha256": "4d12e5082a09b727a61e43fcd21d4280b91f54eb3cd00e33d5317e685f8cb8a7"
+      },
+      {
+        "frame_number": 42,
+        "time_seconds": 1.7083333333333333,
+        "path": "local/production/T1_SOURCE_PILOT/video/SH903/jobs/take09/qa/all49/frame_42.png",
+        "sha256": "88a638d8980d0cb07c5a86b8b5aaaddbb0ca0516fc7fbb1948fc36a43d191ca5"
+      },
+      {
+        "frame_number": 43,
+        "time_seconds": 1.75,
+        "path": "local/production/T1_SOURCE_PILOT/video/SH903/jobs/take09/qa/all49/frame_43.png",
+        "sha256": "44de9a6d67d0b401a77da01db7b7dfd1fae32ab5038cfa000cf0d16505b92725"
+      },
+      {
+        "frame_number": 44,
+        "time_seconds": 1.7916666666666667,
+        "path": "local/production/T1_SOURCE_PILOT/video/SH903/jobs/take09/qa/all49/frame_44.png",
+        "sha256": "8cfcaef0e5c16f2b4bb5aec9c9dbb17045a54b66c233cb4a4a47b60912f2ebe2"
+      },
+      {
+        "frame_number": 45,
+        "time_seconds": 1.8333333333333333,
+        "path": "local/production/T1_SOURCE_PILOT/video/SH903/jobs/take09/qa/all49/frame_45.png",
+        "sha256": "a6736a4936c448e532131d1a2fbe2b6a581779cbec0b75340170e59cb37798bb"
+      },
+      {
+        "frame_number": 46,
+        "time_seconds": 1.875,
+        "path": "local/production/T1_SOURCE_PILOT/video/SH903/jobs/take09/qa/all49/frame_46.png",
+        "sha256": "cbfe47f5ac7ec67b0cc5657755342ecb6f80bd7e30c230842313ae57c99c2f80"
+      },
+      {
+        "frame_number": 47,
+        "time_seconds": 1.9166666666666667,
+        "path": "local/production/T1_SOURCE_PILOT/video/SH903/jobs/take09/qa/all49/frame_47.png",
+        "sha256": "a1cc6b1d75ee96486d3fd6143490b8bdf04608ee46b3ba31109b61189e6a6239"
+      },
+      {
+        "frame_number": 48,
+        "time_seconds": 1.9583333333333333,
+        "path": "local/production/T1_SOURCE_PILOT/video/SH903/jobs/take09/qa/all49/frame_48.png",
+        "sha256": "361438b523cef3733ffbcba16e8e18ec682fa106644cef46ea1030a32d6ee976"
+      },
+      {
+        "frame_number": 49,
+        "time_seconds": 2.0,
+        "path": "local/production/T1_SOURCE_PILOT/video/SH903/jobs/take09/qa/all49/frame_49.png",
+        "sha256": "b9e187e28ae7c37bedb95f9fd8b361740d6ff7c0daf5d3a076a0def3138fd33c"
+      }
+    ],
+    "first_middle_last": [
+      {
+        "frame_number": 1,
+        "time_seconds": 0.0,
+        "path": "local/production/T1_SOURCE_PILOT/video/SH903/jobs/take09/qa/all49/frame_01.png",
+        "sha256": "7cf8e8960874f74ecdc8bd4f73498cae6d3c28a08944a3c77f4c99117ad7f982"
+      },
+      {
+        "frame_number": 25,
+        "time_seconds": 1.0,
+        "path": "local/production/T1_SOURCE_PILOT/video/SH903/jobs/take09/qa/all49/frame_25.png",
+        "sha256": "bf797ad1617e67946742ffad252e1494ff05ef1f628edbdc18f7ee26e749592f"
+      },
+      {
+        "frame_number": 49,
+        "time_seconds": 2.0,
+        "path": "local/production/T1_SOURCE_PILOT/video/SH903/jobs/take09/qa/all49/frame_49.png",
+        "sha256": "b9e187e28ae7c37bedb95f9fd8b361740d6ff7c0daf5d3a076a0def3138fd33c"
+      }
+    ],
+    "derivatives": {
+      "first_middle_last.png": "58e0c422350cf5232d89fded9faf63f76427e11b2672cfadec66d323aa2f0f48",
+      "all49.png": "8c6347c20e8780cab48a25cc0f325d21abdbcb27828f8996b3a443b373eebef7"
+    },
+    "output_sha256": "dbdd44e4bdd39b13c8881c3f413a7889f0823c052b99df41698b1d5f61be2db8"
+  },
+  "page_sha256": "b2f931574c2b2c292a9417badc4447ef21ad134421f5d1dd79f835dc8766691f",
+  "default_approvals": 0,
+  "approval_records_changed": 0
+}

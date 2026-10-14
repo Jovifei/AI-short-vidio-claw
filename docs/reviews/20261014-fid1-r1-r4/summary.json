@@ -1,0 +1,58 @@
+{
+  "version": "0.1.0",
+  "scope": "T1_SOURCE_ONLY",
+  "plan_sha": "f928be68ff35cb2e15f68c8d1070c4e72bfd7d23",
+  "findings": {
+    "R1": "FIXED_LOCAL_TESTED",
+    "R2": "FIXED_LOCAL_TESTED",
+    "R3": "FIXED_LOCAL_TESTED",
+    "R4": "FIXED_LOCAL_TESTED"
+  },
+  "full_tests": {
+    "collected": 326,
+    "passed": 323,
+    "skipped": 3,
+    "interpreter": "D:/Python/Python3.14/python.exe",
+    "torch": "2.11.0+cu128",
+    "device": "CPU"
+  },
+  "comfy_tests": {
+    "passed": 86,
+    "interpreter": "local/comfyui/image/venv/Scripts/python.exe",
+    "device": "CPU"
+  },
+  "independent_local_review": {
+    "findings": [],
+    "fid1_passed": 86,
+    "profiles_passed": 32
+  },
+  "protected": {
+    "files": 533,
+    "changed": [],
+    "baseline_local_path": "local/reports/r1_r4_protected_20261014.json",
+    "baseline_sha256": "e8e76dad8ae787871ca349bdd70853b8ef3ec47aedbba10499841011e746a69a"
+  },
+  "media_received": {
+    "files": 32,
+    "copied": 0,
+    "already_present": 32,
+    "approvals_changed": 0
+  },
+  "actual_gate": {
+    "SH901_prepare_exit": 2,
+    "job_created": false,
+    "downstream_gpu": "NOT_RUN"
+  },
+  "take09": {
+    "visual_accepted": false,
+    "decision": "PENDING",
+    "output_sha256": "dbdd44e4bdd39b13c8881c3f413a7889f0823c052b99df41698b1d5f61be2db8"
+  },
+  "installed_node": {
+    "status": "VERIFIED",
+    "sha256": "c1d4c573a1e6bbd63793398293be16f3b7a6a2a3042d3340f08dc8870cb2e0b3"
+  },
+  "new_review_session": "local/production/T1_SOURCE_PILOT/review_sessions/SH903_take09_transaction_review_01",
+  "ci": "PENDING_FIXED_IMPLEMENTATION_SHA",
+  "remote_review": "PENDING_FIXED_IMPLEMENTATION_SHA"
+}
