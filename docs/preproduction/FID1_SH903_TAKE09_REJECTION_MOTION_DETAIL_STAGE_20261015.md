@@ -182,25 +182,42 @@ python scripts/launch_readiness.py --project all
 
 ## 8. 本地从本计划开始的一次连续执行合同
 
-### A. 只快进接收文档、保护历史
+### A. 只快进接收文档、保护历史（已核对并行文档谱系）
+
+提交本方案的过程中，远端先收到另一份纯文档计划：778cfec2dbcd13d51b8d0c7c832e46347d008675 → fea10412233353a2931d338cc30832accccf0d66（只新增 docs/preproduction/FID1_TAKE09_REJECTION_REPAIR_STAGE_20261015.md）→ 本文档首次提交 d47f3adabf2269b6ae80bb77c7ab080b663d40f1。该并行文件不改任何代码或approval，但部分实验顺序与本文不同。**本轮最新固定计划文档是唯一实施合同**；较早并行文档作为历史参考保留，不将两套profile、take方案叠加，也不自动执行两个GPU试验。本次文档修订产生新的末端 PLAN_SHA 后，应以最终回传的SHA为准。
 
 ~~~powershell
 Set-Location E:\project\AI-short-vidio-claw
-$Baseline = '778cfec2dbcd13d51b8d0c7c832e46347d008675'
-$PlanSha = '<本轮网页提交的40位计划SHA>'
+$EvidenceHead = '778cfec2dbcd13d51b8d0c7c832e46347d008675'
+$OtherDocHead = 'fea10412233353a2931d338cc30832accccf0d66'
+$FirstPlanHead = 'd47f3adabf2269b6ae80bb77c7ab080b663d40f1'
+$PlanSha = '<最终回传的40位计划SHA>'
+$MainDoc = 'docs/preproduction/FID1_SH903_TAKE09_REJECTION_MOTION_DETAIL_STAGE_20261015.md'
+$OtherDoc = 'docs/preproduction/FID1_TAKE09_REJECTION_REPAIR_STAGE_20261015.md'
 if ((git branch --show-current).Trim() -ne 'codex/fid1-remote-repair') { throw 'wrong branch' }
 git rev-parse --show-toplevel
 git status --short
+$Before = (git rev-parse HEAD).Trim()
+if ($Before -notin @($EvidenceHead,$OtherDocHead,$FirstPlanHead)) {
+    throw 'Unexpected local HEAD; stop and reconcile without reset'
+}
 git fetch origin codex/fid1-remote-repair
 if ($LASTEXITCODE -ne 0) { throw 'fetch failed' }
 git cat-file -e "$PlanSha^{commit}"
 if ($LASTEXITCODE -ne 0) { throw 'plan SHA unavailable' }
-git diff --name-status "$Baseline..$PlanSha"
-# 必须只含本文档；出现业务改动则停止检查并发写入者。
+git merge-base --is-ancestor $Before $PlanSha
+if ($LASTEXITCODE -ne 0) { throw 'not a fast-forward descendant' }
+$Changed = @(git diff --name-only "$Before..$PlanSha")
+if ($LASTEXITCODE -ne 0) { throw 'comparison failed' }
+$Expected = if ($Before -eq $EvidenceHead) { @($OtherDoc,$MainDoc) } else { @($MainDoc) }
+if (@(Compare-Object -ReferenceObject ($Expected | Sort-Object) -DifferenceObject ($Changed | Sort-Object)).Count -ne 0) {
+    throw 'Unexpected changes since local HEAD; no business code may be included'
+}
 git merge --ff-only $PlanSha
 if ($LASTEXITCODE -ne 0) { throw 'cannot fast-forward, preserve local state' }
 git rev-parse HEAD
 ~~~
+
 
 绝不reset/clean/force-push/改main，保留两个Owner tasks未跟踪笔记和Obsidian。先对源PNG、v001–v005 profile、take01–09的job/workflow/run/QA/MP4/证据、已接受标签和正式两集批准建立保护hash。take09 QA已记录真实CHANGES_REQUIRED，不能重写回PENDING；保护其完整当前字节。
 
