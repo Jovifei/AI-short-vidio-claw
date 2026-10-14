@@ -196,7 +196,9 @@ def _record_review_snapshot(root, directory, feedback_path, apply, expected_feed
     report_raw=capture(report_path)
     report=_json_snapshot(report_raw)
     original_report_sha=hashlib.sha256(report_raw).hexdigest()
-    output_path, output_record = verified_run_output(root, directory)
+    run_raw=capture(directory/'run_record.json')
+    run=_json_snapshot(run_raw)
+    output_path, output_record = verified_run_output(root, directory, run)
     expected_output_path = output_path.relative_to(directory).as_posix()
     require(report.get("output",{}).get("path")==expected_output_path
             and report.get("output",{}).get("sha256")==output_record.get("sha256")
@@ -254,7 +256,6 @@ def _record_review_snapshot(root, directory, feedback_path, apply, expected_feed
     image=safe_project_path(root,(directory/job['input_file']).relative_to(root).as_posix()); capture(image)
     require(snapshots[workflow]==job.get('workflow_sha256')==integrity.get('workflow_sha256')
             and snapshots[image]==job.get('input_sha256')==integrity.get('input_sha256'), 'historic workflow/input changed')
-    run=_json_snapshot(capture(directory/'run_record.json'))
     require(run.get('queued_new_job') is True and run.get('prompt_id')
             and run.get('workflow_sha256')==job['workflow_sha256']
             and report.get('workflow_sha256')==job['workflow_sha256']

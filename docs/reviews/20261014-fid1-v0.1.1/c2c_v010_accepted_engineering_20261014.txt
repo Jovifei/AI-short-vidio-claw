@@ -1,0 +1,257 @@
+FID1 v0.1.0 独立工程复审" [level=1]
+    - paragraph:
+      - generic: 复审对象：
+      - link "Jovifei/AI-short-vidio-claw · PR12":
+        - /url: https://github.com/Jovifei/AI-short-vidio-claw/pull/12
+        - generic: Jovifei/AI-short-vidio-claw · PR12
+    - paragraph: 最终实现 HEAD
+    - generic: 已核实
+    - paragraph: 5ccc349b1e9853caf2dd9f6182da0e4135a34cea
+    - button "复制":
+      - generic: 复制
+    - paragraph:
+      - text: 基准计划：
+      - code: f928be68ff35cb2e15f68c8d1070c4e72bfd7d23
+    - paragraph: 已实际确认：
+    - list:
+      - paragraph:
+        - text: C2C 工作区为
+        - code: 04f9cfdf549f / AI-short-vidio-claw
+        - text: ，处于
+        - code: codex/fid1-remote-repair
+        - text: 分支。
+      - paragraph:
+        - text: GitHub PR12
+        - generic: Open / Unmerged
+        - text: ，远端 HEAD 与提交记录一致。
+      - paragraph:
+        - text: 相对于计划提交，最终实现为
+        - generic: 1 个后续提交，涉及 28 个文件
+        - text: ，包含 R1–R4 修复、回归测试、版本记录及审核材料。
+      - paragraph:
+        - text: 最终 HEAD 关联的 GitHub Actions
+        - generic: 4/4 completed / success
+        - text: 。
+      - paragraph:
+        - text: 本地
+        - code: tasks/lessons.md
+        - text: 、
+        - code: tasks/todo.md
+        - text: 仍为未跟踪文件，没有被提交。
+    - paragraph: 以上是已核实的仓库与执行状态，不等于对工程修复的自动验收。
+    - heading "一、最终独立复审结论" [level=2]
+    - generic: ACCEPTED_ENGINEERING
+    - paragraph:
+      - generic: FID1 v0.1.0 工程阶段通过
+    - paragraph:
+      - text: 对照
+      - code: f928…
+      - text: 计划中的 R1–R4 验收标准，我已核对最终代码调用链、相关测试实现、执行日志、恢复逻辑、路径约束、帧映射、保护记录及 GitHub CI，未发现需要阻断本阶段工程验收的新增确定性缺陷。
+    - paragraph: 这项结论仅接受工程实现，不接受 take09 视频视觉质量，也不授权下一镜 GPU 执行。
+    - heading "R1–R4 逐项结果" [level=3]
+    - table:
+      - rowgroup:
+        - row "问题 复审判断 具体依据":
+          - columnheader "问题":
+            - paragraph: 问题
+          - columnheader "复审判断":
+            - paragraph: 复审判断
+          - columnheader "具体依据":
+            - paragraph: 具体依据
+        - row "R1：竞争者误删反馈 PASS fid1_qa_report.py:149–171 实现专属锁、inode/令牌所有权验证；证据独占创建失败不会误删他人文件；同内容/不同内容竞争测试通过":
+          - cell "R1：竞争者误删反馈":
+            - paragraph: R1：竞争者误删反馈
+          - cell "PASS":
+            - paragraph: PASS
+          - cell "fid1_qa_report.py:149–171 实现专属锁、inode/令牌所有权验证；证据独占创建失败不会误删他人文件；同内容/不同内容竞争测试通过":
+            - paragraph:
+              - code: fid1_qa_report.py:149–171
+              - text: 实现专属锁、inode/令牌所有权验证；证据独占创建失败不会误删他人文件；同内容/不同内容竞争测试通过
+        - row "R2：反馈与 QA 快照不一致 PASS :187–322 使用单次 raw 快照、preview SHA pins、发布前后复验及恢复标记；三项旧失败测试已有红转绿证据":
+          - cell "R2：反馈与 QA 快照不一致":
+            - paragraph: R2：反馈与 QA 快照不一致
+          - cell "PASS":
+            - paragraph: PASS
+          - cell ":187–322 使用单次 raw 快照、preview SHA pins、发布前后复验及恢复标记；三项旧失败测试已有红转绿证据":
+            - paragraph:
+              - code: :187–322
+              - text: 使用单次 raw 快照、preview SHA pins、发布前后复验及恢复标记；三项旧失败测试已有红转绿证据
+        - row "R3：错误镜头和 take 路径 PASS fid1_job_paths.py 在解析别名前检查路径；prepare/submit/前驱共用约束，错误镜头、非标准 take、遍历及 reparse 负例通过":
+          - cell "R3：错误镜头和 take 路径":
+            - paragraph: R3：错误镜头和 take 路径
+          - cell "PASS":
+            - paragraph: PASS
+          - cell "fid1_job_paths.py 在解析别名前检查路径；prepare/submit/前驱共用约束，错误镜头、非标准 take、遍历及 reparse 负例通过":
+            - paragraph:
+              - code: fid1_job_paths.py
+              - text: 在解析别名前检查路径；prepare/submit/前驱共用约束，错误镜头、非标准 take、遍历及 reparse 负例通过
+        - row "R4：首中尾帧误标 PASS fid1_visual_feedback.py:43–88、fid1_qa_report.py:325–343 正确处理第 1/25/49 帧与 0/1/2 秒，新 session 不覆盖历史 QA":
+          - cell "R4：首中尾帧误标":
+            - paragraph: R4：首中尾帧误标
+          - cell "PASS":
+            - paragraph: PASS
+          - cell "fid1_visual_feedback.py:43–88、fid1_qa_report.py:325–343 正确处理第 1/25/49 帧与 0/1/2 秒，新 session 不覆盖历史 QA":
+            - paragraph:
+              - code: fid1_visual_feedback.py:43–88
+              - text: 、
+              - code: fid1_qa_report.py:325–343
+              - text: 正确处理第 1/25/49 帧与 0/1/2 秒，新 session 不覆盖历史 QA
+    - paragraph:
+      - text: R1/R2 的恢复策略同样核查了中断之后的行为：未完成事务保留
+      - code: RECOVERY_REQUIRED
+      - text: ，
+      - code: fid1_predecessor.py
+      - text: 在检测到锁或恢复标记时拒绝放行。这满足本阶段的失败关闭要求。
+    - heading "二、测试、CI 与版本验收" [level=2]
+    - table:
+      - rowgroup:
+        - row "验证项 已核对结果":
+          - columnheader "验证项":
+            - paragraph: 验证项
+          - columnheader "已核对结果":
+            - paragraph: 已核对结果
+        - row "本地完整套件 326 collected，323 passed，3 Windows 权限跳过":
+          - cell "本地完整套件":
+            - paragraph: 本地完整套件
+          - cell "326 collected，323 passed，3 Windows 权限跳过":
+            - paragraph: 326 collected，323 passed，3 Windows 权限跳过
+        - row "Comfy 环境 CPU 套件 86 passed":
+          - cell "Comfy 环境 CPU 套件":
+            - paragraph: Comfy 环境 CPU 套件
+          - cell "86 passed":
+            - paragraph: 86 passed
+        - row "最终 HEAD 的 GitHub 全量套件 326 passed，0 skipped":
+          - cell "最终 HEAD 的 GitHub 全量套件":
+            - paragraph: 最终 HEAD 的 GitHub 全量套件
+          - cell "326 passed，0 skipped":
+            - paragraph: 326 passed，0 skipped
+        - row "新版本注释标签 fid1-v0.1.0，已解析到最终实现 HEAD":
+          - cell "新版本注释标签":
+            - paragraph: 新版本注释标签
+          - cell "fid1-v0.1.0，已解析到最终实现 HEAD":
+            - paragraph:
+              - code: fid1-v0.1.0
+              - text: ，已解析到最终实现 HEAD
+        - row "本地保护检查记录 533 文件，changed=[]":
+          - cell "本地保护检查记录":
+            - paragraph: 本地保护检查记录
+          - cell "533 文件，changed=[]":
+            - paragraph:
+              - text: 533 文件，
+              - code: changed=[]
+        - row "媒体同步 32 文件已存在，0 复制，0 批准变更":
+          - cell "媒体同步":
+            - paragraph: 媒体同步
+          - cell "32 文件已存在，0 复制，0 批准变更":
+            - paragraph: 32 文件已存在，0 复制，0 批准变更
+        - row "实际 SH901 门禁 拒绝执行，未创建下游 job":
+          - cell "实际 SH901 门禁":
+            - paragraph: 实际 SH901 门禁
+          - cell "拒绝执行，未创建下游 job":
+            - paragraph: 拒绝执行，未创建下游 job
+        - row "GitHub Actions 4/4 success":
+          - cell "GitHub Actions":
+            - paragraph: GitHub Actions
+          - cell "4/4 success":
+            - paragraph: 4/4 success
+    - paragraph:
+      - text: 本轮独立读取了 CI 的 job 信息及全量日志，确认执行真实 CPU Torch 测试和新增 R1–R4 回归。GitHub CI 的
+      - code: checkout_sha
+      - text: 是 PR 测试合成合并引用
+      - code: 5d64ba3c9d85b2a330dcee0baff981cdb271ded3
+      - text: ，不是 main 已合并的证明。
+    - heading "三、未阻断工程验收的边界" [level=2]
+    - paragraph: 需要保留两项准确说明。
+    - paragraph: 第一，保护文件的 533/533 未变由本地保护检查记录支持，我还核对了最终提交的变更文件范围；本轮没有直接重新读取并哈希全部 533 个 E 盘文件，因此不将其描述为我亲自完成的全量重新计算。
+    - paragraph: 第二，新审片 session 使用历史 QA 中已经解码的 49 帧，记录了每帧 SHA、MP4 SHA 和衍生图片 SHA。当前版本没有额外将全部历史帧重新解码并逐像素与当前 MP4 交叉比较。该做法符合本阶段允许复用已解码帧的合同，但以后若提高审片证据强度，可以加入这一独立一致性验证。本轮我没有播放完整 MP4，也不据此作视觉通过判断。
+    - heading "四、真实人工门禁仍然关闭" [level=2]
+    - paragraph:
+      - text: 已重新读取 E 盘 take09 的
+      - code: qa_report.json
+      - text: ，结果仍然是：
+    - table:
+      - rowgroup:
+        - row "属性 实际状态":
+          - columnheader "属性":
+            - paragraph: 属性
+          - columnheader "实际状态":
+            - paragraph: 实际状态
+        - row "Runtime / Media / Full decode PASS":
+          - cell "Runtime / Media / Full decode":
+            - paragraph: Runtime / Media / Full decode
+          - cell "PASS":
+            - paragraph: PASS
+        - row "Full playback 人工审核 PENDING":
+          - cell "Full playback 人工审核":
+            - paragraph: Full playback 人工审核
+          - cell "PENDING":
+            - paragraph: PENDING
+        - row "Identity PENDING":
+          - cell "Identity":
+            - paragraph: Identity
+          - cell "PENDING":
+            - paragraph: PENDING
+        - row "Costume PENDING":
+          - cell "Costume":
+            - paragraph: Costume
+          - cell "PENDING":
+            - paragraph: PENDING
+        - row "Limbs PENDING":
+          - cell "Limbs":
+            - paragraph: Limbs
+          - cell "PENDING":
+            - paragraph: PENDING
+        - row "Jovi 最终决定 PENDING":
+          - cell "Jovi 最终决定":
+            - paragraph: Jovi 最终决定
+          - cell "PENDING":
+            - paragraph: PENDING
+        - row "下一镜门禁 WAITING_JOVI_VISUAL_ACCEPTANCE":
+          - cell "下一镜门禁":
+            - paragraph: 下一镜门禁
+          - cell "WAITING_JOVI_VISUAL_ACCEPTANCE":
+            - paragraph:
+              - code: WAITING_JOVI_VISUAL_ACCEPTANCE
+    - paragraph: 因此当前可以进行真实审片并记录 Jovi 的明确反馈，但不能准备并执行 SH901/SH902 GPU 试拍，也不能将本工程版本纳入正式30镜验收。
+    - heading "五、交接与版本规则" [level=2]
+    - paragraph: 本次工程审查正式采用以下分离状态：
+    - list:
+      - paragraph: Engineering：ACCEPTED
+      - paragraph: Runtime/Media（历史 take09）：PASS
+      - paragraph: Human Visual：PENDING
+      - paragraph:
+        - generic: Downstream GPU：NOT_RUN
+      - paragraph:
+        - generic: Production Approval：NOT_GRANTED
+    - paragraph:
+      - code: VERSION.json
+      - text: 和
+      - code: CHANGELOG.md
+      - text: 已存在，
+      - code: fid1-v0.1.0
+      - text: 已绑定固定实现 SHA。后续如有补修，应按约定使用中文 Commit、更新版本记录并发布新的补丁版本标签，不移动现有标签。
+    - paragraph: 本轮没有写入、合并、执行 GPU 或修改任何人工批准记录。
+    - paragraph:
+      - text: 最终结论：
+      - code: ACCEPTED_ENGINEERING
+      - text: 。FID1 v0.1.0 工程验收完成；下一项真正待完成的不是代码提交，而是 take09 的 Jovi 实际完整视频审片与明确反馈。
+    - button "复制":
+    - button "分享":
+    - button "朗读":
+    - button "重新生成回复":
+    - button "更多操作":
+    - generic: ChatGPT 可能会出错。请核查重要信息。
+    - button "滚动到底部":
+    - heading "最新一条回复" [level=4]
+    - status
+    - textbox "询问 ChatGPT":
+      - paragraph: 询问 ChatGPT
+    - button "添加文件等内容":
+    - button "选择 ChatGPT 模型":
+      - generic: 极高
+    - button "听写":
+    - button "开始语音":
+- status
+- status: 回答已完成
+- status
+- status

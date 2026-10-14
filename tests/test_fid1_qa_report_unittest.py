@@ -223,6 +223,22 @@ class FID1QAReportTests(unittest.TestCase):
                     pass
             self.assertEqual(json.loads(report.read_bytes()).get('concurrent_note'), 'preserve me')
 
+    def test_run_record_changed_after_first_verification_is_not_adopted(self):
+        qa=self.module();contract=importlib.import_module('scripts.fid1_review_contract')
+        with tempfile.TemporaryDirectory() as tmp:
+            root=Path(tmp);job,_,report,feedback=self.review_fixture(qa,root)
+            validate=contract.validate_visual_review_payload
+            def change(review,**kwargs):
+                validate(review,**kwargs)
+                other=job/'run_record_media/unreviewed.mp4';other.write_bytes(b'SYNTHETIC different output')
+                path=job/'run_record.json';run=json.loads(path.read_bytes())
+                run['outputs']=[{'saved_path':str(other),'bytes':other.stat().st_size,'sha256':qa.sha256_file(other)}]
+                path.write_text(json.dumps(run),encoding='utf-8')
+            before=report.read_bytes()
+            with patch.object(contract,'validate_visual_review_payload',change),self.assertRaises(ValueError):
+                qa.record_visual_review(root,job,feedback,True)
+            self.assertEqual(report.read_bytes(),before)
+
     def test_preview_pins_refuse_feedback_and_qa_drift(self):
         qa=self.module()
         for target in ('feedback','QA'):

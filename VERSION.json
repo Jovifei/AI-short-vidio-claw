@@ -1,8 +1,8 @@
 {
   "schema_version": 1,
   "component": "FID1 工程工具",
-  "version": "0.1.0",
-  "git_tag": "fid1-v0.1.0",
+  "version": "0.1.1",
+  "git_tag": "fid1-v0.1.1",
   "stage": "R1-R4",
   "plan_sha": "f928be68ff35cb2e15f68c8d1070c4e72bfd7d23",
   "implementation_base_sha": "d76a75b86c30c71e1f502afc6354734210317779",
