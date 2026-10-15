@@ -1,0 +1,19 @@
+{
+  "hash_basis": "raw_bytes_git_preserved",
+  "files": {
+    ".gitattributes": "f06202a408fef9b9ea69bb6b1cb8160dbb0378c5bb67a444d510d231813824c8",
+    "baseline_hashes.json": "1ebd528a1cf28f4183bfa1b16e16fdeba74d74913284aee3838f1679a63fcfa2",
+    "ci.json": "d3050fbeebd359258c7657f12278274c026af3a5e2b5797def7218173d6293fd",
+    "cpu_torch_tests.txt": "260c029e281c6a426bd228b60e149eac4d57be602820504ba83dc108ebb71c70",
+    "final_diff_review.md": "5ae782d05e14642a9620c0d5944a669f2ef3fecf75b92cb112c09c3889d8ea3f",
+    "full_tests.txt": "ea5a05b8328dcd5d49fef2ff8aa94c4f2f7ff85a4d22dd29de237426b37a4882",
+    "geometry_manifest_snapshot.json": "7e698137e3fc04bddd29625dfcbd91b59cba60e2db74c3544313dd9855b3eeed",
+    "independent_finding.json": "682a03b6123af7b5b93936aa5b3e98d535c35dc60a89edcaf9e2e4e7e844a3db",
+    "no_torch_tests.txt": "5baa5f5a1f0b031ace716daef1a95b1d61d8aa5fe809a86c7d41e340fca91907",
+    "protected_hash_comparison.json": "467f2e22df01c8c89b856639696e4bf318a2727495066023a4064ba4ad3f65ce",
+    "README.md": "b21e2386f04a3fff87f3c29ce8038c3c201863e732e75efc690b60b1de5225c4",
+    "real_prepare_refusal.json": "dfe63d94a632da20636ed398a60b0c385e60aa381f5fb55f0de2012504a5ed63",
+    "resource_state.json": "58b1fa2c9e89fa28f56a27889d805d50f4180491d15d2f7a19fd41280789b143",
+    "summary.json": "7902e3c50a5c333de13c82c0aa189e42a9d4bad531d07e8c5cfdc780dcb0fde0"
+  }
+}

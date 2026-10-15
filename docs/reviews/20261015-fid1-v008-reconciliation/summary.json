@@ -1,0 +1,39 @@
+{
+  "plan_sha": "b37edc51236cf0b340401c0141a2e7687f5b394b",
+  "version": "0.2.0",
+  "scope": "T1_SOURCE_ONLY",
+  "engineering": "LOCAL_TESTS_PASS_PENDING_FIXED_SHA_CI_REVIEW",
+  "full_tests": {
+    "collected": 359,
+    "passed": 356,
+    "skipped": 3,
+    "seconds": 122.648
+  },
+  "comfy_cpu": {
+    "passed": 117,
+    "seconds": 31.105
+  },
+  "no_torch_subprocess": "PASS",
+  "protected_hashes": {
+    "total": 646,
+    "unchanged": 646
+  },
+  "V006": "FROZEN_take10_GPU_SUCCESS_JOVI_PENDING",
+  "V007": "FROZEN_TIME_V3_CPU_ONLY_NO_GPU",
+  "V008": {
+    "schema": 6,
+    "strategy": "wan22_timestep_aware_roi_strength_v4",
+    "node": "FID1WanStrengthROIAnchor",
+    "geometry": "BLOCKED_DYNAMIC_HEADDRESS_PLUME",
+    "actual_prepare": "NOT_RUN",
+    "deployment": "NOT_DONE",
+    "GPU": "NOT_RUN_NOT_AUTHORIZED",
+    "visual": "NOT_RUN"
+  },
+  "take09": "JOVI_CHANGES_REQUIRED",
+  "take10": "JOVI_PENDING",
+  "SH901_SH902": "BLOCKED",
+  "formal_input_approved": 0,
+  "formal_shots": 30,
+  "ci": "PENDING_FIXED_IMPLEMENTATION_SHA"
+}

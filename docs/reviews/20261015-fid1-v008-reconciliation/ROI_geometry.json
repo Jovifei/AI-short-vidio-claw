@@ -1,0 +1,51 @@
+{
+  "source_path": "assets\\media\\source_library\\REFB02_01.png",
+  "source_sha256": "6476cf1e17105b3589095918a46546baced0db35ef2a6ca235551f4b7002149f",
+  "source_size": [
+    941,
+    1672
+  ],
+  "latent_size": [
+    36,
+    64
+  ],
+  "geometry_mapping": [
+    {
+      "id": "WUKONG_FACE",
+      "latent_xyxy": [
+        3,
+        12,
+        13,
+        24
+      ],
+      "feather": 4,
+      "strength": 0.55
+    },
+    {
+      "id": "DAIYU_FACE",
+      "latent_xyxy": [
+        24,
+        12,
+        33,
+        24
+      ],
+      "feather": 4,
+      "strength": 0.55
+    },
+    {
+      "id": "BACKGROUND_TREES",
+      "latent_xyxy": [
+        14,
+        11,
+        24,
+        20
+      ],
+      "feather": 4,
+      "strength": 0.65
+    }
+  ],
+  "human_acceptance": false,
+  "review": "GEOMETRY_BLOCKED",
+  "local_observation": "BACKGROUND_TREES includes the long red headdress plume crossing the box; it is not a purely static tree ROI. Possible waterfall/mist also visible. Do not alter frozen coordinates or prepare a production candidate.",
+  "candidate_prepare": "NOT_RUN_GEOMETRY_BLOCKED"
+}

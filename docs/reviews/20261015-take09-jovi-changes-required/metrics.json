@@ -1,0 +1,99 @@
+{
+  "purpose": "DIAGNOSTIC_ONLY_NOT_ACCEPTANCE",
+  "output_sha256": "dbdd44e4bdd39b13c8881c3f413a7889f0823c052b99df41698b1d5f61be2db8",
+  "regions": {
+    "WUKONG_FACE": {
+      "relative_box": [
+        0.11,
+        0.2,
+        0.36,
+        0.36
+      ],
+      "metrics": [
+        {
+          "label": "SOURCE resized",
+          "laplacian_variance": 3831.58615703918,
+          "mean_abs_diff_vs_first_video": 10.950880758807589
+        },
+        {
+          "label": "FRAME01 0s",
+          "laplacian_variance": 2481.0227645481264,
+          "mean_abs_diff_vs_first_video": 0.0
+        },
+        {
+          "label": "FRAME25 1s",
+          "laplacian_variance": 1623.473793599994,
+          "mean_abs_diff_vs_first_video": 18.035315040650406
+        },
+        {
+          "label": "FRAME49 2s",
+          "laplacian_variance": 1693.1097441234886,
+          "mean_abs_diff_vs_first_video": 19.333333333333332
+        }
+      ],
+      "caveat": "pixel differences include blur/lighting; not evidence of natural head motion or identity correctness"
+    },
+    "DAIYU_FACE": {
+      "relative_box": [
+        0.69,
+        0.2,
+        0.89,
+        0.37
+      ],
+      "metrics": [
+        {
+          "label": "SOURCE resized",
+          "laplacian_variance": 1126.2005298105412,
+          "mean_abs_diff_vs_first_video": 5.269916765755053
+        },
+        {
+          "label": "FRAME01 0s",
+          "laplacian_variance": 841.928854091811,
+          "mean_abs_diff_vs_first_video": 0.0
+        },
+        {
+          "label": "FRAME25 1s",
+          "laplacian_variance": 387.48585180336306,
+          "mean_abs_diff_vs_first_video": 14.490982956797463
+        },
+        {
+          "label": "FRAME49 2s",
+          "laplacian_variance": 332.95795398875487,
+          "mean_abs_diff_vs_first_video": 15.91785572730876
+        }
+      ],
+      "caveat": "pixel differences include blur/lighting; not evidence of natural head motion or identity correctness"
+    },
+    "BACKGROUND_TREES": {
+      "relative_box": [
+        0.39,
+        0.18,
+        0.64,
+        0.3
+      ],
+      "metrics": [
+        {
+          "label": "SOURCE resized",
+          "laplacian_variance": 218.5835557519251,
+          "mean_abs_diff_vs_first_video": 3.2356029810298104
+        },
+        {
+          "label": "FRAME01 0s",
+          "laplacian_variance": 145.54681281208045,
+          "mean_abs_diff_vs_first_video": 0.0
+        },
+        {
+          "label": "FRAME25 1s",
+          "laplacian_variance": 114.19710890335882,
+          "mean_abs_diff_vs_first_video": 5.560580397470641
+        },
+        {
+          "label": "FRAME49 2s",
+          "laplacian_variance": 106.07619871063156,
+          "mean_abs_diff_vs_first_video": 5.714543812104788
+        }
+      ],
+      "caveat": "pixel differences include blur/lighting; not evidence of natural head motion or identity correctness"
+    }
+  }
+}

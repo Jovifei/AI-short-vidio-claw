@@ -1,0 +1,33 @@
+{
+  "version": "0.2.1",
+  "plan_sha": "71ba6cb939c1e8fd5e468398f375008209ac0a51",
+  "accepted_base": "111cb3fb07ab560cc88d346dcff02316f26e16c2",
+  "full": {
+    "collected": 367,
+    "passed": 364,
+    "skipped": 3,
+    "seconds": 148.727
+  },
+  "comfy_cpu": {
+    "passed": 125,
+    "seconds": 74.348
+  },
+  "no_torch": "PASS",
+  "real_geometry_refusal": "PASS_EXIT2_NO_JOB",
+  "protected_hashes": {
+    "total": 672,
+    "unchanged": 672
+  },
+  "V008": "GEOMETRY_BLOCKED",
+  "V009": "NO_SAFE_BACKGROUND_ROI",
+  "take14_take15": "NOT_CREATED",
+  "GPU": "NOT_RUN",
+  "deployment": "NOT_DONE",
+  "take09": "JOVI_CHANGES_REQUIRED",
+  "take10": "JOVI_PENDING",
+  "SH901_SH902": "BLOCKED",
+  "formal30_approved": 0,
+  "remote_base_review": "ACCEPTED_ENGINEERING_V0_2_0_ONLY",
+  "remote_patch_review": "PENDING",
+  "profile_EOL": "EXPLICIT_LF_CRLF_BYTE_HASHES_RAW_JOB_PIN_UNCHANGED"
+}

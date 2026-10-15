@@ -1,0 +1,5 @@
+{
+  "status": "PENDING_FIXED_IMPLEMENTATION_SHA",
+  "final_results": "local/reports/fid2_v022_fixed_head_ci.json",
+  "prior_ci_does_not_substitute_for_this_version": true
+}

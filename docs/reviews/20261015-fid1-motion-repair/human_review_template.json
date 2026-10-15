@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "scope": "T1_SOURCE_ONLY",
+  "shot_id": "SH903",
+  "profile_id": "SH903_FID1_V006",
+  "output_sha256": "32e93baca62c6a95d63433a526f85dc78fec239f9e8f09b64cd34509a6663435",
+  "decision": "PENDING",
+  "full_playback": "PENDING",
+  "identity": "PENDING",
+  "costume": "PENDING",
+  "limbs": "PENDING",
+  "reviewer": "",
+  "user_quote": "",
+  "recorded_at": ""
+}

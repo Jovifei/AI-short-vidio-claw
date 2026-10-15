@@ -1,0 +1,33 @@
+{
+  "timestamp": "2026-10-15T02:20:31.647+08:00",
+  "ram": {
+    "ram_load_percent": 96,
+    "ram_total_bytes": 34164097024,
+    "ram_avail_bytes": 1049313280,
+    "pagefile_total_bytes": 93152100352,
+    "pagefile_avail_bytes": 13203800064
+  },
+  "gpu": {
+    "gpu_name": "NVIDIA GeForce RTX 4070 SUPER",
+    "gpu_memory_used_mib": 2392,
+    "gpu_memory_total_mib": 12282,
+    "driver_version": "595.97",
+    "gpu_utilization_percent": 39
+  },
+  "disk": {
+    "E:/": {
+      "total": 1024207089664,
+      "used": 883669598208,
+      "free": 140537491456
+    },
+    "F:/": {
+      "total": 1153433595904,
+      "used": 815632437248,
+      "free": 337801158656
+    }
+  },
+  "GPU": "NOT_RUN_NOT_AUTHORIZED",
+  "candidate_geometry": "BLOCKED",
+  "memory_floor_bytes": 8589934592,
+  "vram_floor_mib": 8192
+}

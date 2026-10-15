@@ -1,0 +1,114 @@
+{
+  "schema_version": 1,
+  "scope": "T1_SOURCE_ONLY",
+  "status": "CANDIDATE_ROI_INSPECTED_NOT_APPROVAL",
+  "inspector": "Codex geometry inspection only",
+  "profiles": [
+    {
+      "shot_id": "SH901",
+      "profile_path": "config/source_fidelity_trials/SH901_FID1_V002.json",
+      "profile_sha256": "2fd784e74c0be0c0d0719e40f2e8b468c8e31e49ea3078835a3c6aaf5aec22b5",
+      "preserved_v001_sha256": "da927341adaaf03244782063bd532f79bd81fa12f7f3cdb8e44f7e2ed3856372",
+      "source_path": "assets/media/source_library/REFB02_02.png",
+      "source_sha256": "09da40f244a0e3867627a3d6d6ba1a5d7b4c91110a3ec615fcd0234b35d85db5",
+      "source_dimensions": [
+        941,
+        1672
+      ],
+      "seed": 2026100801,
+      "strategy": "wan22_timestep_aware_future_roi_v2",
+      "normalized_rois": [
+        {
+          "id": "WUKONG_FACE",
+          "x0": 0.31,
+          "y0": 0.2,
+          "x1": 0.53,
+          "y1": 0.41,
+          "feather_latent": 4
+        },
+        {
+          "id": "DAIYU_FACE",
+          "x0": 0.6,
+          "y0": 0.25,
+          "x1": 0.84,
+          "y1": 0.45,
+          "feather_latent": 4
+        }
+      ],
+      "source_pixel_boxes": [
+        {
+          "id": "WUKONG_FACE",
+          "xyxy": [
+            291,
+            334,
+            499,
+            686
+          ]
+        },
+        {
+          "id": "DAIYU_FACE",
+          "xyxy": [
+            564,
+            418,
+            791,
+            753
+          ]
+        }
+      ],
+      "profile_status": "CANDIDATE_NOT_VISUALLY_ACCEPTED"
+    },
+    {
+      "shot_id": "SH902",
+      "profile_path": "config/source_fidelity_trials/SH902_FID1_V002.json",
+      "profile_sha256": "ed0ee105bcba9333b2ed0a7b3db85991fbec03bf917cf0174fb1f7f550500b6d",
+      "preserved_v001_sha256": "32f6854874b4747f45c744c9c9a419d4d4b93077b70ef764e9a4ad1e119b3c7b",
+      "source_path": "assets/media/source_library/REFB02_06.png",
+      "source_sha256": "3629ba824aa49640f0f72c7d47b3eb0dddf16b3a9357d2a62c04573efa90e0ad",
+      "source_dimensions": [
+        941,
+        1672
+      ],
+      "seed": 2026100802,
+      "strategy": "wan22_timestep_aware_future_roi_v2",
+      "normalized_rois": [
+        {
+          "id": "WUKONG_FACE",
+          "x0": 0.1,
+          "y0": 0.04,
+          "x1": 0.48,
+          "y1": 0.29,
+          "feather_latent": 4
+        },
+        {
+          "id": "DAIYU_FACE",
+          "x0": 0.4,
+          "y0": 0.48,
+          "x1": 0.73,
+          "y1": 0.7,
+          "feather_latent": 4
+        }
+      ],
+      "source_pixel_boxes": [
+        {
+          "id": "WUKONG_FACE",
+          "xyxy": [
+            94,
+            66,
+            452,
+            485
+          ]
+        },
+        {
+          "id": "DAIYU_FACE",
+          "xyxy": [
+            376,
+            802,
+            687,
+            1171
+          ]
+        }
+      ],
+      "profile_status": "CANDIDATE_NOT_VISUALLY_ACCEPTED"
+    }
+  ]
+}

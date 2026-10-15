@@ -130,6 +130,73 @@ Invoke-RestMethod "$ComfyUrl/object_info/VAELoader"
 
 记录驱动、Comfy版本、GPU空闲、RAM空闲、磁盘、队列；本轮助手CPU/云端检查不能代替这些数值。
 
+## L3.5：FID1 T1_SOURCE_ONLY保真诊断
+
+FID1只针对已批准的源图小样，不是LOOKREEL01/EP001生产镜头。当前接口使用本项目现有ComfyUI源码/venv：`local/comfyui/image/ComfyUI`、`local/comfyui/image/venv/Scripts/python.exe`，模型仍从`F:/ComfyUI/models`映射读取。部署前确认源码依赖哈希与`docs/reviews/20261011-source-fidelity/installed_comfy_source/source_manifest.json`一致；不改Comfy核心文件、不安装新生成平台/权重。
+
+先跑回归和真实CPU张量检查，再安装单一custom node：
+
+```powershell
+python -m unittest discover -s tests -p 'test_*.py' -v
+python scripts/fid1_deploy.py deploy --root . --comfy-root local/comfyui/image/ComfyUI
+python scripts/fid1_deploy.py verify --root . --comfy-root local/comfyui/image/ComfyUI
+```
+
+FID1的Wan2.2 mask语义固定为`1=denoise、0=preserve`。schema-v2/v3旧策略把ROI写入`LATENT.noise_mask=base_mask*(1-alpha)`；本机take05/take07显示该局部mask与全画面伪文字/马赛克同现。源码审查确认`WAN22.process_timestep`按每个时间格的denoise-mask空间均值缩放整格timestep，因此不能继续把局部ROI传给Wan条件编码。Schema-v2使用硬ROI；schema-v3可设置`feather_latent` 1–4且不扩框，V004/take07为4格。
+
+schema-v4/V005保留Wan原始`noise_mask`（slot0=0、future=1），FID1节点同时输出克隆的`MODEL`和`LATENT`：模型上的`denoise_mask_function`只为KSampler的ROI保留区生成mask；实例级`scale_latent_inpaint`调用ModelSamplingSD3当前生效的`model_sampling.noise_scaling(sigma, noise, source_latent)`，让未来ROI按当前sigma与同一噪声轨迹对齐，首格保持干净。对feather alpha>0的格点，LATENT保存完整source，由KSampler按alpha只混合一次；ROI外不改，Wan flow schedule固定为基础workflow的shift=8、sampling=flow、multiplier=1000。Comfy `ModelPatcher.unpatch_model`必须恢复原方法；不改Comfy核心或进程全局。49视频帧对应13个latent时间格。V005只是SH903同源诊断，自动/runtime成功不表示视觉通过；SH901/SH902与正式30镜仍锁定。
+
+## 2026-10-13 take04/take05视觉失败后的受控续测
+
+SH903 take04同时修改提示词和增加anchor，不能单因归因；take05使用与take03完全相同的正/负提示词、源哈希、seed、576×1024、49/24和采样预算，仅增加硬ROI anchor，仍从第2帧起出现全场景马赛克/噪点与静止脸块。两条都为`CHANGES_REQUIRED`，不得进入LOOKREEL/EP001。
+
+take05复审建议下一轮只测试ROI边缘：新profile `SH903_FID1_V004`保留同条件，`feather_latent=4`让ROI边界alpha为0、向内逐格升至0.25/0.5/0.75/1。take06已有旧的PREPARED job且节点SHA已过期，不覆盖；当前实际新运行目录选择take07。完成软mask数学/prepare/submit测试、CI、精准回滚和单节点重部署/重启后，先prepare与dry-run，再用空队列和重新读取的GPU/RAM/磁盘数据决定是否执行一次。此诊断不批准输出；SH901/SH902继续保持前镜Jovi接受门禁。
+
+确认当前8188实例由这份Comfy源码启动。schema-v2/v3须确认`/object_info/FID1WanSourceROIAnchor`的LATENT输入/输出；schema-v4/V005须确认`/object_info/FID1WanTimestepAwareROIAnchor`有MODEL、LATENT、ROI JSON输入及MODEL、LATENT输出。实际执行还要求Comfy队列为空。若当前服务未运行，用已核对的本地venv启动单实例，监听仅限环回地址：
+
+```powershell
+Set-Location E:\project\AI-short-vidio-claw\local\comfyui\image\ComfyUI
+..\venv\Scripts\python.exe main.py --listen 127.0.0.1 --port 8188
+```
+
+历史SH903 take04准备记录（目录已存在、视觉失败，不重新执行）：
+
+```powershell
+Set-Location E:\project\AI-short-vidio-claw
+python scripts/source_pilot.py prepare --root . --shot SH903 --seed 2026100803 --out local/production/T1_SOURCE_PILOT/video/SH903/jobs/take04 --trial-profile config/source_fidelity_trials/SH903_FID1_V002.json
+python scripts/submit_prepared.py --root . --job-dir local/production/T1_SOURCE_PILOT/video/SH903/jobs/take04 --url http://127.0.0.1:8188
+```
+
+take08曾按旧的单通道守卫提交一次，Comfy把denoise mask扩为48通道后在KSampler入口报shape error，没有视频且没有重发。修正守卫以保留并验证Comfy的1→48通道复制后，新的不可覆盖任务目录为take09；它使用take07同一条件和ROI feather，只有anchor机制改为schema-v4/V005：
+
+```powershell
+Set-Location E:\project\AI-short-vidio-claw
+python scripts/source_pilot.py prepare --root . --shot SH903 --seed 2026100803 --out local/production/T1_SOURCE_PILOT/video/SH903/jobs/take09 --trial-profile config/source_fidelity_trials/SH903_FID1_V005.json
+python scripts/submit_prepared.py --root . --job-dir local/production/T1_SOURCE_PILOT/video/SH903/jobs/take09 --url http://127.0.0.1:8188
+```
+
+只有准备、hash、依赖、真实`/object_info`、空队列、模型和GPU/RAM/磁盘门禁均通过后才允许为这条job追加`--comfy-root ... --execute`。take09不覆盖take01–08；未知状态先查history，不重POST。完整解码、首中尾、all49和完整看片后，分别写runtime、视觉审查及Jovi接受状态。
+
+检查批准快照、输入/ROI/profile/节点依赖/工作流哈希、真实Comfy node schema、GPU与RAM、queue空闲和模型文件；仅在所有门禁通过后才单次加`--comfy-root ... --execute`。出现attempt marker或状态不明时先查Comfy history，绝不自动重POST。
+
+对于新任务，执行成功后用`fid1_qa_report.py create`生成一次QA；已有take09的QA已经生成，不覆盖。QA用ffprobe核对49帧/24fps/576×1024和输出hash，完整解码、生成all49及首中尾图，并记录资源数据。当前take09使用新的独立审片页显示实际输入、视频、人物与服装参考及49帧；所有选择为空，播放不会自动批准。
+
+用独立审片页导出Jovi实际填写的反馈，保存到`local/review_evidence/FID1_SH903_TAKE09_FEEDBACK.json`。output SHA必须不变、reviewer=`Jovi`、user_quote为实际原话、full_playback/identity/costume/limbs分别填`PASS`或`CHANGES_REQUIRED`/`NOT_RUN`。若确认可继续同源试拍，decision=`ACCEPTED_FOR_NEXT_SOURCE_ONLY_TRIAL`且四项全为PASS；否则填`CHANGES_REQUIRED`。先预览再记录：
+
+```powershell
+python scripts/fid1_qa_report.py review-page --root . --job-dir local/production/T1_SOURCE_PILOT/video/SH903/jobs/take09 --out local/production/T1_SOURCE_PILOT/review_sessions/SH903_take09_NEW
+python scripts/fid1_qa_report.py record-review --root . --job-dir local/production/T1_SOURCE_PILOT/video/SH903/jobs/take09 --feedback local/review_evidence/FID1_SH903_TAKE09_FEEDBACK.json
+python scripts/fid1_qa_report.py record-review --root . --job-dir local/production/T1_SOURCE_PILOT/video/SH903/jobs/take09 --feedback local/review_evidence/FID1_SH903_TAKE09_FEEDBACK.json --apply
+```
+
+`SH903_take09_NEW`须替换为未使用的审片目录。当前take09仍PENDING。只有具体SH903视频获真实接受后才准备SH901；只有具体SH901视频获接受后才准备SH902。新准备命令用显式`--previous-job`指定已接受的前镜job，不自动找最新take，也不回退到失败take04。SH901/SH902的新`FID1_V002`候选均为schema-4，使用各自源图/hash、seed、提示词和ROI。
+
+```powershell
+python scripts/source_pilot.py prepare --root . --shot SH901 --seed 2026100801 --out local/production/T1_SOURCE_PILOT/video/SH901/jobs/take02 --trial-profile config/source_fidelity_trials/SH901_FID1_V002.json --previous-job local/production/T1_SOURCE_PILOT/video/SH903/jobs/take09
+```
+
+`take02`仅在未存在且前镜真实接受时使用；否则选择新目录。新job的FID1合同schema-2冻结前镜的job、完整性收据、workflow、输入、run、QA、视频和审片证据。prepare发布前和submit（含锁内及运行环境检查之后、创建标记之前）重验当前字节与receipt。旧job只读保留，不写入新receipt；缺失receipt的旧下游schema-1任务拒绝执行。原take与正式30镜批准表保持原样。任何一镜视觉不接受都阻断后续试拍，范围仍为T1_SOURCE_ONLY。
+
 ## 7. L4：T1试拍，不改27秒/60秒生产时间线
 
 先得到三张合适的获批I2V输入。按本项目先考虑COMP09、COMP04、COMP05/COMP01，由实际合格图决定；不要以抱起/镜像/打闹作为首条。
@@ -210,3 +277,9 @@ local/reports/                                       # 本机可追溯检查，�
 我能提前完成的剧本、计划、依赖、命令、门禁、测试并不能代替仍缺的图。远端交接完成至少需要该批实物图、hash、bindings和可呈现审片；用户具体反馈不能伪造；本机T1/GPU测量只能在本机完成。
 
 **截至本说明，完整远端素材尚未齐，不能写“所有开拍前工作完成”。本地先接收与检查，图片制作缺口继续由远端承担。** 不再要求本地重复写路线或自行寻找错配人物来填空。
+
+## 12. FID1 真实反馈事务和审片衍生图（R1–R4）
+先 `record-review` dry-run，保存它返回的 `feedback_sha256`、`qa_sha256`，核对真实导出的反馈；apply 使用 `--expected-feedback-sha256` 和 `--expected-qa-sha256` 固定该次预览。不要重新计算并替换旧 pin 来消除漂移。实际用户证据不存在时不运行 apply。
+同一 job 的审片锁只由创建者释放；证据落盘后中断保留恢复标记。遇到 `RECOVERY_REQUIRED`，先核对写入进程、原始反馈、QA 与恢复记录，不自动删文件、清锁或重放批准。前驱拒绝未完成事务。
+新 FID1 job 必须位于本镜 `video/<SHOT>/jobs/takeNN`；路径不合法在创建前拒绝。旧任务只读核验，不改名、不重封。新审片session生成首中尾衍生图，真实标记为第1/25/49帧、0/1/2秒，历史take09的QA/图/视频保持原字节。播放到结尾不会自动勾选任何接受项。
+工程阶段完成可以报告 `ENGINEERING_READY_WAITING_HUMAN`；take09仍PENDING时SH901/SH902不能试拍，原30镜正式批准也不改变。

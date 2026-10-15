@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "component": "FID1 工程工具",
+  "version": "0.2.2",
+  "git_tag": "fid1-v0.2.2",
+  "stage": "本地独立审查与v4采样设备兼容修复",
+  "plan_sha": "a6e3748611134deeda6c8ffa27c9467c0af1d279",
+  "implementation_base_sha": "b6b5e8b408c68ebaf9b93fd231ced1d380c98480",
+  "scope": "T1_SOURCE_ONLY",
+  "visual_accepted": false,
+  "production_ready": false,
+  "candidate_geometry": "GEOMETRY_BLOCKED",
+  "gpu": "NOT_RUN",
+  "candidate_v009": "NO_SAFE_BACKGROUND_ROI"
+}

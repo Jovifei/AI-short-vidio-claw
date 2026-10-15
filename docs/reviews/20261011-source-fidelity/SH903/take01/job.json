@@ -1,0 +1,24 @@
+{
+  "schema_version": 5,
+  "status": "PREPARED_NOT_SUBMITTED",
+  "project_id": "T1_SOURCE_PILOT",
+  "shot_id": "SH903",
+  "seed": 2026100803,
+  "input_file": "T1_SOURCE_PILOT_SH903_6476cf1e1710_2026100803.png",
+  "input_sha256": "6476cf1e17105b3589095918a46546baced0db35ef2a6ca235551f4b7002149f",
+  "workflow_sha256": "aa25b1b9004b4cd5242f9b5804f4b1b0df3353a7da5dd74b285f3d02f1fd27e5",
+  "sources": {
+    "episodes/T1_SOURCE_PILOT/production_plan_v5.json": "25732a3427a7ed8cca0309e6a051a9bf6a5223dedaf4d7a42803886d593906ca",
+    "local/production/T1_SOURCE_PILOT/reviews/8595793296b8834da535fbba20b58b8f4e288a44cbadb33cb0a0c5524ec39622/approval.json": "6fee1294cd7cbe8b0998a6ffcb2d66971dc8b58cc992d8e9f30312c832683692",
+    "local/production/T1_SOURCE_PILOT/reviews/8595793296b8834da535fbba20b58b8f4e288a44cbadb33cb0a0c5524ec39622/registry.json": "3d6d0beb7749502b1f572647f1c6025fbf18c0b90d58edf3f8bbe8d7b92bd31e",
+    "workflows/video/production/VID_wan22_5b_i2v_prod_v001.json": "7ff433edf8ac154d9cd9ec8d8f08af5ac2316bbdcca9f88b64dc5b9f6b9e0c22",
+    "local/production/T1_SOURCE_PILOT/current_review.json": "a4be87f7ad0ca73967a50d257f4ffc5e936b8f650a330305907383e2607b146e",
+    "episodes/T1_SOURCE_PILOT/source_kit.json": "a3b71f31d2dc143f0fbd8ce6399206e21d4ab92b99f8ae9f241d86b9b11a6c74",
+    "episodes/T1_SOURCE_PILOT/reference_registry_candidate.json": "ba28d4a80c1901dde40548ce7cb119fef38a3a4fa3a68af4fbcd36e18f1f4559",
+    "local/production/T1_SOURCE_PILOT/reviews/8595793296b8834da535fbba20b58b8f4e288a44cbadb33cb0a0c5524ec39622/feedback.json": "b42a0c2111303a5bc8a5b74d6334fd60f13e5fcb7cdfcf0de6e1774ef25efd95"
+  },
+  "created_at": "2026-10-09T14:35:08.571544+00:00",
+  "note": "Offline preparation only. No POST /prompt was sent.",
+  "purpose": "T1_SOURCE_ONLY",
+  "eligible_for_final_cut": false
+}

@@ -11,14 +11,24 @@ import hashlib
 import html
 import io
 import json
+import math
 import os
 from pathlib import Path
+import re
 import shutil
 import tempfile
 from PIL import Image
 from approve_asset import approve_reference, approve_keyframe
-from preproduction import read_json, write_json, check_plan, prepare, validate_graph, validate_keyframe
+from preproduction import validate_strength_profile_rois, validate_temporal_anchor_schedule, FID1_NODE_CLASS_BY_STRATEGY, read_json, write_json, check_plan, prepare, validate_graph, validate_keyframe, _unique
 from sync_repo_media import safe, digest, need, verify
+from fid1_graph_audit import attach_fid1_anchor
+from fid1_job_paths import canonical_job_directory
+try:
+    from .fid1_predecessor import validate_predecessor, validate_predecessor_receipt
+    from .fid1_geometry_gate import verify_geometry_evidence
+except ImportError:
+    from fid1_predecessor import validate_predecessor, validate_predecessor_receipt
+    from fid1_geometry_gate import verify_geometry_evidence
 
 PROJECT = 'T1_SOURCE_PILOT'
 BASE = 'episodes/' + PROJECT
@@ -27,6 +37,32 @@ LOCAL = 'local/production/' + PROJECT
 POINTER = LOCAL + '/current_review.json'
 SCOPE = 'T1_SOURCE_ONLY'
 LABEL = '我批准本卡原图及展示的两个人脸参考、两张服装裁片，仅用于同源保真试拍；不批准EP001、LOOKREEL01或最终定妆。'
+FID1_DEPENDENCY_FILES = (
+    'scripts/fid1_wan_latent_anchor_node.py',
+    'scripts/fid1_graph_audit.py',
+    'scripts/preproduction.py',
+    'scripts/source_pilot.py',
+    'scripts/submit_prepared.py',
+    'scripts/p1_comfy_probe.py',
+    'scripts/fid1_deploy.py',
+    'scripts/fid1_qa_report.py',
+    'scripts/fid1_predecessor.py',
+    'scripts/fid1_review_contract.py',
+    'scripts/fid1_job_paths.py',
+    'docs/reviews/20261011-source-fidelity/installed_comfy_source/source_manifest.json',
+)
+FID1_GEOMETRY_HELPER = 'scripts/fid1_geometry_gate.py'
+
+
+def fid1_dependency_hash(root, profile_schema=None):
+    files = FID1_DEPENDENCY_FILES + ((FID1_GEOMETRY_HELPER,) if profile_schema == 6 else ())
+    hashes={rel:digest(safe(root,rel)) for rel in files}
+    combined=hashlib.sha256(json.dumps(hashes,sort_keys=True,separators=(',',':')).encode()).hexdigest()
+    return hashes,combined
+
+
+def require_previous_fid1_visual_acceptance(root, sid, previous_job=None):
+    return validate_predecessor(root, sid, previous_job)
 
 
 def inputs(root):
@@ -132,7 +168,61 @@ def apply_review(root, feedback_path, apply=False):
         lock.unlink(missing_ok=True)
 
 
-def prepare_trial(root,sid,seed,out):
+def load_trial_profile(root, sid, kit, relative):
+    if relative is None:
+        return None
+    need(isinstance(relative,str) and relative.startswith('config/source_fidelity_trials/') and relative.endswith('.json'),
+         'trial profile must be a reviewed config/source_fidelity_trials JSON')
+    raw=safe(root,relative).read_bytes()
+    profile=json.loads(raw.decode('utf-8-sig'),object_pairs_hook=_unique)
+    base_fields={'schema_version','profile_id','scope','shot_id','input_sha256','width','height','frames','fps',
+                 'positive_prompt','negative_prompt','hypothesis'}
+    schema=profile.get('schema_version')
+    need(type(schema) is int,'trial profile schema_version must be an integer')
+    if schema==1:
+        need(set(profile)==base_fields,'unexpected/missing trial profile fields; model and sampler overrides are not allowed')
+    elif schema in (2,3,4,5,6):
+        need(set(profile)==base_fields|{'seed','anchor_strategy','anchor_rois'}|({'temporal_anchor_schedule'} if schema==5 else set()),
+             'unexpected/missing FID1 profile fields; model and sampler overrides are not allowed')
+    else:
+        need(False,'unsupported trial profile schema')
+    need(profile['scope']==SCOPE,'wrong trial profile schema/scope')
+    need(profile['shot_id']==sid and profile['input_sha256']==kit['shots'][sid]['sha256'],'profile belongs to other approved pixels')
+    need(isinstance(profile['profile_id'],str) and re.fullmatch(r'[A-Z0-9_]{1,64}',profile['profile_id']),'invalid profile_id')
+    need(all(type(profile[k]) is int for k in ('width','height','frames','fps')),'profile sizes must be integers')
+    need((profile['width'],profile['height']) in {(480,832),(576,1024)},'only existing 5B candidate size tiers are allowed')
+    need(profile['frames']==49 and profile['fps']==24,'source trial remains 49 frames / 24 fps')
+    need(all(isinstance(profile[k],str) and 0<len(profile[k].strip())<=4096
+             for k in ('positive_prompt','negative_prompt','hypothesis')),'missing/oversized quality experiment text')
+    if schema in (2,3,4,5,6):
+        need(type(profile['seed']) is int and 0<=profile['seed']<2**63,'FID1 profile seed must be a non-negative 63-bit integer')
+        expected_strategy = {4:'wan22_timestep_aware_future_roi_v2',5:'wan22_timestep_aware_future_roi_v3',6:'wan22_timestep_aware_roi_strength_v4'}.get(schema,'wan22_first_latent_future_roi_v1')
+        if schema==5:validate_temporal_anchor_schedule(profile['temporal_anchor_schedule'])
+        if schema==6:
+            need(sid=='SH903','schema6 strength profile is restricted to SH903')
+            validate_strength_profile_rois(profile['anchor_rois'],profile['width']//16,profile['height']//16)
+        need(profile['anchor_strategy']==expected_strategy,'unsupported FID1 anchor strategy')
+        rois=profile['anchor_rois'];need(isinstance(rois,list) and 1<=len(rois)<=8,'FID1 profile needs 1–8 explicit ROI boxes')
+        seen=set();area=0.0
+        for roi in rois:
+            roi_fields={'id','x0','y0','x1','y1'}
+            if schema in (3,4,5,6):roi_fields.add('feather_latent')
+            if schema==6:roi_fields.add('preserve_strength')
+            need(isinstance(roi,dict) and set(roi)==roi_fields,'FID1 ROI fields do not match the profile schema')
+            name=roi['id'];need(isinstance(name,str) and re.fullmatch(r'[A-Z0-9_]{1,32}',name) and name not in seen,'invalid/duplicate FID1 ROI id');seen.add(name)
+            coords=[roi[k] for k in ('x0','y0','x1','y1')]
+            need(all(type(v) in (int,float) and math.isfinite(v) for v in coords),'FID1 ROI coordinates must be finite numbers')
+            x0,y0,x1,y1=coords
+            need(0<=x0<x1<=1 and 0<=y0<y1<=1,'FID1 ROI bounds must be ordered within [0,1]')
+            if schema in (3,4,5,6):
+                need(type(roi['feather_latent']) is int and 1<=roi['feather_latent']<=4,
+                     'FID1 feather_latent must be an integer from 1 to 4')
+            area+=(x1-x0)*(y1-y0)
+        need(area<0.5,'FID1 ROIs cover too much of the frame')
+    return profile, hashlib.sha256(raw).hexdigest()
+
+
+def prepare_trial(root,sid,seed,out,trial_profile=None,previous_job=None):
     root=Path(root).resolve();kit,plan,_,_=inputs(root)
     pointer=read_json(safe(root,POINTER));need(pointer.get('scope')==SCOPE,'missing scoped review')
     need(pointer['snapshot'].startswith(LOCAL+'/reviews/'),'wrong review path');snap=safe(root,pointer['snapshot'])
@@ -141,22 +231,116 @@ def prepare_trial(root,sid,seed,out):
     choices(root,read_json(snap/'feedback.json'))
     registry=read_json(snap/'registry.json');manifest=read_json(snap/'approval.json')
     for s in kit['shots']:validate_keyframe(root,plan,manifest,registry,s)
-    job=prepare(root,safe(root,kit['plan_path']),snap/'approval.json',snap/'registry.json',safe(root,'workflows/video/production/VID_wan22_5b_i2v_prod_v001.json'),sid,seed,safe(root,out))
-    directory=safe(root,out);graph=read_json(directory/'workflow.json');ids=validate_graph(graph,['DAIYU','WUKONG'])
-    graph[ids['save']]['inputs']['filename_prefix']='video/T1_SOURCE_ONLY/'+sid+'/'+str(seed)
-    write_json(directory/'workflow.json',graph)
-    job.update(purpose=SCOPE,eligible_for_final_cut=False,workflow_sha256=digest(directory/'workflow.json'))
-    for rel in (POINTER,KIT,kit['registry_path'],pointer['snapshot']+'/feedback.json'):
-        job['sources'][rel]=digest(safe(root,rel))
-    write_json(directory/'job.json',job);return {'prepared':True,'submitted':False,'scope':SCOPE,'job_dir':out,'eligible_for_final_cut':False}
+    need(sid in kit['shots'],'unknown source trial shot')
+    shot=next(s for s in plan['shots'] if s['shot_id']==sid)
+    loaded_profile=load_trial_profile(root,sid,kit,trial_profile)
+    profile,profile_hash=loaded_profile if loaded_profile else (None,None)
+    fid1_dependencies_at_start=None
+    predecessor=None
+    geometry_receipt=None
+    destination = canonical_job_directory(root,out,sid) if profile and profile.get('anchor_strategy') else safe(root,out)
+    if profile and profile.get('anchor_strategy'):
+        need(seed==profile['seed'],'FID1 run seed differs from the shot-specific frozen profile')
+        if profile['schema_version']==6:
+            # This is an input-geometry stop, separate from source approval and
+            # output visual acceptance. Fail before creating staging/job dirs.
+            geometry_receipt=verify_geometry_evidence(
+                root, trial_profile, profile, kit['shots'][sid]['repo_path'])
+        predecessor=require_previous_fid1_visual_acceptance(root,sid,previous_job)
+        fid1_dependencies_at_start=fid1_dependency_hash(root,profile['schema_version'])
+    else:
+        need(previous_job is None,'--previous-job requires an explicit FID1 profile')
+    need(destination.is_relative_to(root/LOCAL),'job outside source pilot')
+    need(not destination.exists(),'job directory already exists; choose a new take')
+    stage=None
+    if profile:
+        destination.parent.mkdir(parents=True,exist_ok=True)
+        stage=Path(tempfile.mkdtemp(prefix='.quality-prepare-',dir=destination.parent))
+    directory=stage/'job' if stage else destination
+    try:
+        job=prepare(root,safe(root,kit['plan_path']),snap/'approval.json',snap/'registry.json',safe(root,'workflows/video/production/VID_wan22_5b_i2v_prod_v001.json'),sid,seed,directory)
+        graph=read_json(directory/'workflow.json');ids=validate_graph(graph,['DAIYU','WUKONG'])
+        prefix='video/T1_SOURCE_ONLY/'+sid+'/'
+        job['characters']=shot['characters']
+        if profile:
+            graph[ids['latent']]['inputs'].update(width=profile['width'],height=profile['height'],length=profile['frames'])
+            graph[ids['positive']]['inputs']['text']=profile['positive_prompt']
+            negative=str(graph[ids['sampler']]['inputs']['negative'][0])
+            graph[negative]['inputs']['text']=profile['negative_prompt']
+            graph[ids['video']]['inputs']['fps']=profile['fps']
+            prefix+=profile['profile_id']+'/'
+            if profile.get('anchor_strategy'):
+                attach_fid1_anchor(graph,shot['characters'],profile)
+                validate_graph(graph,shot['characters'],fid1_profile=profile)
+            else:
+                validate_graph(graph,shot['characters'])
+            job['trial_profile']=profile
+            job['trial_profile_path']=Path(trial_profile).as_posix()
+            job['original_render_profile']=next(s['i2v'] for s in plan['shots'] if s['shot_id']==sid)
+            need(digest(safe(root,trial_profile))==profile_hash,'trial profile changed during preparation')
+            job['sources'][trial_profile]=profile_hash
+            job['sources']['scripts/source_pilot.py']=digest(safe(root,'scripts/source_pilot.py'))
+            job['sources']['scripts/preproduction.py']=digest(safe(root,'scripts/preproduction.py'))
+            if profile.get('anchor_strategy'):
+                dependency_hashes,dependency_hash=fid1_dependencies_at_start
+                job['sources'].update(dependency_hashes)
+                if geometry_receipt is not None:
+                    job['sources'].update(geometry_receipt['files'])
+                job['fid1_contract']={
+                    'schema_version':2,
+                    'strategy':profile['anchor_strategy'],
+                    'node_class':FID1_NODE_CLASS_BY_STRATEGY[profile['anchor_strategy']],
+                    'node_source_sha256':dependency_hashes['scripts/fid1_wan_latent_anchor_node.py'],
+                    'profile_sha256':profile_hash,
+                    'dependency_sha256':dependency_hash,
+                    'dependency_files':dependency_hashes,
+                    'noise_mask_semantics':'1=denoise;0=preserve',
+                    'predecessor':predecessor,
+                }
+                if geometry_receipt is not None:
+                    job['fid1_contract']['geometry_receipt']=geometry_receipt
+                if predecessor is not None:
+                    job['sources'].update(predecessor['files'])
+        graph[ids['save']]['inputs']['filename_prefix']=prefix+str(seed)
+        write_json(directory/'workflow.json',graph)
+        job.update(purpose=SCOPE,eligible_for_final_cut=False,workflow_sha256=digest(directory/'workflow.json'))
+        for rel in (POINTER,KIT,kit['registry_path'],pointer['snapshot']+'/feedback.json'):
+            job['sources'][rel]=digest(safe(root,rel))
+        write_json(directory/'job.json',job)
+        if job.get('fid1_contract'):
+            write_json(directory/'job_integrity.json',{
+                'schema_version':1,
+                'job_sha256':digest(directory/'job.json'),
+                'workflow_sha256':job['workflow_sha256'],
+                'input_sha256':job['input_sha256'],
+            })
+        if stage:
+            need(digest(safe(root,trial_profile))==profile_hash,'trial profile changed before publication')
+            if fid1_dependencies_at_start is not None:
+                need(fid1_dependency_hash(root,profile['schema_version'])==fid1_dependencies_at_start,
+                     'FID1 implementation/dependency changed during preparation')
+                if geometry_receipt is not None:
+                    current_geometry=verify_geometry_evidence(
+                        root, trial_profile, profile, kit['shots'][sid]['repo_path'])
+                    need(current_geometry==geometry_receipt,
+                         'FID1 geometry evidence changed during preparation')
+                validate_predecessor_receipt(root,sid,predecessor)
+                need(canonical_job_directory(root,out,sid)==destination,
+                     'FID1 output path changed before publication')
+            need(not destination.exists(),'concurrent quality job writer')
+            os.rename(directory,destination)
+        return {'prepared':True,'submitted':False,'scope':SCOPE,'job_dir':out,'eligible_for_final_cut':False,
+                'trial_profile':profile['profile_id'] if profile else None}
+    finally:
+        if stage and stage.exists():shutil.rmtree(stage)
 
 
 def main():
-    p=argparse.ArgumentParser(description=__doc__);p.add_argument('command',choices=['review','apply','prepare']);p.add_argument('--root',default='.');p.add_argument('--feedback');p.add_argument('--apply',action='store_true');p.add_argument('--shot');p.add_argument('--seed',type=int,default=2026100801);p.add_argument('--out');a=p.parse_args()
+    p=argparse.ArgumentParser(description=__doc__);p.add_argument('command',choices=['review','apply','prepare']);p.add_argument('--root',default='.');p.add_argument('--feedback');p.add_argument('--apply',action='store_true');p.add_argument('--shot');p.add_argument('--seed',type=int,default=2026100801);p.add_argument('--out');p.add_argument('--trial-profile',help='Reviewed source-only quality experiment config; never changes the original plan');p.add_argument('--previous-job',help='Exact reviewed predecessor take under the source pilot; required for SH901/SH902 FID1');a=p.parse_args()
     try:
         if a.command=='review':r=review(a.root)
         elif a.command=='apply':need(bool(a.feedback),'--feedback required');r=apply_review(a.root,a.feedback,a.apply)
-        else:need(bool(a.shot) and bool(a.out),'--shot and --out required');r=prepare_trial(a.root,a.shot,a.seed,a.out)
+        else:need(bool(a.shot) and bool(a.out),'--shot and --out required');r=prepare_trial(a.root,a.shot,a.seed,a.out,a.trial_profile,a.previous_job)
         print(json.dumps(r,ensure_ascii=False,indent=2));return 0
     except Exception as e:print(json.dumps({'ok':False,'error':str(e),'production_ready':False},ensure_ascii=False));return 2
 if __name__=='__main__':raise SystemExit(main())

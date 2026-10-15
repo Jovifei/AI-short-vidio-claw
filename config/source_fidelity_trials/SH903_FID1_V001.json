@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "profile_id": "SH903_FID1_V001",
+  "scope": "T1_SOURCE_ONLY",
+  "shot_id": "SH903",
+  "input_sha256": "6476cf1e17105b3589095918a46546baced0db35ef2a6ca235551f4b7002149f",
+  "width": 576,
+  "height": 1024,
+  "frames": 49,
+  "fps": 24,
+  "positive_prompt": "Preserve the exact source image identity, side profile orientation, costume silhouette and hand relationship. Only add subtle breathing and natural cloth movement. No face redesign.",
+  "negative_prompt": "No face change, no frontal rotation, no costume redesign, no accessory replacement, no identity drift, no extra limbs.",
+  "hypothesis": "Higher source resolution candidate may reduce detail loss, while limiting head rotation may reduce identity drift. This is an experiment, not an approval."
+}

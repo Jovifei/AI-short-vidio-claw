@@ -1,0 +1,8 @@
+test_raw_dot_and_escape_not_normalized_away (test_fid1_job_paths_unittest.JobPathTests.test_raw_dot_and_escape_not_normalized_away) ... ok
+test_reparse_and_same_root_alias_refused_without_privilege_skip (test_fid1_job_paths_unittest.JobPathTests.test_reparse_and_same_root_alias_refused_without_privilege_skip) ... ok
+test_three_shots_accept_only_their_own_standard_take (test_fid1_job_paths_unittest.JobPathTests.test_three_shots_accept_only_their_own_standard_take) ... ok
+
+----------------------------------------------------------------------
+Ran 3 tests in 0.041s
+
+OK

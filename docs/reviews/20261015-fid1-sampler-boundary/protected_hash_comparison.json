@@ -1,0 +1,15 @@
+{
+  "baseline": "local/reports/fid2_v021_protected_baseline.json",
+  "checked": 672,
+  "unchanged": 671,
+  "authorized_changes": [
+    {
+      "path": "scripts/fid1_wan_latent_anchor_node.py",
+      "before_sha256": "5d9dc83774c7f0b400b7d82360cbcce70cde1a530c1a5f7f63af1f783e81f6ac",
+      "after_sha256": "37bd44b229d728ee07bebacab7454ee2f1386bcb4e9540957aba3d275a9636ca",
+      "reason": "v4 sampling device and dtype compatibility fix"
+    }
+  ],
+  "unexpected_changes": [],
+  "profiles_jobs_feedback_media_installed_plugin": "UNCHANGED"
+}

@@ -1,0 +1,55 @@
+{
+  "A": {
+    "profile_id": {
+      "before": "SH903_FID1_V005",
+      "after": "SH903_FID1_V006"
+    },
+    "positive_prompt": {
+      "before": "An almost motionless portrait of the same two subjects in the reference image. The red-and-gold dressed monkey subject on the left keeps the original left-facing side profile and gaze. The lavender-dressed woman on the right keeps the original right-facing side profile and gaze. Their joined hands, facial proportions, clothing and ornaments hold the starting pose throughout. Locked camera. Motion limited to faint water ripples and tiny fabric breathing.",
+      "after": "The same two subjects from the reference image remain in their original side-profile orientations: the red-and-gold dressed monkey subject on the left and the lavender-dressed woman on the right. Preserve their facial identity, proportions, headdresses, ornaments, clothing and joined-hand relationship. Allow small observable natural nods, subtle gaze movement and breathing without changing their overall stance. Keep the camera locked. Retain clear background landscape edges, water texture and clothing detail, with gentle local water ripples and fabric motion."
+    },
+    "hypothesis": {
+      "before": "Controlled comparison with SH903 take07. Keep the approved source/hash, prompts, seed, size, frames/fps, Wan2.2-TI2V-5B sampler budget, ROI bounds and feather width fixed; change only the anchor mechanism so Wan sees its original condition mask and source ROI follows the current sigma noise trajectory. Diagnostic source-only trial; not visual acceptance.",
+      "after": "Experiment A versus SH903 take09/V005: change only the positive/negative motion semantics package, profile identity and this hypothesis. Preserve approved source/hash, seed, schema4, ROI bounds/feather, timestep-aware v2 anchor, sampler budget and output contract. Test whether removing broad motion prohibitions permits natural bounded head motion; no visual acceptance is inferred."
+    },
+    "negative_prompt": {
+      "before": "head rotation, front-facing face, looking at camera, moving lips, talking, opening mouth, pose changes, hand movement, walking, identity drift, face redesign, facial proportion change, humanized monkey face, species change, costume changes, extra people, extra limbs, deformed hands, unstable background",
+      "after": "large head rotation, frontal face redesign, looking at camera, moving lips, talking, opening mouth, dramatic body turn, walking, unexpected hand separation, identity drift, face redesign, facial proportion change, humanized monkey face, species change, wardrobe change, extra people, extra limbs, deformed hands, camera movement, reconstructed landscape, blurry background, unstable background, mosaic, pseudo-text, hard pasted face patches"
+    }
+  },
+  "B": {
+    "anchor_strategy": {
+      "before": "wan22_timestep_aware_future_roi_v2",
+      "after": "wan22_timestep_aware_future_roi_v3"
+    },
+    "schema_version": {
+      "before": 4,
+      "after": 5
+    },
+    "profile_id": {
+      "before": "SH903_FID1_V006",
+      "after": "SH903_FID1_V007"
+    },
+    "temporal_anchor_schedule": {
+      "before": null,
+      "after": [
+        1,
+        1,
+        1,
+        1,
+        0.9,
+        0.8,
+        0.7,
+        0.6,
+        0.6,
+        0.6,
+        0.6,
+        0.6
+      ]
+    },
+    "hypothesis": {
+      "before": "Experiment A versus SH903 take09/V005: change only the positive/negative motion semantics package, profile identity and this hypothesis. Preserve approved source/hash, seed, schema4, ROI bounds/feather, timestep-aware v2 anchor, sampler budget and output contract. Test whether removing broad motion prohibitions permits natural bounded head motion; no visual acceptance is inferred.",
+      "after": "Conditional Experiment B versus V006: only future ROI temporal protection changes, with explicit 12-slot schedule. Keep prompts, source, seed, spatial ROI and sampler fixed; preserve Wan base noise mask and apply spatial-times-temporal alpha once. CPU engineering candidate only; deployment and GPU require independent safety gates."
+    }
+  }
+}

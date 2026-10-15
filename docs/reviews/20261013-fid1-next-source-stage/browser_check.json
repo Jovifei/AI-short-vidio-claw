@@ -1,0 +1,49 @@
+{
+  "currentTime": 2.041667,
+  "duration": 2.041667,
+  "ended": true,
+  "height": 1024,
+  "images": [
+    {
+      "alt": "批准原图",
+      "loaded": true
+    },
+    {
+      "alt": "悟空人脸参考",
+      "loaded": true
+    },
+    {
+      "alt": "悟空服装细节",
+      "loaded": true
+    },
+    {
+      "alt": "黛玉人脸参考",
+      "loaded": true
+    },
+    {
+      "alt": "黛玉服装细节",
+      "loaded": true
+    },
+    {
+      "alt": "首中尾实际帧",
+      "loaded": true
+    },
+    {
+      "alt": "全部49帧",
+      "loaded": true
+    }
+  ],
+  "playbackStatus": "视频已播放到结尾。请自行填写身份、服装、手脚和动作的判断。",
+  "quote": "",
+  "reviewer": "",
+  "selectValues": [
+    "",
+    "",
+    "",
+    "",
+    ""
+  ],
+  "validation": "请逐项填写审片结果。",
+  "width": 576,
+  "actor": "Codex interface verification; not Jovi acceptance"
+}

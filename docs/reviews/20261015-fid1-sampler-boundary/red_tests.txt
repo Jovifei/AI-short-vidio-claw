@@ -1,0 +1,85 @@
+test_cpu_tensor_cannot_claim_a_different_model_sampling_device (test_fid1_sampler_boundary_unittest.SamplerBoundaryTests.test_cpu_tensor_cannot_claim_a_different_model_sampling_device) ... ok
+test_float32_latent_noise_after_intermediate_float64_are_accepted (test_fid1_sampler_boundary_unittest.SamplerBoundaryTests.test_float32_latent_noise_after_intermediate_float64_are_accepted) ... FAIL
+test_float32_mask_after_intermediate_float64_is_accepted (test_fid1_sampler_boundary_unittest.SamplerBoundaryTests.test_float32_mask_after_intermediate_float64_is_accepted) ... FAIL
+test_unknown_sampling_target_is_rejected_before_hooks_are_installed (test_fid1_sampler_boundary_unittest.SamplerBoundaryTests.test_unknown_sampling_target_is_rejected_before_hooks_are_installed) ... 
+  test_unknown_sampling_target_is_rejected_before_hooks_are_installed (test_fid1_sampler_boundary_unittest.SamplerBoundaryTests.test_unknown_sampling_target_is_rejected_before_hooks_are_installed) (target=None) ... FAIL
+  test_unknown_sampling_target_is_rejected_before_hooks_are_installed (test_fid1_sampler_boundary_unittest.SamplerBoundaryTests.test_unknown_sampling_target_is_rejected_before_hooks_are_installed) (target='cpu') ... FAIL
+  test_unknown_sampling_target_is_rejected_before_hooks_are_installed (test_fid1_sampler_boundary_unittest.SamplerBoundaryTests.test_unknown_sampling_target_is_rejected_before_hooks_are_installed) (target=device(type='meta')) ... FAIL
+  test_unknown_sampling_target_is_rejected_before_hooks_are_installed (test_fid1_sampler_boundary_unittest.SamplerBoundaryTests.test_unknown_sampling_target_is_rejected_before_hooks_are_installed) (target=device(type='cuda')) ... FAIL
+
+======================================================================
+FAIL: test_float32_latent_noise_after_intermediate_float64_are_accepted (test_fid1_sampler_boundary_unittest.SamplerBoundaryTests.test_float32_latent_noise_after_intermediate_float64_are_accepted)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "E:\project\AI-short-vidio-claw\tests\test_fid1_sampler_boundary_unittest.py", line 52, in test_float32_latent_noise_after_intermediate_float64_are_accepted
+    scaled = model.object_patches['scale_latent_inpaint'](.25, noise, samples)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\project\AI-short-vidio-claw\scripts\fid1_wan_latent_anchor_node.py", line 279, in scale_latent_inpaint
+    raise ValueError("strength KSampler latent/noise dtype/device/finite changed")
+ValueError: strength KSampler latent/noise dtype/device/finite changed
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "E:\project\AI-short-vidio-claw\tests\test_fid1_sampler_boundary_unittest.py", line 54, in test_float32_latent_noise_after_intermediate_float64_are_accepted
+    self.fail('normal Comfy float32 latent migration was rejected: ' + str(exc))
+AssertionError: normal Comfy float32 latent migration was rejected: strength KSampler latent/noise dtype/device/finite changed
+
+======================================================================
+FAIL: test_float32_mask_after_intermediate_float64_is_accepted (test_fid1_sampler_boundary_unittest.SamplerBoundaryTests.test_float32_mask_after_intermediate_float64_is_accepted)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "E:\project\AI-short-vidio-claw\tests\test_fid1_sampler_boundary_unittest.py", line 35, in test_float32_mask_after_intermediate_float64_is_accepted
+    mask = model.model_options['denoise_mask_function'](.5, sampling_mask)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\project\AI-short-vidio-claw\scripts\fid1_wan_latent_anchor_node.py", line 249, in denoise_mask_function
+    raise ValueError("strength KSampler denoise_mask dtype/device changed")
+ValueError: strength KSampler denoise_mask dtype/device changed
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "E:\project\AI-short-vidio-claw\tests\test_fid1_sampler_boundary_unittest.py", line 37, in test_float32_mask_after_intermediate_float64_is_accepted
+    self.fail('normal Comfy float32 mask migration was rejected: ' + str(exc))
+AssertionError: normal Comfy float32 mask migration was rejected: strength KSampler denoise_mask dtype/device changed
+
+======================================================================
+FAIL: test_unknown_sampling_target_is_rejected_before_hooks_are_installed (test_fid1_sampler_boundary_unittest.SamplerBoundaryTests.test_unknown_sampling_target_is_rejected_before_hooks_are_installed) (target=None)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "E:\project\AI-short-vidio-claw\tests\test_fid1_sampler_boundary_unittest.py", line 63, in test_unknown_sampling_target_is_rejected_before_hooks_are_installed
+    with self.subTest(target=target), self.assertRaisesRegex(ValueError, 'load_device'):
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: ValueError not raised
+
+======================================================================
+FAIL: test_unknown_sampling_target_is_rejected_before_hooks_are_installed (test_fid1_sampler_boundary_unittest.SamplerBoundaryTests.test_unknown_sampling_target_is_rejected_before_hooks_are_installed) (target='cpu')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "E:\project\AI-short-vidio-claw\tests\test_fid1_sampler_boundary_unittest.py", line 63, in test_unknown_sampling_target_is_rejected_before_hooks_are_installed
+    with self.subTest(target=target), self.assertRaisesRegex(ValueError, 'load_device'):
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: ValueError not raised
+
+======================================================================
+FAIL: test_unknown_sampling_target_is_rejected_before_hooks_are_installed (test_fid1_sampler_boundary_unittest.SamplerBoundaryTests.test_unknown_sampling_target_is_rejected_before_hooks_are_installed) (target=device(type='meta'))
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "E:\project\AI-short-vidio-claw\tests\test_fid1_sampler_boundary_unittest.py", line 63, in test_unknown_sampling_target_is_rejected_before_hooks_are_installed
+    with self.subTest(target=target), self.assertRaisesRegex(ValueError, 'load_device'):
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: ValueError not raised
+
+======================================================================
+FAIL: test_unknown_sampling_target_is_rejected_before_hooks_are_installed (test_fid1_sampler_boundary_unittest.SamplerBoundaryTests.test_unknown_sampling_target_is_rejected_before_hooks_are_installed) (target=device(type='cuda'))
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "E:\project\AI-short-vidio-claw\tests\test_fid1_sampler_boundary_unittest.py", line 63, in test_unknown_sampling_target_is_rejected_before_hooks_are_installed
+    with self.subTest(target=target), self.assertRaisesRegex(ValueError, 'load_device'):
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: ValueError not raised
+
+----------------------------------------------------------------------
+Ran 4 tests in 0.118s
+
+FAILED (failures=6)

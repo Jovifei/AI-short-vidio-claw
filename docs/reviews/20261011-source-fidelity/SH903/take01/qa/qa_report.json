@@ -1,0 +1,56 @@
+{
+  "shot_id": "SH903",
+  "scope": "T1_SOURCE_ONLY",
+  "eligible_for_final_cut": false,
+  "input_path": "workspace:/local/production/T1_SOURCE_PILOT/video/SH903/jobs/take01/T1_SOURCE_PILOT_SH903_6476cf1e1710_2026100803.png",
+  "input_sha256": "6476cf1e17105b3589095918a46546baced0db35ef2a6ca235551f4b7002149f",
+  "workflow_path": "workspace:/local/production/T1_SOURCE_PILOT/video/SH903/jobs/take01/workflow.json",
+  "workflow_sha256": "aa25b1b9004b4cd5242f9b5804f4b1b0df3353a7da5dd74b285f3d02f1fd27e5",
+  "submitted_graph_sha256": "930b63d66c8828c8d64c105dd434fad3dbbed6bf8b0906f8b984a2fa57219826",
+  "sampling": {
+    "steps": 20,
+    "cfg": 5,
+    "sampler_name": "uni_pc",
+    "scheduler": "simple",
+    "denoise": 1
+  },
+  "model": "wan2.2_ti2v_5B_fp16.safetensors",
+  "seed": 2026100803,
+  "prompt_id": "eba3aef4-f1e8-4145-98db-6aef5f917b7a",
+  "video_path": "workspace:/local/production/T1_SOURCE_PILOT/video/SH903/jobs/take01/run_record_media/2026100803_00001_.mp4",
+  "video_sha256": "85f4cb74f793b480457d491d51f788d888bd3356a31fc035212e49ce518d6561",
+  "video_bytes": 693091,
+  "width": 480,
+  "height": 832,
+  "frames": 49,
+  "fps": "24/1",
+  "duration_seconds": 2.041667,
+  "elapsed_seconds": 326.706,
+  "resources": {
+    "sample_count": 66,
+    "sample_interval_seconds": 5.0,
+    "nvidia_smi_memory_used_mib_first": 4465,
+    "nvidia_smi_memory_used_mib_peak": 11434,
+    "nvidia_smi_memory_used_mib_last": 3579,
+    "ram_avail_bytes_min": 9687040,
+    "ram_total_bytes": 34164097024,
+    "comfy_vram_free_bytes_min": null,
+    "note": "nvidia-smi memory.used is a sample peak, not a continuous hardware maximum"
+  },
+  "technical_profile_matches": true,
+  "visual_qa": {
+    "state": "CHANGES_REQUIRED",
+    "method": "All49 contact sheet; first/middle/last full frames; full browser playback ended at 2.041667s",
+    "identity": "Head rotation changes face/eye/muzzle geometry; Wukong front-facing appearance becomes more human-like than approved source",
+    "costume": "Red-gold armour and lavender dress remain broadly recognisable; fine ornaments vary",
+    "anatomy": "Clasped hands remain joined; no obvious extra person/limb, fine fingers not certified",
+    "motion": "Both subjects turn heads substantially; exceeds almost-still trial instruction",
+    "issues": [
+      "Explicit Do not turn heads instruction violated",
+      "Do not change facial geometry not maintained during turn",
+      "Source fidelity not accepted by assistant QA"
+    ],
+    "user_visual_acceptance": "PENDING"
+  },
+  "user_final_approved": false
+}

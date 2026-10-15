@@ -1,0 +1,16 @@
+{
+  "submitted": false,
+  "command": [
+    "D:\\Python\\Python3.14\\python.exe",
+    "E:\\project\\AI-short-vidio-claw\\scripts\\p1_comfy_probe.py",
+    "--url",
+    "http://127.0.0.1:8188",
+    "--workflow",
+    "E:\\project\\AI-short-vidio-claw\\local\\production\\T1_SOURCE_PILOT\\video\\SH903\\jobs\\take13\\workflow.json",
+    "--image",
+    "E:\\project\\AI-short-vidio-claw\\local\\production\\T1_SOURCE_PILOT\\video\\SH903\\jobs\\take13\\T1_SOURCE_PILOT_SH903_6476cf1e1710_2026100803.png",
+    "--record",
+    "E:\\project\\AI-short-vidio-claw\\local\\production\\T1_SOURCE_PILOT\\video\\SH903\\jobs\\take13\\run_record.json"
+  ],
+  "note": "Add --execute only after local review."
+}

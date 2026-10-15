@@ -1,0 +1,73 @@
+{
+  "frameText": "实际帧号：1 / 25 / 49；帧时间：0 / 1 / 2 秒。片段结束约 2.041667 秒。",
+  "images": [
+    {
+      "alt": "批准原图",
+      "loaded": true
+    },
+    {
+      "alt": "悟空人脸参考",
+      "loaded": true
+    },
+    {
+      "alt": "悟空服装细节",
+      "loaded": true
+    },
+    {
+      "alt": "黛玉人脸参考",
+      "loaded": true
+    },
+    {
+      "alt": "黛玉服装细节",
+      "loaded": true
+    },
+    {
+      "alt": "实际第1、25、49帧，时间0、1、2秒",
+      "loaded": true
+    },
+    {
+      "alt": "全部49帧",
+      "loaded": true
+    }
+  ],
+  "values": [
+    {
+      "id": "full_playback",
+      "value": ""
+    },
+    {
+      "id": "identity",
+      "value": ""
+    },
+    {
+      "id": "costume",
+      "value": ""
+    },
+    {
+      "id": "limbs",
+      "value": ""
+    },
+    {
+      "id": "decision",
+      "value": ""
+    },
+    {
+      "id": "reviewer",
+      "value": ""
+    },
+    {
+      "id": "user_quote",
+      "value": ""
+    }
+  ],
+  "video": {
+    "currentTime": 2.041667,
+    "duration": 2.041667,
+    "ended": true,
+    "height": 1024,
+    "width": 576
+  },
+  "defaultExportStatus": "请逐项填写审片结果。",
+  "kind": "INTERFACE_CHECK_ONLY",
+  "humanAccepted": false
+}

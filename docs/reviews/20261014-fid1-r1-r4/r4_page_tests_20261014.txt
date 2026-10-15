@@ -1,0 +1,16 @@
+test_bad_decoded_frame_shape_or_failed_cpu_decode_cannot_publish (test_fid1_visual_feedback_unittest.FeedbackPageTests.test_bad_decoded_frame_shape_or_failed_cpu_decode_cannot_publish) ... ok
+test_client_collects_actual_choices_and_refuses_missing_or_inconsistent_feedback (test_fid1_visual_feedback_unittest.FeedbackPageTests.test_client_collects_actual_choices_and_refuses_missing_or_inconsistent_feedback) ... ok
+test_decoded_frame_drift_during_render_cannot_publish (test_fid1_visual_feedback_unittest.FeedbackPageTests.test_decoded_frame_drift_during_render_cannot_publish) ... ok
+test_default_feedback_is_unselected_and_bound_to_real_job_bytes (test_fid1_visual_feedback_unittest.FeedbackPageTests.test_default_feedback_is_unselected_and_bound_to_real_job_bytes) ... ok
+test_material_drift_during_render_prevents_publication (test_fid1_visual_feedback_unittest.FeedbackPageTests.test_material_drift_during_render_prevents_publication) ... ok
+test_missing_legacy_frames_cpu_decode_verified_video_into_new_session_only (test_fid1_visual_feedback_unittest.FeedbackPageTests.test_missing_legacy_frames_cpu_decode_verified_video_into_new_session_only) ... ok
+test_real_first_middle_last_numbers_and_times_are_sent_to_drawing (test_fid1_visual_feedback_unittest.FeedbackPageTests.test_real_first_middle_last_numbers_and_times_are_sent_to_drawing) ... ok
+test_rejects_existing_page_session (test_fid1_visual_feedback_unittest.FeedbackPageTests.test_rejects_existing_page_session) ... ok
+test_rejects_noncanonical_paths_and_other_output_scopes (test_fid1_visual_feedback_unittest.FeedbackPageTests.test_rejects_noncanonical_paths_and_other_output_scopes) ... ok
+test_rejects_qa_mismatch_or_preexisting_human_decision (test_fid1_visual_feedback_unittest.FeedbackPageTests.test_rejects_qa_mismatch_or_preexisting_human_decision) ... ok
+test_rejects_tampered_output_job_workflow_or_reference (test_fid1_visual_feedback_unittest.FeedbackPageTests.test_rejects_tampered_output_job_workflow_or_reference) ... ok
+
+----------------------------------------------------------------------
+Ran 11 tests in 7.646s
+
+OK

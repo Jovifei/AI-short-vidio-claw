@@ -1,0 +1,87 @@
+{
+  "result": "success",
+  "queued_new_job": true,
+  "prompt_id": "3bcd5472-ef06-488d-8949-8a064273d3f1",
+  "workflow_sha256": "f84b71cbabd7cb556981f2ac294d6377b721d811cb5904d219dde2db67b7a811",
+  "submitted_graph_sha256": "08f1fa2673c2d66dd209f9e9b338e19e5bd4a558b9b66750e5f84a8d010551f5",
+  "comfy_elapsed_seconds": 531.376,
+  "queue_before": {
+    "running": 0,
+    "pending": 0
+  },
+  "history_status": {
+    "status_str": "success",
+    "completed": true,
+    "messages": [
+      [
+        "execution_start",
+        {
+          "prompt_id": "3bcd5472-ef06-488d-8949-8a064273d3f1",
+          "timestamp": 1791823772438
+        }
+      ],
+      [
+        "execution_cached",
+        {
+          "nodes": [],
+          "prompt_id": "3bcd5472-ef06-488d-8949-8a064273d3f1",
+          "timestamp": 1791823772461
+        }
+      ],
+      [
+        "execution_success",
+        {
+          "prompt_id": "3bcd5472-ef06-488d-8949-8a064273d3f1",
+          "timestamp": 1791824303814
+        }
+      ]
+    ]
+  },
+  "output": {
+    "bytes": 813593,
+    "sha256": "74ee23338678bc971042037a0ffb803be841a83db2387d14d12960287326fc72"
+  },
+  "resources": {
+    "sample_count": 107,
+    "sample_interval_seconds": 5.0,
+    "nvidia_smi_memory_used_mib_first": 3084,
+    "nvidia_smi_memory_used_mib_peak": 10668,
+    "nvidia_smi_memory_used_mib_last": 3099,
+    "ram_avail_bytes_min": 39043072,
+    "ram_total_bytes": 34164097024,
+    "comfy_vram_free_bytes_min": null,
+    "note": "nvidia-smi memory.used is a sample peak, not a continuous hardware maximum"
+  },
+  "comfy": {
+    "version": "0.38.0",
+    "python": "3.12.9 (main, Feb 12 2025, 14:52:31) [MSC v.1942 64 bit (AMD64)]",
+    "pytorch": "2.14.1+cu130",
+    "fid1_node_loaded": true,
+    "queue_running": 0,
+    "queue_pending": 0,
+    "gpu_summary_before_run": "NVIDIA GeForce RTX 4070 SUPER, 12282 MiB, 3082 MiB, 8916 MiB, 43 %",
+    "ram_free_bytes_before_run": 550920192
+  },
+  "models": [
+    {
+      "name": "wan2.2_ti2v_5B_fp16.safetensors",
+      "bytes": 9999658848
+    },
+    {
+      "name": "umt5_xxl_fp8_e4m3fn_scaled.safetensors",
+      "bytes": 6735906897
+    },
+    {
+      "name": "wan2.2_vae.safetensors",
+      "bytes": 1409400960
+    }
+  ],
+  "node_source_sha256": "45ba213feaaa337eb8dfbea4f730d54432801bd29052a169e9e4c3dd2b2218e9",
+  "comfy_source_commit": "6b747c0428c343e1417219641db93a4fb7cb69ae",
+  "assistant_visual_triage": {
+    "status": "CHANGES_REQUIRED",
+    "observations": "Contact sheets and sampled decoded frames show large mosaic/block artifacts from frame 2 onward, with static rectangular subject patches. This is not visual acceptance.",
+    "jovi_full_playback": "PENDING",
+    "prompt_differs_from_take03": true
+  }
+}

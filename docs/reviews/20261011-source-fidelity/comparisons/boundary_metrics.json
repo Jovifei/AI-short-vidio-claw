@@ -1,0 +1,47 @@
+{
+  "source_size": [
+    941,
+    1672
+  ],
+  "source_pixels": 1573352,
+  "branches": {
+    "bilinear480": {
+      "size": [
+        480,
+        832
+      ],
+      "pixel_fraction_of_original": 0.25382749696190043,
+      "mae_rgb": 6.711222122061966,
+      "psnr_db": 26.500957890342516
+    },
+    "lanczos480": {
+      "size": [
+        480,
+        832
+      ],
+      "pixel_fraction_of_original": 0.25382749696190043,
+      "mae_rgb": 6.519716546474359,
+      "psnr_db": 26.980726040792874
+    },
+    "lanczos576": {
+      "size": [
+        576,
+        1024
+      ],
+      "pixel_fraction_of_original": 0.37488368782065296,
+      "mae_rgb": 5.611456411856192,
+      "psnr_db": 27.756850976394084
+    }
+  },
+  "actual_video_first_vs_bilinear480_vae": {
+    "mae_rgb": 3.4287543402777776,
+    "psnr_db": 34.616588724927404
+  },
+  "actual_video_last_vs_first": {
+    "mae_rgb": 22.850902276976495,
+    "psnr_db": 17.580906962405603
+  },
+  "metric_limit": "RGB/PSNR are reconstruction differences, not identity scores or visual acceptance.",
+  "diagnostic_prompt_id": "49fd8bbd-a33b-4f12-9409-8d5656dac5a7",
+  "elapsed_seconds": 16.733
+}

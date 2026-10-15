@@ -1,0 +1,61 @@
+{
+  "schema_version": 1,
+  "scope": "T1_SOURCE_ONLY",
+  "shot_id": "SH903",
+  "profile_id": "SH903_FID1_V005",
+  "runtime_success": true,
+  "media_contract_ok": true,
+  "full_decode": "PASS",
+  "human_full_playback": "PENDING",
+  "input": {
+    "path": "T1_SOURCE_PILOT_SH903_6476cf1e1710_2026100803.png",
+    "sha256": "6476cf1e17105b3589095918a46546baced0db35ef2a6ca235551f4b7002149f"
+  },
+  "workflow_sha256": "31f0e48ac7c65ed0d853678fbb7ef95dfd24e667af9202dcd31922f34568840e",
+  "seed": 2026100803,
+  "model": "Wan2.2-TI2V-5B",
+  "media": {
+    "codec_name": "h264",
+    "width": 576,
+    "height": 1024,
+    "frame_count": 49,
+    "fps": 24,
+    "duration_seconds": 2.041667,
+    "expected_duration_seconds": 2.0416666666666665,
+    "contract_ok": true
+  },
+  "output": {
+    "path": "run_record_media/2026100803_00001_.mp4",
+    "bytes": 830179,
+    "sha256": "dbdd44e4bdd39b13c8881c3f413a7889f0823c052b99df41698b1d5f61be2db8"
+  },
+  "resources": {
+    "sample_count": 144,
+    "sample_interval_seconds": 5.0,
+    "nvidia_smi_memory_used_mib_first": 1996,
+    "nvidia_smi_memory_used_mib_peak": 11808,
+    "nvidia_smi_memory_used_mib_last": 1620,
+    "ram_avail_bytes_min": 10821632,
+    "ram_total_bytes": 34164097024,
+    "comfy_vram_free_bytes_min": null,
+    "note": "nvidia-smi memory.used is a sample peak, not a continuous hardware maximum"
+  },
+  "frames": {
+    "count": 49,
+    "all49_contact_sheet": "qa/all49.png",
+    "first_middle_last": "qa/first_middle_last.png"
+  },
+  "visual_review": {
+    "full_playback": "CHANGES_REQUIRED",
+    "identity": "CHANGES_REQUIRED",
+    "costume": "PASS",
+    "limbs": "CHANGES_REQUIRED",
+    "decision": "CHANGES_REQUIRED",
+    "reviewer": "Jovi",
+    "user_quote": "人物的头并没有任何的移动，然后背景的话也虚幻糊掉了，所以说需要去修改。你自己也能检查出来这些画面的区别。",
+    "recorded_at": "2026-10-14T16:05:23.672Z",
+    "evidence_path": "local/review_evidence/FID1_SH903_SH903_FID1_V005_dbdd44e4bdd3_VISUAL_REVIEW.json",
+    "evidence_sha256": "e09b6471ee2b9a9fcbf78248466355a81407f0e057f93b975e00ef821a30b473"
+  },
+  "next_shot_gate": "BLOCKED_CHANGES_REQUIRED"
+}

@@ -1,0 +1,20 @@
+{
+  "schema_version": 2,
+  "profile_id": "SH903_FID1_V003",
+  "scope": "T1_SOURCE_ONLY",
+  "shot_id": "SH903",
+  "input_sha256": "6476cf1e17105b3589095918a46546baced0db35ef2a6ca235551f4b7002149f",
+  "width": 576,
+  "height": 1024,
+  "frames": 49,
+  "fps": 24,
+  "seed": 2026100803,
+  "positive_prompt": "An almost motionless portrait of the same two subjects in the reference image. The red-and-gold dressed monkey subject on the left keeps the original left-facing side profile and gaze. The lavender-dressed woman on the right keeps the original right-facing side profile and gaze. Their joined hands, facial proportions, clothing and ornaments hold the starting pose throughout. Locked camera. Motion limited to faint water ripples and tiny fabric breathing.",
+  "negative_prompt": "head rotation, front-facing face, looking at camera, moving lips, talking, opening mouth, pose changes, hand movement, walking, identity drift, face redesign, facial proportion change, humanized monkey face, species change, costume changes, extra people, extra limbs, deformed hands, unstable background",
+  "hypothesis": "Controlled comparison with SH903 take03. Keep the approved source/hash, positive and negative prompts, seed, size, frames/fps, Wan2.2-TI2V-5B sampler budget and schedule fixed; add only the FID1 approved-face future-ROI anchor. Diagnostic source-only trial; not visual acceptance.",
+  "anchor_strategy": "wan22_first_latent_future_roi_v1",
+  "anchor_rois": [
+    {"id": "WUKONG_FACE", "x0": 0.11, "y0": 0.20, "x1": 0.36, "y1": 0.36},
+    {"id": "DAIYU_FACE", "x0": 0.69, "y0": 0.20, "x1": 0.89, "y1": 0.37}
+  ]
+}

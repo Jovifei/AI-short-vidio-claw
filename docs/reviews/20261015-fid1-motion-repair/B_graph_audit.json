@@ -1,0 +1,52 @@
+{
+  "fid1_graph_valid": true,
+  "scope": "T1_SOURCE_ONLY",
+  "fid1_node_id": "59",
+  "base_latent_node_id": "55",
+  "sampler_node_id": "3",
+  "active_edges": [
+    {
+      "from": "48",
+      "to": "59",
+      "input": "model"
+    },
+    {
+      "from": "55",
+      "to": "59",
+      "input": "latent"
+    },
+    {
+      "from": "59",
+      "to": "3",
+      "input": "model"
+    },
+    {
+      "from": "59",
+      "to": "3",
+      "input": "latent_image"
+    }
+  ],
+  "profile_rois": [
+    {
+      "id": "WUKONG_FACE",
+      "x0": 0.11,
+      "y0": 0.2,
+      "x1": 0.36,
+      "y1": 0.36,
+      "feather_latent": 4
+    },
+    {
+      "id": "DAIYU_FACE",
+      "x0": 0.69,
+      "y0": 0.2,
+      "x1": 0.89,
+      "y1": 0.37,
+      "feather_latent": 4
+    }
+  ],
+  "base_graph_sha256": "9caa00a075b3af512cd356d2a3c40b42ec09a0c0db0aedf9f7f1c18b24fc0eaf",
+  "candidate_graph_sha256": "43607ceb0c38865f5d9f8de050827afc111ebe955de4429ee8e5e5f6ff3a1842",
+  "baseline_file_sha256": "7ff433edf8ac154d9cd9ec8d8f08af5ac2316bbdcca9f88b64dc5b9f6b9e0c22",
+  "candidate_file_sha256": "bade6f62cf587300277d9627e6485b2bd4bac177a8b745819d11ac27f16f2873",
+  "profile_sha256": "6c5d1e2e1aeb866e6f408b6c095bb62ede5a288f9ee6d6d58d9798d52fad8a32"
+}

@@ -1,0 +1,378 @@
+{
+  "scope": "T1_SOURCE_ONLY_REMOTE_AUDIT_COPY",
+  "eligible_for_final_cut": false,
+  "user_visual_accepted": false,
+  "copies": [
+    {
+      "source": "local/production/T1_SOURCE_PILOT/video/SH901/jobs/take01/job.json",
+      "audit_copy": "docs/reviews/20261011-source-fidelity/SH901/take01/job.json",
+      "source_sha256": "683dee98ed8ea040efe753fd6e2f23ddaa9f042285cdc827a08705f5acc334a2",
+      "audit_sha256": "a9ed6067980d6f635e1f41a1df508c55e459c966f9c91542fe00846d795c9d01",
+      "metadata_paths_normalized": true
+    },
+    {
+      "source": "local/production/T1_SOURCE_PILOT/video/SH901/jobs/take01/workflow.json",
+      "audit_copy": "docs/reviews/20261011-source-fidelity/SH901/take01/workflow.json",
+      "source_sha256": "2b15d4e6fe9a40756af10d9ddf50e8e782d00aedcf0282a4cdca283c7294e2be",
+      "audit_sha256": "2303ea984c17ea36f8bbb9e942c03d3d68b0790bde074fa7609b9229c98c4721",
+      "metadata_paths_normalized": true
+    },
+    {
+      "source": "local/production/T1_SOURCE_PILOT/video/SH901/jobs/take01/run_record.json",
+      "audit_copy": "docs/reviews/20261011-source-fidelity/SH901/take01/run_record.json",
+      "source_sha256": "32d2ae5205b5461ce8fd3dc9d18e2d00c2862bcbcd59d3dcb10ddc41a4dbe387",
+      "audit_sha256": "12137ac308104fcf00fc5140d83efb6815ad3b5ae2137c88103b062baa16d0f5",
+      "metadata_paths_normalized": true
+    },
+    {
+      "source": "local/production/T1_SOURCE_PILOT/video/SH901/jobs/take01/qa/qa_report.json",
+      "audit_copy": "docs/reviews/20261011-source-fidelity/SH901/take01/qa/qa_report.json",
+      "source_sha256": "7837b5b63839d2055af30d9da58ecfb3bf2181adfbc4a969f80883b875afe88b",
+      "audit_sha256": "5178b7cc800201c28f0381df40845ecc8aaf66566dbb70cdeb53cc0a57abeb03",
+      "metadata_paths_normalized": true
+    },
+    {
+      "source": "local/production/T1_SOURCE_PILOT/video/SH901/jobs/take01/qa/first.png",
+      "audit_copy": "docs/reviews/20261011-source-fidelity/SH901/take01/qa/first.png",
+      "source_sha256": "9355951c7f91f2239818405ba463389450364d5b24000961619510b2249a753b",
+      "audit_sha256": "9355951c7f91f2239818405ba463389450364d5b24000961619510b2249a753b",
+      "metadata_paths_normalized": false
+    },
+    {
+      "source": "local/production/T1_SOURCE_PILOT/video/SH901/jobs/take01/qa/middle.png",
+      "audit_copy": "docs/reviews/20261011-source-fidelity/SH901/take01/qa/middle.png",
+      "source_sha256": "340b8767d0e21f948405faab5c2e0880a3bca7b0398737a3ab0cb836c2838217",
+      "audit_sha256": "340b8767d0e21f948405faab5c2e0880a3bca7b0398737a3ab0cb836c2838217",
+      "metadata_paths_normalized": false
+    },
+    {
+      "source": "local/production/T1_SOURCE_PILOT/video/SH901/jobs/take01/qa/last.png",
+      "audit_copy": "docs/reviews/20261011-source-fidelity/SH901/take01/qa/last.png",
+      "source_sha256": "47a3e360419c080b0f001adf49523216b97967c0f0532648de7bb1d4b37d6634",
+      "audit_sha256": "47a3e360419c080b0f001adf49523216b97967c0f0532648de7bb1d4b37d6634",
+      "metadata_paths_normalized": false
+    },
+    {
+      "source": "local/production/T1_SOURCE_PILOT/video/SH901/jobs/take01/qa/all49.png",
+      "audit_copy": "docs/reviews/20261011-source-fidelity/SH901/take01/qa/all49.png",
+      "source_sha256": "e07b5f9c8b02b0dc068a66d29fdde740dbdc2fb09ea919f35d39cf791b706253",
+      "audit_sha256": "e07b5f9c8b02b0dc068a66d29fdde740dbdc2fb09ea919f35d39cf791b706253",
+      "metadata_paths_normalized": false
+    },
+    {
+      "source": "local/production/T1_SOURCE_PILOT/video/SH901/jobs/take01/run_record_media/2026100801_00001_.mp4",
+      "audit_copy": "docs/reviews/20261011-source-fidelity/SH901/take01/video.mp4",
+      "source_sha256": "df4151c5e506cbe3dbf7e7d5804b85e53acd91b30ede1a06f7ced63f0d6b9ebb",
+      "audit_sha256": "df4151c5e506cbe3dbf7e7d5804b85e53acd91b30ede1a06f7ced63f0d6b9ebb",
+      "metadata_paths_normalized": false
+    },
+    {
+      "source": "local/production/T1_SOURCE_PILOT/video/SH902/jobs/take01/job.json",
+      "audit_copy": "docs/reviews/20261011-source-fidelity/SH902/take01/job.json",
+      "source_sha256": "1c10c017633c81e376ee65cfc0e0717e74d0e946495890c14dcf7b392910dcde",
+      "audit_sha256": "bbe2490bb360cd2d9087b7df3be8034f7a143b3718248e453a45b3a392d89792",
+      "metadata_paths_normalized": true
+    },
+    {
+      "source": "local/production/T1_SOURCE_PILOT/video/SH902/jobs/take01/workflow.json",
+      "audit_copy": "docs/reviews/20261011-source-fidelity/SH902/take01/workflow.json",
+      "source_sha256": "37b7067adfb3870316161d140860cce169a86ab37e979b1b29d6e60b295e5685",
+      "audit_sha256": "4303bd8605b3d7bbb528ba3835fc7364f42ec8f3e1219ece798bdc7f1e62ba7d",
+      "metadata_paths_normalized": true
+    },
+    {
+      "source": "local/production/T1_SOURCE_PILOT/video/SH902/jobs/take01/run_record.json",
+      "audit_copy": "docs/reviews/20261011-source-fidelity/SH902/take01/run_record.json",
+      "source_sha256": "7e4123342394b043fe186ebfbc9e5a84be9dd8f9285d6bc4409f5b598c2b6cbb",
+      "audit_sha256": "bc8d9b03bbbbc4627fb98c906b4120341df0d873f8ba9e5c37e842f2cca5d696",
+      "metadata_paths_normalized": true
+    },
+    {
+      "source": "local/production/T1_SOURCE_PILOT/video/SH902/jobs/take01/qa/qa_report.json",
+      "audit_copy": "docs/reviews/20261011-source-fidelity/SH902/take01/qa/qa_report.json",
+      "source_sha256": "278712bfaabcc7935097ca131a207ae2347894b2db1e954bd9c7dc867f6697dc",
+      "audit_sha256": "7ce41912240a543cfdbe2baa7a179e2631a5477cd8dbe1cd6eb72bcec1a57de8",
+      "metadata_paths_normalized": true
+    },
+    {
+      "source": "local/production/T1_SOURCE_PILOT/video/SH902/jobs/take01/qa/first.png",
+      "audit_copy": "docs/reviews/20261011-source-fidelity/SH902/take01/qa/first.png",
+      "source_sha256": "eb7b673c3cfa6e16e4b4eb6ba621ed4415de04cb5cad5fad36905a26c5b26369",
+      "audit_sha256": "eb7b673c3cfa6e16e4b4eb6ba621ed4415de04cb5cad5fad36905a26c5b26369",
+      "metadata_paths_normalized": false
+    },
+    {
+      "source": "local/production/T1_SOURCE_PILOT/video/SH902/jobs/take01/qa/middle.png",
+      "audit_copy": "docs/reviews/20261011-source-fidelity/SH902/take01/qa/middle.png",
+      "source_sha256": "608c67904c98dfbbc112f9d476021b40b08a17faa16a1b2790beaa3a8d51d0cf",
+      "audit_sha256": "608c67904c98dfbbc112f9d476021b40b08a17faa16a1b2790beaa3a8d51d0cf",
+      "metadata_paths_normalized": false
+    },
+    {
+      "source": "local/production/T1_SOURCE_PILOT/video/SH902/jobs/take01/qa/last.png",
+      "audit_copy": "docs/reviews/20261011-source-fidelity/SH902/take01/qa/last.png",
+      "source_sha256": "6b3f978ce6fe065293279431b4072c77d199816ffd726ea88cc558f08f8b4d8c",
+      "audit_sha256": "6b3f978ce6fe065293279431b4072c77d199816ffd726ea88cc558f08f8b4d8c",
+      "metadata_paths_normalized": false
+    },
+    {
+      "source": "local/production/T1_SOURCE_PILOT/video/SH902/jobs/take01/qa/all49.png",
+      "audit_copy": "docs/reviews/20261011-source-fidelity/SH902/take01/qa/all49.png",
+      "source_sha256": "3564f288a48ba3d8bd4d8fe4c920f46de8a55630eaf6f70174cd8cd30792dd82",
+      "audit_sha256": "3564f288a48ba3d8bd4d8fe4c920f46de8a55630eaf6f70174cd8cd30792dd82",
+      "metadata_paths_normalized": false
+    },
+    {
+      "source": "local/production/T1_SOURCE_PILOT/video/SH902/jobs/take01/run_record_media/2026100802_00001_.mp4",
+      "audit_copy": "docs/reviews/20261011-source-fidelity/SH902/take01/video.mp4",
+      "source_sha256": "c219b618b9b78b3aec428b2c7d00ba0f8872b2a006fbdcc5160f2cb0804fd954",
+      "audit_sha256": "c219b618b9b78b3aec428b2c7d00ba0f8872b2a006fbdcc5160f2cb0804fd954",
+      "metadata_paths_normalized": false
+    },
+    {
+      "source": "local/production/T1_SOURCE_PILOT/video/SH903/jobs/take01/job.json",
+      "audit_copy": "docs/reviews/20261011-source-fidelity/SH903/take01/job.json",
+      "source_sha256": "1eccff45655e34718f3cc5a1c6b022d8a81d0e1fc236d7d3af6edf3d055269a3",
+      "audit_sha256": "50201f2d36a95d35a3277fb8128fec7ed98910d7e0bd199df72fc048c4a5a21b",
+      "metadata_paths_normalized": true
+    },
+    {
+      "source": "local/production/T1_SOURCE_PILOT/video/SH903/jobs/take01/workflow.json",
+      "audit_copy": "docs/reviews/20261011-source-fidelity/SH903/take01/workflow.json",
+      "source_sha256": "aa25b1b9004b4cd5242f9b5804f4b1b0df3353a7da5dd74b285f3d02f1fd27e5",
+      "audit_sha256": "bf9bdbda83ea15e6bf4af0fdb6513852c4df6a95dcc616aa927256c74824ca02",
+      "metadata_paths_normalized": true
+    },
+    {
+      "source": "local/production/T1_SOURCE_PILOT/video/SH903/jobs/take01/run_record.json",
+      "audit_copy": "docs/reviews/20261011-source-fidelity/SH903/take01/run_record.json",
+      "source_sha256": "bbfcd357477a152bce4fe460a66a1f4520cefcfb3b099df9e3442b3f90444da6",
+      "audit_sha256": "793623bc27f0956825ee4f205bc219c2a7a699a50f970de2bf068c02d653b5b0",
+      "metadata_paths_normalized": true
+    },
+    {
+      "source": "local/production/T1_SOURCE_PILOT/video/SH903/jobs/take01/qa/qa_report.json",
+      "audit_copy": "docs/reviews/20261011-source-fidelity/SH903/take01/qa/qa_report.json",
+      "source_sha256": "87af1dd7ec19f9fb7fe2be0ad76777ffc93673e2b53354149e9ff6d7ad2db1cb",
+      "audit_sha256": "9f6c2c6de50230f416106c3088d752a233990a062b00ce90d53ac30dbec70c6b",
+      "metadata_paths_normalized": true
+    },
+    {
+      "source": "local/production/T1_SOURCE_PILOT/video/SH903/jobs/take01/qa/first.png",
+      "audit_copy": "docs/reviews/20261011-source-fidelity/SH903/take01/qa/first.png",
+      "source_sha256": "b941e4d5125071c8f02ba6b55f23d476375f0f4f188848d110b67af62b25f053",
+      "audit_sha256": "b941e4d5125071c8f02ba6b55f23d476375f0f4f188848d110b67af62b25f053",
+      "metadata_paths_normalized": false
+    },
+    {
+      "source": "local/production/T1_SOURCE_PILOT/video/SH903/jobs/take01/qa/middle.png",
+      "audit_copy": "docs/reviews/20261011-source-fidelity/SH903/take01/qa/middle.png",
+      "source_sha256": "c3eac897776ea17dc271030271fa9f1ced221bc82225312cfed578c8f49c67ea",
+      "audit_sha256": "c3eac897776ea17dc271030271fa9f1ced221bc82225312cfed578c8f49c67ea",
+      "metadata_paths_normalized": false
+    },
+    {
+      "source": "local/production/T1_SOURCE_PILOT/video/SH903/jobs/take01/qa/last.png",
+      "audit_copy": "docs/reviews/20261011-source-fidelity/SH903/take01/qa/last.png",
+      "source_sha256": "bb13b8d7e6c20d7c19b562a261bd041e1004be14a092290e252eff75824470bc",
+      "audit_sha256": "bb13b8d7e6c20d7c19b562a261bd041e1004be14a092290e252eff75824470bc",
+      "metadata_paths_normalized": false
+    },
+    {
+      "source": "local/production/T1_SOURCE_PILOT/video/SH903/jobs/take01/qa/all49.png",
+      "audit_copy": "docs/reviews/20261011-source-fidelity/SH903/take01/qa/all49.png",
+      "source_sha256": "8e9b40a764236780ba676d914153b02e396a54c84e3ff272cec1607e2e9a6c41",
+      "audit_sha256": "8e9b40a764236780ba676d914153b02e396a54c84e3ff272cec1607e2e9a6c41",
+      "metadata_paths_normalized": false
+    },
+    {
+      "source": "local/production/T1_SOURCE_PILOT/video/SH903/jobs/take01/run_record_media/2026100803_00001_.mp4",
+      "audit_copy": "docs/reviews/20261011-source-fidelity/SH903/take01/video.mp4",
+      "source_sha256": "85f4cb74f793b480457d491d51f788d888bd3356a31fc035212e49ce518d6561",
+      "audit_sha256": "85f4cb74f793b480457d491d51f788d888bd3356a31fc035212e49ce518d6561",
+      "metadata_paths_normalized": false
+    },
+    {
+      "source": "local/production/T1_SOURCE_PILOT/video/SH903/jobs/take02/job.json",
+      "audit_copy": "docs/reviews/20261011-source-fidelity/SH903/take02/job.json",
+      "source_sha256": "25fa843eae4a58a824baf53c0914929dc02b98bd2f65c2ad941ce990ec54dbf7",
+      "audit_sha256": "daddc8e5d4832bab37f36db7ae61468fa38228b08409255abfc85f2b2050063b",
+      "metadata_paths_normalized": true
+    },
+    {
+      "source": "local/production/T1_SOURCE_PILOT/video/SH903/jobs/take02/workflow.json",
+      "audit_copy": "docs/reviews/20261011-source-fidelity/SH903/take02/workflow.json",
+      "source_sha256": "9cdf382f4b4a20db067b4bc008ac030d084d60e622a77fce31c3ed29b5436543",
+      "audit_sha256": "7947b4aa6e6efbc95c5eacff6dd08dd3c0b339b32ea9218984dab4e64f433a6f",
+      "metadata_paths_normalized": true
+    },
+    {
+      "source": "local/production/T1_SOURCE_PILOT/video/SH903/jobs/take02/run_record.json",
+      "audit_copy": "docs/reviews/20261011-source-fidelity/SH903/take02/run_record.json",
+      "source_sha256": "5e7149cdc36bfc32f47718dc58a8dbc1fb7218c22e86bd9665a9e539d2c27571",
+      "audit_sha256": "82cba36bcc47a5c8d93c3ef1f694081b2554391426078ace83429d82a56ec3fe",
+      "metadata_paths_normalized": true
+    },
+    {
+      "source": "local/production/T1_SOURCE_PILOT/video/SH903/jobs/take02/qa/qa_report.json",
+      "audit_copy": "docs/reviews/20261011-source-fidelity/SH903/take02/qa/qa_report.json",
+      "source_sha256": "5bf27372d7903de66dac1c79533ee069dc4c4d19eeda8ea6377ceccc3108e922",
+      "audit_sha256": "7a01755d5a1f849f9a2d29704412e784ae26f439dfc07fd99bcf556aba33b4c0",
+      "metadata_paths_normalized": true
+    },
+    {
+      "source": "local/production/T1_SOURCE_PILOT/video/SH903/jobs/take02/qa/first.png",
+      "audit_copy": "docs/reviews/20261011-source-fidelity/SH903/take02/qa/first.png",
+      "source_sha256": "15408466c203f9fa392ecbff3dbc58f30a15d74cbbef324b62bc550bc119f0ff",
+      "audit_sha256": "15408466c203f9fa392ecbff3dbc58f30a15d74cbbef324b62bc550bc119f0ff",
+      "metadata_paths_normalized": false
+    },
+    {
+      "source": "local/production/T1_SOURCE_PILOT/video/SH903/jobs/take02/qa/middle.png",
+      "audit_copy": "docs/reviews/20261011-source-fidelity/SH903/take02/qa/middle.png",
+      "source_sha256": "b2e5e04791edf1d7ad67927c4b68c2baa89b47a6170cdabc9edd3f6b813fa641",
+      "audit_sha256": "b2e5e04791edf1d7ad67927c4b68c2baa89b47a6170cdabc9edd3f6b813fa641",
+      "metadata_paths_normalized": false
+    },
+    {
+      "source": "local/production/T1_SOURCE_PILOT/video/SH903/jobs/take02/qa/last.png",
+      "audit_copy": "docs/reviews/20261011-source-fidelity/SH903/take02/qa/last.png",
+      "source_sha256": "3f49046c0c380c3b8f9de183a0504a8b34ef3972b1560a6a9caaf3a7292fc4c8",
+      "audit_sha256": "3f49046c0c380c3b8f9de183a0504a8b34ef3972b1560a6a9caaf3a7292fc4c8",
+      "metadata_paths_normalized": false
+    },
+    {
+      "source": "local/production/T1_SOURCE_PILOT/video/SH903/jobs/take02/qa/all49.png",
+      "audit_copy": "docs/reviews/20261011-source-fidelity/SH903/take02/qa/all49.png",
+      "source_sha256": "c62c698f876289951eed693e2e5e4789e19d1bb1f6807cbd5e088852cef9b8d2",
+      "audit_sha256": "c62c698f876289951eed693e2e5e4789e19d1bb1f6807cbd5e088852cef9b8d2",
+      "metadata_paths_normalized": false
+    },
+    {
+      "source": "local/production/T1_SOURCE_PILOT/video/SH903/jobs/take02/run_record_media/2026100803_00001_.mp4",
+      "audit_copy": "docs/reviews/20261011-source-fidelity/SH903/take02/video.mp4",
+      "source_sha256": "a262345406da72b66ae73f189b8fb009e3d1ea95efb23b9cd5387675df7fc6b6",
+      "audit_sha256": "a262345406da72b66ae73f189b8fb009e3d1ea95efb23b9cd5387675df7fc6b6",
+      "metadata_paths_normalized": false
+    },
+    {
+      "source": "local/production/T1_SOURCE_PILOT/video/SH903/jobs/take03/job.json",
+      "audit_copy": "docs/reviews/20261011-source-fidelity/SH903/take03/job.json",
+      "source_sha256": "36cdcdb22802e5ad448e977a0c70105d3a3bbe94c057a3d02c925a2db5923071",
+      "audit_sha256": "e2398c5e29b70a9bd6bbfa2e6c35eb3da5026f42b724ec74ed63c287e09c7662",
+      "metadata_paths_normalized": true
+    },
+    {
+      "source": "local/production/T1_SOURCE_PILOT/video/SH903/jobs/take03/workflow.json",
+      "audit_copy": "docs/reviews/20261011-source-fidelity/SH903/take03/workflow.json",
+      "source_sha256": "4b6172484b33c3de3998a986118250deced15f9743b036c781d8d29188947d9c",
+      "audit_sha256": "a342a6a54c9d8f6588c6506bf9625842cd9ee9e33b352ac2ae3be80c6e9a7d84",
+      "metadata_paths_normalized": true
+    },
+    {
+      "source": "local/production/T1_SOURCE_PILOT/video/SH903/jobs/take03/run_record.json",
+      "audit_copy": "docs/reviews/20261011-source-fidelity/SH903/take03/run_record.json",
+      "source_sha256": "c4abece99f61d63f8f220cb3f3822b0a3086cbe9337338f0c95e49742ed686cf",
+      "audit_sha256": "0de9107f39123f5ebe1719b1df2a72a25792cac670012aac955a0f3114b30f7e",
+      "metadata_paths_normalized": true
+    },
+    {
+      "source": "local/production/T1_SOURCE_PILOT/video/SH903/jobs/take03/qa/qa_report.json",
+      "audit_copy": "docs/reviews/20261011-source-fidelity/SH903/take03/qa/qa_report.json",
+      "source_sha256": "db763be4024f7084afbd676a322f81193aaba8eb751079cf70436829765bc124",
+      "audit_sha256": "05d84dc4c35ffc283482dfefaaf5bfb40c1d231499239767802dcec3a4ed93e7",
+      "metadata_paths_normalized": true
+    },
+    {
+      "source": "local/production/T1_SOURCE_PILOT/video/SH903/jobs/take03/qa/first.png",
+      "audit_copy": "docs/reviews/20261011-source-fidelity/SH903/take03/qa/first.png",
+      "source_sha256": "05bfdf64fb51cc44ca049d74b9e36bba39606530ed9033a67b11ab80fc126812",
+      "audit_sha256": "05bfdf64fb51cc44ca049d74b9e36bba39606530ed9033a67b11ab80fc126812",
+      "metadata_paths_normalized": false
+    },
+    {
+      "source": "local/production/T1_SOURCE_PILOT/video/SH903/jobs/take03/qa/middle.png",
+      "audit_copy": "docs/reviews/20261011-source-fidelity/SH903/take03/qa/middle.png",
+      "source_sha256": "7865bcde07e08e6b311e7047574c2f3d2c21d5fb280fefc1e260f0f436c9b396",
+      "audit_sha256": "7865bcde07e08e6b311e7047574c2f3d2c21d5fb280fefc1e260f0f436c9b396",
+      "metadata_paths_normalized": false
+    },
+    {
+      "source": "local/production/T1_SOURCE_PILOT/video/SH903/jobs/take03/qa/last.png",
+      "audit_copy": "docs/reviews/20261011-source-fidelity/SH903/take03/qa/last.png",
+      "source_sha256": "ee204a33f5637dfb572c6b41ec4c9457c89c15dcf226b538e661a4c264c1270d",
+      "audit_sha256": "ee204a33f5637dfb572c6b41ec4c9457c89c15dcf226b538e661a4c264c1270d",
+      "metadata_paths_normalized": false
+    },
+    {
+      "source": "local/production/T1_SOURCE_PILOT/video/SH903/jobs/take03/qa/all49.png",
+      "audit_copy": "docs/reviews/20261011-source-fidelity/SH903/take03/qa/all49.png",
+      "source_sha256": "ac8a97d112225dd4c91be56c292b515a399704c1c830ba5a15d06092098acd73",
+      "audit_sha256": "ac8a97d112225dd4c91be56c292b515a399704c1c830ba5a15d06092098acd73",
+      "metadata_paths_normalized": false
+    },
+    {
+      "source": "local/production/T1_SOURCE_PILOT/video/SH903/jobs/take03/run_record_media/2026100803_00001_.mp4",
+      "audit_copy": "docs/reviews/20261011-source-fidelity/SH903/take03/video.mp4",
+      "source_sha256": "433c63b311adee879d011aabbeedce2cc08f192e4395e036d0f2deffba796ed1",
+      "audit_sha256": "433c63b311adee879d011aabbeedce2cc08f192e4395e036d0f2deffba796ed1",
+      "metadata_paths_normalized": false
+    },
+    {
+      "source": "local/production/T1_SOURCE_PILOT/diagnostics/SH903/quality_comparison/faces.png",
+      "audit_copy": "docs/reviews/20261011-source-fidelity/comparisons/faces.png",
+      "source_sha256": "5bbdcc54997399d39f25814954c6adb694bee8f084920ee228e7bbf68e625d67",
+      "audit_sha256": "5bbdcc54997399d39f25814954c6adb694bee8f084920ee228e7bbf68e625d67",
+      "metadata_paths_normalized": false
+    },
+    {
+      "source": "local/production/T1_SOURCE_PILOT/diagnostics/SH903/quality_comparison/faces_last_comparison.png",
+      "audit_copy": "docs/reviews/20261011-source-fidelity/comparisons/faces_last_comparison.png",
+      "source_sha256": "e17ed0166569e2520126191cbb19159531d01961ffb72bd54faa66ddf9b7ff6e",
+      "audit_sha256": "e17ed0166569e2520126191cbb19159531d01961ffb72bd54faa66ddf9b7ff6e",
+      "metadata_paths_normalized": false
+    },
+    {
+      "source": "local/production/T1_SOURCE_PILOT/diagnostics/SH903/vae_boundary_take01/qa/face_boundary_comparison.png",
+      "audit_copy": "docs/reviews/20261011-source-fidelity/comparisons/face_boundary_comparison.png",
+      "source_sha256": "a6c1e83eb8e0eb3fe5587a9541b60e968a9109634e1cf7f468b97b634e577d7c",
+      "audit_sha256": "a6c1e83eb8e0eb3fe5587a9541b60e968a9109634e1cf7f468b97b634e577d7c",
+      "metadata_paths_normalized": false
+    },
+    {
+      "source": "local/production/T1_SOURCE_PILOT/diagnostics/SH903/vae_boundary_take01/qa/boundary_metrics.json",
+      "audit_copy": "docs/reviews/20261011-source-fidelity/comparisons/boundary_metrics.json",
+      "source_sha256": "540b786c17052b741772e01cd20852360c2973ece514ed71ffb9719ba75aa7fa",
+      "audit_sha256": "540b786c17052b741772e01cd20852360c2973ece514ed71ffb9719ba75aa7fa",
+      "metadata_paths_normalized": true
+    },
+    {
+      "source": "local/reports/source_fidelity_comparison_20261010.json",
+      "audit_copy": "docs/reviews/20261011-source-fidelity/reports/source_fidelity_comparison_20261010.json",
+      "source_sha256": "ec5be901c3f292ead6c8f7f4985f7b0f2b0faec0dc17d107b4561260f8e64423",
+      "audit_sha256": "94ac7103ffbabf511cc971d1b29438af3b22314b5174540cf5715bfd748c2c39",
+      "metadata_paths_normalized": true
+    },
+    {
+      "source": "local/reports/source_fidelity_regression_20261010.json",
+      "audit_copy": "docs/reviews/20261011-source-fidelity/reports/source_fidelity_regression_20261010.json",
+      "source_sha256": "71de884d161fdcb1b2f9a5756a1c09094d284f293c06cb1e87a9887154f00ae1",
+      "audit_sha256": "71de884d161fdcb1b2f9a5756a1c09094d284f293c06cb1e87a9887154f00ae1",
+      "metadata_paths_normalized": true
+    },
+    {
+      "source": "local/reports/git_media_receipt.json",
+      "audit_copy": "docs/reviews/20261011-source-fidelity/reports/git_media_receipt.json",
+      "source_sha256": "9e73b41b33cc270ac47f411dd412e3e91ccc81c4acf4a3a01bdb2cd520d3ca4b",
+      "audit_sha256": "4ada3379b6d37dcf2f8275598d2392cdd220b1169b0648f0bab3cfc8758a6090",
+      "metadata_paths_normalized": true
+    },
+    {
+      "source": "local/review_evidence/T1_SOURCE_REVIEW.json",
+      "audit_copy": "docs/reviews/20261011-source-fidelity/approval/T1_SOURCE_REVIEW.json",
+      "source_sha256": "a6bfd0c348f7335cd71880d3e13b9eaccbafb40d383500f61b32fa9c30a536f4",
+      "audit_sha256": "cf9203813b1eb59af6bea4383500b00d188049aa8bba172d264d2870d73c192a",
+      "metadata_paths_normalized": true
+    }
+  ]
+}

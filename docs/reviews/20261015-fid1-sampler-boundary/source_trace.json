@@ -1,0 +1,16 @@
+{
+  "comfy_commit": "6b747c0428c343e1417219641db93a4fb7cb69ae",
+  "evidence_layer": "READ_ONLY_INSTALLED_SOURCE_TRACE",
+  "scope": "CURRENT_SINGLE_DEVICE_CPU_CUDA_WORKFLOW",
+  "chain": [
+    {"path": "comfy/model_management.py", "line": 1267, "fact": "intermediate_device defaults to CPU unless gpu_only"},
+    {"path": "comfy_extras/nodes_wan.py", "line": 1439, "fact": "Wan latent and mask are created on intermediate_device"},
+    {"path": "comfy/model_patcher.py", "line": 358, "fact": "ModelPatcher stores load_device; clone line446 preserves it"},
+    {"path": "comfy/sampler_helpers.py", "line": 18, "fact": "prepare_mask moves mask to the sampling device"},
+    {"path": "comfy/samplers.py", "line": 1308, "fact": "mask uses model_patcher.load_device and is converted to float32 at line1314"},
+    {"path": "comfy/samplers.py", "line": 1254, "fact": "noise and latent_image are moved to load_device and float32"}
+  ],
+  "gpu_executed": false,
+  "weights_loaded": false,
+  "real_cuda_validation": "NOT_RUN"
+}

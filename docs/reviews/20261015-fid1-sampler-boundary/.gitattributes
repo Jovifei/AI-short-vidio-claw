@@ -1,0 +1,2 @@
+* -text whitespace=cr-at-eol
+red_tests.txt -text whitespace=-blank-at-eol,cr-at-eol

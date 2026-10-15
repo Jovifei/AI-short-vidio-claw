@@ -1,0 +1,61 @@
+{
+  "scope": "T1_SOURCE_ONLY",
+  "take": "take02",
+  "prompt_id": "a4104130-8b74-480f-8059-089cb2ea48bb",
+  "seed": 2026100803,
+  "profile": {
+    "schema_version": 1,
+    "profile_id": "POSE_V2_480",
+    "scope": "T1_SOURCE_ONLY",
+    "shot_id": "SH903",
+    "input_sha256": "6476cf1e17105b3589095918a46546baced0db35ef2a6ca235551f4b7002149f",
+    "width": 480,
+    "height": 832,
+    "frames": 49,
+    "fps": 24,
+    "positive_prompt": "An almost motionless portrait of the same two subjects in the reference image. The red-and-gold dressed monkey subject on the left keeps the original left-facing side profile and gaze. The lavender-dressed woman on the right keeps the original right-facing side profile and gaze. Their joined hands, facial proportions, clothing and ornaments hold the starting pose throughout. Locked camera. Motion limited to faint water ripples and tiny fabric breathing.",
+    "negative_prompt": "head rotation, front-facing face, looking at camera, moving lips, talking, opening mouth, pose changes, hand movement, walking, identity drift, face redesign, facial proportion change, humanized monkey face, species change, costume changes, extra people, extra limbs, deformed hands, unstable background",
+    "hypothesis": "Same approved pixels and seed as take01; concrete held-pose wording may reduce unwanted head rotation. Resolution and sampler remain unchanged."
+  },
+  "input_path": "workspace:/local/production/T1_SOURCE_PILOT/video/SH903/jobs/take02/T1_SOURCE_PILOT_SH903_6476cf1e1710_2026100803.png",
+  "input_sha256": "6476cf1e17105b3589095918a46546baced0db35ef2a6ca235551f4b7002149f",
+  "workflow_path": "workspace:/local/production/T1_SOURCE_PILOT/video/SH903/jobs/take02/workflow.json",
+  "workflow_sha256": "9cdf382f4b4a20db067b4bc008ac030d084d60e622a77fce31c3ed29b5436543",
+  "video_path": "workspace:/local/production/T1_SOURCE_PILOT/video/SH903/jobs/take02/run_record_media/2026100803_00001_.mp4",
+  "video_sha256": "a262345406da72b66ae73f189b8fb009e3d1ea95efb23b9cd5387675df7fc6b6",
+  "dimensions": [
+    480,
+    832
+  ],
+  "frames": 49,
+  "fps": "24/1",
+  "duration": 2.041667,
+  "elapsed_seconds": 514.004,
+  "resources": {
+    "sample_count": 102,
+    "sample_interval_seconds": 5.0,
+    "nvidia_smi_memory_used_mib_first": 3892,
+    "nvidia_smi_memory_used_mib_peak": 11012,
+    "nvidia_smi_memory_used_mib_last": 3929,
+    "ram_avail_bytes_min": 7016448,
+    "ram_total_bytes": 34164097024,
+    "comfy_vram_free_bytes_min": null,
+    "note": "nvidia-smi memory.used is a sample peak, not a continuous hardware maximum"
+  },
+  "visual_qa": {
+    "state": "CHANGES_REQUIRED",
+    "method": "All49 contact sheet, equal display face crops, first/middle/last, full browser playback ended 2.041667s",
+    "identity": "Humanization is reduced compared with take01, but late Wukong head turn and facial proportions still depart from approved side profile",
+    "costume": "Red-gold armour and lavender costume broadly preserved; small ornament detail remains degraded",
+    "anatomy": "Joined hands remain joined; no obvious extra limbs, fine finger geometry not certified",
+    "motion": "Wukong late turn remains, Daiyu closer to original gaze than take01",
+    "clarity": "480 resize/VAE detail loss remains",
+    "full_playback": {
+      "ended": true,
+      "time": 2.041667
+    },
+    "user_visual_accepted": false
+  },
+  "user_visual_accepted": false,
+  "eligible_for_final_cut": false
+}

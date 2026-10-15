@@ -1,0 +1,59 @@
+{
+  "schema_version": 1,
+  "scope": "T1_SOURCE_ONLY",
+  "shot_id": "SH903",
+  "profile_id": "SH903_FID1_V002",
+  "runtime_success": true,
+  "media_contract_ok": true,
+  "full_decode": "PASS",
+  "human_full_playback": "PENDING",
+  "input": {
+    "path": "T1_SOURCE_PILOT_SH903_6476cf1e1710_2026100803.png",
+    "sha256": "6476cf1e17105b3589095918a46546baced0db35ef2a6ca235551f4b7002149f"
+  },
+  "workflow_sha256": "f84b71cbabd7cb556981f2ac294d6377b721d811cb5904d219dde2db67b7a811",
+  "seed": 2026100803,
+  "model": "Wan2.2-TI2V-5B",
+  "media": {
+    "codec_name": "h264",
+    "width": 576,
+    "height": 1024,
+    "frame_count": 49,
+    "fps": 24,
+    "duration_seconds": 2.041667,
+    "expected_duration_seconds": 2.0416666666666665,
+    "contract_ok": true
+  },
+  "output": {
+    "path": "output.mp4",
+    "bytes": 813593,
+    "sha256": "74ee23338678bc971042037a0ffb803be841a83db2387d14d12960287326fc72"
+  },
+  "resources": {
+    "sample_count": 107,
+    "sample_interval_seconds": 5.0,
+    "nvidia_smi_memory_used_mib_first": 3084,
+    "nvidia_smi_memory_used_mib_peak": 10668,
+    "nvidia_smi_memory_used_mib_last": 3099,
+    "ram_avail_bytes_min": 39043072,
+    "ram_total_bytes": 34164097024,
+    "comfy_vram_free_bytes_min": null,
+    "note": "nvidia-smi memory.used is a sample peak, not a continuous hardware maximum"
+  },
+  "frames": {
+    "count": 49,
+    "all49_contact_sheet": "all49.png",
+    "first_middle_last": "first_middle_last.png"
+  },
+  "visual_review": {
+    "full_playback": "PENDING",
+    "identity": "PENDING",
+    "costume": "PENDING",
+    "limbs": "PENDING",
+    "decision": "PENDING",
+    "reviewer": null,
+    "reviewed_at": null,
+    "user_quote": null
+  },
+  "next_shot_gate": "WAITING_JOVI_VISUAL_ACCEPTANCE"
+}

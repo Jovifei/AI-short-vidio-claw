@@ -1,0 +1,4 @@
+# Comfy部署载荷必须保持固定字节，避免跨系统换行转换改变冻结的节点hash。
+/scripts/fid1_wan_latent_anchor_node.py -text whitespace=cr-at-eol
+# 几何清单保持固定字节；旧配置沿用历史Git换行规则。
+/config/source_fidelity_trials/geometry_manifest.json -text whitespace=cr-at-eol

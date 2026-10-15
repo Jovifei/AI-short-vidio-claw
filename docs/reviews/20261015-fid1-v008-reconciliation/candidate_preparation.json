@@ -1,0 +1,9 @@
+{
+  "profile": "SH903_FID1_V008",
+  "real_take14_exists": false,
+  "prepare": "NOT_RUN_GEOMETRY_BLOCKED",
+  "dry_run": "NOT_RUN_NO_REAL_JOB",
+  "reason": "BACKGROUND_TREES intersects dynamic headdress plume; geometry stop required by plan. Fixture prepare/dry-run tested separately; no source approval inferred.",
+  "submitted": false,
+  "GPU": "NOT_RUN"
+}

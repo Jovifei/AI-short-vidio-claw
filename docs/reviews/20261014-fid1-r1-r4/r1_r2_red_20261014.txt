@@ -1,0 +1,44 @@
+test_accepts_timestep_aware_job_contract_but_rejects_mismatched_node (test_fid1_qa_report_unittest.FID1QAReportTests.test_accepts_timestep_aware_job_contract_but_rejects_mismatched_node) ... ok
+test_competing_exclusive_create_never_deletes_other_evidence (test_fid1_qa_report_unittest.FID1QAReportTests.test_competing_exclusive_create_never_deletes_other_evidence) ... FAIL
+test_feedback_change_after_validation_cannot_save_different_decision (test_fid1_qa_report_unittest.FID1QAReportTests.test_feedback_change_after_validation_cannot_save_different_decision) ... FAIL
+test_jovi_visual_review_is_explicit_hashed_and_required_for_next_shot (test_fid1_qa_report_unittest.FID1QAReportTests.test_jovi_visual_review_is_explicit_hashed_and_required_for_next_shot) ... ok
+test_parses_exact_video_contract_and_leaves_human_review_pending (test_fid1_qa_report_unittest.FID1QAReportTests.test_parses_exact_video_contract_and_leaves_human_review_pending) ... ok
+test_qa_change_after_first_read_is_not_overwritten (test_fid1_qa_report_unittest.FID1QAReportTests.test_qa_change_after_first_read_is_not_overwritten) ... FAIL
+test_rejects_wrong_frame_fps_or_dimensions (test_fid1_qa_report_unittest.FID1QAReportTests.test_rejects_wrong_frame_fps_or_dimensions) ... ok
+test_review_refuses_video_replaced_after_qa (test_fid1_qa_report_unittest.FID1QAReportTests.test_review_refuses_video_replaced_after_qa) ... ok
+test_visual_review_template_does_not_preapprove_or_name_a_reviewer (test_fid1_qa_report_unittest.FID1QAReportTests.test_visual_review_template_does_not_preapprove_or_name_a_reviewer) ... ok
+
+======================================================================
+FAIL: test_competing_exclusive_create_never_deletes_other_evidence (test_fid1_qa_report_unittest.FID1QAReportTests.test_competing_exclusive_create_never_deletes_other_evidence)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "E:\project\AI-short-vidio-claw\tests\test_fid1_qa_report_unittest.py", line 167, in test_competing_exclusive_create_never_deletes_other_evidence
+    self.assertTrue(destination.exists(), 'loser must not delete the winner evidence')
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: False is not true : loser must not delete the winner evidence
+
+======================================================================
+FAIL: test_feedback_change_after_validation_cannot_save_different_decision (test_fid1_qa_report_unittest.FID1QAReportTests.test_feedback_change_after_validation_cannot_save_different_decision)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "E:\project\AI-short-vidio-claw\tests\test_fid1_qa_report_unittest.py", line 189, in test_feedback_change_after_validation_cannot_save_different_decision
+    self.assertEqual(stored['visual_review']['decision'], evidence['decision'])
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'ACCEPTED_FOR_NEXT_SOURCE_ONLY_TRIAL' != 'CHANGES_REQUIRED'
+- ACCEPTED_FOR_NEXT_SOURCE_ONLY_TRIAL
++ CHANGES_REQUIRED
+
+
+======================================================================
+FAIL: test_qa_change_after_first_read_is_not_overwritten (test_fid1_qa_report_unittest.FID1QAReportTests.test_qa_change_after_first_read_is_not_overwritten)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "E:\project\AI-short-vidio-claw\tests\test_fid1_qa_report_unittest.py", line 207, in test_qa_change_after_first_read_is_not_overwritten
+    self.assertEqual(json.loads(report.read_bytes()).get('concurrent_note'), 'preserve me')
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: None != 'preserve me'
+
+----------------------------------------------------------------------
+Ran 9 tests in 0.265s
+
+FAILED (failures=3)

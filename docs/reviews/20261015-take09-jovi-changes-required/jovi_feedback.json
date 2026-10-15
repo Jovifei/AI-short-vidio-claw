@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "scope": "T1_SOURCE_ONLY",
+  "shot_id": "SH903",
+  "profile_id": "SH903_FID1_V005",
+  "output_sha256": "dbdd44e4bdd39b13c8881c3f413a7889f0823c052b99df41698b1d5f61be2db8",
+  "full_playback": "CHANGES_REQUIRED",
+  "identity": "CHANGES_REQUIRED",
+  "costume": "PASS",
+  "limbs": "CHANGES_REQUIRED",
+  "decision": "CHANGES_REQUIRED",
+  "reviewer": "Jovi",
+  "user_quote": "人物的头并没有任何的移动，然后背景的话也虚幻糊掉了，所以说需要去修改。你自己也能检查出来这些画面的区别。",
+  "recorded_at": "2026-10-14T16:05:23.672Z"
+}

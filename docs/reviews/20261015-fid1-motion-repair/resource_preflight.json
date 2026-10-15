@@ -1,0 +1,118 @@
+{
+  "checked_at": "2026-10-14T16:48:24.245378+00:00",
+  "runtime": {
+    "installed_node_sha256": "c1d4c573a1e6bbd63793398293be16f3b7a6a2a3042d3340f08dc8870cb2e0b3",
+    "loaded_node_class": "FID1WanTimestepAwareROIAnchor",
+    "queue": {
+      "running": 0,
+      "pending": 0
+    }
+  },
+  "system": {
+    "system": {
+      "os": "win32",
+      "ram_total": 34164097024,
+      "ram_free": 4554428416,
+      "comfyui_version": "0.38.0",
+      "required_frontend_version": "1.53.6",
+      "installed_templates_version": "0.11.70",
+      "required_templates_version": "0.11.70",
+      "comfy_package_versions": [
+        {
+          "name": "comfyui-frontend-package",
+          "installed": "1.53.6",
+          "required": "1.53.6"
+        },
+        {
+          "name": "comfyui-workflow-templates",
+          "installed": "0.11.70",
+          "required": "0.11.70"
+        },
+        {
+          "name": "comfyui-embedded-docs",
+          "installed": "0.5.12",
+          "required": "0.5.12"
+        },
+        {
+          "name": "comfy-kitchen",
+          "installed": "0.2.36",
+          "required": "0.2.36"
+        },
+        {
+          "name": "comfy-aimdo",
+          "installed": "0.5.5",
+          "required": "0.5.5"
+        }
+      ],
+      "python_version": "3.12.9 (main, Feb 12 2025, 14:52:31) [MSC v.1942 64 bit (AMD64)]",
+      "pytorch_version": "2.14.1+cu130",
+      "embedded_python": false,
+      "deploy_environment": "local-git",
+      "argv": [
+        "main.py",
+        "--listen",
+        "127.0.0.1",
+        "--port",
+        "8188",
+        "--disable-auto-launch",
+        "--reserve-vram",
+        "1",
+        "--fast-disk",
+        "--extra-model-paths-config",
+        "extra_model_paths.yaml"
+      ]
+    },
+    "devices": [
+      {
+        "name": "cuda:0 NVIDIA GeForce RTX 4070 SUPER : cudaMallocAsync",
+        "type": "cuda",
+        "index": 0,
+        "vram_total": 12878086144,
+        "vram_free": 11606687744,
+        "torch_vram_total": 0,
+        "torch_vram_free": 0
+      }
+    ]
+  },
+  "models": {
+    "F:\\ComfyUI\\models\\diffusion_models\\wan2.2_ti2v_5B_fp16.safetensors": {
+      "bytes": 9999658848,
+      "verification": "existence/byte-size; no new weight hash claimed"
+    },
+    "F:\\ComfyUI\\models\\text_encoders\\umt5_xxl_fp8_e4m3fn_scaled.safetensors": {
+      "bytes": 6735906897,
+      "verification": "existence/byte-size; no new weight hash claimed"
+    },
+    "F:\\ComfyUI\\models\\vae\\wan2.2_vae.safetensors": {
+      "bytes": 1409400960,
+      "verification": "existence/byte-size; no new weight hash claimed"
+    }
+  },
+  "gpu_snapshot": "NVIDIA GeForce RTX 4070 SUPER, 12282 MiB, 1752 MiB, 10246 MiB",
+  "ram": {
+    "ram_load_percent": 86,
+    "ram_total_bytes": 34164097024,
+    "ram_avail_bytes": 4589883392,
+    "pagefile_total_bytes": 86901993472,
+    "pagefile_avail_bytes": 13794324480
+  },
+  "disk_free_bytes": {
+    "E:/": 146683396096,
+    "F:/": 338040406016
+  },
+  "server_flags": [
+    "--listen",
+    "127.0.0.1",
+    "--port",
+    "8188",
+    "--disable-auto-launch",
+    "--reserve-vram",
+    "1",
+    "--fast-disk"
+  ],
+  "resource_snapshot_meets_operator_floor": true,
+  "floor_ram_available_bytes": 4294967296,
+  "floor_gpu_free_mib": 8192,
+  "note": "Existing supported --fast-disk uses disk-backed dynamic offload to reduce unpinned RAM pressure; model/dtype/sampling unchanged. Historical global peak11808 includes baseline1996. Snapshot is not peak guarantee. Single bounded job only.",
+  "submitted": false
+}

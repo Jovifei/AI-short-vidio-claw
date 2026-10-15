@@ -1,0 +1,24 @@
+{
+  "version": "0.1.1",
+  "base_sha": "5ccc349b1e9853caf2dd9f6182da0e4135a34cea",
+  "base_remote_review": "ACCEPTED_ENGINEERING",
+  "reason": "First run-record raw snapshot must precede feedback validation",
+  "regression": "test_run_record_changed_after_first_verification_is_not_adopted",
+  "full_tests": {
+    "collected": 327,
+    "passed": 324,
+    "skipped": 3
+  },
+  "comfy_cpu": {
+    "passed": 87
+  },
+  "protected": {
+    "files": 533,
+    "changed": []
+  },
+  "take09_human": "PENDING",
+  "downstream_gpu": "NOT_RUN",
+  "new_review_session": "local/production/T1_SOURCE_PILOT/review_sessions/SH903_take09_transaction_review_01",
+  "remote_review": "PENDING_FIXED_PATCH_SHA",
+  "ci": "PENDING_FIXED_PATCH_SHA"
+}

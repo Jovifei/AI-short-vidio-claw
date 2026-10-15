@@ -1,0 +1,16 @@
+{
+  "command": [
+    "python",
+    "scripts/fid1_deploy.py",
+    "verify",
+    "--root",
+    ".",
+    "--comfy-root",
+    "local/comfyui/image/ComfyUI"
+  ],
+  "exit_code": 2,
+  "stdout": "{\"ok\": false, \"error\": \"installed FID1 ComfyUI dependency contract changed\"}\n",
+  "stderr": "",
+  "deployment": "NOT_DONE",
+  "installed_sha256": "c1d4c573a1e6bbd63793398293be16f3b7a6a2a3042d3340f08dc8870cb2e0b3"
+}

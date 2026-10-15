@@ -1,0 +1,41 @@
+{
+  "schema_version": 1,
+  "scope": "T1_SOURCE_ONLY",
+  "shot_id": "SH903",
+  "control": {
+    "take": "take05",
+    "profile_id": "SH903_FID1_V003",
+    "profile_mask": "hard binary ROI",
+    "prompt_id": "f5658cf7-ffcb-498e-8c88-0b91049cd785",
+    "output_sha256": "68bd4119f675628358244d27e81d867ed69983895f4168a6819a330958ef4403",
+    "visual_status": "CHANGES_REQUIRED"
+  },
+  "treatment": {
+    "take": "take07",
+    "profile_id": "SH903_FID1_V004",
+    "profile_mask": "feather_latent=4",
+    "prompt_id": "933cd47e-9454-48ad-85bd-35e819d8be90",
+    "output_sha256": "f802325c659be0c72861c6360527818f9aa43ce356ef323f7c2b817bfd437062",
+    "visual_status": "CHANGES_REQUIRED"
+  },
+  "same_source_prompt_seed_size_frames_fps": true,
+  "graph_input_differences": [
+    {
+      "node_id": "58",
+      "class_type": "SaveVideo",
+      "input": "filename_prefix",
+      "control": "video/T1_SOURCE_ONLY/SH903/SH903_FID1_V003/2026100803",
+      "treatment": "video/T1_SOURCE_ONLY/SH903/SH903_FID1_V004/2026100803"
+    },
+    {
+      "node_id": "59",
+      "class_type": "FID1WanSourceROIAnchor",
+      "input": "roi_boxes_json",
+      "control": "[{\"id\":\"WUKONG_FACE\",\"x0\":0.11,\"x1\":0.36,\"y0\":0.2,\"y1\":0.36},{\"id\":\"DAIYU_FACE\",\"x0\":0.69,\"x1\":0.89,\"y0\":0.2,\"y1\":0.37}]",
+      "treatment": "[{\"feather_latent\":4,\"id\":\"WUKONG_FACE\",\"x0\":0.11,\"x1\":0.36,\"y0\":0.2,\"y1\":0.36},{\"feather_latent\":4,\"id\":\"DAIYU_FACE\",\"x0\":0.69,\"x1\":0.89,\"y0\":0.2,\"y1\":0.37}]"
+    }
+  ],
+  "runtime_result": "success",
+  "full_decode": "PASS",
+  "visual_acceptance": "PENDING_JOVI"
+}

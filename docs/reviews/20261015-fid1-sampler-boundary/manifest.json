@@ -1,0 +1,19 @@
+{
+  "hash_basis": "RAW_BYTES_GIT_PRESERVED",
+  "files": {
+    ".gitattributes": "b2e203f4d55c2ec38583eb62ef4715c65d1f4c74a6bc3f7374202b8c5623834b",
+    "ci.json": "ad6005c57b300259a90ae6c8b45a498251d88cb08d7cbf2201671d5c3e4d221f",
+    "comfy_cpu_tests.txt": "fa795efded6f89a4a7e9e526642b46a871119f0ad75ecfd3058c5f13513daab5",
+    "environment.json": "da828c590398ec16e64d5890271cff04d8787046a4a861612f7ec2a042452629",
+    "final_review.md": "77d62d71330dbcb5c1e07f06d7dde822893d64612096424a45d27ffc0250d512",
+    "full_tests.txt": "0ab98433aeb9ce6b114b967be2b59ebb5293dcc8c218929be8cdbdbae9699764",
+    "green_tests.txt": "b9abd4956078f37dd8fbaf273a930e12a4acc32bf229ee4ab6b7ae7030211ad6",
+    "installed_source_hashes.json": "57e3158528fd11b5992ecdefb9d8ada8e7eac2534387081dc21fa47c46e03f58",
+    "no_torch_tests.txt": "8da8600023826d1ce30127aa4956948a9ee287767c4c1173017cc3212450c684",
+    "protected_hash_comparison.json": "43989a741adac0b65e5ae6b8ac0a2fe63c64f12315a18737186942f54f780159",
+    "README.md": "68df38ed05aec7653c84bba2c983bd12d7653620c939a5bd67c04719f87d95a0",
+    "red_tests.txt": "3e507dca85dc1eca2adb2591ae3c9730670c8cec37093cc659a7d89ead9dcddf",
+    "source_trace.json": "ef20b0e76df9b2135eb8fcac99cc9f8939bb04d8594ff7df0ba895fa5546c3d6",
+    "summary.json": "4acd36f23b3743e4732dc08e39e7ee8c330ed213b768d6005de50dcef789b531"
+  }
+}
