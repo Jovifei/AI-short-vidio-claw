@@ -235,6 +235,19 @@ def _anchor_future_rois_timestep_aware(model, latent, rois, temporal_schedule=No
     if not callable(getattr(model, "add_object_patch", None)):
         raise ValueError("ComfyUI MODEL object-patch API is required")
 
+    sampling_device = None
+    if strength_mode:
+        # Wan constructs intermediate tensors on CPU by default. Comfy's
+        # CFGGuider later moves sampling tensors to MODEL.load_device/float32.
+        # Freeze that runtime contract rather than the intermediate location.
+        target = getattr(model, "load_device", None)
+        if not isinstance(target, torch.device) or not (
+            (target.type == "cpu" and target.index in (None, 0))
+            or (target.type == "cuda" and target.index is not None)
+        ):
+            raise ValueError("strength MODEL load_device must be a concrete CPU/CUDA device")
+        sampling_device = torch.device("cpu") if target.type == "cpu" else target
+
     patched_model = model.clone()
     if patched_model is model or getattr(patched_model, "model", None) is not model_impl:
         raise ValueError("ComfyUI MODEL clone must isolate options while sharing its loaded WAN22 model")
@@ -245,8 +258,8 @@ def _anchor_future_rois_timestep_aware(model, latent, rois, temporal_schedule=No
         del sigma, extra_options
         if not isinstance(denoise_mask, torch.Tensor) or denoise_mask.ndim != 5:
             raise ValueError("KSampler denoise_mask must be a rank-5 tensor")
-        if strength_mode and (denoise_mask.device != anchor_mask.device or denoise_mask.dtype != anchor_mask.dtype):
-            raise ValueError("strength KSampler denoise_mask dtype/device changed")
+        if strength_mode and (denoise_mask.device != sampling_device or denoise_mask.dtype != torch.float32):
+            raise ValueError("strength KSampler denoise_mask dtype/device must match MODEL load_device/float32")
         if (denoise_mask.shape[0] != anchor_mask.shape[0]
                 or tuple(denoise_mask.shape[2:]) != tuple(anchor_mask.shape[2:])):
             raise ValueError("KSampler denoise_mask batch/time/spatial shape changed from the prepared Wan mask")
@@ -274,9 +287,9 @@ def _anchor_future_rois_timestep_aware(model, latent, rois, temporal_schedule=No
             raise ValueError("KSampler noise dtype/device must match latent_image")
         if tuple(latent_image.shape) != tuple(anchor_mask.shape[:1] + (EXPECTED_CHANNELS,) + anchor_mask.shape[2:]):
             raise ValueError("KSampler latent_image shape changed from the prepared Wan latent")
-        if strength_mode and (latent_image.device != anchor_mask.device or latent_image.dtype != anchor_mask.dtype
+        if strength_mode and (latent_image.device != sampling_device or latent_image.dtype != torch.float32
                               or not bool(torch.isfinite(latent_image).all()) or not bool(torch.isfinite(noise).all())):
-            raise ValueError("strength KSampler latent/noise dtype/device/finite changed")
+            raise ValueError("strength KSampler latent/noise dtype/device/finite must match MODEL load_device/float32")
         clean_latent = original_scale(sigma, noise, latent_image, **kwargs)
         if not isinstance(clean_latent, torch.Tensor) or tuple(clean_latent.shape) != tuple(latent_image.shape):
             raise ValueError("WAN22 scale_latent_inpaint returned an invalid latent")

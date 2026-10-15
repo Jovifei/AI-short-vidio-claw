@@ -1,0 +1,11 @@
+{
+  "hash_basis": "RAW_INSTALLED_BYTES",
+  "comfy_commit": "6b747c0428c343e1417219641db93a4fb7cb69ae",
+  "files": {
+    "comfy/model_management.py": "e34fea53f0ff5e33f71a38de1f2efbff033b879b6dc136f253864b735d171949",
+    "comfy/model_patcher.py": "fc43f038835aeded2e64a0490f9d37795fb9d3c9490d9210ba11f1201aec4fd8",
+    "comfy/samplers.py": "2850b400e0c07ddb73429f35e5da3de01952e7ee58f4c050124ea948cbda53ae",
+    "comfy/sampler_helpers.py": "ac5b2be3f21e1fd8c7070b155146294692f35408db69db6a5c5e7384d199f377",
+    "comfy_extras/nodes_wan.py": "9ae0b3b3c1384b50860b6ebfadff13ae1b012fa5db045c756372aa5979a21985"
+  }
+}

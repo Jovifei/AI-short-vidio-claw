@@ -1,0 +1,8 @@
+{
+  "primary_python": "3.14.2",
+  "comfy_python": "3.12.9",
+  "comfy_torch": "2.14.1+cu130",
+  "test_tensor_device": "cpu",
+  "gpu_allocations": "NONE",
+  "node_payload_sha256": "37bd44b229d728ee07bebacab7454ee2f1386bcb4e9540957aba3d275a9636ca"
+}

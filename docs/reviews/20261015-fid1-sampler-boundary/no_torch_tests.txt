@@ -1,0 +1,6 @@
+test_no_torch_prepare_and_dryrun_subprocess (test_fid1_strength_profile_unittest.StrengthProfileTests.test_no_torch_prepare_and_dryrun_subprocess) ... ok
+
+----------------------------------------------------------------------
+Ran 1 test in 2.821s
+
+OK

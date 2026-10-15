@@ -34,11 +34,13 @@ class WAN22:
 class FakeModelPatcher:
     def __init__(self, model):
         self.model = model
+        self.load_device = torch.device("cpu")
         self.model_options = {}
         self.object_patches = {}
 
     def clone(self):
         clone = FakeModelPatcher(self.model)
+        clone.load_device = self.load_device
         clone.model_options = dict(self.model_options)
         clone.object_patches = dict(self.object_patches)
         return clone
